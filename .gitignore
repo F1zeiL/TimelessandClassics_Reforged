@@ -27,3 +27,7 @@ lib4
 classes
 
 src/generated/resources/.cache
+
+src/main/resources/assets/tac/models/gunskin/skin.json
+src/main/resources/assets/tac/models/gunskin
+src/main/resources/assets/tac/textures/gunskin

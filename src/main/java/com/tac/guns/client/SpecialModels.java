@@ -1,8 +1,11 @@
 package com.tac.guns.client;
 
 import com.tac.guns.Reference;
+import com.tac.guns.gunskins.ResourceReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -631,22 +634,22 @@ public enum SpecialModels
     MK47_PULL("mk47_pull"),
     KAR98_MOUNT("kar98_mount"),
 
-   AR_15_BODY("ar_15_body"),
-   AR_15_BOLT("ar_15h_bolt"),
-   AR_15_COMPENSATOR("ar_15_c_muzzle"),
-   AR_15_DEFAULT_BARREL("ar_15_d_muzzle"),
-   AR_15_EXTENDED_MAG("ar_15_extended_mag"),
-   AR_15_SUPPRESSOR("ar_15_s_muzzle"),
-   AR_15_STANDARD_MAG("ar_15_standard_mag"),
-   AR_15_FS("ar_15_fs"),
-   AR_15_FSU("ar_15_fsu"),
-   AR_15_BRAKE("ar_15_b_muzzle"),
-   AR_15_TACTICAL_STOCK("ar_15_tac_stock"),
-   AR_15_LIGHT_STOCK("ar_15_light_stock"),
-   AR_15_HEAVY_STOCK("ar_15_heavy_stock"),
-   AR_15_GRIP("ar_15_grip"),
-   AR_15_LIGHT_GRIP("ar_15_l_grip"),
-   AR_15_TAC_GRIP("ar_15_t_grip"),
+    AR_15_BODY("ar_15_body"),
+    AR_15_BOLT("ar_15h_bolt"),
+    AR_15_COMPENSATOR("ar_15_c_muzzle"),
+    AR_15_DEFAULT_BARREL("ar_15_d_muzzle"),
+    AR_15_EXTENDED_MAG("ar_15_extended_mag"),
+    AR_15_SUPPRESSOR("ar_15_s_muzzle"),
+    AR_15_STANDARD_MAG("ar_15_standard_mag"),
+    AR_15_FS("ar_15_fs"),
+    AR_15_FSU("ar_15_fsu"),
+    AR_15_BRAKE("ar_15_b_muzzle"),
+    AR_15_TACTICAL_STOCK("ar_15_tac_stock"),
+    AR_15_LIGHT_STOCK("ar_15_light_stock"),
+    AR_15_HEAVY_STOCK("ar_15_heavy_stock"),
+    AR_15_GRIP("ar_15_grip"),
+    AR_15_LIGHT_GRIP("ar_15_l_grip"),
+    AR_15_TAC_GRIP("ar_15_t_grip"),
 
     SPR_15_BODY("spr15"),
     SPR_15_PULL_HANDLE("spr15_pull_handle"),
@@ -933,6 +936,15 @@ public enum SpecialModels
             {
                 ModelLoader.addSpecialModel(model.modelLocation);
             }
+        }
+        IResourceManager manager = Minecraft.getInstance().getResourceManager();
+        ((SimpleReloadableResourceManager)manager).addReloadListener(new ResourceReloadListener());
+    }
+
+    public static void cleanCache(){
+        for(SpecialModels model : values())
+        {
+            model.cachedModel = null;
         }
     }
 }
