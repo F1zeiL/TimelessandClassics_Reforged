@@ -10,6 +10,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
@@ -70,7 +71,7 @@ public class hk416_a5_animation extends SkinAnimationModel {
     {
         HK416A5AnimationController controller = HK416A5AnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack, "hk416");
+        GunSkin skin = SkinManager.getSkin(stack, "hk416");
 
         matrices.push();
         {

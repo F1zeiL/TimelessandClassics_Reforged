@@ -11,6 +11,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -51,7 +52,7 @@ public class qbz_95_animation extends SkinAnimationModel {
 
         Type95LAnimationController controller = Type95LAnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack, "qbz95");
+        GunSkin skin = SkinManager.getSkin(stack, "qbz95");
 
         matrices.push();
         {

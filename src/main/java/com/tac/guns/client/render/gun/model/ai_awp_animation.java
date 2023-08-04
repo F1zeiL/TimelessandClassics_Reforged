@@ -8,6 +8,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
@@ -58,7 +59,7 @@ public class ai_awp_animation extends SkinAnimationModel {
     {
         AWPAnimationController controller = AWPAnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack, "ai_awp");
+        GunSkin skin = SkinManager.getSkin(stack, "ai_awp");
 
         matrices.push();
         {

@@ -11,6 +11,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
@@ -69,7 +70,7 @@ public class scar_l_animation extends SkinAnimationModel {
     {
         SCAR_LAnimationController controller = SCAR_LAnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack,"scar_l");
+        GunSkin skin = SkinManager.getSkin(stack,"scar_l");
 
         matrices.push();
         {

@@ -11,6 +11,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -50,7 +51,7 @@ public class deagle_357_animation extends SkinAnimationModel {
     {
         Deagle50AnimationController controller = Deagle50AnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack, "deagle357");
+        GunSkin skin = SkinManager.getSkin(stack, "deagle357");
 
         matrices.push();
         {

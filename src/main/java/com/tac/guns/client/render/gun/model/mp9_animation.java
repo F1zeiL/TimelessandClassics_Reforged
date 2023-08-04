@@ -9,6 +9,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
@@ -57,7 +58,7 @@ public class mp9_animation extends SkinAnimationModel {
     {
         MP9AnimationController controller = MP9AnimationController.getInstance();
 
-        GunSkin skin = getGunSkin(stack,"mp9");
+        GunSkin skin = SkinManager.getSkin(stack,"mp9");
 
         matrices.push();
         {

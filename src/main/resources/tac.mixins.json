@@ -13,11 +13,12 @@
   "client": [
     "client.FirstPersonRendererMixin",
     "client.GameRendererMixin",
-    "client.MinecraftStaticMixin",
     "client.InventoryScreenMixin",
+    "client.MinecraftStaticMixin",
+    "client.ModelBakeryMixin",
     "client.MouseHelperMixin",
-    "client.WorldRendererMixin",
-    "client.ShadersFramebufferMixin"
+    "client.ShadersFramebufferMixin",
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

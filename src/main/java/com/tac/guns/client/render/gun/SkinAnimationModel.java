@@ -5,7 +5,6 @@ import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
 import com.tac.guns.gunskins.ModelComponent;
-import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.util.GunModifierHelper;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +24,8 @@ public abstract class SkinAnimationModel implements IOverrideModel {
     public abstract void init();
     protected Map<ModelComponent, Vector3d> extraOffset = new HashMap<>();
     protected Map<ModelComponent,IBakedModel> defaultModels;
-
     private static List<SkinAnimationModel> models = new ArrayList<>();
+
     public SkinAnimationModel(){
         models.add(this);
     }
@@ -49,17 +47,6 @@ public abstract class SkinAnimationModel implements IOverrideModel {
         for (SkinAnimationModel model : models) {
             model.cleanCache();
         }
-    }
-
-    protected static GunSkin getGunSkin(ItemStack stack, String gun) {
-        GunSkin skin = null;
-        if (stack.getTag() != null) {
-            if (stack.getTag().contains("Skin", Constants.NBT.TAG_STRING)) {
-                String skinName = stack.getTag().getString("Skin");
-                skin = SkinManager.getSkin(gun,skinName);
-            }
-        }
-        return skin;
     }
 
     private void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, ModelComponent modelComponent) {

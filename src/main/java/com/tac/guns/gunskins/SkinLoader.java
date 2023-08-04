@@ -66,6 +66,14 @@ public enum SkinLoader {
                 tryLoadComponent(skin,models,key);
             }
         }
+        if(models.containsKey("icon")){
+            ResourceLocation loc = ResourceLocation.tryCreate(models.get("icon"));
+            skin.setIcon(loc);
+        }
+        if(models.containsKey("mini_icon")){
+            ResourceLocation loc = ResourceLocation.tryCreate(models.get("mini_icon"));
+            skin.setMiniIcon(loc);
+        }
     }
 
     private static void tryLoadComponent(GunSkin skin, Map<String,String> models, ModelComponent component){

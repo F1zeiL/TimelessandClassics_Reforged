@@ -11,6 +11,7 @@ import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -60,7 +61,7 @@ public class ak47_animation extends SkinAnimationModel {
         Gun gun = ((GunItem) stack.getItem()).getGun();
         float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
 
-        GunSkin skin = getGunSkin(stack, "ak47");
+        GunSkin skin = SkinManager.getSkin(stack, "ak47");
 
         matrices.push();
         {
