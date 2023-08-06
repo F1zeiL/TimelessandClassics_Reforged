@@ -34,25 +34,25 @@ public class ai_awp_animation extends SkinAnimationModel {
 
         If you are just starting out I don't recommend attempting to create an animated part of your weapon is as much as I can comfortably give at this point!
     */
-    @Override
-    public void init(){
-        defaultModels = new HashMap<>();
-        defaultModels.put(BODY,SpecialModels.AI_AWP.getModel());
-        defaultModels.put(BOLT,SpecialModels.AI_AWP_BOLT.getModel());
-        defaultModels.put(BOLT_EXTRA,SpecialModels.AI_AWP_BOLT_EXTRA.getModel());
-        defaultModels.put(SIGHT,SpecialModels.AI_AWP_SIGHT.getModel());
-
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.AI_AWP_SUPPRESSOR.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.AI_AWP_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.AI_AWP_BRAKE.getModel());
-
-        defaultModels.put(MAG_EXTENDED,SpecialModels.AI_AWP_MAG_EXTENDED.getModel());
-        defaultModels.put(MAG_STANDARD,SpecialModels.AI_AWP_MAG.getModel());
-
-        defaultModels.put(BULLET_SHELL,SpecialModels.AI_AWP_BULLET_SHELL.getModel());
-
-        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.4));
-    }
+//    @Override
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//        defaultModels.put(BODY,SpecialModels.AI_AWP.getModel());
+//        defaultModels.put(BOLT,SpecialModels.AI_AWP_BOLT.getModel());
+//        defaultModels.put(BOLT_EXTRA,SpecialModels.AI_AWP_BOLT_EXTRA.getModel());
+//        defaultModels.put(SIGHT,SpecialModels.AI_AWP_SIGHT.getModel());
+//
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.AI_AWP_SUPPRESSOR.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.AI_AWP_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.AI_AWP_BRAKE.getModel());
+//
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.AI_AWP_MAG_EXTENDED.getModel());
+//        defaultModels.put(MAG_STANDARD,SpecialModels.AI_AWP_MAG.getModel());
+//
+//        defaultModels.put(BULLET_SHELL,SpecialModels.AI_AWP_BULLET_SHELL.getModel());
+//
+//        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.4));
+//    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

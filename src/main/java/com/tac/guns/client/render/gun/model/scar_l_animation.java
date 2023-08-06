@@ -35,35 +35,35 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  */
 public class scar_l_animation extends SkinAnimationModel {
 
-    @Override
-    public void init(){
-        defaultModels = new HashMap<>();
-
-        defaultModels.put(BODY,SpecialModels.SCAR_L_BODY.getModel());
-
-        defaultModels.put(BOLT,SpecialModels.SCAR_L_BOLT.getModel());
-
-        defaultModels.put(SIGHT,SpecialModels.SCAR_L_FSU.getModel());
-        defaultModels.put(SIGHT_FOLDED,SpecialModels.SCAR_L_FS.getModel());
-
-        defaultModels.put(GRIP_LIGHT,SpecialModels.SCAR_L_LIGHT_GRIP.getModel());
-        defaultModels.put(GRIP_TACTICAL,SpecialModels.SCAR_L_TAC_GRIP.getModel());
-
-        defaultModels.put(LASER_BASIC,SpecialModels.SCAR_L_MINI_LASER_BEAM.getModel());
-        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.SCAR_L_MINI_LASER.getModel());
-        defaultModels.put(LASER_IR,SpecialModels.SCAR_L_IR_LASER.getModel());
-        defaultModels.put(LASER_IR_DEVICE,SpecialModels.SCAR_L_IR_DEVICE.getModel());
-
-        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.SCAR_L_DEFAULT_BARREL.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.SCAR_L_BRAKE.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.SCAR_L_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.SCAR_L_SUPPRESSOR.getModel());
-
-        defaultModels.put(MAG_STANDARD,SpecialModels.SCAR_L_STANDARD_MAG.getModel());
-        defaultModels.put(MAG_EXTENDED,SpecialModels.SCAR_L_EXTENDED_MAG.getModel());
-
-        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0225));
-    }
+//    @Override
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//
+//        defaultModels.put(BODY,SpecialModels.SCAR_L_BODY.getModel());
+//
+//        defaultModels.put(BOLT,SpecialModels.SCAR_L_BOLT.getModel());
+//
+//        defaultModels.put(SIGHT,SpecialModels.SCAR_L_FSU.getModel());
+//        defaultModels.put(SIGHT_FOLDED,SpecialModels.SCAR_L_FS.getModel());
+//
+//        defaultModels.put(GRIP_LIGHT,SpecialModels.SCAR_L_LIGHT_GRIP.getModel());
+//        defaultModels.put(GRIP_TACTICAL,SpecialModels.SCAR_L_TAC_GRIP.getModel());
+//
+//        defaultModels.put(LASER_BASIC,SpecialModels.SCAR_L_MINI_LASER_BEAM.getModel());
+//        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.SCAR_L_MINI_LASER.getModel());
+//        defaultModels.put(LASER_IR,SpecialModels.SCAR_L_IR_LASER.getModel());
+//        defaultModels.put(LASER_IR_DEVICE,SpecialModels.SCAR_L_IR_DEVICE.getModel());
+//
+//        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.SCAR_L_DEFAULT_BARREL.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.SCAR_L_BRAKE.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.SCAR_L_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.SCAR_L_SUPPRESSOR.getModel());
+//
+//        defaultModels.put(MAG_STANDARD,SpecialModels.SCAR_L_STANDARD_MAG.getModel());
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.SCAR_L_EXTENDED_MAG.getModel());
+//
+//        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0225));
+//    }
 
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

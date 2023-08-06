@@ -12,6 +12,7 @@ import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
 import com.tac.guns.gunskins.SkinManager;
+import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -31,19 +32,19 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  * Author: Timeless Development, and associates.
  */
 public class deagle_357_animation extends SkinAnimationModel {
-    @Override
-    public void init(){
-        defaultModels = new HashMap<>();
-        defaultModels.put(BODY,SpecialModels.DEAGLE_50.getModel());
-        defaultModels.put(SLIDE,SpecialModels.DEAGLE_50_SLIDE.getModel());
-
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.DEAGLE_50_SILENCER.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.DEAGLE_50_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.DEAGLE_50_BRAKE.getModel());
-
-        defaultModels.put(MAG_EXTENDED,SpecialModels.DEAGLE_50_EXTENDED_MAG.getModel());
-        defaultModels.put(MAG_STANDARD,SpecialModels.DEAGLE_50_STANDARD_MAG.getModel());
-    }
+//    @Override
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//        defaultModels.put(BODY,SpecialModels.DEAGLE_50.getModel());
+//        defaultModels.put(SLIDE,SpecialModels.DEAGLE_50_SLIDE.getModel());
+//
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.DEAGLE_50_SILENCER.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.DEAGLE_50_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.DEAGLE_50_BRAKE.getModel());
+//
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.DEAGLE_50_EXTENDED_MAG.getModel());
+//        defaultModels.put(MAG_STANDARD,SpecialModels.DEAGLE_50_STANDARD_MAG.getModel());
+//    }
 
     //The render method, similar to what is in DartEntity. We can render the item
     @Override
@@ -51,7 +52,7 @@ public class deagle_357_animation extends SkinAnimationModel {
     {
         Deagle50AnimationController controller = Deagle50AnimationController.getInstance();
 
-        GunSkin skin = SkinManager.getSkin(stack, "deagle357");
+        GunSkin skin = SkinManager.getSkin(stack, ModItems.DEAGLE_357.getId().getPath());
 
         matrices.push();
         {

@@ -31,27 +31,27 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  * Author: Timeless Development, and associates.
  */
 public class mp9_animation extends SkinAnimationModel {
-    @Override
-    public void init() {
-        defaultModels = new HashMap<>();
-
-        defaultModels.put(BODY,SpecialModels.MP9.getModel());
-
-        defaultModels.put(LASER_BASIC,SpecialModels.MP9_B_LASER.getModel());
-        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.MP9_B_LASER_DEVICE.getModel());
-
-        defaultModels.put(STOCK_DEFAULT,SpecialModels.MP9_STOCK_FOLDED.getModel());
-        defaultModels.put(STOCK_ANY,SpecialModels.MP9_STOCK_EXTENDED.getModel());
-
-        defaultModels.put(MAG_STANDARD,SpecialModels.MP9_STANDARD_MAG.getModel());
-        defaultModels.put(MAG_EXTENDED,SpecialModels.MP9_EXTENDED_MAG.getModel());
-
-        defaultModels.put(HANDLE,SpecialModels.MP9_HANDLE.getModel());
-        defaultModels.put(BOLT,SpecialModels.MP9_BOLT.getModel());
-
-        defaultModels.put(BULLET,SpecialModels.MP9_BULLET.getModel());
-
-    }
+//    @Override
+//    public void init() {
+//        defaultModels = new HashMap<>();
+//
+//        defaultModels.put(BODY,SpecialModels.MP9.getModel());
+//
+//        defaultModels.put(LASER_BASIC,SpecialModels.MP9_B_LASER.getModel());
+//        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.MP9_B_LASER_DEVICE.getModel());
+//
+//        defaultModels.put(STOCK_DEFAULT,SpecialModels.MP9_STOCK_FOLDED.getModel());
+//        defaultModels.put(STOCK_ANY,SpecialModels.MP9_STOCK_EXTENDED.getModel());
+//
+//        defaultModels.put(MAG_STANDARD,SpecialModels.MP9_STANDARD_MAG.getModel());
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.MP9_EXTENDED_MAG.getModel());
+//
+//        defaultModels.put(HANDLE,SpecialModels.MP9_HANDLE.getModel());
+//        defaultModels.put(BOLT,SpecialModels.MP9_BOLT.getModel());
+//
+//        defaultModels.put(BULLET,SpecialModels.MP9_BULLET.getModel());
+//
+//    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

@@ -31,20 +31,20 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  * Author: Timeless Development, and associates.
  */
 public class qbz_95_animation extends SkinAnimationModel {
-    @Override
-    public void init(){
-        defaultModels = new HashMap<>();
-        defaultModels.put(BODY,SpecialModels.QBZ_95_BODY.getModel());
-        defaultModels.put(BOLT,SpecialModels.QBZ_95_BOLT.getModel());
-
-        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.QBZ_95_DEFAULT_MUZZLE.getModel());
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.QBZ_95_SUPPRESSOR.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.QBZ_95_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.QBZ_95_BRAKE.getModel());
-
-        defaultModels.put(MAG_STANDARD,SpecialModels.QBZ_95_MAG.getModel());
-        defaultModels.put(MAG_DRUM,SpecialModels.QBZ_95_DRUM_MAG.getModel());
-    }
+//    @Override
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//        defaultModels.put(BODY,SpecialModels.QBZ_95_BODY.getModel());
+//        defaultModels.put(BOLT,SpecialModels.QBZ_95_BOLT.getModel());
+//
+//        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.QBZ_95_DEFAULT_MUZZLE.getModel());
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.QBZ_95_SUPPRESSOR.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.QBZ_95_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.QBZ_95_BRAKE.getModel());
+//
+//        defaultModels.put(MAG_STANDARD,SpecialModels.QBZ_95_MAG.getModel());
+//        defaultModels.put(MAG_DRUM,SpecialModels.QBZ_95_DRUM_MAG.getModel());
+//    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
@@ -52,7 +52,7 @@ public class qbz_95_animation extends SkinAnimationModel {
 
         Type95LAnimationController controller = Type95LAnimationController.getInstance();
 
-        GunSkin skin = SkinManager.getSkin(stack, "qbz95");
+        GunSkin skin = SkinManager.getSkin(stack, "qbz_95");
 
         matrices.push();
         {

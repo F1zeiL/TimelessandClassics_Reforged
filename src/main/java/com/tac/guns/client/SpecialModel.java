@@ -39,6 +39,10 @@ public class SpecialModel {
         return this.cachedModel;
     }
 
+    public void cleanCache(){
+        this.cachedModel = null;
+    }
+
     // A method that allows a minecraft entity bot to hide from a player
 
     /*public static void findCoverFromPlayer(EntityBot bot, EntityPlayer player, int distance) {

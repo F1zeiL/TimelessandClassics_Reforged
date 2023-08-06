@@ -17,6 +17,6 @@ public class ResourceReloadListener implements ISelectiveResourceReloadListener 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
         SpecialModels.cleanCache();
-        SkinAnimationModel.cleanAllCache();
+        SkinManager.cleanCache();
     }
 }

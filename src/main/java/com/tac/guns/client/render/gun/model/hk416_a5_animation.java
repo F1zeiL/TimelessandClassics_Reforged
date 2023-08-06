@@ -33,45 +33,45 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  * Author: Timeless Development, and associates.
  */
 public class hk416_a5_animation extends SkinAnimationModel {
-    public void init(){
-        defaultModels = new HashMap<>();
-        defaultModels.put(BODY,SpecialModels.HK416_A5_BODY.getModel());
-
-        defaultModels.put(BOLT,SpecialModels.HK416_A5_BOLT.getModel());
-        defaultModels.put(BULLET,SpecialModels.HK416_A5_BULLET.getModel());
-
-        defaultModels.put(SIGHT,SpecialModels.HK416_A5_UNFOLDED.getModel());
-        defaultModels.put(SIGHT_FOLDED,SpecialModels.HK416_A5_FOLDED.getModel());
-
-        defaultModels.put(LASER_BASIC,SpecialModels.HK416_A5_B_LASER.getModel());
-        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.HK416_A5_B_LASER_DEVICE.getModel());
-        defaultModels.put(LASER_IR,SpecialModels.HK416_A5_IR_LASER.getModel());
-        defaultModels.put(LASER_IR_DEVICE,SpecialModels.HK416_A5_IR_LASER_DEVICE.getModel());
-
-        defaultModels.put(GRIP_LIGHT,SpecialModels.HK416_A5_LIGHT_GRIP.getModel());
-        defaultModels.put(GRIP_TACTICAL,SpecialModels.HK416_A5_TACTICAL_GRIP.getModel());
-
-        defaultModels.put(STOCK_LIGHT,SpecialModels.HK416_A5_LIGHT_STOCK.getModel());
-        defaultModels.put(STOCK_TACTICAL,SpecialModels.HK416_A5_TACTICAL_STOCK.getModel());
-        defaultModels.put(STOCK_HEAVY,SpecialModels.HK416_A5_HEAVY_STOCK.getModel());
-
-        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.HK416_A5_DEFAULT_MUZZLE.getModel());
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.HK416_A5_SUPPRESSOR.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.HK416_A5_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.HK416_A5_BRAKE.getModel());
-
-        defaultModels.put(MAG_EXTENDED,SpecialModels.HK416_A5_EXTENDED_MAG.getModel());
-        defaultModels.put(MAG_STANDARD,SpecialModels.HK416_A5_STANDARD_MAG.getModel());
-
-        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0125));
-    }
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//        defaultModels.put(BODY,SpecialModels.HK416_A5_BODY.getModel());
+//
+//        defaultModels.put(BOLT,SpecialModels.HK416_A5_BOLT.getModel());
+//        defaultModels.put(BULLET,SpecialModels.HK416_A5_BULLET.getModel());
+//
+//        defaultModels.put(SIGHT,SpecialModels.HK416_A5_UNFOLDED.getModel());
+//        defaultModels.put(SIGHT_FOLDED,SpecialModels.HK416_A5_FOLDED.getModel());
+//
+//        defaultModels.put(LASER_BASIC,SpecialModels.HK416_A5_B_LASER.getModel());
+//        defaultModels.put(LASER_BASIC_DEVICE,SpecialModels.HK416_A5_B_LASER_DEVICE.getModel());
+//        defaultModels.put(LASER_IR,SpecialModels.HK416_A5_IR_LASER.getModel());
+//        defaultModels.put(LASER_IR_DEVICE,SpecialModels.HK416_A5_IR_LASER_DEVICE.getModel());
+//
+//        defaultModels.put(GRIP_LIGHT,SpecialModels.HK416_A5_LIGHT_GRIP.getModel());
+//        defaultModels.put(GRIP_TACTICAL,SpecialModels.HK416_A5_TACTICAL_GRIP.getModel());
+//
+//        defaultModels.put(STOCK_LIGHT,SpecialModels.HK416_A5_LIGHT_STOCK.getModel());
+//        defaultModels.put(STOCK_TACTICAL,SpecialModels.HK416_A5_TACTICAL_STOCK.getModel());
+//        defaultModels.put(STOCK_HEAVY,SpecialModels.HK416_A5_HEAVY_STOCK.getModel());
+//
+//        defaultModels.put(MUZZLE_DEFAULT,SpecialModels.HK416_A5_DEFAULT_MUZZLE.getModel());
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.HK416_A5_SUPPRESSOR.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.HK416_A5_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.HK416_A5_BRAKE.getModel());
+//
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.HK416_A5_EXTENDED_MAG.getModel());
+//        defaultModels.put(MAG_STANDARD,SpecialModels.HK416_A5_STANDARD_MAG.getModel());
+//
+//        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0125));
+//    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         HK416A5AnimationController controller = HK416A5AnimationController.getInstance();
 
-        GunSkin skin = SkinManager.getSkin(stack, "hk416");
+        GunSkin skin = SkinManager.getSkin(stack, "hk416_a5");
 
         matrices.push();
         {

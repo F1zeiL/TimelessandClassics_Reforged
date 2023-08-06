@@ -32,26 +32,26 @@ import static com.tac.guns.gunskins.ModelComponent.*;
  * Author: Timeless Development, and associates.
  */
 public class ak47_animation extends SkinAnimationModel {
-    @Override
-    public void init(){
-        defaultModels = new HashMap<>();
-        defaultModels.put(BODY,SpecialModels.AK47.getModel());
-        defaultModels.put(MOUNT,SpecialModels.AK47_OPTIC_MOUNT.getModel());
-        defaultModels.put(BOLT,SpecialModels.AK47_BOLT.getModel());
-
-        defaultModels.put(STOCK_LIGHT,SpecialModels.AK47_BUTT_LIGHTWEIGHT.getModel());
-        defaultModels.put(STOCK_TACTICAL,SpecialModels.AK47_BUTT_TACTICAL.getModel());
-        defaultModels.put(STOCK_HEAVY,SpecialModels.AK47_BUTT_HEAVY.getModel());
-
-        defaultModels.put(MUZZLE_SILENCER,SpecialModels.AK47_SILENCER.getModel());
-        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.AK47_COMPENSATOR.getModel());
-        defaultModels.put(MUZZLE_BRAKE,SpecialModels.AK47_BRAKE.getModel());
-
-        defaultModels.put(MAG_EXTENDED,SpecialModels.AK47_EXTENDED_MAG.getModel());
-        defaultModels.put(MAG_STANDARD,SpecialModels.AK47_STANDARD_MAG.getModel());
-
-        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.295));
-    }
+//    @Override
+//    public void init(){
+//        defaultModels = new HashMap<>();
+//        defaultModels.put(BODY,SpecialModels.AK47.getModel());
+//        defaultModels.put(MOUNT,SpecialModels.AK47_OPTIC_MOUNT.getModel());
+//        defaultModels.put(BOLT,SpecialModels.AK47_BOLT.getModel());
+//
+//        defaultModels.put(STOCK_LIGHT,SpecialModels.AK47_BUTT_LIGHTWEIGHT.getModel());
+//        defaultModels.put(STOCK_TACTICAL,SpecialModels.AK47_BUTT_TACTICAL.getModel());
+//        defaultModels.put(STOCK_HEAVY,SpecialModels.AK47_BUTT_HEAVY.getModel());
+//
+//        defaultModels.put(MUZZLE_SILENCER,SpecialModels.AK47_SILENCER.getModel());
+//        defaultModels.put(MUZZLE_COMPENSATOR,SpecialModels.AK47_COMPENSATOR.getModel());
+//        defaultModels.put(MUZZLE_BRAKE,SpecialModels.AK47_BRAKE.getModel());
+//
+//        defaultModels.put(MAG_EXTENDED,SpecialModels.AK47_EXTENDED_MAG.getModel());
+//        defaultModels.put(MAG_STANDARD,SpecialModels.AK47_STANDARD_MAG.getModel());
+//
+//        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.295));
+//    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

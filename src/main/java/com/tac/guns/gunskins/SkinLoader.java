@@ -1,9 +1,12 @@
 package com.tac.guns.gunskins;
 
 import com.tac.guns.client.SpecialModel;
+import com.tac.guns.init.ModItems;
+import com.tac.guns.item.GunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.RegistryObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,21 +16,21 @@ import java.util.Map;
 import static com.tac.guns.gunskins.ModelComponent.*;
 
 public enum SkinLoader {
-    AK47("ak47",BODY,MOUNT,BOLT,STOCK_LIGHT,STOCK_TACTICAL,
+    AK47(ModItems.AK47, BODY,MOUNT,BOLT,STOCK_LIGHT,STOCK_TACTICAL,
                 STOCK_HEAVY,MUZZLE_SILENCER,MUZZLE_BRAKE,MAG_EXTENDED,MAG_STANDARD),
-    QBZ95("qbz95",BODY,BOLT,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
+    QBZ95(ModItems.QBZ_95, BODY,BOLT,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
             MUZZLE_DEFAULT,MAG_STANDARD,MAG_DRUM),
-    DEAGLE357("deagle357",BODY,SLIDE,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
+    DEAGLE357(ModItems.DEAGLE_357, BODY,SLIDE,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
             MAG_STANDARD,MAG_EXTENDED),
-    AIAWP("ai_awp",BODY,BOLT,BOLT_EXTRA,SIGHT,MUZZLE_SILENCER,MUZZLE_COMPENSATOR,
+    AIAWP(ModItems.AI_AWP, BODY,BOLT,BOLT_EXTRA,SIGHT,MUZZLE_SILENCER,MUZZLE_COMPENSATOR,
             MUZZLE_BRAKE, MAG_EXTENDED,MAG_STANDARD,BULLET_SHELL),
-    HK416("hk416",BODY,BOLT,BULLET,SIGHT,SIGHT_FOLDED,LASER_BASIC,LASER_BASIC_DEVICE,
+    HK416(ModItems.HK416_A5, BODY,BOLT,BULLET,SIGHT,SIGHT_FOLDED,LASER_BASIC,LASER_BASIC_DEVICE,
             LASER_IR,LASER_IR_DEVICE,STOCK_LIGHT,STOCK_TACTICAL,STOCK_HEAVY,
             MUZZLE_DEFAULT,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
             MAG_STANDARD,MAG_EXTENDED,GRIP_LIGHT,GRIP_TACTICAL),
-    MP9("mp9",BODY,LASER_BASIC,LASER_BASIC_DEVICE,STOCK_DEFAULT,STOCK_ANY,
+    MP9(ModItems.MP9, BODY,LASER_BASIC,LASER_BASIC_DEVICE,STOCK_DEFAULT,STOCK_ANY,
             MAG_EXTENDED,MAG_STANDARD,HANDLE,BOLT,BULLET),
-    SCARL("scar_l",BODY,BOLT,SIGHT,SIGHT_FOLDED,GRIP_LIGHT,GRIP_TACTICAL,
+    SCARL(ModItems.SCAR_L, BODY,BOLT,SIGHT,SIGHT_FOLDED,GRIP_LIGHT,GRIP_TACTICAL,
             LASER_BASIC,LASER_BASIC_DEVICE,LASER_IR,LASER_IR_DEVICE,
             MUZZLE_DEFAULT,MUZZLE_BRAKE,MUZZLE_COMPENSATOR,MUZZLE_SILENCER,
             MAG_STANDARD,MAG_EXTENDED)
@@ -45,6 +48,10 @@ public enum SkinLoader {
     SkinLoader(String name,ModelComponent... components){
         this.components = Arrays.asList(components);
         this.name=name;
+    }
+
+    SkinLoader(RegistryObject<?> item, ModelComponent... components){
+        this(item.getId().getPath(),components);
     }
 
     public static SkinLoader getSkinLoader(String name){

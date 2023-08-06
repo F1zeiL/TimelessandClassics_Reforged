@@ -5,9 +5,11 @@ import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.gunskins.GunSkin;
 import com.tac.guns.gunskins.ModelComponent;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.util.GunModifierHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.item.ItemStack;
@@ -21,33 +23,28 @@ import java.util.Map;
 import static com.tac.guns.gunskins.ModelComponent.*;
 
 public abstract class SkinAnimationModel implements IOverrideModel {
-    public abstract void init();
+//    public abstract void init();
     protected Map<ModelComponent, Vector3d> extraOffset = new HashMap<>();
-    protected Map<ModelComponent,IBakedModel> defaultModels;
+//    protected Map<ModelComponent,IBakedModel> defaultModels;
     private static List<SkinAnimationModel> models = new ArrayList<>();
-
     public SkinAnimationModel(){
         models.add(this);
     }
     public IBakedModel getModelComponent(GunSkin skin, ModelComponent key){
-        if(defaultModels==null)init();
-        if(skin==null)return defaultModels.get(key);
-        if(skin.getModels().containsKey(key)){
-            return skin.getModel(key).getModel();
-        }else {
-            return defaultModels.get(key);
-        }
+        return (skin==null || skin.getModel(key)==null ?
+                Minecraft.getInstance().getModelManager().getMissingModel() :
+                skin.getModel(key).getModel());
     }
 
-    public void cleanCache(){
-        defaultModels = null;
-    }
+//    public void cleanCache(){
+//        defaultModels = null;
+//    }
 
-    public static void cleanAllCache(){
-        for (SkinAnimationModel model : models) {
-            model.cleanCache();
-        }
-    }
+//    public static void cleanAllCache(){
+//        for (SkinAnimationModel model : models) {
+//            model.cleanCache();
+//        }
+//    }
 
     private void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, ModelComponent modelComponent) {
         if(extraOffset.containsKey(modelComponent)){

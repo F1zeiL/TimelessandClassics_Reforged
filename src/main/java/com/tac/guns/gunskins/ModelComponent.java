@@ -15,7 +15,7 @@ public enum ModelComponent {
     HANDLE("handle"),
     //stock
     STOCK_DEFAULT("default_stock"),
-    STOCK_ANY("default_any"),
+    STOCK_ANY("any_stock"),
     STOCK_LIGHT("light_stock"),
     STOCK_TACTICAL("tactical_stock"),
     STOCK_HEAVY("heavy_stock"),
