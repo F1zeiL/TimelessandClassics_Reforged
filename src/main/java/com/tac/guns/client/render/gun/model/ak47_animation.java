@@ -53,6 +53,10 @@ public class ak47_animation extends SkinAnimationModel {
 //        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.295));
 //    }
 
+    public ak47_animation(){
+        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0,0,-0.295));
+    }
+
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {

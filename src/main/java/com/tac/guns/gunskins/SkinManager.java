@@ -23,17 +23,10 @@ import java.util.Set;
 public class SkinManager {
     private static Map<String, Map<ResourceLocation, GunSkin>> skins = new HashMap<>();
     private static final Map<String, DefaultSkin> defaultSkins = new HashMap<>();
-    private static boolean isReady = false;
-
-    public static boolean isReady(){
-        return isReady;
-    }
 
     public static void reload(){
-        isReady = false;
         skins = new HashMap<>();
         init();
-        isReady = true;
     }
 
     public static void cleanCache(){
@@ -87,8 +80,11 @@ public class SkinManager {
                     ResourceLocation location = ResourceLocation.tryCreate(nameSpace+":"+skinName);
                     if(location==null){
                         GunMod.LOGGER.warn("Failed to load skins of {} named {}: invalid name.",gun,skinName);
-                    }else {
-                        registerSkin(loader,location,components);
+                    }else if(!defaultSkins.containsKey(gun)){
+                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: default skin no loaded.",gun,skinName);
+                    } else {
+                        DefaultSkin defaultSkin = defaultSkins.get(gun);
+                        registerSkin(loader,location,components,defaultSkin);
                         GunMod.LOGGER.info("Loaded gun skin of {} named {}",gun,skinName);
                     }
                 }catch (IllegalStateException e2){
@@ -98,8 +94,8 @@ public class SkinManager {
         }
     }
 
-    private static void registerSkin(SkinLoader loader, ResourceLocation skinLocation, Map<String, String> models){
-        GunSkin skin = new GunSkin(skinLocation, loader.getGun());
+    private static void registerSkin(SkinLoader loader, ResourceLocation skinLocation, Map<String, String> models,DefaultSkin defaultSkin){
+        GunSkin skin = new GunSkin(skinLocation, loader.getGun(),defaultSkin);
 
         loader.load(skin,models);
 
@@ -140,6 +136,26 @@ public class SkinManager {
         }
         return skin;
     }
+
+//    public static GunSkin getSkin(ItemStack stack) {
+//        GunSkin skin = null;
+//        if (stack.getTag() != null) {
+//            if (stack.getTag().contains("Skin", Constants.NBT.TAG_STRING)) {
+//                String skinLoc = stack.getTag().getString("Skin");
+//                ResourceLocation loc;
+//                if(skinLoc.contains(":")){
+//                    loc = ResourceLocation.tryCreate(skinLoc);
+//                }else {
+//                    loc = new ResourceLocation(Reference.MOD_ID,skinLoc);
+//                }
+//                skin = getSkin(gun,loc);
+//            }
+//        }
+//        if(skin==null && defaultSkins.containsKey(gun)){
+//            return defaultSkins.get(gun);
+//        }
+//        return skin;
+//    }
 
     public static DefaultSkin getDefaultSkin(String gun){
         return defaultSkins.get(gun);

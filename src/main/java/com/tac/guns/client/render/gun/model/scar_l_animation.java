@@ -64,6 +64,9 @@ public class scar_l_animation extends SkinAnimationModel {
 //
 //        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0225));
 //    }
+    public scar_l_animation(){
+        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0225));
+    }
 
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

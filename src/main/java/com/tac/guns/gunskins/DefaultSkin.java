@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class DefaultSkin extends GunSkin{
     public DefaultSkin(String gun) {
-        super("default",gun);
+        super("default",gun,null);
     }
     public void loadDefault(SkinLoader loader){
         Map<String,String> defaultModels = new HashMap<>();

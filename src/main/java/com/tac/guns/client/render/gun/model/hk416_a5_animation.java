@@ -65,6 +65,9 @@ public class hk416_a5_animation extends SkinAnimationModel {
 //
 //        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0125));
 //    }
+    public hk416_a5_animation(){
+        extraOffset.put(MUZZLE_SILENCER,new Vector3d(0, 0, -0.0125));
+    }
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)

@@ -23,7 +23,6 @@ import java.util.Map;
 import static com.tac.guns.gunskins.ModelComponent.*;
 
 public abstract class SkinAnimationModel implements IOverrideModel {
-//    public abstract void init();
     protected Map<ModelComponent, Vector3d> extraOffset = new HashMap<>();
 //    protected Map<ModelComponent,IBakedModel> defaultModels;
     private static List<SkinAnimationModel> models = new ArrayList<>();
