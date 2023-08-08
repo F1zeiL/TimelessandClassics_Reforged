@@ -1,0 +1,68 @@
+{
+  "type": [
+    "pistol","rifle","acc_rifle","assault_rifle","sniper_rifle","shotgun","heavy_fire"
+  ],
+  "guns": {
+    "pistol": {
+      "m1911": "M1911",
+      "glock_17": "GLOCK-17",
+      "sti2011": "STI-P45",
+      "deagle_357":"DEAGLE",
+      "m92fs":"M92FS",
+      "glock18":"GLOCK-18",
+      "mk23":"MK23",
+      "tti_g34":"TTI-G34",
+      "cz75":"CZ75",
+      "cz75_auto":"CZ75-AUTO"
+    },
+    "rifle": {
+      "ak47":"AK47",
+      "m4":"M4A1",
+      "hk416_a5":"HK416",
+      "type81_x":"TYPE-81",
+      "sig_mcx_spear":"MCX-SPEAR",
+      "qbz_95":"QBZ-95",
+      "qbz_191":"QBZ-191",
+      "scar_l":"SCAR-L",
+      "mk47":"MK47",
+      "mk18_mod1":"MK18",
+      "fn_fal":"FN-FAL",
+      "m16a4":"M16A4"
+    },
+    "acc_rifle": {
+      "mk14":"MK14",
+      "scar_h":"SCAR-H",
+      "spr15":"SPR-15",
+      "sks_tactical":"SKS"
+    },
+    "assault_rifle": {
+      "vector45":"VECTOR",
+      "hk_mp5a5":"HKMP5",
+      "mp7":"MP7",
+      "m1a1_smg":"M1A1",
+      "mp9":"MP9",
+      "micro_uzi":"MAC10",
+      "udp_9":"UDP-9",
+      "uzi":"UZI"
+    },
+    "sniper_rifle": {
+      "m24":"M24",
+      "m82a2":"M82A3",
+      "ai_awp":"AI-AWP",
+      "scar_mk20":"MK20"
+    },
+    "shotgun": {
+      "aa_12":"AA12",
+      "m870_classic":"M870",
+      "m1014":"M1014",
+      "db_short":"DB-SHORT"
+    },
+    "heavy_fire": {
+      "m60":"M60",
+      "dp28":"DP28",
+      "rpg7":"RPG7",
+      "m249":"M249",
+      "rpk":"RPK"
+    }
+  }
+}

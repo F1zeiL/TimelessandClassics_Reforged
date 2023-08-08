@@ -5,9 +5,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
-import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.ReloadTracker;
+import com.tac.guns.gunskins.GunSkin;
+import com.tac.guns.gunskins.SkinManager;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
@@ -35,7 +36,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class HUDRenderingHandler extends AbstractGui {
@@ -333,6 +333,25 @@ public class HUDRenderingHandler extends AbstractGui {
             return;
         TimelessGunItem gunItem = (TimelessGunItem) heldItem.getItem();
         Gun gun = gunItem.getGun();
+
+        //render icon
+        if(Config.CLIENT.weaponGUI.weaponTypeIcon.showWeaponIcon.get()) {
+            GunSkin skin = SkinManager.getSkin(heldItem, gunItem.getRegistryName().getPath());
+            if (skin != null) {
+                if (skin.getIcon() != null) {
+                    RenderSystem.enableAlphaTest();
+                    stack.push();
+                    {
+                        stack.translate(anchorPointX - 90, anchorPointY - 112, 0);
+                        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+                        Minecraft.getInstance().getTextureManager().bindTexture(skin.getIcon());
+                        blit(stack, 0, 0, 0, 0, 96, 96, 96, 96);
+                    }
+                    stack.pop();
+                }
+            }
+        }
+
         if(!Config.CLIENT.weaponGUI.weaponGui.get()) {
             return;
         }

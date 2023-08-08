@@ -6,9 +6,7 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -20,6 +18,11 @@ public class SpecialModel {
     {
         this.modelLocation = new ResourceLocation(Reference.MOD_ID, "special/" + modelName);
     }
+    public SpecialModel(ResourceLocation location)
+    {
+        this.modelLocation = location;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public IBakedModel getModel()
     {
@@ -34,6 +37,10 @@ public class SpecialModel {
             this.cachedModel = model;
         }
         return this.cachedModel;
+    }
+
+    public void cleanCache(){
+        this.cachedModel = null;
     }
 
     // A method that allows a minecraft entity bot to hide from a player
