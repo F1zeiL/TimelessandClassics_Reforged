@@ -458,9 +458,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         DamageSource source = new DamageSourceProjectile("bullet", this, shooter, weapon).setProjectile();
-        if (entity instanceof PlayerEntity) {
-            tac_attackEntity(source, entity, damage);
-        }
+        tac_attackEntity(source, entity, damage);
 
         if (this.shooter instanceof PlayerEntity) {
             int hitType = critical ? MessageProjectileHitEntity.HitType.CRITICAL : headshot ? MessageProjectileHitEntity.HitType.HEADSHOT : MessageProjectileHitEntity.HitType.NORMAL;
