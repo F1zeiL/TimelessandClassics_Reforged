@@ -546,4 +546,14 @@ public class GunModifierHelper
         }
         return modifierWeight;
     }
+
+    public static String getAdditionalSkin(ItemStack weapon)
+    {
+        IGunModifier[] skin = getModifiers(weapon, IAttachment.Type.GUN_SKIN);
+
+        if(skin.length>0){
+            return skin[0].additionalSkin();
+        }
+        return "NONE";
+    }
 }

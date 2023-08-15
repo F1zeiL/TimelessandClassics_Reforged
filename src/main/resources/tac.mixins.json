@@ -11,15 +11,16 @@
     "common.SittingPhaseMixin"
   ],
   "client": [
+    "client.ClientPlayerEntityMixin",
     "client.FirstPersonRendererMixin",
     "client.GameRendererMixin",
-    "client.MinecraftStaticMixin",
     "client.InventoryScreenMixin",
+    "client.KeyBindingMixin",
+    "client.MinecraftStaticMixin",
+    "client.ModelBakeryMixin",
     "client.MouseHelperMixin",
-    "client.WorldRendererMixin",
     "client.ShadersFramebufferMixin",
-    "client.ClientPlayerEntityMixin",
-    "client.KeyBindingMixin"
+    "client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
