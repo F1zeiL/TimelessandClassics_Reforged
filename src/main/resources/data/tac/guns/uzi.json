@@ -38,9 +38,13 @@
     "critical": 0.0,
     "criticalDamage": 0.625,
     "headDamage": 0.625,
+    "closeDamage": 1.15,
+    "decayStart": 0.18,
+    "minDecayMultiplier": 0.45,
+    "decayEnd": 0.85,
     "speed": 14,
     "trailLengthMultiplier": 3,
-    "life": 10
+    "life": 7
   },
   "sounds": {
     "fire": "tac:item.uzi_fire",
@@ -54,8 +58,9 @@
   "display": {
     "flash": {
       "yOffset": 8.25,
-      "zOffset": -18.15,
-      "size": 0.845
+      "zOffset": -11.5,
+      "size": 0.845,
+      "trailAdjust": 0.75
     },
     "shellCasing": {
       "tickLife":10,

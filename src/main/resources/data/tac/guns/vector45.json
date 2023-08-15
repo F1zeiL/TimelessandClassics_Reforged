@@ -7,7 +7,7 @@
     "rateSelector": [2, 3],
     "gripType": "tac:two_handed_vector",
     "recoilAngle": 1.575,
-    "horizontalRecoilAngle": 1.275,
+    "horizontalRecoilAngle": 2.5,
     "recoilKick": 2.575,
     "recoilAdsReduction": 0.205,
     "weaponRecoilOffset": 0.9275,
@@ -39,8 +39,12 @@
     "critical": 0.0,
     "criticalDamage": 0.625,
     "headDamage": 0.625,
+    "closeDamage": 1.15,
+    "decayStart": 0.11,
+    "minDecayMultiplier": 0.25,
+    "decayEnd": 0.55,
     "speed": 12,
-    "life": 11,
+    "life": 9,
     "size": 0.025,
     "trailLengthMultiplier": 2.5
   },
@@ -84,9 +88,9 @@
   },
   "modules": {
     "zoom":{
-      "fovModifier": 0.9,
-      "yOffset": 14.85,
-      "zOffset": 2.5
+      "fovModifier": 0.8,
+      "yOffset": 14.8,
+      "zOffset": 3
     },
     "attachments": {
       "barrel": {

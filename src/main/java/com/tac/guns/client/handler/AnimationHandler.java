@@ -3,32 +3,29 @@ package com.tac.guns.client.handler;
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Reference;
 import com.tac.guns.client.Keys;
-import com.tac.guns.client.render.animation.*;
 import com.tac.guns.client.render.animation.module.*;
 import com.tac.guns.common.Gun;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.event.GunReloadEvent;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.util.GunEnchantmentHelper;
-
 import com.tac.guns.util.GunModifierHelper;
 import de.javagl.jgltf.model.animation.AnimationRunner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
-
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Mainly controls when the animation should play.
@@ -39,56 +36,71 @@ public enum AnimationHandler {
 
     public static void preloadAnimations() {
         //TODO: Make automatic or have some sort of check for this
-        AA12AnimationController.getInstance();
-        Dp28AnimationController.getInstance();
-        Glock17AnimationController.getInstance();
-        HkMp5a5AnimationController.getInstance();
-        HK416A5AnimationController.getInstance();
-        M870AnimationController.getInstance();
-        Mp7AnimationController.getInstance();
-        Type81AnimationController.getInstance();
-        Ak47AnimationController.getInstance();
-        AWPAnimationController.getInstance();
-        M60AnimationController.getInstance();
-        M1014AnimationController.getInstance();
-        TtiG34AnimationController.getInstance();
-        MK18MOD1AnimationController.getInstance();
-        M4AnimationController.getInstance();
-        STI2011AnimationController.getInstance();
-        Timeless50AnimationController.getInstance();
-        M1911AnimationController.getInstance();
-        MK47AnimationController.getInstance();
-        MK14AnimationController.getInstance();
-        SCAR_HAnimationController.getInstance();
-        SCAR_MK20AnimationController.getInstance();
-        SCAR_LAnimationController.getInstance();
-        CZ75AnimationController.getInstance();
-        CZ75AutoAnimationController.getInstance();
-        DBShotgunAnimationController.getInstance();
-        FNFALAnimationController.getInstance();
-        M16A4AnimationController.getInstance();
-        SPR15AnimationController.getInstance();
-        Deagle50AnimationController.getInstance();
-        Type95LAnimationController.getInstance();
-        Type191AnimationController.getInstance();
-        MAC10AnimationController.getInstance();
-        Vector45AnimationController.getInstance();
-        SKSTacticalAnimationController.getInstance();
-        M24AnimationController.getInstance();
-        M82A2AnimationController.getInstance();
-        RPKAnimationController.getInstance();
-        M249AnimationController.getInstance();
-        M1A1AnimationController.getInstance();
-        Glock18AnimationController.getInstance();
-        SIGMCXAnimationController.getInstance();
-        M92FSAnimationController.getInstance();
-        MP9AnimationController.getInstance();
-        MK23AnimationController.getInstance();
-        RPG7AnimationController.getInstance();
-        UDP9AnimationController.getInstance();
-        UZIAnimationController.getInstance();
-        MRADAnimationController.getInstance();
-        HK_G3AnimationController.getInstance();
+        String[] animationControllers = {
+                "AA12AnimationController",
+                "Dp28AnimationController",
+                "Glock17AnimationController",
+                "HkMp5a5AnimationController",
+                "HK416A5AnimationController",
+                "M870AnimationController",
+                "Mp7AnimationController",
+                "Type81AnimationController",
+                "Ak47AnimationController",
+                "AWPAnimationController",
+                "M60AnimationController",
+                "M1014AnimationController",
+                "TtiG34AnimationController",
+                "MK18MOD1AnimationController",
+                "M4AnimationController",
+                "STI2011AnimationController",
+                "Timeless50AnimationController",
+                "M1911AnimationController",
+                "MK47AnimationController",
+                "MK14AnimationController",
+                "SCAR_HAnimationController",
+                "SCAR_MK20AnimationController",
+                "SCAR_LAnimationController",
+                "CZ75AnimationController",
+                "CZ75AutoAnimationController",
+                "DBShotgunAnimationController",
+                "FNFALAnimationController",
+                "M16A4AnimationController",
+                "SPR15AnimationController",
+                "Deagle50AnimationController",
+                "Type95LAnimationController",
+                "Type191AnimationController",
+                "MAC10AnimationController",
+                "Vector45AnimationController",
+                "SKSTacticalAnimationController",
+                "M24AnimationController",
+                "M82A2AnimationController",
+                "RPKAnimationController",
+                "M249AnimationController",
+                "M1A1AnimationController",
+                "Glock18AnimationController",
+                "SIGMCXAnimationController",
+                "M92FSAnimationController",
+                "MP9AnimationController",
+                "MK23AnimationController",
+                "RPG7AnimationController",
+                "UDP9AnimationController",
+                "UZIAnimationController",
+                "MRADAnimationController",
+                "HK_G3AnimationController",
+                "TEC9AnimationController"
+        };
+
+        for (String controllerName : animationControllers) {
+            try {
+                String fullClassName = "com.tac.guns.client.render.animation." + controllerName;
+                Class<?> controllerClass = Class.forName(fullClassName);
+                Method getInstanceMethod = controllerClass.getMethod("getInstance");
+                getInstanceMethod.invoke(null);
+            } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                     IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public void onGunReload(boolean reloading, ItemStack itemStack) {
@@ -181,13 +193,13 @@ public enum AnimationHandler {
     }
 
     static {
-        Keys.INSPECT.addPressCallback( () -> {
+        Keys.INSPECT.addPressCallback(() -> {
             final PlayerEntity player = Minecraft.getInstance().player;
             if (player == null) return;
-            
+
             final ItemStack stack = player.inventory.getCurrentItem();
             final GunAnimationController controller
-                = GunAnimationController.fromItem(stack.getItem());
+                    = GunAnimationController.fromItem(stack.getItem());
             if (controller != null && !controller.isAnimationRunning()) {
                 controller.stopAnimation();
                 if (Gun.hasAmmo(stack)) {
@@ -196,7 +208,7 @@ public enum AnimationHandler {
                     controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT_EMPTY);
                 }
             }
-        } );
+        });
     }
 
     @SubscribeEvent
