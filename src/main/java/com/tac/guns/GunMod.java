@@ -2,7 +2,6 @@ package com.tac.guns;
 
 import com.tac.guns.client.ClientHandler;
 import com.tac.guns.client.CustomGunManager;
-import com.tac.guns.client.CustomRigManager;
 import com.tac.guns.client.render.gun.IOverrideModel;
 import com.tac.guns.client.render.gun.ModelOverrides;
 import com.tac.guns.client.render.pose.*;
@@ -17,10 +16,6 @@ import com.tac.guns.entity.GrenadeEntity;
 import com.tac.guns.entity.MissileEntity;
 import com.tac.guns.extra_events.TacEventListeners;
 import com.tac.guns.init.*;
-import com.tac.guns.inventory.gear.GearSlotsHandler;
-import com.tac.guns.inventory.gear.IWearableItemHandler;
-import com.tac.guns.inventory.gear.armor.IAmmoItemHandler;
-import com.tac.guns.inventory.gear.armor.RigSlotsHandler;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
 import net.minecraft.data.DataGenerator;
@@ -54,9 +49,6 @@ import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -65,8 +57,6 @@ import java.util.Locale;
 public class GunMod
 {
     public static boolean controllableLoaded = false;
-    public static boolean curiosLoaded = false;
-    public static String curiosRigSlotId = "armor_rig";
     public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
 
     public static final ItemGroup GROUP = new  ItemGroup(Reference.MOD_ID)
@@ -83,7 +73,6 @@ public class GunMod
         {
             super.fill(items);
             CustomGunManager.fill(items);
-            CustomRigManager.fill(items);
         }
     }.setRelevantEnchantmentTypes(EnchantmentTypes.GUN, EnchantmentTypes.SEMI_AUTO_GUN);
 
@@ -231,7 +220,6 @@ public class GunMod
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.serverSpec);
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         // Do so right away, I want to make sure I hit this during Curios load
-        bus.addListener(this::onEnqueueIMC);
         ModBlocks.REGISTER.register(bus);
         ModContainers.REGISTER.register(bus);
         ModEffects.REGISTER.register(bus);
@@ -247,7 +235,6 @@ public class GunMod
         bus.addListener(this::onClientSetup);
         bus.addListener(this::dataSetup);
         controllableLoaded = ModList.get().isLoaded("controllable");
-        curiosLoaded = ModList.get().isLoaded("curios");
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
     }
 
@@ -270,75 +257,6 @@ public class GunMod
             MinecraftForge.EVENT_BUS.register(new BoundingBoxManager());
         }
 
-        // First separate, cause only the held ammo is not synced serverToClient, but the wearable is held fine, just use damned Curios next time.
-        CapabilityManager.INSTANCE.register(IWearableItemHandler.class, new Capability.IStorage<IWearableItemHandler>() {
-            @Override
-            public INBT writeNBT(Capability<IWearableItemHandler> capability, IWearableItemHandler instance, Direction side) {
-                ListNBT nbtTagList = new ListNBT();
-                int size = instance.getSlots();
-                for (int i = 0; i < size; i++) {
-                    ItemStack stack = instance.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        CompoundNBT itemTag = new CompoundNBT();
-                        itemTag.putInt("Slot", i);
-                        stack.write(itemTag);
-                        nbtTagList.add(itemTag);
-                    }
-                }
-                return nbtTagList;
-            }
-
-            @Override
-            public void readNBT(Capability<IWearableItemHandler> capability, IWearableItemHandler instance, Direction side, INBT base) {
-                if (!(instance instanceof IItemHandlerModifiable))
-                    throw new RuntimeException("IItemHandler instance does not implement IItemHandlerModifiable_TaC");
-                IItemHandlerModifiable itemHandlerModifiable = (IItemHandlerModifiable) instance;
-                ListNBT tagList = (ListNBT) base;
-                for (int i = 0; i < tagList.size(); i++) {
-                    CompoundNBT itemTags = tagList.getCompound(i);
-                    int j = itemTags.getInt("Slot");
-
-                    if (j >= 0 && j < instance.getSlots()) {
-                        itemHandlerModifiable.setStackInSlot(j, ItemStack.read(itemTags));
-                    }
-                }
-            }
-        }, GearSlotsHandler::new);
-
-        CapabilityManager.INSTANCE.register(IAmmoItemHandler.class, new Capability.IStorage<IAmmoItemHandler>() {
-            @Override
-            public INBT writeNBT(Capability<IAmmoItemHandler> capability, IAmmoItemHandler instance, Direction side) {
-                ListNBT nbtTagList = new ListNBT();
-                int size = instance.getSlots();
-                for (int i = 0; i < size; i++) {
-                    ItemStack stack = instance.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        CompoundNBT itemTag = new CompoundNBT();
-                        itemTag.putInt("Slot", i);
-                        stack.write(itemTag);
-                        nbtTagList.add(itemTag);
-                    }
-                }
-                return nbtTagList;
-            }
-
-            @Override
-            public void readNBT(Capability<IAmmoItemHandler> capability, IAmmoItemHandler instance, Direction side, INBT base) {
-                if (!(instance instanceof IItemHandlerModifiable))
-                    throw new RuntimeException("IItemHandler instance does not implement IItemHandlerModifiable_TaC");
-                IItemHandlerModifiable itemHandlerModifiable = (IItemHandlerModifiable) instance;
-                ListNBT tagList = (ListNBT) base;
-                for (int i = 0; i < tagList.size(); i++) {
-                    CompoundNBT itemTags = tagList.getCompound(i);
-                    int j = itemTags.getInt("Slot");
-
-                    if (j >= 0 && j < instance.getSlots()) {
-                        itemHandlerModifiable.setStackInSlot(j, ItemStack.read(itemTags));
-                    }
-                }
-            }
-        }, RigSlotsHandler::new);
-
         GripType.registerType(new GripType(new ResourceLocation("tac", "one_handed_m1911"), new OneHandedPoseHighRes_m1911()));
         GripType.registerType(new GripType(new ResourceLocation("tac", "one_handed_m1851"), new OneHandedPoseHighRes_m1851()));
         GripType.registerType(new GripType(new ResourceLocation("tac", "two_handed_m1894"), new TwoHandedPoseHighRes_m1894()));
@@ -352,16 +270,6 @@ public class GunMod
         // Custom commands handlers, called in common so any future server side command registry would be useable
         MinecraftForge.EVENT_BUS.register(CommandsManager.class);
         MinecraftForge.EVENT_BUS.register(CommandsHandler.class);
-    }
-
-    private void onEnqueueIMC(InterModEnqueueEvent event)
-    {
-        if(!curiosLoaded)
-            return;
-
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.BACK.getMessageBuilder().build());
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE,
-                () -> new SlotTypeMessage.Builder(GunMod.curiosRigSlotId).size(1).priority(101).icon(new ResourceLocation( "curios:slot/bpv")).build());
     }
 
     private void dataSetup(GatherDataEvent event)

@@ -12,12 +12,10 @@ import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageReload;
-import com.tac.guns.network.message.MessageToClientRigInv;
 import com.tac.guns.network.message.MessageUnload;
 import com.tac.guns.network.message.MessageUpdateGunID;
 import com.tac.guns.util.GunEnchantmentHelper;
 
-import com.tac.guns.util.WearableHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -299,14 +297,6 @@ public class ReloadHandler {
                         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
                         if (tag.getInt("AmmoCount") >= GunModifierHelper.getAmmoCapacity(stack, gun)) {
                             return;
-                        }
-                        ItemStack rig = WearableHelper.PlayerWornRig(player);
-                        if(!player.isCreative() && rig != null)
-                        {
-                            PacketHandler.getPlayChannel().sendToServer(new MessageToClientRigInv(((GunItem)stack.getItem()).getGun().getProjectile().getItem()));
-                            if (Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1 && rigAmmoCount < 1) {
-                                return;
-                            }
                         }
                         else if (!player.isCreative() && Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {
                             return;

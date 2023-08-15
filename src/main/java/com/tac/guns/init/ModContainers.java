@@ -2,7 +2,6 @@ package com.tac.guns.init;
 
 import com.tac.guns.Reference;
 import com.tac.guns.common.container.*;
-import com.tac.guns.inventory.gear.armor.ArmorRigContainer;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
 import com.tac.guns.tileentity.WorkbenchTileEntity;
 import net.minecraft.inventory.container.Container;
@@ -37,7 +36,6 @@ public class ModContainers
         UpgradeBenchTileEntity workstation = (UpgradeBenchTileEntity) playerInventory.player.world.getTileEntity(data.readBlockPos());
         return new UpgradeBenchContainer(windowId, playerInventory, workstation);
     });
-    public static final RegistryObject<ContainerType<ArmorRigContainer>> ARMOR_TEST = REGISTER.register("armor_test", () -> IForgeContainerType.create((windowId, inv, data) -> new ArmorRigContainer(windowId, inv)));
 
     // ITEM -> CONTAINER
     /*public static final HashMap<RegistryObject, RegistryObject> containerVitem = new HashMap()

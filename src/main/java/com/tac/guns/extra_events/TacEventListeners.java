@@ -9,11 +9,9 @@ import com.tac.guns.entity.ProjectileEntity;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
-import com.tac.guns.inventory.gear.GearSlotsHandler;
 import com.tac.guns.item.TransitionalTypes.M1GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
-import com.tac.guns.util.WearableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,8 +48,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.Level;
-
-import static com.tac.guns.inventory.gear.InventoryListener.ITEM_HANDLER_CAPABILITY;
 
 
 /**

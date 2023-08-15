@@ -10,7 +10,6 @@ import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.client.handler.AimingHandler;
 import com.tac.guns.client.handler.AnimationHandler;
-import com.tac.guns.client.handler.ArmorInteractionHandler;
 import com.tac.guns.client.handler.BulletTrailRenderingHandler;
 import com.tac.guns.client.handler.CrosshairHandler;
 import com.tac.guns.client.handler.FireModeSwitchEvent;
@@ -28,16 +27,12 @@ import com.tac.guns.client.handler.command.GunEditor;
 import com.tac.guns.client.handler.command.ObjectRenderEditor;
 import com.tac.guns.client.handler.command.ScopeEditor;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
-import com.tac.guns.client.render.armor.VestLayer.VestLayerRender;
-import com.tac.guns.client.render.armor.models.MediumArmor;
-import com.tac.guns.client.render.armor.models.ModernArmor;
 import com.tac.guns.client.render.entity.GrenadeRenderer;
 import com.tac.guns.client.render.entity.MissileRenderer;
 import com.tac.guns.client.render.entity.ProjectileRenderer;
 import com.tac.guns.client.render.entity.ThrowableGrenadeRenderer;
 import com.tac.guns.client.render.gun.ModelOverrides;
 import com.tac.guns.client.render.gun.model.scope.*;
-import com.tac.guns.client.screen.AmmoPackScreen;
 import com.tac.guns.client.screen.AttachmentScreen;
 import com.tac.guns.client.screen.InspectScreen;
 import com.tac.guns.client.screen.TaCSettingsScreen;
@@ -109,7 +104,6 @@ public class ClientHandler
         MinecraftForge.EVENT_BUS.register(HUDRenderingHandler.get());
         MinecraftForge.EVENT_BUS.register(FireModeSwitchEvent.get()); // Technically now a handler but, yes I need some naming reworks
         MinecraftForge.EVENT_BUS.register(SightSwitchEvent.get()); // Still, as well an event, am uncertain on what to name it, in short handles upcoming advanced iron sights
-        MinecraftForge.EVENT_BUS.register(ArmorInteractionHandler.get());
 
         //MinecraftForge.EVENT_BUS.register(FlashlightHandler.get()); // Completely broken... Needs a full rework
         //MinecraftForge.EVENT_BUS.register(FloodLightSource.get());
@@ -149,12 +143,6 @@ public class ClientHandler
         new SecondOrderDynamics(1f, 1f, 1f, 1f); //preload thread pool
 
         Map<String, PlayerRenderer> skins = Minecraft.getInstance().getRenderManager().getSkinMap();
-        addVestLayer(skins.get("default"));
-        addVestLayer(skins.get("slim"));
-    }
-    private static void addVestLayer(PlayerRenderer renderer)
-    {
-        renderer.addLayer(new VestLayerRender<>(renderer));
     }
 
     private static void setupRenderLayers()
@@ -221,8 +209,8 @@ public class ClientHandler
         ModelOverrides.register(ModItems.SRO_DOT.get(), new SroDotSightModel());
 
         // Armor registry, kept manual cause nice and simple, requires registry on client side only
-        VestLayerRender.registerModel(ModItems.LIGHT_ARMOR.get(), new ModernArmor());
-        VestLayerRender.registerModel(ModItems.MEDIUM_STEEL_ARMOR.get(), new MediumArmor());
+        //VestLayerRender.registerModel(ModItems.LIGHT_ARMOR.get(), new ModernArmor());
+        //VestLayerRender.registerModel(ModItems.MEDIUM_STEEL_ARMOR.get(), new MediumArmor());
         //VestLayerRender.registerModel(ModItems.CARDBOARD_ARMOR_FUN.get(), new CardboardArmor());
     }
 
@@ -232,7 +220,6 @@ public class ClientHandler
         ScreenManager.registerFactory(ModContainers.UPGRADE_BENCH.get(), UpgradeBenchScreen::new);
         ScreenManager.registerFactory(ModContainers.ATTACHMENTS.get(), AttachmentScreen::new);
         ScreenManager.registerFactory(ModContainers.INSPECTION.get(), InspectScreen::new);
-        ScreenManager.registerFactory(ModContainers.ARMOR_TEST.get(), AmmoPackScreen::new);
         //ScreenManager.registerFactory(ModContainers.COLOR_BENCH.get(), ColorBenchAttachmentScreen::new);
     }
 

@@ -46,13 +46,11 @@ import com.tac.guns.init.ModItems;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.interfaces.IProjectileFactory;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageBulletTrail;
 import com.tac.guns.network.message.MessageGunSound;
-import com.tac.guns.network.message.MessageRigInvToClient;
 import com.tac.guns.network.message.MessageSaveItemUpgradeBench;
 import com.tac.guns.network.message.MessageShoot;
 import com.tac.guns.network.message.MessageUpgradeBenchApply;
@@ -62,7 +60,6 @@ import com.tac.guns.tileentity.WorkbenchTileEntity;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.util.InventoryUtil;
-import com.tac.guns.util.WearableHelper;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -805,42 +802,5 @@ public class ServerPlayHandler
                     player.sendStatusMessage(new TranslationTextComponent("Cannot apply enchants anymore"), true);
             }
         }
-    }
-
-    /**
-     * @param player
-     */
-    public static void handleArmorFixApplication(ServerPlayerEntity player)
-    {
-        if(WearableHelper.PlayerWornRig(player) != null && !WearableHelper.isFullDurability(WearableHelper.PlayerWornRig(player)))
-        {
-            Rig rig = ((ArmorRigItem)WearableHelper.PlayerWornRig(player).getItem()).getRig();
-            if(player.getHeldItemMainhand().getItem().getRegistryName().equals(rig.getRepair().getItem()))
-            {
-                WearableHelper.tickRepairCurrentDurability(WearableHelper.PlayerWornRig(player));
-                player.getHeldItemMainhand().setCount(player.getHeldItemMainhand().getCount()-1);
-                ResourceLocation repairSound = rig.getSounds().getRepair();
-                if (repairSound != null && player.isAlive()) {
-                    MessageGunSound messageSound = new MessageGunSound(repairSound, SoundCategory.PLAYERS, (float) player.getPosX(), (float) (player.getPosY() + 1.0), (float) player.getPosZ(), 1F, 1F, player.getEntityId(), false, false);
-                    PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), messageSound);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param player
-     */
-    public static void handleRigAmmoCount(ServerPlayerEntity player, ResourceLocation id)
-    {
-        if(WearableHelper.PlayerWornRig(player) != null)
-        {
-            ItemStack rig = WearableHelper.PlayerWornRig(player);
-            if(rig != null) {
-                PacketHandler.getPlayChannel().sendTo(new MessageRigInvToClient(rig, id), ((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-            }
-        }
-        else
-            PacketHandler.getPlayChannel().sendTo(new MessageRigInvToClient(), ((ServerPlayerEntity)player).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
     }
 }

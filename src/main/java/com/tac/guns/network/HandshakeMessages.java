@@ -84,42 +84,4 @@ public class HandshakeMessages
             return this.customGuns;
         }
     }
-
-    public static class S2CUpdateRigs extends LoginIndexedMessage implements NetworkRigManager.IRigProvider
-    {
-
-        private ImmutableMap<ResourceLocation, Rig> registeredRigs;
-        private ImmutableMap<ResourceLocation, CustomRig> customRigs;
-
-        public S2CUpdateRigs() {}
-
-        void encode(PacketBuffer buffer)
-        {
-            Validate.notNull(NetworkRigManager.get());
-            NetworkRigManager.get().writeRegisteredRigs(buffer);
-            Validate.notNull(CustomRigLoader.get());
-            CustomRigLoader.get().writeCustomRigs(buffer);
-        }
-
-        static S2CUpdateRigs decode(PacketBuffer buffer)
-        {
-            S2CUpdateRigs message = new S2CUpdateRigs();
-            message.registeredRigs = NetworkRigManager.readRegisteredRigs(buffer);
-            message.customRigs = CustomRigLoader.readCustomRigs(buffer);
-            return message;
-        }
-        @Nullable
-        @Override
-        public ImmutableMap<ResourceLocation, Rig> getRegisteredRigs()
-        {
-            return this.registeredRigs;
-        }
-
-        @Override
-        @Nullable
-        public ImmutableMap<ResourceLocation, CustomRig> getCustomRigs()
-        {
-            return this.customRigs;
-        }
-    }
 }

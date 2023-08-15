@@ -10,10 +10,7 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.MessageToClientRigInv;
-import com.tac.guns.util.WearableHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
@@ -81,11 +78,6 @@ public class HUDRenderingHandler extends AbstractGui {
                     /*new ResourceLocation(Reference.MOD_ID, "textures/screen_effect/noise4.png"),
                     new ResourceLocation(Reference.MOD_ID, "textures/screen_effect/noise5.png")*/
             };
-    private static final ResourceLocation[] ARMOR_ICONS = new ResourceLocation[]
-            {
-                    new ResourceLocation(Reference.MOD_ID, "textures/gui/armor_backdrop.png"),
-                    new ResourceLocation(Reference.MOD_ID, "textures/gui/armor_filler.png")
-            };
 
     public static HUDRenderingHandler get() {
         return instance == null ? instance = new HUDRenderingHandler() : instance;
@@ -95,7 +87,6 @@ public class HUDRenderingHandler extends AbstractGui {
     }
 
     private int ammoReserveCount = 0;
-    public int rigReserveCount = 0;
 
     private ResourceLocation heldAmmoID = new ResourceLocation("");
 
@@ -114,9 +105,7 @@ public class HUDRenderingHandler extends AbstractGui {
             if(player.isCreative())
                 return;
             //if(gunItem.getGun().getProjectile().getItem().compareTo(heldAmmoID) != 0 || ammoReserveCount == 0) {
-                PacketHandler.getPlayChannel().sendToServer(new MessageToClientRigInv(gunItem.getGun().getProjectile().getItem()));
-                heldAmmoID = gunItem.getGun().getProjectile().getItem();
-                this.ammoReserveCount+=rigReserveCount;
+            heldAmmoID = gunItem.getGun().getProjectile().getItem();
             //}
         }
 
@@ -222,7 +211,6 @@ public class HUDRenderingHandler extends AbstractGui {
         float counterSize = 1.8F * configScaleWeaponCounter;
         float fireModeSize = 32.0F * configScaleWeaponFireMode;
         float ReloadBarSize = 32.0F * configScaleWeaponReloadBar;
-        float armorHeathSize = 16.0F;// * //configScaleWeaponFireMode;
 
         float hitMarkerSize = 128.0F;
 
@@ -279,54 +267,6 @@ public class HUDRenderingHandler extends AbstractGui {
                 WorldVertexBufferUploader.draw(buffer);
                 stack.pop();
             }
-        }
-
-        if(ArmorInteractionHandler.get().isRepairing()) {
-            RenderSystem.enableAlphaTest();
-            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-            stack.push();
-            {
-                stack.translate(anchorPointX - (ReloadBarSize*4.35) / 4F, anchorPointY + (ReloadBarSize*1.625F) / 5F * 3F, 0);
-                stack.translate(-ReloadBarSize, -ReloadBarSize, 0);
-                stack.scale(2.1F*(1-ArmorInteractionHandler.get().getRepairProgress(event.getPartialTicks(), player)),0.25F,0);
-                Minecraft.getInstance().getTextureManager().bindTexture(RELOAD_ICONS[0]);
-
-                Matrix4f matrix = stack.getLast().getMatrix();
-                buffer.pos(matrix, 0, ReloadBarSize, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, ReloadBarSize, ReloadBarSize, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, ReloadBarSize, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            }
-            buffer.finishDrawing();
-            WorldVertexBufferUploader.draw(buffer);
-            stack.pop();
-        }
-
-        ItemStack armorRig = WearableHelper.PlayerWornRig(player);
-        if(armorRig != null && armorRig.getItem() instanceof ArmorRigItem)
-        {
-            RenderSystem.enableAlphaTest();
-            stack.push();
-            {
-                stack.translate(anchorPointX - (armorHeathSize*2) / 4F, anchorPointY - (armorHeathSize*2) / 5F * 3F, 0);
-                stack.translate(-102f, 6f, 0);
-
-                RenderSystem.color3f(1.0f, 1.0f, 1.0f);
-                Minecraft.getInstance().getTextureManager().bindTexture(ARMOR_ICONS[1]);
-                float durabilityPercentage = WearableHelper.currentDurabilityPercentage(armorRig);
-
-                RenderSystem.color3f(0.0f, 1.85f*durabilityPercentage, 0.0f);
-                blit(stack, 0, 0, 0, 0, 16, 16, 16, 16);
-                int cropHeight = (int) (16 * durabilityPercentage);
-
-                RenderSystem.color3f(1.0f, 1.0f, 1.0f);
-
-                RenderSystem.color3f(1.0f/durabilityPercentage, 0, 0.0f);
-                Minecraft.getInstance().getTextureManager().bindTexture(ARMOR_ICONS[0]);
-                blit(stack, 0, 0, 0, 0, 16, 16-cropHeight, 16, 16);
-            }
-            RenderSystem.color3f(1.0f, 1.0f, 1.0f);
-            stack.pop();
         }
 
         if(!(Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND).getItem() instanceof TimelessGunItem))

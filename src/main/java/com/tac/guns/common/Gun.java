@@ -9,11 +9,9 @@ import com.tac.guns.annotation.Ignored;
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.client.handler.command.GunEditor;
 import com.tac.guns.interfaces.TGExclude;
-import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
-import com.tac.guns.util.WearableHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -2291,50 +2289,9 @@ public final class Gun implements INBTSerializable<CompoundNBT>
                 stacks.add(stack);
             }
         }
-        // Get wearable that holds ammo
-        ItemStack wornRig = WearableHelper.PlayerWornRig(player);
-        if(wornRig != null)
-        {
-            ListNBT nbtTagList = (ListNBT) ((ArmorRigItem)wornRig.getItem()).getShareTag(wornRig).getCompound("storage").get("Items");
-            for (int i = 0; i < ((ArmorRigItem)wornRig.getItem()).getShareTag(wornRig).getCompound("storage").getInt("Size"); i++)
-            {
-                ItemStack ammoStack = ItemStack.read(nbtTagList.getCompound(i));
-                if(isAmmo(ammoStack, id))
-                    stacks.add(ammoStack);
-                //Minecraft.getInstance().player.sendChatMessage(""+ammoStack.getItem().getRegistryName());
-            }
-        }
 
         return stacks.toArray(new ItemStack[]{});
     }
-
-    // Only for HuD renderer, maybe reload check before message is sent
-    public static ItemStack[] findAmmoRigOnly(ItemStack rig, ResourceLocation id) // Refactor to return multiple stacks, reload to take as much of value as required from hash
-    {
-        ArrayList<ItemStack> stacks = new ArrayList<>();
-        if(rig != null)
-        {
-            ListNBT nbtTagList = (ListNBT) ((ArmorRigItem)rig.getItem()).getShareTag(rig).getCompound("storage").get("Items");
-            for (int i = 0; i < ((ArmorRigItem)rig.getItem()).getShareTag(rig).getCompound("storage").getInt("Size"); i++)
-            {
-                stacks.add(ItemStack.read(nbtTagList.getCompound(i)));
-            }
-        }
-        return stacks.toArray(new ItemStack[]{});
-    }
-
-    public static int ammoCountInRig(ItemStack rig, ResourceLocation id) // Refactor to return multiple stacks, reload to take as much of value as required from hash
-    {
-        int counter = 0;
-        ItemStack[] stacks = findAmmoRigOnly(rig, id);
-        for (ItemStack x : stacks)
-        {
-            if(x != null && x != ItemStack.EMPTY && x.getCount() != 0 && isAmmo(x, id))
-                counter+=x.getCount();
-        }
-        return counter;
-    }
-
 
     public static int ammoCountInRig(CompoundNBT rigData, ResourceLocation id) // Refactor to return multiple stacks, reload to take as much of value as required from hash
     {
@@ -2357,7 +2314,6 @@ public final class Gun implements INBTSerializable<CompoundNBT>
         }*/
         return counter;
     }
-
 
     public static boolean isAmmo(ItemStack stack, ResourceLocation id)
     {
