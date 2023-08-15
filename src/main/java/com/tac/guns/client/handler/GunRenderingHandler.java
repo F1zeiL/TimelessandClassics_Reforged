@@ -86,7 +86,7 @@ public class GunRenderingHandler {
     private final SecondOrderDynamics recoilDynamics = new SecondOrderDynamics(0.5f, 0.6f, 2.65f, 0);
     private final SecondOrderDynamics swayYawDynamics = new SecondOrderDynamics(0.4f, 0.5f, 3.25f, 0);
     private final SecondOrderDynamics swayPitchDynamics = new SecondOrderDynamics(0.3f, 0.4f, 3.5f, 0);
-    private final SecondOrderDynamics aimingDynamics = new SecondOrderDynamics(0.45f, 0.95f, 1.2f, 0);
+    private final SecondOrderDynamics aimingDynamics = new SecondOrderDynamics(0.45f, 0.92f, 1.1f, 0);
     // Standard Sprint Dynamics
     private final SecondOrderDynamics sprintDynamics = new SecondOrderDynamics(0.22f, 0.7f, 0.6f, 0);
     private final SecondOrderDynamics bobbingDynamics = new SecondOrderDynamics(0.22f, 0.7f, 0.6f, 1);
@@ -600,23 +600,25 @@ public class GunRenderingHandler {
                 double transition = (float) AimingHandler.get().getNormalisedAdsProgress();
 
                 float function = (float) (3f * Math.pow(transition - 0.33f, 2) - 0.33f);
-                if (function > 1)
+                if (function > 1f)
                     function = 1f;
                 if (transition == 0)
                     function = 0;
 
                 float result = aimingDynamics.update(0.05f, function);
+                float resultFix = Math.min(result, 1f);
                 float resultZ = aimingDynamics.update(0.05f, (float) transition);
+                float resultZFix = Math.min(resultZ, 1f);
 
                 /* Reverses the original first person translations */
                 //matrixStack.translate(-0.56 * side * transition, 0.52 * transition, 0);
                 matrixStack.translate(xOffset * side * resultZ - 0.56 * side * resultZ,
-                        yOffset * result + 0.52 * result - 0.07 + Math.abs(0.5 - result) * 0.14 + this.fix,
-                        zOffset * result - 0.3 + Math.abs(0.5 - result) * 0.6);
-                matrixStack.rotate(Vector3f.ZP.rotationDegrees((float) (5 * (1 - transition))));
+                        yOffset * result + 0.52 * resultFix - 0.07 + Math.abs(0.5 - resultZFix) * 0.14 + this.fix,
+                        zOffset * result - 0.036 + 0.06 * Math.abs(0.6 - resultZ));
+                matrixStack.rotate(Vector3f.ZP.rotationDegrees((5 * (1 - result))));
                 /* Reverses the first person translations of the item in order to position it in the center of the screen */
                 //matrixStack.translate(xOffset * side * transition, yOffset * transition, zOffset * transition);
-                matrixStack.translate(0, (0.013 - this.fix) * result, 0.02 * result);
+                matrixStack.translate(0, (0.013 - this.fix) * resultFix, 0);
 
                 if (Config.COMMON.gameplay.realisticAimedBreathing.get()) {
                     /* Apply scope jitter*/
@@ -737,7 +739,24 @@ public class GunRenderingHandler {
     // made public for adjusting hands within animator instances
     public float sOT = 0.0f;
     public float wSpeed = 0.0f;
+    private void applyLightWeightAnimation(MatrixStack matrixStack, float leftHanded, float draw) {
+        float result = sprintDynamicsHSS.update(0.05f, sOT) * draw;
+        float result2 = sprintDynamicsZHSS.update(0.05f, sOT) * draw;
 
+        matrixStack.translate(0.215 * leftHanded * result,
+                0.07f * result, -30F * leftHanded * result / 170);
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(60f * result2));
+        matrixStack.rotate(Vector3f.ZP.rotationDegrees(-25f * result2));
+    }
+    private void applyDefaultAnimation(MatrixStack matrixStack, float leftHanded, float draw) {
+        float result = sprintDynamics.update(0.05f, sOT) * draw;
+        float result2 = sprintDynamicsZ.update(0.05f, sOT) * draw;
+
+        matrixStack.translate(-0.25 * leftHanded * result, -0.1 * result - 0.1 + Math.abs(0.5 - result) * 0.2, 0);
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(28F * leftHanded * result));
+        matrixStack.rotate(Vector3f.XP.rotationDegrees(15F * result2));
+        matrixStack.rotate(Vector3f.ZP.rotationDegrees(20f * result2));
+    }
     private void applySprintingTransforms(ItemStack gun, HandSide hand,
                                           MatrixStack matrixStack, float partialTicks) {
         TimelessGunItem modifiedGun = (TimelessGunItem) gun.getItem();
@@ -745,35 +764,19 @@ public class GunRenderingHandler {
         float draw = (controller == null || !controller.isAnimationRunning(GunAnimationController.AnimationLabel.DRAW) ? 1 : 0);
         float leftHanded = hand == HandSide.LEFT ? -1 : 1;
         this.sOT = (this.prevSprintTransition + (this.sprintTransition - this.prevSprintTransition) * partialTicks) / 5F;
-        //TODO: Speed of the held weapon, make a static method? it's not that useful but will be cleaner
-        this.wSpeed = ServerPlayHandler.calceldGunWeightSpeed(modifiedGun.getGun(), gun);
-        // Light weight animation, used for SMGS and light rifles like the hk416
+        this.wSpeed = getGunWeightSpeed(modifiedGun.getGun(),gun);
+        // Lightweight animation, used for SMGS and light rifles like the hk416
         if (wSpeed > 0.094f) {
-            // Translation
-            float result = sprintDynamicsHSS.update(0.05f, sOT) * draw;
-
-            // Rotating to the left a bit
-            float result2 = sprintDynamicsZHSS.update(0.05f, sOT) * draw;
-
-            matrixStack.translate(0.215 * leftHanded * result,
-                    0.07f * result, -30F * leftHanded * result / 170);
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(60f * result2));
-            matrixStack.rotate(Vector3f.ZP.rotationDegrees(-25f * result2));
+            applyLightWeightAnimation(matrixStack, leftHanded, draw);
         }
         // Default
         else {
-            //transition = (float) Math.sin((transition * Math.PI) / 2);
-            float result = sprintDynamics.update(0.05f, sOT) * draw;
-            float result2 = sprintDynamicsZ.update(0.05f, sOT) * draw;
-            //matrixStack.translate(-0.25 * leftHanded * transition, -0.1 * transition, 0);
-            matrixStack.translate(-0.25 * leftHanded * result, -0.1 * result - 0.1 + Math.abs(0.5 - result) * 0.2, 0);
-            //matrixStack.rotate(Vector3f.YP.rotationDegrees(45F * leftHanded * transition));
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(28F * leftHanded * result));
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(15F * result2));
-            matrixStack.rotate(Vector3f.ZP.rotationDegrees(20f * result2));
+            applyDefaultAnimation(matrixStack, leftHanded, draw);
         }
     }
-
+    private static float getGunWeightSpeed(Gun gunType, ItemStack gun) {
+        return ServerPlayHandler.calceldGunWeightSpeed(gunType, gun);
+    }
     private void applyReloadTransforms(MatrixStack matrixStack, HandSide hand, float partialTicks, ItemStack modifiedGun) {
         /*float reloadProgress = ReloadHandler.get().getRepairProgress(partialTicks, stack);
         matrixStack.translate(0, 0.35 * reloadProgress, 0);

@@ -1,15 +1,15 @@
 {
   "general": {
-    "rate": 500,
+    "rate": 300,
     "rateSelector": [1],
     "gripType": "tac:one_handed_m1911",
     "recoilAngle": 20,
     "horizontalRecoilAngle": 12,
-    "recoilKick": 3.25,
-    "recoilAdsReduction": 0.15,
-    "cameraRecoilModifier": 2.75,
-    "weaponRecoilOffset": 0.915,
-    "recoilDuration": 0.35,
+    "recoilKick": 1.125,
+    "recoilAdsReduction": 0.1875,
+    "cameraRecoilModifier": 2.5,
+    "weaponRecoilOffset": 0.8125,
+    "recoilDuration": 0.225,
     "projectileAmount": 14,
     "weightKilo": 2.1,
 
@@ -35,10 +35,14 @@
     "critical": 0.0,
     "criticalDamage": 0.75,
     "headDamage": 0.55,
+    "closeDamage": 1.2,
+    "decayStart": 0.15,
+    "minDecayMultiplier": 0.3,
+    "decayEnd": 0.6,
     "size": 0.025,
     "speed": 13.5,
-    "life": 4,
-    "trailLengthMultiplier": 3,
+    "life": 2,
+    "trailLengthMultiplier": 3.25,
     "ricochet": false
   },
   "sounds": {
