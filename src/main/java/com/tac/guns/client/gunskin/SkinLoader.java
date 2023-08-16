@@ -157,7 +157,8 @@ public enum SkinLoader {
             TextureModel model = TextureModel.tryCreateCopy(parent);
             if (model != null) {
                 model.applyTextures(textures);
-                ResourceLocation componentLoc = component.getModelLocation(skinName);
+                ResourceLocation componentLoc = component.getModelLocation(skinName.getNamespace()+
+                        ":gunskin/generated/"+this.name+"_"+skinName.getPath());
                 skin.addComponent(component, new SpecialModel(componentLoc));
 
                 unbakedModels.put(componentLoc, model.getModel());
