@@ -1,0 +1,18 @@
+{
+  "ak47": {
+    "golden": {
+      "type": "texture",
+      "textures": {
+        "0": "tac:gunskin/ak47/ak47_golden"
+      },
+      "icon": "tac:textures/gunskin/icon/ak47_golden.png"
+    },
+    "silver": {
+      "type": "custom",
+      "models": {
+        "auto": "tac:gunskin/ak47/ak47_silver"
+      },
+      "icon": "tac:textures/gunskin/icon/ak47_silver.png"
+    }
+  }
+}
