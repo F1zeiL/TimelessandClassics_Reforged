@@ -186,7 +186,7 @@ public class SkinManager {
                     if (currentSkin[1].equals(GunModifierHelper.getAdditionalSkin(weapon)))
                         return getSkin(gun, new ResourceLocation(resourceName));
                 } else {
-                    String skinName = gun + "_" + currentSkin[1].toLowerCase();
+                    String skinName = gun + "_" + currentSkin[1];
                     if (skinName.equals(GunModifierHelper.getAdditionalSkin(weapon)) && gun.equals(currentSkin[0]))
                         return getSkin(gun, new ResourceLocation(resourceName));
                 }
