@@ -86,56 +86,64 @@
     "deagle_357_beige": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_beige"
+        "5": "tac:gunskin/deagle_357/deagle_357_beige",
+        "6": "tac:gunskin/deagle_357/attachments_beige"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_beige.png"
     },
     "deagle_357_black": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_black"
+        "5": "tac:gunskin/deagle_357/deagle_357_black",
+        "6": "tac:gunskin/deagle_357/attachments_black"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_black.png"
     },
     "deagle_357_blue": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_blue"
+        "5": "tac:gunskin/deagle_357/deagle_357_blue",
+        "6": "tac:gunskin/deagle_357/attachments_blue"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_blue.png"
     },
     "deagle_357_green": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_green"
+        "5": "tac:gunskin/deagle_357/deagle_357_green",
+        "6": "tac:gunskin/deagle_357/attachments_green"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_green.png"
     },
     "deagle_357_jade": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_jade"
+        "5": "tac:gunskin/deagle_357/deagle_357_jade",
+        "6": "tac:gunskin/deagle_357/attachments_jade"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_jade.png"
     },
     "deagle_357_orange": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_orange"
+        "5": "tac:gunskin/deagle_357/deagle_357_orange",
+        "6": "tac:gunskin/deagle_357/attachments_orange"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_orange.png"
     },
     "deagle_357_pink": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_pink"
+        "5": "tac:gunskin/deagle_357/deagle_357_pink",
+        "6": "tac:gunskin/deagle_357/attachments_pink"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_pink.png"
     },
     "deagle_357_sand": {
       "type": "texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_sand"
+        "5": "tac:gunskin/deagle_357/deagle_357_sand",
+        "6": "tac:gunskin/deagle_357/attachments_sand"
       },
       "icon": "tac:textures/gunskin/icon/deagle_357_sand.png"
     }
