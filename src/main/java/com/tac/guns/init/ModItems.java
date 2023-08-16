@@ -283,6 +283,8 @@ public class ModItems {
     //public static final RegistryObject<Item> ULTIMATE_CERTIFICATE = REGISTER.register("ultimate_certificate",() -> new Item(new Item.Properties().maxStackSize(16).group(GunMod.GROUP)));
 
     /* Skin */
-    public static final RegistryObject<Item> MODULE = REGISTER.register("module_item",
-            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_TEST), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_GOLDEN = REGISTER.register("skin_golden",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_GOLDEN), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_SILVER = REGISTER.register("skin_silver",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_SILVER), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 }

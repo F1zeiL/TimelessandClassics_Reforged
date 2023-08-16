@@ -46,15 +46,12 @@ public enum SpecialModels {
     M1928_DRUM_MAG("m1928_drum_mag"),
     MOSIN("mosin"),
     MOSIN_BOLT("mosin_bolt"),
-    AK47("ak47"),
-    AK47_BOLT("ak47_bolt"),
     M60("m60"),
     M60_MAG("m60_mag"),
     M60_STANDARD_MAG("m60_standard_mag"),
     M60_EXTENDED_MAG("m60_extended_mag"),
     M60_CAPS("m60_caps"),
     M60_HANDLE("m60_handle"),
-    AK47_OPTIC_MOUNT("ak47_mount"),
     M1917("m1917"),
     M1917_CYLINDER("m1917_cylinder"),
     GLOCK_17("glock_17"),
@@ -223,21 +220,6 @@ public enum SpecialModels {
     M60_FOLDED_SIGHT("m60_folded_sight"),
     M60_BOLT("m60_bolt"),
     M60_BULLET_CHAIN("m60_bullet_chain"),
-    AK47_BUTT_HEAVY("ak47_heavy_stock"),
-    AK47_BUTT_LIGHTWEIGHT("ak47_light_stock"),
-    AK47_BUTT_TACTICAL("ak47_tactical_stock"),
-    AK47_SILENCER("ak47_silencer"),
-    AK47_MAGAZINE("ak47_magazine"),
-    AK74_BUTT_HEAVY("ak74_heavy_stock"),
-    AK74_BUTT_TACTICAL("ak74_tactical_stock"),
-    AR_15_CQB_IRONS("ar_15_cqb_irons"),
-    AR_15_CQB_IRONS_2("ar_15_cqb_irons_2"),
-    AR_15_CQB_DEFAULT_BARREL("ar_15_cqb_default_barrel"),
-    AR_15_CQB_BRAKE("ar_15_cqb_brake"),
-    AR_15_CQB_COMPENSATOR("ar_15_cqb_compensator"),
-    AR_15_CQB_STANDARD_FLASHLIGHT("ar_15_standard_flashlight"),
-    AK47_BRAKE("ak47_brake"),
-    AK47_COMPENSATOR("ak47_compensator"),
     AR_10_BODY("ar_10_body"),
     AR_10_DEFAULT_BARREL("ar_10_default_muzzle"),
     AR_10_BRAKE("ar_10_brake"),
@@ -588,10 +570,6 @@ public enum SpecialModels {
     ESPADON("espadon"),
     ESPADON_SIGHT("espadon_sight"),
     ESPADON_RAIL("espadon_rail"),
-
-    AK47_EXTENDED_MAG("ak47_extended_mag"),
-    AK47_STANDARD_MAG("ak47_standard_mag"),
-
     M16A4_BODY("m16a4"),
     M16A4_SIGHT_LIGHT("m16a4_sight_light"),
     M16A4_BOLT("m16a4_bolt"),
@@ -985,12 +963,11 @@ public enum SpecialModels {
             }
         }
         IResourceManager manager = Minecraft.getInstance().getResourceManager();
-        ((SimpleReloadableResourceManager)manager).addReloadListener(new ResourceReloadListener());
+        ((SimpleReloadableResourceManager) manager).addReloadListener(new ResourceReloadListener());
     }
 
-    public static void cleanCache(){
-        for(SpecialModels model : values())
-        {
+    public static void cleanCache() {
+        for (SpecialModels model : values()) {
             model.cachedModel = null;
         }
     }

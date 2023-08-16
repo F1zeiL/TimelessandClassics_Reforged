@@ -32,22 +32,22 @@ public class ak74_animation implements IOverrideModel {
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         
-        if(Gun.getScope(stack) != null)
-        {
-            RenderUtil.renderModel(SpecialModels.AK47_OPTIC_MOUNT.getModel(), stack, matrices, renderBuffer, light, overlay);
-        }
-        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.LIGHT_STOCK.orElse(ItemStack.EMPTY.getItem()))
-        {
-            RenderUtil.renderModel(SpecialModels.AK47_BUTT_LIGHTWEIGHT.getModel(), stack, matrices, renderBuffer, light, overlay);
-        }
-        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.TACTICAL_STOCK.orElse(ItemStack.EMPTY.getItem()))
-        {
-            RenderUtil.renderModel(SpecialModels.AK74_BUTT_TACTICAL.getModel(), stack, matrices, renderBuffer, light, overlay);
-        }
-        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.WEIGHTED_STOCK.orElse(ItemStack.EMPTY.getItem()))
-        {
-            RenderUtil.renderModel(SpecialModels.AK74_BUTT_HEAVY.getModel(), stack, matrices, renderBuffer, light, overlay);
-        }
+//        if(Gun.getScope(stack) != null)
+//        {
+//            RenderUtil.renderModel(SpecialModels.AK47_OPTIC_MOUNT.getModel(), stack, matrices, renderBuffer, light, overlay);
+//        }
+//        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.LIGHT_STOCK.orElse(ItemStack.EMPTY.getItem()))
+//        {
+//            RenderUtil.renderModel(SpecialModels.AK47_BUTT_LIGHTWEIGHT.getModel(), stack, matrices, renderBuffer, light, overlay);
+//        }
+//        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.TACTICAL_STOCK.orElse(ItemStack.EMPTY.getItem()))
+//        {
+//            RenderUtil.renderModel(SpecialModels.AK74_BUTT_TACTICAL.getModel(), stack, matrices, renderBuffer, light, overlay);
+//        }
+//        if(Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.WEIGHTED_STOCK.orElse(ItemStack.EMPTY.getItem()))
+//        {
+//            RenderUtil.renderModel(SpecialModels.AK74_BUTT_HEAVY.getModel(), stack, matrices, renderBuffer, light, overlay);
+//        }
         if(Gun.getAttachment(IAttachment.Type.BARREL, stack).getItem() == ModItems.SILENCER.orElse(ItemStack.EMPTY.getItem()))
         {
             //int overlayTmp = Gun.getAttachment(IAttachment.Type.BARREL, stack).getStack().serializeNBT().getInt("Color");
@@ -62,7 +62,7 @@ public class ak74_animation implements IOverrideModel {
             */
             matrices.translate(0, 0, -0.450f);
 
-            RenderUtil.renderModel(SpecialModels.AK47_SILENCER.getModel(), stack, matrices, renderBuffer, light, overlay);
+            //RenderUtil.renderModel(SpecialModels.AK47_SILENCER.getModel(), stack, matrices, renderBuffer, light, overlay);
 
             matrices.translate(0, 0, 0.450f);
         }
@@ -91,7 +91,7 @@ public class ak74_animation implements IOverrideModel {
                     matrices.translate(0, 0, 0.190f * (-4.5 * Math.pow(0.5-0.5, 2) + 1.0));
                 }
             }
-            RenderUtil.renderModel(SpecialModels.AK47_BOLT.getModel(), stack, matrices, renderBuffer, light, overlay);
+            //RenderUtil.renderModel(SpecialModels.AK47_BOLT.getModel(), stack, matrices, renderBuffer, light, overlay);
 
             //Always pop
             matrices.pop();

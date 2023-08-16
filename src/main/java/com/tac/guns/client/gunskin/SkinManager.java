@@ -5,12 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
-import com.tac.guns.common.Gun;
-import com.tac.guns.interfaces.IGunModifier;
-import com.tac.guns.item.GunItem;
-import com.tac.guns.item.GunSkinItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.util.GunModifierHelper;
 import javafx.util.Pair;
 import net.minecraft.client.Minecraft;
@@ -29,34 +24,34 @@ public class SkinManager {
     private static Map<String, Map<ResourceLocation, GunSkin>> skins = new HashMap<>();
     private static final Map<String, DefaultSkin> defaultSkins = new HashMap<>();
 
-    public static void reload(){
+    public static void reload() {
         skins = new HashMap<>();
         init();
     }
 
-    public static void cleanCache(){
-        for(GunSkin skin : defaultSkins.values()){
+    public static void cleanCache() {
+        for (GunSkin skin : defaultSkins.values()) {
             skin.cleanCache();
         }
-        for(Map<ResourceLocation, GunSkin> map : skins.values()){
-            for(GunSkin skin : map.values()){
+        for (Map<ResourceLocation, GunSkin> map : skins.values()) {
+            for (GunSkin skin : map.values()) {
                 skin.cleanCache();
             }
         }
     }
 
-    private static void init(){
+    private static void init() {
         //get skin configs from all namespace
         Set<String> nameSpaces = Minecraft.getInstance().getResourceManager().getResourceNamespaces();
-        for(String nameSpace : nameSpaces){
-            ResourceLocation loc = new ResourceLocation(nameSpace,"models/gunskin/skin.json");
+        for (String nameSpace : nameSpaces) {
+            ResourceLocation loc = new ResourceLocation(nameSpace, "models/gunskin/skin.json");
             try {
                 List<IResource> all = Minecraft.getInstance().getResourceManager().getAllResources(loc);
-                for (IResource resource :all) {
+                for (IResource resource : all) {
                     loadSkinList(resource);
                 }
             } catch (IOException e) {
-                GunMod.LOGGER.warn("Failed to load skins from {} {}",loc,e);
+                GunMod.LOGGER.warn("Failed to load skins from {} {}", loc, e);
             }
         }
     }
@@ -72,60 +67,60 @@ public class SkinManager {
             //gun
             String gun = e.getKey();
             SkinLoader loader = SkinLoader.getSkinLoader(gun);
-            if(loader==null)continue;
+            if (loader == null) continue;
             JsonObject skins = e.getValue().getAsJsonObject();
 
             for (Map.Entry<String, JsonElement> skin : skins.entrySet()) {
                 // skin
-                try{
+                try {
                     String skinName = skin.getKey();
                     JsonObject skinObject = skin.getValue().getAsJsonObject();
 
                     String skinType = skinObject.get("type").getAsString();
-                    ResourceLocation skinLoc = ResourceLocation.tryCreate(nameSpace+":"+skinName);
+                    ResourceLocation skinLoc = ResourceLocation.tryCreate(nameSpace + ":" + skinName);
 
-                    if(skinLoc==null){
-                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: invalid name.",gun,skinName);
+                    if (skinLoc == null) {
+                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: invalid name.", gun, skinName);
                         continue;
-                    }else if(!defaultSkins.containsKey(gun)){
-                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: default skin no loaded.",gun,skinName);
+                    } else if (!defaultSkins.containsKey(gun)) {
+                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: default skin no loaded.", gun, skinName);
                         continue;
                     }
 
-                    if("custom".equals(skinType)){
+                    if ("custom".equals(skinType)) {
                         JsonObject modelObject = skinObject.get("models").getAsJsonObject();
 
-                        Map<String,String> components = new HashMap<>();
+                        Map<String, String> components = new HashMap<>();
 
                         for (Map.Entry<String, JsonElement> c : modelObject.entrySet()) {
-                            components.put(c.getKey(),c.getValue().getAsString());
+                            components.put(c.getKey(), c.getValue().getAsString());
                         }
 
-                        if(registerCustomSkin(loader,skinLoc,components)){
-                            GunMod.LOGGER.info("Loaded custom gun skin of {} named {}",gun,skinName);
+                        if (registerCustomSkin(loader, skinLoc, components)) {
+                            GunMod.LOGGER.info("Loaded custom gun skin of {} named {}", gun, skinName);
                         }
 
-                    }else if("texture".equals(skinType)){
+                    } else if ("texture".equals(skinType)) {
                         JsonObject modelObject = skinObject.get("textures").getAsJsonObject();
 
-                        List<Pair<String,ResourceLocation>> textures = new ArrayList<>();
+                        List<Pair<String, ResourceLocation>> textures = new ArrayList<>();
 
                         for (Map.Entry<String, JsonElement> c : modelObject.entrySet()) {
                             ResourceLocation tl = ResourceLocation.tryCreate(c.getValue().getAsString());
-                            if(tl!=null){
-                                textures.add(new Pair<>(c.getKey(),tl));
+                            if (tl != null) {
+                                textures.add(new Pair<>(c.getKey(), tl));
                             }
                         }
 
-                        if(registerTextureOnlySkin(loader,skinLoc,textures)){
-                            GunMod.LOGGER.info("Loaded texture-only gun skin of {} named {}",gun,skinName);
+                        if (registerTextureOnlySkin(loader, skinLoc, textures)) {
+                            GunMod.LOGGER.info("Loaded texture-only gun skin of {} named {}", gun, skinName);
                         }
-                    }else {
-                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: unknown type.",gun,skinName);
+                    } else {
+                        GunMod.LOGGER.warn("Failed to load skins of {} named {}: unknown type.", gun, skinName);
                     }
 
-                }catch (Exception e2){
-                    GunMod.LOGGER.warn("Failed to load skins from {} {}.",resource.getLocation(),e2);
+                } catch (Exception e2) {
+                    GunMod.LOGGER.warn("Failed to load skins from {} {}.", resource.getLocation(), e2);
                 }
             }
         }
@@ -133,44 +128,48 @@ public class SkinManager {
         stream.close();
     }
 
-    public static void loadDefaultSkins(){
-        for(SkinLoader loader : SkinLoader.values()){
+    public static void loadDefaultSkins() {
+        for (SkinLoader loader : SkinLoader.values()) {
             DefaultSkin skin = loader.loadDefaultSkin();
-            defaultSkins.put(loader.getGun(),skin);
+            defaultSkins.put(loader.getGun(), skin);
         }
     }
 
-    private static boolean registerCustomSkin(SkinLoader loader, ResourceLocation skinLocation, Map<String, String> models){
-        GunSkin skin = loader.loadCustomSkin(skinLocation,models);
+    private static boolean registerCustomSkin(SkinLoader loader, ResourceLocation skinLocation, Map<String, String> models) {
+        GunSkin skin = loader.loadCustomSkin(skinLocation, models);
 
-        if(skin!=null){
-            skins.putIfAbsent(loader.getGun(),new HashMap<>());
-            skins.get(loader.getGun()).put(skinLocation,skin);
+        if (skin != null) {
+            skins.putIfAbsent(loader.getGun(), new HashMap<>());
+            skins.get(loader.getGun()).put(skinLocation, skin);
             return true;
-        }else return false;
+        } else return false;
     }
 
-    private static boolean registerTextureOnlySkin(SkinLoader loader, ResourceLocation skinLocation, List<Pair<String,ResourceLocation>> textures){
-        GunSkin skin = loader.loadTextureOnlySkin(skinLocation,textures);
+    private static boolean registerTextureOnlySkin(SkinLoader loader, ResourceLocation skinLocation, List<Pair<String, ResourceLocation>> textures) {
+        GunSkin skin = loader.loadTextureOnlySkin(skinLocation, textures);
 
-        if(skin!=null){
-            skins.putIfAbsent(loader.getGun(),new HashMap<>());
-            skins.get(loader.getGun()).put(skinLocation,skin);
+        if (skin != null) {
+            skins.putIfAbsent(loader.getGun(), new HashMap<>());
+            skins.get(loader.getGun()).put(skinLocation, skin);
             return true;
-        }else return false;
+        } else return false;
     }
 
-    public static GunSkin getSkin(String gun, ResourceLocation skinLocation){
-        if(skinLocation!=null && skins.containsKey(gun)){
+    public static GunSkin getSkin(String gun, ResourceLocation skinLocation) {
+        if (skinLocation != null && skins.containsKey(gun)) {
             return skins.get(gun).get(skinLocation);
-        }else return null;
+        } else return null;
     }
 
-    private static GunSkin getAttachedSkin(ItemStack weapon){
-        if(weapon.getItem() instanceof TimelessGunItem) {
-            if("TEST".equals(GunModifierHelper.getAdditionalSkin(weapon))){
-                return getSkin("ak47",new ResourceLocation("tac:golden"));
-            }
+    private static GunSkin getAttachedSkin(ItemStack weapon) {
+        if (weapon.getItem() instanceof TimelessGunItem) {
+            String gun = weapon.getItem().toString();
+//            String[] str = weapon.getTranslationKey().split("\\.");
+//            String name = str[str.length - 1];
+            if ("GOLDEN".equals(GunModifierHelper.getAdditionalSkin(weapon)))
+                return getSkin(gun, new ResourceLocation("tac:golden"));
+            if ("SILVER".equals(GunModifierHelper.getAdditionalSkin(weapon)))
+                return getSkin(gun, new ResourceLocation("tac:silver"));
         }
         return null;
     }
@@ -181,24 +180,24 @@ public class SkinManager {
             if (stack.getTag().contains("Skin", Constants.NBT.TAG_STRING)) {
                 String skinLoc = stack.getTag().getString("Skin");
                 ResourceLocation loc;
-                if(skinLoc.contains(":")){
+                if (skinLoc.contains(":")) {
                     loc = ResourceLocation.tryCreate(skinLoc);
-                }else {
-                    loc = new ResourceLocation(Reference.MOD_ID,skinLoc);
+                } else {
+                    loc = new ResourceLocation(Reference.MOD_ID, skinLoc);
                 }
-                skin = getSkin(gun,loc);
+                skin = getSkin(gun, loc);
             }
         }
-        if(skin==null){
-            skin=getAttachedSkin(stack);
+        if (skin == null) {
+            skin = getAttachedSkin(stack);
         }
-        if(skin==null && defaultSkins.containsKey(gun)){
+        if (skin == null && defaultSkins.containsKey(gun)) {
             return defaultSkins.get(gun);
         }
         return skin;
     }
 
-    public static DefaultSkin getDefaultSkin(String gun){
+    public static DefaultSkin getDefaultSkin(String gun) {
         return defaultSkins.get(gun);
     }
 }

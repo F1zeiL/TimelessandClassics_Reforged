@@ -204,7 +204,7 @@ public class GunMod {
     public static final ItemGroup SKINS = new ItemGroup("Skins") {
         @Override
         public ItemStack createIcon() {
-            ItemStack stack = new ItemStack(ModItems.MODULE.get());
+            ItemStack stack = new ItemStack(ModBlocks.WORKBENCH.get());
             return stack;
         }
 

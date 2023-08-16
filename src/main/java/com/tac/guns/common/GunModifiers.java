@@ -1481,10 +1481,17 @@ public class GunModifiers {
 
     //////////////////////// SPECIFICS PER SKIN ////////////////////////
 
-    public static final IGunModifier SKIN_TEST = new IGunModifier() {
+    public static final IGunModifier SKIN_GOLDEN = new IGunModifier() {
         @Override
         public String additionalSkin() {
-            return "TEST";
+            return "GOLDEN";
+        }
+    };
+
+    public static final IGunModifier SKIN_SILVER = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "SILVER";
         }
     };
 }

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 public enum ModelComponent {
     BODY("main"),
     //sundry
+    BARREL("barrel"),
     MOUNT("mount"),
     BOLT("bolt"),
     BOLT_EXTRA("bolt_extra"),
@@ -14,6 +15,8 @@ public enum ModelComponent {
     SLIDE("slide"),
     SIGHT("sight"),
     SIGHT_FOLDED("sight_folded"),
+    SIGHT_LIGHT("sight_light"),
+    SIGHT_FOLDED_LIGHT("sight_folded_light"),
     BULLET("bullet"),
     BULLET_SHELL("bullet_shell"),
     HANDLE("handle"),
