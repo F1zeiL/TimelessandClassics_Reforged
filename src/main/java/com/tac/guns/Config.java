@@ -377,6 +377,7 @@ public class Config
         public final ForgeConfigSpec.BooleanValue explosionCauseFire;
         public final ForgeConfigSpec.BooleanValue fireStarterCauseFire;
         public final ForgeConfigSpec.BooleanValue bannedDrop;
+        public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
 
         public Gameplay(ForgeConfigSpec.Builder builder)
         {
@@ -415,6 +416,7 @@ public class Config
                 this.explosionCauseFire = builder.comment("If enable, explosion will cause fire (ignite the block)").define("explosionCauseFire", false);
                 this.fireStarterCauseFire = builder.comment("If enable, Fire Starter will cause fire (ignite the block)").define("fireStarterCauseFire", false);
                 this.bannedDrop = builder.comment("True if you don't want pack up the item on your left hand, this option will keep the item but unable to use it and stop render it.").define("bannedDrop",true);
+                this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight",false);
             }
             builder.pop();
         }

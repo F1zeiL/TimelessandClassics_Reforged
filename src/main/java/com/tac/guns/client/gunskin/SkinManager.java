@@ -156,20 +156,40 @@ public class SkinManager {
     }
 
     public static GunSkin getSkin(String gun, ResourceLocation skinLocation) {
-        if (skinLocation != null && skins.containsKey(gun)) {
-            return skins.get(gun).get(skinLocation);
-        } else return null;
+        if (skinLocation != null && skins.containsKey(gun)) return skins.get(gun).get(skinLocation);
+        else return null;
     }
 
     private static GunSkin getAttachedSkin(ItemStack weapon) {
         if (weapon.getItem() instanceof TimelessGunItem) {
             String gun = weapon.getItem().toString();
-//            String[] str = weapon.getTranslationKey().split("\\.");
-//            String name = str[str.length - 1];
-            if ("GOLDEN".equals(GunModifierHelper.getAdditionalSkin(weapon)))
-                return getSkin(gun, new ResourceLocation("tac:golden"));
-            if ("SILVER".equals(GunModifierHelper.getAdditionalSkin(weapon)))
-                return getSkin(gun, new ResourceLocation("tac:silver"));
+            String[] skinList = {
+                    "ak47.ak47_GOLDEN",
+                    "ak47.ak47_SILVER",
+
+                    "all.BEIGE",
+                    "all.BLACK",
+                    "all.BLUE",
+                    "all.GREEN",
+                    "all.JADE",
+                    "all.ORANGE",
+                    "all.PINK",
+                    "all.SAND",
+                    "all.WHITE"
+            };
+
+            for (String s : skinList) {
+                String[] currentSkin = s.split("\\.");
+                if (currentSkin.length < 2) return null;
+                String resourceName = "tac:" + currentSkin[1].toLowerCase();
+                if (currentSkin[0].equals("all")) {
+                    if (currentSkin[1].equals(GunModifierHelper.getAdditionalSkin(weapon)))
+                        return getSkin(gun, new ResourceLocation(resourceName));
+                } else {
+                    if (currentSkin[1].equals(GunModifierHelper.getAdditionalSkin(weapon)) && gun.equals(currentSkin[0]))
+                        return getSkin(gun, new ResourceLocation(resourceName));
+                }
+            }
         }
         return null;
     }
