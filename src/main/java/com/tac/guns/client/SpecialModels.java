@@ -1,8 +1,11 @@
 package com.tac.guns.client;
 
 import com.tac.guns.Reference;
+import com.tac.guns.client.gunskin.ResourceReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -980,6 +983,15 @@ public enum SpecialModels {
             if (model.specialModel) {
                 ModelLoader.addSpecialModel(model.modelLocation);
             }
+        }
+        IResourceManager manager = Minecraft.getInstance().getResourceManager();
+        ((SimpleReloadableResourceManager)manager).addReloadListener(new ResourceReloadListener());
+    }
+
+    public static void cleanCache(){
+        for(SpecialModels model : values())
+        {
+            model.cachedModel = null;
         }
     }
 }

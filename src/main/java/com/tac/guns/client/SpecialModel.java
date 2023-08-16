@@ -20,6 +20,11 @@ public class SpecialModel {
     {
         this.modelLocation = new ResourceLocation(Reference.MOD_ID, "special/" + modelName);
     }
+    public SpecialModel(ResourceLocation location)
+    {
+        this.modelLocation = location;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public IBakedModel getModel()
     {
@@ -34,6 +39,10 @@ public class SpecialModel {
             this.cachedModel = model;
         }
         return this.cachedModel;
+    }
+
+    public void cleanCache(){
+        this.cachedModel = null;
     }
 
     // A method that allows a minecraft entity bot to hide from a player
