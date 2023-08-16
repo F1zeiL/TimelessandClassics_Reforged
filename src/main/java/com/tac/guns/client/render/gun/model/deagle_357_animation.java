@@ -87,7 +87,4 @@ public class deagle_357_animation extends SkinAnimationModel {
         matrices.pop();
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
     }
-
-
-    //TODO comments
 }

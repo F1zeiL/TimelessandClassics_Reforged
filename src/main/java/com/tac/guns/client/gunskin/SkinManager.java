@@ -164,8 +164,8 @@ public class SkinManager {
         if (weapon.getItem() instanceof TimelessGunItem) {
             String gun = weapon.getItem().toString();
             String[] skinList = {
-                    "ak47.ak47_GOLDEN",
-                    "ak47.ak47_SILVER",
+                    "ak47.GOLDEN",
+                    "ak47.SILVER",
 
                     "all.BEIGE",
                     "all.BLACK",
@@ -181,7 +181,7 @@ public class SkinManager {
             for (String s : skinList) {
                 String[] currentSkin = s.split("\\.");
                 if (currentSkin.length < 2) return null;
-                String resourceName = "tac:" + currentSkin[1].toLowerCase();
+                String resourceName = "tac:" + gun + "_" + currentSkin[1].toLowerCase();
                 if (currentSkin[0].equals("all")) {
                     if (currentSkin[1].equals(GunModifierHelper.getAdditionalSkin(weapon)))
                         return getSkin(gun, new ResourceLocation(resourceName));
