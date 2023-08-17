@@ -13,8 +13,8 @@ public class GunSkin {
     protected Map<ModelComponent, Vector3d> extraOffset;
     public final ResourceLocation registerName;
     public final String gun;
-    private ResourceLocation icon;
-    private ResourceLocation miniIcon;
+    protected ResourceLocation icon;
+    protected ResourceLocation miniIcon;
     private DefaultSkin defaultSkin;
 
     public GunSkin(String skinName,String gun,DefaultSkin skin){

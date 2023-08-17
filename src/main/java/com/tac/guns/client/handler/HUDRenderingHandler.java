@@ -5,6 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
+import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.ReloadTracker;
@@ -331,6 +333,27 @@ public class HUDRenderingHandler extends AbstractGui {
         if (!Config.CLIENT.weaponGUI.weaponGui.get()) {
             return;
         }
+        //render icon
+        if(Config.CLIENT.weaponGUI.weaponTypeIcon.showWeaponIcon.get()) {
+            GunSkin skin = SkinManager.getSkin(heldItem);
+            if (skin != null) {
+                if (skin.getIcon() != null) {
+                    RenderSystem.enableAlphaTest();
+                    stack.push();
+                    {
+                        stack.translate(anchorPointX - 90 + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
+                                anchorPointY - 112 +  Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
+                        float scale = Config.CLIENT.weaponGUI.weaponTypeIcon.weaponIconSize.get().floatValue();
+                        stack.scale(scale, scale, scale);
+                        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+                        Minecraft.getInstance().getTextureManager().bindTexture(skin.getIcon());
+                        blit(stack, 0, 0, 0, 0, 96, 96, 96, 96);
+                    }
+                    stack.pop();
+                }
+            }
+        }
+
         if (Config.CLIENT.weaponGUI.weaponFireMode.showWeaponFireMode.get()) {
             // FireMode rendering
             RenderSystem.enableAlphaTest();

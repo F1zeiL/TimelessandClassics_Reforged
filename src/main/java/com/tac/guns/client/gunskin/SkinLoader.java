@@ -15,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.RegistryObject;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -230,6 +231,10 @@ public enum SkinLoader {
             tryLoadComponent(skin, mainLoc, key);
         }
         this.defaultSkin = skin;
+
+        ResourceLocation iconLoc = ResourceLocation.tryCreate("tac:textures/gui/icon/"+this.name+".png");
+        skin.setIcon(iconLoc);
+
         return skin;
     }
 
@@ -257,6 +262,21 @@ public enum SkinLoader {
             }
         }
         return skin;
+    }
+
+    public boolean loadSkinIcon(@Nonnull GunSkin skin, @Nonnull ResourceLocation iconLocation){
+        if(Minecraft.getInstance().getResourceManager().hasResource(iconLocation)){
+            skin.setIcon(iconLocation);
+            return true;
+        }else{
+            ResourceLocation tl = ResourceLocation.tryCreate(iconLocation.getNamespace()+":textures/"+iconLocation.getPath()+".png");
+            if(tl !=null && Minecraft.getInstance().getResourceManager().hasResource(tl)){
+                skin.setIcon(tl);
+                return true;
+            }else {
+                return false;
+            }
+        }
     }
 
     private static void tryLoadComponent(GunSkin skin, Map<String, String> models, ModelComponent component) {
@@ -310,7 +330,6 @@ public enum SkinLoader {
         }
         return skin;
     }
-
     public static class TextureModel {
         public static final ResourceLocation atlasLocation = new ResourceLocation("minecraft:textures/atlas/blocks.png");
         private final BlockModel unbaked;
