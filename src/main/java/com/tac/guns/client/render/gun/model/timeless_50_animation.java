@@ -87,6 +87,7 @@ public class timeless_50_animation extends SkinAnimationModel {
                 } else if (!Gun.hasAmmo(stack)) {
                     matrices.translate(0, 0, 0.1925f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
                 }
+                matrices.translate(0, 0, 0.025F);
             }
             if (renderClumsy) {
                 RenderUtil.renderModel(getModelComponent(skin, SLIDE_EXTENDED_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
