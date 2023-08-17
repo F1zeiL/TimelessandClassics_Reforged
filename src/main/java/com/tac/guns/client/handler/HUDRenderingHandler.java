@@ -341,9 +341,9 @@ public class HUDRenderingHandler extends AbstractGui {
                     RenderSystem.enableAlphaTest();
                     stack.push();
                     {
-                        stack.translate(anchorPointX - 90 + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
-                                anchorPointY - 112 +  Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
-                        float scale = Config.CLIENT.weaponGUI.weaponTypeIcon.weaponIconSize.get().floatValue();
+                        float scale = Config.CLIENT.weaponGUI.weaponTypeIcon.weaponIconSize.get().floatValue() * 0.7f;
+                        stack.translate(anchorPointX - 90*scale + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
+                                anchorPointY - 22 - 90*scale +  Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
                         stack.scale(scale, scale, scale);
                         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
                         Minecraft.getInstance().getTextureManager().bindTexture(skin.getIcon());
