@@ -3,12 +3,15 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.SpecialModel;
 import com.tac.guns.client.SpecialModels;
+import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.MK14AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.IOverrideModel;
+import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModEnchantments;
@@ -30,7 +33,7 @@ import com.tac.guns.util.GunModifierHelper;
 /**
  * Author: Timeless Development, and associates.
  */
-public class mk14_animation implements IOverrideModel {
+public class mk14_animation extends SkinAnimationModel {
 
     private final SpecialModel MK14_BODY = new SpecialModel("mk14");
     private final SpecialModel BOLT = new SpecialModel("mk14_bolt");
@@ -46,6 +49,8 @@ public class mk14_animation implements IOverrideModel {
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         MK14AnimationController controller = MK14AnimationController.getInstance();
+        GunSkin skin = SkinManager.getSkin(stack);
+
         matrices.push();
         {
             controller.applySpecialModelTransform(MK14_BODY.getModel(), MK14AnimationController.INDEX_BODY, transformType, matrices);

@@ -2,12 +2,15 @@ package com.tac.guns.client.render.gun.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.SpecialModels;
+import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.TEC9AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.IOverrideModel;
+import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
@@ -25,10 +28,11 @@ import net.minecraft.item.ItemStack;
 /**
  * Author: Timeless Development, and associates.
  */
-public class tec_9_animation implements IOverrideModel {
+public class tec_9_animation extends SkinAnimationModel {
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         TEC9AnimationController controller = TEC9AnimationController.getInstance();
+        GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         controller.applySpecialModelTransform(SpecialModels.TEC_9_BODY.getModel(), TEC9AnimationController.INDEX_BODY, transformType, matrices);

@@ -1,5 +1,8 @@
 package com.tac.guns.client.render.gun.model;
 
+import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.util.GunModifierHelper;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.Config;
@@ -32,12 +35,14 @@ import net.minecraft.util.math.vector.Vector3f;
 /**
  * Author: Timeless Development, and associates.
  */
-public class rpg7_animation implements IOverrideModel {
+public class rpg7_animation extends SkinAnimationModel {
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         RPG7AnimationController controller = RPG7AnimationController.getInstance();
+        GunSkin skin = SkinManager.getSkin(stack);
+
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.RPG7.getModel(),RPG7AnimationController.INDEX_BODY,transformType,matrices);

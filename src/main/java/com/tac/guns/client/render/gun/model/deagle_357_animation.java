@@ -36,7 +36,7 @@ public class deagle_357_animation extends SkinAnimationModel {
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         Deagle50AnimationController controller = Deagle50AnimationController.getInstance();
-        GunSkin skin = SkinManager.getSkin(stack, "deagle_357");
+        GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         {

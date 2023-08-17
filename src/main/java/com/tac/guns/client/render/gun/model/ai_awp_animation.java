@@ -38,7 +38,7 @@ public class ai_awp_animation extends SkinAnimationModel {
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         AWPAnimationController controller = AWPAnimationController.getInstance();
-        GunSkin skin = SkinManager.getSkin(stack, "ai_awp");
+        GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         {

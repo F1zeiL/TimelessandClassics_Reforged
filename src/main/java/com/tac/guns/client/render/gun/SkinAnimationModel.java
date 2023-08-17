@@ -1,6 +1,7 @@
 package com.tac.guns.client.render.gun;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.tac.guns.client.SpecialModels;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.ModelComponent;
 import com.tac.guns.client.util.RenderUtil;
@@ -57,6 +58,18 @@ public abstract class SkinAnimationModel implements IOverrideModel {
             matrices.pop();
         } else
             RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+    }
+
+    protected void renderStockWithDefault(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {
+        if (Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.LIGHT_STOCK.orElse(ItemStack.EMPTY.getItem())) {
+            RenderUtil.renderModel(getModelComponent(skin, STOCK_LIGHT), stack, matrices, renderBuffer, light, overlay);
+        } else if (Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.TACTICAL_STOCK.orElse(ItemStack.EMPTY.getItem())) {
+            RenderUtil.renderModel(getModelComponent(skin, STOCK_TACTICAL), stack, matrices, renderBuffer, light, overlay);
+        } else if (Gun.getAttachment(IAttachment.Type.STOCK, stack).getItem() == ModItems.WEIGHTED_STOCK.orElse(ItemStack.EMPTY.getItem())) {
+            RenderUtil.renderModel(getModelComponent(skin, STOCK_HEAVY), stack, matrices, renderBuffer, light, overlay);
+        } else {
+            RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+        }
     }
 
     protected void renderStock(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {

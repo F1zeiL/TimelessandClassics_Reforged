@@ -37,7 +37,7 @@ public class ak47_animation extends SkinAnimationModel {
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         Ak47AnimationController controller = Ak47AnimationController.getInstance();
-        GunSkin skin = SkinManager.getSkin(stack, "ak47");
+        GunSkin skin = SkinManager.getSkin(stack);
 
         Gun gun = ((GunItem) stack.getItem()).getGun();
         float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());

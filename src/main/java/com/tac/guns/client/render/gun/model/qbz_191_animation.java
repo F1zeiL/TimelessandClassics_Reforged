@@ -2,12 +2,15 @@ package com.tac.guns.client.render.gun.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.SpecialModels;
+import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.Type191AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.IOverrideModel;
+import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModEnchantments;
@@ -29,12 +32,14 @@ import com.tac.guns.util.GunModifierHelper;
 /**
  * Author: Timeless Development, and associates.
  */
-public class qbz_191_animation implements IOverrideModel {
+public class qbz_191_animation extends SkinAnimationModel {
 
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         Type191AnimationController controller = Type191AnimationController.getInstance();
+        GunSkin skin = SkinManager.getSkin(stack);
+
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.QBZ_191_BODY.getModel(), Type191AnimationController.INDEX_BODY,transformType,matrices);

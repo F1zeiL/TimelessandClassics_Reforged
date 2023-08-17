@@ -195,8 +195,9 @@ public class SkinManager {
         return null;
     }
 
-    public static GunSkin getSkin(ItemStack stack, String gun) {
+    public static GunSkin getSkin(ItemStack stack) {
         GunSkin skin = null;
+        String gun = stack.getItem().toString();
         if (stack.getTag() != null) {
             if (stack.getTag().contains("Skin", Constants.NBT.TAG_STRING)) {
                 String skinLoc = stack.getTag().getString("Skin");

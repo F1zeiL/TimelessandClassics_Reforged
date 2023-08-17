@@ -38,7 +38,7 @@ public class scar_l_animation extends SkinAnimationModel {
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         SCAR_LAnimationController controller = SCAR_LAnimationController.getInstance();
-        GunSkin skin = SkinManager.getSkin(stack, "scar_l");
+        GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         {
