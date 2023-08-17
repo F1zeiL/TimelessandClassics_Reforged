@@ -15,7 +15,6 @@
     "client.FirstPersonRendererMixin",
     "client.GameRendererMixin",
     "client.InventoryScreenMixin",
-    "client.KeyBindingMixin",
     "client.MinecraftStaticMixin",
     "client.ModelBakeryMixin",
     "client.MouseHelperMixin",
