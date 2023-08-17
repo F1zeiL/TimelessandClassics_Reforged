@@ -1,7 +1,6 @@
 package com.tac.guns.client.render.gun;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.tac.guns.client.SpecialModels;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.ModelComponent;
 import com.tac.guns.client.util.RenderUtil;
@@ -125,6 +124,14 @@ public abstract class SkinAnimationModel implements IOverrideModel {
     protected void renderMag(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {
         if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
             RenderUtil.renderModel(getModelComponent(skin, MAG_EXTENDED), stack, matrices, renderBuffer, light, overlay);
+        } else {
+            RenderUtil.renderModel(getModelComponent(skin, MAG_STANDARD), stack, matrices, renderBuffer, light, overlay);
+        }
+    }
+
+    protected void renderDrumMag(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {
+        if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            RenderUtil.renderModel(getModelComponent(skin, MAG_DRUM), stack, matrices, renderBuffer, light, overlay);
         } else {
             RenderUtil.renderModel(getModelComponent(skin, MAG_STANDARD), stack, matrices, renderBuffer, light, overlay);
         }

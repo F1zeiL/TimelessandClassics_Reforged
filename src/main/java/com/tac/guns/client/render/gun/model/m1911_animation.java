@@ -24,6 +24,9 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import com.tac.guns.util.GunModifierHelper;
+import net.minecraft.util.math.vector.Vector3d;
+
+import static com.tac.guns.client.gunskin.ModelComponent.*;
 
 /*
  * Because the revolver has a rotating chamber, we need to render it in a
@@ -35,7 +38,10 @@ import com.tac.guns.util.GunModifierHelper;
  */
 public class m1911_animation extends SkinAnimationModel {
 
-    //The render method, similar to what is in DartEntity. We can render the item
+    public m1911_animation() {
+        extraOffset.put(MUZZLE_SILENCER, new Vector3d(0, 0, -0.0475));
+    }
+
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
@@ -44,25 +50,17 @@ public class m1911_animation extends SkinAnimationModel {
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(SpecialModels.M1911.getModel(),M1911AnimationController.INDEX_BODY,transformType,matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY),M1911AnimationController.INDEX_BODY,transformType,matrices);
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
-                matrices.push();
-                matrices.translate(0, 0, -0.0475);
-                RenderUtil.renderModel(SpecialModels.M1911_SUPPRESSOR.getModel(), stack, matrices, renderBuffer, light, overlay);
-                matrices.translate(0, 0, 0.0475);
-                matrices.pop();
+                RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
             }
-            RenderUtil.renderModel(SpecialModels.M1911.getModel(), stack, matrices, renderBuffer, light, overlay);
+            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
         }
         matrices.pop();
         matrices.push();
         {
-            controller.applySpecialModelTransform(SpecialModels.M1911.getModel(),M1911AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
-                RenderUtil.renderModel(SpecialModels.M1911_LONG_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
-            } else {
-                RenderUtil.renderModel(SpecialModels.M1911_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
-            }
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY),M1911AnimationController.INDEX_MAG,transformType,matrices);
+            renderMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
 
@@ -72,7 +70,7 @@ public class m1911_animation extends SkinAnimationModel {
         matrices.push();
         {
             if(transformType.isFirstPerson()) {
-                controller.applySpecialModelTransform(SpecialModels.M1911.getModel(), M1911AnimationController.INDEX_SLIDE, transformType, matrices);
+                controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1911AnimationController.INDEX_SLIDE, transformType, matrices);
                 AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
                 boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
 
@@ -80,12 +78,13 @@ public class m1911_animation extends SkinAnimationModel {
                     matrices.translate(0, 0, 0.1925f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
                     GunRenderingHandler.get().opticMovement = 0.1925f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0);
                 } else if (!Gun.hasAmmo(stack)) {
-                    matrices.translate(0, 0, 0.1925f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
-                    GunRenderingHandler.get().opticMovement = 0.1925f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0);
+                    double opticMovement = 0.1925f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0);
+                    matrices.translate(0, 0, opticMovement);
+                    GunRenderingHandler.get().opticMovement = opticMovement;
                 }
                 matrices.translate(0, 0, 0.025F);
             }
-            RenderUtil.renderModel(SpecialModels.M1911_SLIDE.getModel(), stack, matrices, renderBuffer, light, overlay);
+            RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
         }
         matrices.pop();
 
