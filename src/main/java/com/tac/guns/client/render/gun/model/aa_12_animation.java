@@ -12,7 +12,6 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
-import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
@@ -68,11 +67,7 @@ public class aa_12_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), AA12AnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
-                RenderUtil.renderModel(getModelComponent(skin, MAG_DRUM), stack, matrices, renderBuffer, light, overlay);
-            } else {
-                RenderUtil.renderModel(getModelComponent(skin, MAG_STANDARD), stack, matrices, renderBuffer, light, overlay);
-            }
+            renderDrumMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
 

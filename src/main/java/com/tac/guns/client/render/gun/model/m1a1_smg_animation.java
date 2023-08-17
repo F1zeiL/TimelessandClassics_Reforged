@@ -55,7 +55,7 @@ public class m1a1_smg_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HkMp5a5AnimationController.INDEX_MAGAZINE, transformType, matrices);
-            renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            renderDrumMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
 

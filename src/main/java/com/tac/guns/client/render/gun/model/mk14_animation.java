@@ -1,8 +1,7 @@
 package com.tac.guns.client.render.gun.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.tac.guns.client.SpecialModel;
-import com.tac.guns.client.SpecialModels;
+import com.tac.guns.Config;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.ShootingHandler;
@@ -10,20 +9,16 @@ import com.tac.guns.client.render.animation.MK14AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
-import com.tac.guns.client.render.gun.IOverrideModel;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
-import com.tac.guns.init.ModEnchantments;
-import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import com.tac.guns.util.GunModifierHelper;
+
+import static com.tac.guns.client.gunskin.ModelComponent.*;
 
 /*
  * Because the revolver has a rotating chamber, we need to render it in a
@@ -35,112 +30,71 @@ import com.tac.guns.util.GunModifierHelper;
  */
 public class mk14_animation extends SkinAnimationModel {
 
-    private final SpecialModel MK14_BODY = new SpecialModel("mk14");
-    private final SpecialModel BOLT = new SpecialModel("mk14_bolt");
-    private final SpecialModel BOLT_HANDLE = new SpecialModel("mk14_bolt_handle");
-    private final SpecialModel STANDARD_MAG = new SpecialModel("mk14_standard_mag");
-    private final SpecialModel EXTENDED_MAG = new SpecialModel("mk14_extended_mag");
-    private final SpecialModel T_GRIP = new SpecialModel("mk14_tac_grip");
-    private final SpecialModel L_GRIP = new SpecialModel("mk14_light_grip");
-    private final SpecialModel SCOPE_MOUNT = new SpecialModel("mk14_mount");
-    private final SpecialModel MK14_SIGHT_LIGHT = new SpecialModel("mk14_sight_light");
-
     @Override
-    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
-    {
+    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         MK14AnimationController controller = MK14AnimationController.getInstance();
         GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(MK14_BODY.getModel(), MK14AnimationController.INDEX_BODY, transformType, matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), MK14AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) != null) {
-                RenderUtil.renderModel(SCOPE_MOUNT.getModel(), stack, matrices, renderBuffer, light, overlay);
+                RenderUtil.renderModel(getModelComponent(skin, RAIL_SCOPE), stack, matrices, renderBuffer, light, overlay);
             }
 
-            if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack).getItem() == ModItems.BASIC_LASER.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderLaserModuleModel(SpecialModels.MK14_B_LASER_DEVICE.getModel(), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, light, overlay);
-                RenderUtil.renderLaserModuleModel(SpecialModels.MK14_B_LASER.getModel(), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
-            }
-            else if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack).getItem() != ModItems.IR_LASER.orElse(ItemStack.EMPTY.getItem()) || Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack).getItem() == ModItems.IR_LASER.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderLaserModuleModel(SpecialModels.MK14_IR_LASER_DEVICE.getModel(), Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack), matrices, renderBuffer, light, overlay);
-                if(transformType.isFirstPerson()) {
-                    RenderUtil.renderLaserModuleModel(SpecialModels.MK14_IR_LASER.getModel(), Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
-                }
-            }
+            renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
 
-            if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderModel(L_GRIP.getModel(), stack, matrices, renderBuffer, light, overlay);
+            if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
+                renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.SPECIALISED_GRIP.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderModel(T_GRIP.getModel(), stack, matrices, renderBuffer, light, overlay);
-            }
+            renderGrip(stack, matrices, renderBuffer, light, overlay, skin);
 
-            if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderModel(L_GRIP.getModel(), stack, matrices, renderBuffer, light, overlay);
-
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.SPECIALISED_GRIP.orElse(ItemStack.EMPTY.getItem())) {
-                RenderUtil.renderModel(T_GRIP.getModel(), stack, matrices, renderBuffer, light, overlay);
-            }
-
-            RenderUtil.renderModel(MK14_SIGHT_LIGHT.getModel(), stack, matrices, renderBuffer, 15728880, overlay);
-            RenderUtil.renderModel(MK14_BODY.getModel(), stack, matrices, renderBuffer, light, overlay);
-
-        } matrices.pop();
+            RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+        }
+        matrices.pop();
 
 
         matrices.push();
         {
-
-            controller.applySpecialModelTransform(MK14_BODY.getModel(), MK14AnimationController.INDEX_BOLT, transformType, matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), MK14AnimationController.INDEX_BOLT, transformType, matrices);
             Gun gun = ((GunItem) stack.getItem()).getGun();
             float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
 
-
             AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
             boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
-            if(transformType.isFirstPerson()) {
+            double v1 = -4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0;
+            if (transformType.isFirstPerson()) {
                 if (Gun.hasAmmo(stack) || shouldOffset) {
                     //RenderUtil.renderModel(SpecialModels.M1_GARAND.getModel(), stack, matrices, renderBuffer, light, overlay);
                     // Math provided by Bomb787 on GitHub and Curseforge!!!
-                    matrices.translate(0, 0, 0.205f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
+                    matrices.translate(0, 0, 0.205f * v1);
                 } else if (!Gun.hasAmmo(stack)) {
-                    {
-                        matrices.translate(0, 0, 0.205f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
-                    }
+                    matrices.translate(0, 0, 0.205f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
                 }
             }
-            RenderUtil.renderModel(BOLT_HANDLE.getModel(), stack, matrices, renderBuffer, light, overlay);
+            RenderUtil.renderModel(getModelComponent(skin, BOLT_HANDLE), stack, matrices, renderBuffer, light, overlay);
 
-            if(transformType.isFirstPerson()) {
+            if (transformType.isFirstPerson()) {
                 if (Gun.hasAmmo(stack) || shouldOffset) {
                     // Math provided by Bomb787 on GitHub and Curseforge!!!
-                    matrices.translate(0, -0.0335f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0), 0);
+                    matrices.translate(0, -0.0335f * v1, 0);
                 } else if (!Gun.hasAmmo(stack)) {
-                    {
-                        matrices.translate(0, -0.0335f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0), 0);
-                    }
+                    matrices.translate(0, -0.0335f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0), 0);
                 }
             }
-            RenderUtil.renderModel(BOLT.getModel(), stack, matrices, renderBuffer, light, overlay);
-        } matrices.pop();
+            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+        }
+        matrices.pop();
 
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(MK14_BODY.getModel(), MK14AnimationController.INDEX_MAGAZINE, transformType, matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), MK14AnimationController.INDEX_MAGAZINE, transformType, matrices);
+            renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+        }
+        matrices.pop();
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
-                RenderUtil.renderModel(EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
-            } else {
-                RenderUtil.renderModel(STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
-            }
-        } matrices.pop();
-
-        matrices.push();
-        {
-            matrices.translate(0, 0, 0.2175f);
-            PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
-        }matrices.pop();
+        PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);//0.2175?
     }
 }
