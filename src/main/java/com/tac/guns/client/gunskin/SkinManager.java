@@ -70,11 +70,11 @@ public class SkinManager {
             if (loader == null) continue;
             JsonObject skins = e.getValue().getAsJsonObject();
 
-            for (Map.Entry<String, JsonElement> skin : skins.entrySet()) {
+            for (Map.Entry<String, JsonElement> s : skins.entrySet()) {
                 // skin
                 try {
-                    String skinName = skin.getKey();
-                    JsonObject skinObject = skin.getValue().getAsJsonObject();
+                    String skinName = s.getKey();
+                    JsonObject skinObject = s.getValue().getAsJsonObject();
 
                     String skinType = skinObject.get("type").getAsString();
                     ResourceLocation skinLoc = ResourceLocation.tryCreate(nameSpace + ":" + skinName);
@@ -117,6 +117,15 @@ public class SkinManager {
                         }
                     } else {
                         GunMod.LOGGER.warn("Failed to load skins of {} named {}: unknown type.", gun, skinName);
+                        continue;
+                    }
+
+                    if(skinObject.get("icon")!=null){
+                        ResourceLocation rl = ResourceLocation.tryCreate(skinObject.get("icon").getAsString());
+                        GunSkin skin = getSkin(gun,skinLoc);
+                        if(skin!=null && rl!=null){
+                            loader.loadSkinIcon(skin,rl);
+                        }
                     }
 
                 } catch (Exception e2) {
