@@ -9,9 +9,6 @@ import com.tac.guns.client.handler.command.GunEditor;
 import com.tac.guns.client.handler.command.ObjectRenderEditor;
 import com.tac.guns.client.handler.command.ScopeEditor;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
-import com.tac.guns.client.render.armor.VestLayer.VestLayerRender;
-import com.tac.guns.client.render.armor.models.MediumArmor;
-import com.tac.guns.client.render.armor.models.ModernArmor;
 import com.tac.guns.client.render.entity.GrenadeRenderer;
 import com.tac.guns.client.render.entity.MissileRenderer;
 import com.tac.guns.client.render.entity.ProjectileRenderer;
@@ -42,7 +39,6 @@ import net.minecraft.client.gui.widget.list.OptionsRowList;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -59,7 +55,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Base64;
-import java.util.Map;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -82,7 +77,6 @@ public class ClientHandler {
         MinecraftForge.EVENT_BUS.register(HUDRenderingHandler.get());
         MinecraftForge.EVENT_BUS.register(FireModeSwitchEvent.get()); // Technically now a handler but, yes I need some naming reworks
         MinecraftForge.EVENT_BUS.register(SightSwitchEvent.get()); // Still, as well an event, am uncertain on what to name it, in short handles upcoming advanced iron sights
-        MinecraftForge.EVENT_BUS.register(ArmorInteractionHandler.get());
 
         //MinecraftForge.EVENT_BUS.register(FlashlightHandler.get()); // Completely broken... Needs a full rework
         //MinecraftForge.EVENT_BUS.register(FloodLightSource.get());
@@ -123,10 +117,6 @@ public class ClientHandler {
         new AnimationRunner(); //preload thread pool
         new SecondOrderDynamics(1f, 1f, 1f, 1f); //preload thread pool
 
-        Map<String, PlayerRenderer> skins = Minecraft.getInstance().getRenderManager().getSkinMap();
-        addVestLayer(skins.get("default"));
-        addVestLayer(skins.get("slim"));
-
         if (ModList.get().isLoaded(new
                 String(Base64.getDecoder().decode("bmV0ZWFzZV9vZmZpY2lhbA=="))))
             Minecraft.getInstance().execute(() -> {
@@ -136,10 +126,6 @@ public class ClientHandler {
                 }
                 System.exit(1);
             });
-    }
-
-    private static void addVestLayer(PlayerRenderer renderer) {
-        renderer.addLayer(new VestLayerRender<>(renderer));
     }
 
     private static void setupRenderLayers() {
@@ -199,8 +185,6 @@ public class ClientHandler {
         ModelOverrides.register(ModItems.SRO_DOT.get(), new SroDotSightModel());
 
         // Armor registry, kept manual cause nice and simple, requires registry on client side only
-        VestLayerRender.registerModel(ModItems.LIGHT_ARMOR.get(), new ModernArmor());
-        VestLayerRender.registerModel(ModItems.MEDIUM_STEEL_ARMOR.get(), new MediumArmor());
         //VestLayerRender.registerModel(ModItems.CARDBOARD_ARMOR_FUN.get(), new CardboardArmor());
     }
 
@@ -209,7 +193,6 @@ public class ClientHandler {
         ScreenManager.registerFactory(ModContainers.UPGRADE_BENCH.get(), UpgradeBenchScreen::new);
         ScreenManager.registerFactory(ModContainers.ATTACHMENTS.get(), AttachmentScreen::new);
         ScreenManager.registerFactory(ModContainers.INSPECTION.get(), InspectScreen::new);
-        ScreenManager.registerFactory(ModContainers.ARMOR_TEST.get(), AmmoPackScreen::new);
         //ScreenManager.registerFactory(ModContainers.COLOR_BENCH.get(), ColorBenchAttachmentScreen::new);
     }
 

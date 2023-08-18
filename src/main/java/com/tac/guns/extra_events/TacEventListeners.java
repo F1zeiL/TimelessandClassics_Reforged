@@ -42,11 +42,11 @@ public class TacEventListeners {
     private static boolean checked = true;
     private static boolean confirmed = false;
     private static VersionChecker.CheckResult status;
+
     @SubscribeEvent
-    public static void InformPlayerOfUpdate(EntityJoinWorldEvent e)
-    {
+    public static void InformPlayerOfUpdate(EntityJoinWorldEvent e) {
         try {
-            if(!(e.getEntity() instanceof PlayerEntity))
+            if (!(e.getEntity() instanceof PlayerEntity))
                 return;
 
             if (checked) {
@@ -61,9 +61,7 @@ public class TacEventListeners {
                     confirmed = true;
                 }
             }
-        }
-        catch(Exception ev)
-        {
+        } catch (Exception ev) {
             GunMod.LOGGER.log(Level.ERROR, ev.getMessage());
             return;
         }
@@ -71,10 +69,9 @@ public class TacEventListeners {
     }
 
     @SubscribeEvent
-    public void onPartialLevel(LevelUpEvent.Post event)
-    {
+    public void onPartialLevel(LevelUpEvent.Post event) {
         PlayerEntity player = event.getPlayer();
-        event.getPlayer().getEntityWorld().playSound(player, player.getPosition(), ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.experience_orb.pickup")), SoundCategory.PLAYERS,4.0F, 1.0F);
+        event.getPlayer().getEntityWorld().playSound(player, player.getPosition(), ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.experience_orb.pickup")), SoundCategory.PLAYERS, 4.0F, 1.0F);
     }
 
     // TODO: remaster method to play empty fire sound on most-all guns
@@ -83,12 +80,11 @@ public class TacEventListeners {
     public static void postShoot(GunFireEvent.Post event) {
         PlayerEntity player = event.getPlayer();
         ItemStack heldItem = player.getHeldItemMainhand();
-        if(!(heldItem.getItem() instanceof M1GunItem))
+        if (!(heldItem.getItem() instanceof M1GunItem))
             return;
         CompoundNBT tag = heldItem.getTag();
-        if(tag != null)
-        {
-            if(tag.getInt("AmmoCount") == 1)
+        if (tag != null) {
+            if (tag.getInt("AmmoCount") == 1)
                 event.getPlayer().getEntityWorld().playSound(player, player.getPosition(), ModSounds.M1_PING.get()/*.GARAND_PING.get()*/, SoundCategory.MASTER, 3.0F, 1.0F);
         }
     }
@@ -117,9 +113,9 @@ public class TacEventListeners {
             ProjectileEntity.cachePlayerPosition.put(event.player, p1);
             Vector3d v = p1.subtract(p0);
             if (v.x * v.x + v.y * v.y + v.z * v.z >= 0.0625) {
-                v = v.mul(5,5,5);
+                v = v.mul(5, 5, 5);
             } else {
-                v = new Vector3d(0,0,0);
+                v = new Vector3d(0, 0, 0);
             }
             ProjectileEntity.cachePlayerVelocity.put(event.player, v);
         }

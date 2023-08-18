@@ -356,6 +356,8 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue fireStarterCauseFire;
         public final ForgeConfigSpec.BooleanValue bannedDrop;
         public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
+        public final ForgeConfigSpec.BooleanValue gunOfKindness;
+        public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
 
         public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
@@ -394,6 +396,8 @@ public class Config {
                 this.fireStarterCauseFire = builder.comment("If enable, Fire Starter will cause fire (ignite the block)").define("fireStarterCauseFire", false);
                 this.bannedDrop = builder.comment("True if you don't want pack up the item on your left hand, this option will keep the item but unable to use it and stop render it.").define("bannedDrop", true);
                 this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
+                this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
+                this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
             }
             builder.pop();
         }

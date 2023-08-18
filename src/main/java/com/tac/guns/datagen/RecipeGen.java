@@ -30,34 +30,6 @@ public class RecipeGen extends RecipeProvider {
                 .addCriterion("has_iron", hasItem(Tags.Items.STORAGE_BLOCKS_IRON))
                 .build(consumer);
 
-        ShapedRecipeBuilder.shapedRecipe(ModItems.LIGHT_ARMOR_REPAIR_PLATE.get())
-                .patternLine("# #")
-                .patternLine("III")
-                .patternLine("iIi")
-                .key('#', Tags.Items.LEATHER)
-                .key('I', Tags.Items.NUGGETS_IRON)
-                .key('i', Tags.Items.INGOTS_IRON)
-                .addCriterion("has_iron", hasItem(Tags.Items.STORAGE_BLOCKS_IRON))
-                .build(consumer);
-
-        ShapedRecipeBuilder.shapedRecipe(ModItems.LIGHT_ARMOR.get())
-                .patternLine("# #")
-                .patternLine("iIi")
-                .patternLine("iii")
-                .key('#', Tags.Items.LEATHER)
-                .key('I', Tags.Items.STORAGE_BLOCKS_IRON)
-                .key('i', Tags.Items.INGOTS_IRON)
-                .addCriterion("has_iron", hasItem(Tags.Items.STORAGE_BLOCKS_IRON))
-                .build(consumer);
-
-        ShapedRecipeBuilder.shapedRecipe(ModItems.MEDIUM_STEEL_ARMOR.get())
-                .patternLine("i i")
-                .patternLine("III")
-                .key('I', Tags.Items.STORAGE_BLOCKS_IRON)
-                .key('i', Tags.Items.INGOTS_IRON)
-                .addCriterion("has_iron", hasItem(Tags.Items.STORAGE_BLOCKS_IRON))
-                .build(consumer);
-
 //        ShapedRecipeBuilder.shapedRecipe(ModItems.MODULE.get(), 1)
 //                .patternLine("#I#")
 //                .patternLine("D#D")

@@ -15,11 +15,13 @@ import com.tac.guns.interfaces.IHeadshotBox;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.*;
+import com.tac.guns.network.message.MessageBlood;
+import com.tac.guns.network.message.MessageProjectileHitBlock;
+import com.tac.guns.network.message.MessageProjectileHitEntity;
+import com.tac.guns.network.message.MessageRemoveProjectile;
 import com.tac.guns.util.BufferUtil;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
-import com.tac.guns.util.WearableHelper;
 import com.tac.guns.util.math.ExtendedEntityRayTraceResult;
 import com.tac.guns.world.ProjectileExplosion;
 import net.minecraft.block.*;
@@ -47,7 +49,6 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -219,7 +220,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 startVec = startVec.subtract(v);
                 endVec = endVec.subtract(v);
             }
-            RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this), IGNORE_LEAVES);
+            RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
             if (result.getType() != RayTraceResult.Type.MISS) {
                 endVec = result.getHitVec();
             }
@@ -343,7 +344,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         Vector3d hitPos = boundingBox.rayTrace(startVec, endVec).orElse(null);
         Vector3d grownHitPos = boundingBox.grow(Config.COMMON.gameplay.growBoundingBoxAmountV2.get(), 0, Config.COMMON.gameplay.growBoundingBoxAmountV2.get()).rayTrace(startVec, endVec).orElse(null);
         if (hitPos == null && grownHitPos != null) {
-            RayTraceResult raytraceresult = rayTraceBlocks(this.world, new RayTraceContext(startVec, grownHitPos, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this), IGNORE_LEAVES);
+            RayTraceResult raytraceresult = rayTraceBlocks(this.world, new RayTraceContext(startVec, grownHitPos, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
                 return null;
             }
@@ -479,15 +480,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         DamageSource source = new DamageSourceProjectile("bullet", this, shooter, weapon).setProjectile();
-        if (entity instanceof PlayerEntity && WearableHelper.PlayerWornRig((PlayerEntity) entity) != null) {
-            if (!WearableHelper.tickFromCurrentDurability((PlayerEntity) entity, this))
-                PacketHandler.getPlayChannel().sendTo(new MessagePlayerShake((PlayerEntity) entity), ((ServerPlayerEntity) entity).connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
-            else {
-                tac_attackEntity(source, entity, damage);
-            }
-        } else {
+
+        if (entity instanceof PlayerEntity && !Config.COMMON.gameplay.gunOfKindnessToPlayer.get())
             tac_attackEntity(source, entity, damage);
-        }
+        else if (!Config.COMMON.gameplay.gunOfKindness.get())
+            tac_attackEntity(source, entity, damage);
 
         if (this.shooter instanceof PlayerEntity) {
             int hitType = critical ? MessageProjectileHitEntity.HitType.CRITICAL : headshot ? MessageProjectileHitEntity.HitType.HEADSHOT : MessageProjectileHitEntity.HitType.NORMAL;
@@ -773,16 +770,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         return performRayTrace(context, (rayTraceContext, blockPos) -> {
             BlockState blockState = world.getBlockState(blockPos);
             if (ignorePredicate.test(blockState)) return null;
-            FluidState fluidState = world.getFluidState(blockPos);
-            Vector3d startVec = rayTraceContext.getStartVec();
-            Vector3d endVec = rayTraceContext.getEndVec();
-            VoxelShape blockShape = rayTraceContext.getBlockShape(blockState, world, blockPos);
-            BlockRayTraceResult blockResult = world.rayTraceBlocks(startVec, endVec, blockPos, blockShape, blockState);
-            VoxelShape fluidShape = rayTraceContext.getFluidShape(fluidState, world, blockPos);
-            BlockRayTraceResult fluidResult = fluidShape.rayTrace(startVec, endVec, blockPos);
-            double blockDistance = blockResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(blockResult.getHitVec());
-            double fluidDistance = fluidResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(fluidResult.getHitVec());
-            return blockDistance <= fluidDistance ? blockResult : fluidResult;
+            return getBlockRayTraceResult(world, rayTraceContext, blockPos, blockState);
         }, (rayTraceContext) -> {
             Vector3d Vector3d = rayTraceContext.getStartVec().subtract(rayTraceContext.getEndVec());
             return BlockRayTraceResult.createMiss(rayTraceContext.getEndVec(), Direction.getFacingFromVector(Vector3d.x, Vector3d.y, Vector3d.z), new BlockPos(rayTraceContext.getEndVec()));
@@ -794,29 +782,33 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
      * A custom implementation of
      * that allows you to pass a predicate to ignore certain blocks when checking for collisions.
      *
-     * @param world           the world to perform the ray trace
-     * @param context         the ray trace context
-     * @param ignorePredicate the block state predicate
+     * @param world   the world to perform the ray trace
+     * @param context the ray trace context
      * @return a result of the raytrace
      */
-    private static BlockRayTraceResult rayTraceBlocks(World world, RayTraceContext context, Predicate<BlockState> ignorePredicate) {
+    private static BlockRayTraceResult rayTraceBlocks(World world, RayTraceContext context) {
         return performRayTrace(context, (rayTraceContext, blockPos) -> {
             BlockState blockState = world.getBlockState(blockPos);
-            if (ignorePredicate.test(blockState)) return null;
-            FluidState fluidState = world.getFluidState(blockPos);
-            Vector3d startVec = rayTraceContext.getStartVec();
-            Vector3d endVec = rayTraceContext.getEndVec();
-            VoxelShape blockShape = rayTraceContext.getBlockShape(blockState, world, blockPos);
-            BlockRayTraceResult blockResult = world.rayTraceBlocks(startVec, endVec, blockPos, blockShape, blockState);
-            VoxelShape fluidShape = rayTraceContext.getFluidShape(fluidState, world, blockPos);
-            BlockRayTraceResult fluidResult = fluidShape.rayTrace(startVec, endVec, blockPos);
-            double blockDistance = blockResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(blockResult.getHitVec());
-            double fluidDistance = fluidResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(fluidResult.getHitVec());
-            return blockDistance <= fluidDistance ? blockResult : fluidResult;
+            if (ProjectileEntity.IGNORE_LEAVES.test(blockState)) return null;
+            return getBlockRayTraceResult(world, rayTraceContext, blockPos, blockState);
         }, (rayTraceContext) -> {
             Vector3d Vector3d = rayTraceContext.getStartVec().subtract(rayTraceContext.getEndVec());
             return BlockRayTraceResult.createMiss(rayTraceContext.getEndVec(), Direction.getFacingFromVector(Vector3d.x, Vector3d.y, Vector3d.z), new BlockPos(rayTraceContext.getEndVec()));
         });
+    }
+
+    @Nullable
+    private static BlockRayTraceResult getBlockRayTraceResult(World world, RayTraceContext rayTraceContext, BlockPos blockPos, BlockState blockState) {
+        FluidState fluidState = world.getFluidState(blockPos);
+        Vector3d startVec = rayTraceContext.getStartVec();
+        Vector3d endVec = rayTraceContext.getEndVec();
+        VoxelShape blockShape = rayTraceContext.getBlockShape(blockState, world, blockPos);
+        BlockRayTraceResult blockResult = world.rayTraceBlocks(startVec, endVec, blockPos, blockShape, blockState);
+        VoxelShape fluidShape = rayTraceContext.getFluidShape(fluidState, world, blockPos);
+        BlockRayTraceResult fluidResult = fluidShape.rayTrace(startVec, endVec, blockPos);
+        double blockDistance = blockResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(blockResult.getHitVec());
+        double fluidDistance = fluidResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(fluidResult.getHitVec());
+        return blockDistance <= fluidDistance ? blockResult : fluidResult;
     }
 
     private static <T> T performRayTrace(RayTraceContext context, BiFunction<RayTraceContext, BlockPos, T> hitFunction, Function<RayTraceContext, T> missFactory) {

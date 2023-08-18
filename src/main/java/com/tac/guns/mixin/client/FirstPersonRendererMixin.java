@@ -2,10 +2,7 @@ package com.tac.guns.mixin.client;
 
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
-import com.tac.guns.item.GunItem;
 import com.tac.guns.network.CommonStateBox;
-import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.MessageToClientRigInv;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FirstPersonRenderer;
 import net.minecraft.item.ItemStack;
@@ -26,41 +23,41 @@ public class FirstPersonRendererMixin {
     @Shadow
     private float prevEquippedProgressMainHand;
 
-    @Inject(method = "tick",at = @At("HEAD"))
-    public void applyDrawAndHolster(CallbackInfo ci){
-        if(Minecraft.getInstance().player == null) return;
+    @Inject(method = "tick", at = @At("HEAD"))
+    public void applyDrawAndHolster(CallbackInfo ci) {
+        if (Minecraft.getInstance().player == null) return;
         ItemStack mainHandItemStack = Minecraft.getInstance().player.getHeldItemMainhand();
         GunAnimationController controller = GunAnimationController.fromItem(mainHandItemStack.getItem());
         GunAnimationController controller1 = GunAnimationController.fromItem(this.prevItemStack.getItem());
-        if(prevItemStack.isItemEqual(mainHandItemStack)
-                && (prevSlot == Minecraft.getInstance().player.inventory.currentItem && !CommonStateBox.isSwapped ) )
+        if (prevItemStack.isItemEqual(mainHandItemStack)
+                && (prevSlot == Minecraft.getInstance().player.inventory.currentItem && !CommonStateBox.isSwapped))
             return;
         prevItemStack = mainHandItemStack;
         prevSlot = Minecraft.getInstance().player.inventory.currentItem;
         CommonStateBox.isSwapped = false;
         //if(isSameWeapon(Minecraft.getInstance().player)) return;
-        if(controller1 != null && controller1.isAnimationRunning()) {
+        if (controller1 != null && controller1.isAnimationRunning()) {
             controller1.stopAnimation();
         }
-        if(controller != null && controller == controller1){
+        if (controller != null && controller == controller1) {
             //Stop the previous item's animation
             AnimationMeta meta = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.DRAW);
-            if(!controller.getPreviousAnimation().equals(meta)) controller.stopAnimation();
+            if (!controller.getPreviousAnimation().equals(meta)) controller.stopAnimation();
             controller.runAnimation(GunAnimationController.AnimationLabel.DRAW);
-        }else if(controller != null && controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.DRAW) != null) {
+        } else if (controller != null && controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.DRAW) != null) {
             this.itemStackMainHand = mainHandItemStack;
             controller.runAnimation(GunAnimationController.AnimationLabel.DRAW);
-            PacketHandler.getPlayChannel().sendToServer(new MessageToClientRigInv(((GunItem)mainHandItemStack.getItem()).getGun().getProjectile().getItem()));
         }
     }
+
     /*
-             */
-    @Inject(method = "tick",at = @At("RETURN"))
-    public void cancelEquippedProgress(CallbackInfo ci){
-        if(Minecraft.getInstance().player == null) return;
+     */
+    @Inject(method = "tick", at = @At("RETURN"))
+    public void cancelEquippedProgress(CallbackInfo ci) {
+        if (Minecraft.getInstance().player == null) return;
         ItemStack mainHandItemStack = Minecraft.getInstance().player.getHeldItemMainhand();
         GunAnimationController controller = GunAnimationController.fromItem(mainHandItemStack.getItem());
-        if(controller == null ) return;
+        if (controller == null) return;
         equippedProgressMainHand = 1.0f;
         prevEquippedProgressMainHand = 1.0f;
     }

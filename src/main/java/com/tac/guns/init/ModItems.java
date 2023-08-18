@@ -7,7 +7,6 @@ import com.tac.guns.item.*;
 import com.tac.guns.item.TransitionalTypes.*;
 import com.tac.guns.item.TransitionalTypes.grenades.BaseballGrenadeItem;
 import com.tac.guns.item.TransitionalTypes.grenades.LightGrenadeItem;
-import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.item.attachment.impl.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -259,14 +258,6 @@ public class ModItems {
             () -> new ExtendedMagItem(ExtendedMag.create(GunModifiers.MEDIUM_EXTENDED_MAG), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> LARGE_EXTENDED_MAG = REGISTER.register("large_extended_mag",
             () -> new ExtendedMagItem(ExtendedMag.create(GunModifiers.LARGE_EXTENDED_MAG), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
-
-    /* ARMOR */
-    public static final RegistryObject<Item> LIGHT_ARMOR = REGISTER.register("light_armor",
-            () -> new ArmorRigItem(2, new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
-    public static final RegistryObject<Item> MEDIUM_STEEL_ARMOR = REGISTER.register("medium_steel_armor",
-            () -> new ArmorRigItem(2, new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
-    public static final RegistryObject<Item> LIGHT_ARMOR_REPAIR_PLATE = REGISTER.register("light_armor_plate",
-            () -> new ArmorPlateItem(new Item.Properties().maxStackSize(12).group(GunMod.GROUP)));
 
     /* Misc */
     public static final RegistryObject<Item> UNCOMMON_MATERIAL = REGISTER.register("uncommon_material",
