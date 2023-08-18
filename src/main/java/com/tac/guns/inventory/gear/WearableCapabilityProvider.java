@@ -1,8 +1,5 @@
 package com.tac.guns.inventory.gear;
 
-import com.tac.guns.inventory.gear.armor.IAmmoItemHandler;
-import com.tac.guns.inventory.gear.armor.RigSlotsHandler;
-import com.tac.guns.util.WearableHelper;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;

@@ -7,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.annotation.Validator;
-import com.tac.guns.client.CustomGunManager;
 import net.minecraft.client.resources.JsonReloadListener;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
@@ -17,7 +16,6 @@ import net.minecraft.util.Util;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;
 import java.io.InvalidObjectException;

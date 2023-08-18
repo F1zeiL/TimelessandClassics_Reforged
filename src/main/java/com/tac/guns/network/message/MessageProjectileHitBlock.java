@@ -1,11 +1,9 @@
 package com.tac.guns.network.message;
 
 import com.tac.guns.client.network.ClientPlayHandler;
-import com.tac.guns.entity.ProjectileEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;

@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.tac.guns.Reference;
 import com.tac.guns.client.render.armor.VestLayer.ArmorBase;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

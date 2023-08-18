@@ -1,20 +1,11 @@
 package com.tac.guns.network.message;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.tac.guns.client.screen.UpgradeBenchScreen;
 import com.tac.guns.common.network.ServerPlayHandler;
-import com.tac.guns.init.ModEnchantments;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
-import org.apache.commons.lang3.SerializationUtils;
 
-import java.beans.XMLEncoder;
-import java.io.*;
 import java.util.function.Supplier;
 
 /**

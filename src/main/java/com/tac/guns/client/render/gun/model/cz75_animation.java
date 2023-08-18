@@ -17,7 +17,8 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 
-import static com.tac.guns.client.gunskin.ModelComponent.*;
+import static com.tac.guns.client.gunskin.ModelComponent.BODY;
+import static com.tac.guns.client.gunskin.ModelComponent.SLIDE;
 
 /*
  * Because the revolver has a rotating chamber, we need to render it in a

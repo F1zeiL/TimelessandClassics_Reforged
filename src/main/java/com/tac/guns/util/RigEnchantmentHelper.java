@@ -5,7 +5,6 @@ import com.tac.guns.common.Rig;
 import com.tac.guns.init.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs

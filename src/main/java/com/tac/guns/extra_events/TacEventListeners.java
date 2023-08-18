@@ -1,59 +1,27 @@
 package com.tac.guns.extra_events;
 
-import java.util.Locale;
-
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.GunMod;
-import com.tac.guns.entity.DamageSourceProjectile;
+import com.tac.guns.Reference;
 import com.tac.guns.entity.ProjectileEntity;
+import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
-import com.tac.guns.init.ModSyncedDataKeys;
-import com.tac.guns.inventory.gear.GearSlotsHandler;
 import com.tac.guns.item.TransitionalTypes.M1GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.tileentity.UpgradeBenchTileEntity;
-import com.tac.guns.util.WearableHelper;
-import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.VersionChecker;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.ArrayUtils;
-
-/**
- * This class will be used for all shooting events that I will utilise.
- * The gun mod provides 3 events for firing guns check out {@link com.mrcrayfish.guns.event.GunFireEvent} for what they are
- */
-
-
-import com.tac.guns.Config;
-import com.tac.guns.Reference;
-import com.tac.guns.common.Gun;
-import com.tac.guns.event.GunFireEvent;
-import com.tac.guns.item.GunItem;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.KeybindTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.Level;
-
-import static com.tac.guns.inventory.gear.InventoryListener.ITEM_HANDLER_CAPABILITY;
 
 
 /**

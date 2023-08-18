@@ -1,61 +1,27 @@
 package com.tac.guns.common.network;
 
-import static net.minecraft.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Predicate;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import com.tac.guns.item.*;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.*;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.client.handler.MovementAdaptationsHandler;
-import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.screen.UpgradeBenchScreen;
-import com.tac.guns.common.Gun;
-import com.tac.guns.common.NetworkGunManager;
-import com.tac.guns.common.ProjectileManager;
-import com.tac.guns.common.Rig;
-import com.tac.guns.common.ShootTracker;
-import com.tac.guns.common.SpreadTracker;
-import com.tac.guns.common.container.AttachmentContainer;
-import com.tac.guns.common.container.ColorBenchContainer;
-import com.tac.guns.common.container.InspectionContainer;
-import com.tac.guns.common.container.UpgradeBenchContainer;
-import com.tac.guns.common.container.WorkbenchContainer;
+import com.tac.guns.common.*;
+import com.tac.guns.common.container.*;
 import com.tac.guns.crafting.WorkbenchRecipe;
 import com.tac.guns.crafting.WorkbenchRecipes;
 import com.tac.guns.entity.ProjectileEntity;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModEnchantments;
-import com.tac.guns.init.ModItems;
-import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.interfaces.IProjectileFactory;
+import com.tac.guns.item.*;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.item.attachment.IAttachment;
-import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.MessageBulletTrail;
-import com.tac.guns.network.message.MessageGunSound;
-import com.tac.guns.network.message.MessageRigInvToClient;
-import com.tac.guns.network.message.MessageSaveItemUpgradeBench;
-import com.tac.guns.network.message.MessageShoot;
-import com.tac.guns.network.message.MessageUpgradeBenchApply;
+import com.tac.guns.network.message.*;
 import com.tac.guns.tileentity.FlashLightSource;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
 import com.tac.guns.tileentity.WorkbenchTileEntity;
@@ -63,7 +29,6 @@ import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.util.InventoryUtil;
 import com.tac.guns.util.WearableHelper;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -79,13 +44,14 @@ import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.*;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -95,6 +61,17 @@ import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Predicate;
+
+import static net.minecraft.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
 
 
 /**

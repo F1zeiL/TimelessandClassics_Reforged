@@ -1,11 +1,8 @@
 package com.tac.guns.common.container;
 
-import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.crafting.WorkbenchRecipes;
 import com.tac.guns.init.ModContainers;
-import com.tac.guns.item.GunItem;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
-import com.tac.guns.tileentity.WorkbenchTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;

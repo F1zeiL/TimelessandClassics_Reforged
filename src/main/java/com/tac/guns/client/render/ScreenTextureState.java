@@ -2,7 +2,6 @@ package com.tac.guns.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.tac.guns.Reference;
-import com.tac.guns.util.OptifineHelper;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderState;
@@ -11,12 +10,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.opengl.GL43;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL43.*;
 
 /**
  * A texture state that represents the buffer after the world has been rendered but before the HUD

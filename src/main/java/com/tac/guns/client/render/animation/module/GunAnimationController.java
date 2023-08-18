@@ -5,7 +5,6 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageAnimationRun;
-import com.tac.guns.network.message.MessageAnimationSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.model.IBakedModel;

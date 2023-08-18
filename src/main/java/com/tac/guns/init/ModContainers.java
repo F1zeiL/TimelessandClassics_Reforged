@@ -13,9 +13,6 @@ import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.Dictionary;
-import java.util.HashMap;
-
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */

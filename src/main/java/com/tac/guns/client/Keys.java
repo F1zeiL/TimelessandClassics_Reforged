@@ -9,9 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.settings.KeyModifier;
 import org.lwjgl.glfw.GLFW;
 
-import static com.tac.guns.client.InputHandler._addNormal;
-import static com.tac.guns.client.InputHandler._addGlobal;
-import static com.tac.guns.client.InputHandler._addDebug;
+import static com.tac.guns.client.InputHandler.*;
 
 @OnlyIn( Dist.CLIENT )
 public final class Keys

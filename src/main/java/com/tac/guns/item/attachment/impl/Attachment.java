@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.tac.guns.util.GunModifierHelper;
 
 /**
  * The base attachment object

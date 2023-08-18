@@ -1,14 +1,13 @@
 package com.tac.guns.client;
 
-import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.glfw.GLFW;
-
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.client.util.InputMappings.Type;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.LinkedList;

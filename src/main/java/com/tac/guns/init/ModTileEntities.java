@@ -2,10 +2,8 @@ package com.tac.guns.init;
 
 import com.tac.guns.Reference;
 import com.tac.guns.tileentity.FlashLightSource;
-import com.tac.guns.tileentity.UpgradeBenchTileEntity;
 import com.tac.guns.tileentity.WorkbenchTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;

@@ -1,10 +1,7 @@
 package com.tac.guns.mixin.client;
 
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
-import com.tac.guns.client.handler.AnimationHandler;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
-import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.network.CommonStateBox;
 import com.tac.guns.network.PacketHandler;

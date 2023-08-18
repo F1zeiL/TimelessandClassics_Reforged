@@ -11,7 +11,6 @@ import com.tac.guns.annotation.Validator;
 import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
@@ -27,7 +26,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.Validate;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nullable;
 import java.io.*;

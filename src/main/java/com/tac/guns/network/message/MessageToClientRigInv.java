@@ -1,14 +1,10 @@
 package com.tac.guns.network.message;
 
-import com.tac.guns.client.network.ClientPlayHandler;
-import com.tac.guns.common.Gun;
-import com.tac.guns.common.NetworkGunManager;
 import com.tac.guns.common.network.ServerPlayHandler;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
-import org.apache.commons.lang3.Validate;
 
 import java.util.function.Supplier;
 

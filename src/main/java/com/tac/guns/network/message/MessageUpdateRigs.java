@@ -2,7 +2,10 @@ package com.tac.guns.network.message;
 
 import com.google.common.collect.ImmutableMap;
 import com.tac.guns.client.network.ClientPlayHandler;
-import com.tac.guns.common.*;
+import com.tac.guns.common.CustomRig;
+import com.tac.guns.common.CustomRigLoader;
+import com.tac.guns.common.NetworkRigManager;
+import com.tac.guns.common.Rig;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;

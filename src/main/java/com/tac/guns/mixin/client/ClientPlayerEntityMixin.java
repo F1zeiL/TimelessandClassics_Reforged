@@ -2,12 +2,9 @@ package com.tac.guns.mixin.client;
 
 import com.tac.guns.event.ClientSetSprintingEvent;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraftforge.eventbus.api.Event;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author Arcomit

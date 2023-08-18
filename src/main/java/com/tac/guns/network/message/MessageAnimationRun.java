@@ -1,6 +1,5 @@
 package com.tac.guns.network.message;
 
-import com.tac.guns.client.network.ClientPlayHandler;
 import com.tac.guns.network.PacketHandler;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;

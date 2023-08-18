@@ -1,7 +1,6 @@
 package com.tac.guns.network.message;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
-import com.tac.guns.GunMod;
 import com.tac.guns.common.network.ServerPlayHandler;
 import com.tac.guns.init.ModSyncedDataKeys;
 import net.minecraft.entity.player.ServerPlayerEntity;

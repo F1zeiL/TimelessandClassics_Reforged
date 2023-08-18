@@ -1,7 +1,5 @@
 package com.tac.guns.entity.specifics;
 
-import com.tac.guns.Config;
-import com.tac.guns.entity.GrenadeEntity;
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.ThrowableItemEntity;
 import com.tac.guns.init.ModEntities;

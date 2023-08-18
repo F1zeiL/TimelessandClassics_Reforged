@@ -3,10 +3,6 @@ package com.tac.guns.client.gunskin;
 import com.tac.guns.client.SpecialModel;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-
 public class DefaultSkin extends GunSkin{
     public DefaultSkin(String gun) {
         super("default",gun,null);

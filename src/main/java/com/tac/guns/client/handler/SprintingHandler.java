@@ -1,8 +1,6 @@
 package com.tac.guns.client.handler;
 
 import com.tac.guns.Reference;
-import com.tac.guns.client.handler.AimingHandler;
-import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.event.ClientSetSprintingEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

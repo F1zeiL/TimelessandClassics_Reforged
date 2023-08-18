@@ -2,7 +2,6 @@ package com.tac.guns.item;
 
 import com.tac.guns.item.attachment.IExtendedMag;
 import com.tac.guns.item.attachment.impl.ExtendedMag;
-import com.tac.guns.item.attachment.impl.SideRail;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;

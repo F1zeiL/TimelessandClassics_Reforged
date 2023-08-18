@@ -1,7 +1,5 @@
 package com.tac.guns.common;
 
-import com.tac.guns.annotation.Ignored;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 

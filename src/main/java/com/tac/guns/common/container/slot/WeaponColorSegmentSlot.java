@@ -1,20 +1,12 @@
 package com.tac.guns.common.container.slot;
 
-import com.tac.guns.common.Gun;
-import com.tac.guns.common.container.AttachmentContainer;
 import com.tac.guns.common.container.ColorBenchContainer;
-import com.tac.guns.init.ModSounds;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.IWeaponColorable;
-import com.tac.guns.item.ScopeItem;
-import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundCategory;
-import com.tac.guns.util.GunModifierHelper;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs

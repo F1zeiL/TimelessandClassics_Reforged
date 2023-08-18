@@ -8,7 +8,6 @@ import com.tac.guns.client.render.crosshair.Crosshair;
 import com.tac.guns.client.render.crosshair.DynamicScalingTexturedCrosshair;
 import com.tac.guns.client.render.crosshair.TechCrosshair;
 import com.tac.guns.client.render.crosshair.TexturedCrosshair;
-import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;

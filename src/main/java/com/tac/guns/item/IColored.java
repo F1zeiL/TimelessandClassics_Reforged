@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple interface to allow items to be colored. Implementing this on an item will automatically

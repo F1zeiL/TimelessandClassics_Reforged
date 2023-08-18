@@ -3,7 +3,6 @@ package com.tac.guns.network.message;
 
 import com.tac.guns.common.network.ServerPlayHandler;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;

@@ -1,10 +1,8 @@
 package com.tac.guns.client.settings;
 
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Arcomit

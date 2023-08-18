@@ -7,14 +7,12 @@ import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
-import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.TransitionalTypes.wearables.ArmorRigItem;
 import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.MessageFireMode;
 import com.tac.guns.network.message.MessageToClientRigInv;
 import com.tac.guns.util.WearableHelper;
 import net.minecraft.client.Minecraft;
@@ -38,7 +36,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class HUDRenderingHandler extends AbstractGui {

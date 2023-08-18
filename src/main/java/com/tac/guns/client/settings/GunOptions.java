@@ -1,11 +1,8 @@
 package com.tac.guns.client.settings;
 
-import java.text.DecimalFormat;
-
 import com.tac.guns.Config;
 import com.tac.guns.client.handler.CrosshairHandler;
 import com.tac.guns.client.render.crosshair.Crosshair;
-
 import net.minecraft.client.AbstractOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -14,6 +11,8 @@ import net.minecraft.client.settings.SliderPercentageOption;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.text.DecimalFormat;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
