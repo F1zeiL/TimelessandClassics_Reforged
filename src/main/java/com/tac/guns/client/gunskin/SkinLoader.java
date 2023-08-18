@@ -233,7 +233,9 @@ public enum SkinLoader {
         this.defaultSkin = skin;
 
         ResourceLocation iconLoc = ResourceLocation.tryCreate("tac:textures/gui/icon/"+this.name+".png");
-        skin.setIcon(iconLoc);
+        if(iconLoc!=null && Minecraft.getInstance().getResourceManager().hasResource(iconLoc)){
+            skin.setIcon(iconLoc);
+        }
 
         return skin;
     }

@@ -479,7 +479,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             damage *= GunModifierHelper.getAdditionalHeadshotDamage(this.weapon) == 0F ? 1F : GunModifierHelper.getAdditionalHeadshotDamage(this.weapon);
         }
 
-        DamageSource source = new DamageSourceProjectile("bullet", this, shooter, weapon).setProjectile();
+        DamageSource source = new DamageSourceProjectile("bullet", this, shooter, weapon, headshot).setProjectile();
 
         if (entity instanceof PlayerEntity && !Config.COMMON.gameplay.gunOfKindnessToPlayer.get())
             tac_attackEntity(source, entity, damage);

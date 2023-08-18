@@ -1,60 +1,11 @@
 {
   "ai_awp": {
-    "ai_awp_black": {
-      "type": "texture",
+    "common": {
+      "type": "common_texture",
       "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_black"
+        "4": "tac:gunskin/ai_awp/ai_awp"
       },
-      "icon": "tac:textures/gunskin/icon/ai_awp_black.png"
-    },
-    "ai_awp_blue": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_blue.png"
-    },
-    "ai_awp_green": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_green"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_green.png"
-    },
-    "ai_awp_jade": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_jade"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_jade.png"
-    },
-    "ai_awp_orange": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_orange"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_orange.png"
-    },
-    "ai_awp_pink": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_pink"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_pink.png"
-    },
-    "ai_awp_sand": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_sand"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_sand.png"
-    },
-    "ai_awp_white": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/ai_awp/ai_awp_white"
-      },
-      "icon": "tac:textures/gunskin/icon/ai_awp_white.png"
+      "icon": "tac:gunskin/icon/ai_awp"
     }
   },
 
@@ -64,292 +15,55 @@
       "textures": {
         "0": "tac:gunskin/ak47/ak47_golden"
       },
-      "icon": "tac:textures/gunskin/icon/ak47_golden.png"
+      "icon": "tac:gunskin/icon/ak47_golden"
     },
     "ak47_silver": {
       "type": "custom",
       "models": {
         "auto": "tac:gunskin/ak47/ak47_silver"
       },
-      "icon": "tac:textures/gunskin/icon/ak47_silver.png"
+      "icon": "tac:gunskin/icon/ak47_silver"
     }
   },
 
   "deagle_357": {
     "deagle_357_black": {
-      "type": "texture",
+      "type": "common_texture",
       "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_black",
-        "6": "tac:gunskin/deagle_357/attachments_black"
+        "5": "tac:gunskin/deagle_357/deagle_357",
+        "6": "tac:gunskin/deagle_357/attachments"
       },
-      "icon": "tac:textures/gunskin/icon/deagle_357_black.png"
-    },
-    "deagle_357_blue": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_blue",
-        "6": "tac:gunskin/deagle_357/attachments_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_blue.png"
-    },
-    "deagle_357_green": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_green",
-        "6": "tac:gunskin/deagle_357/attachments_green"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_green.png"
-    },
-    "deagle_357_jade": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_jade",
-        "6": "tac:gunskin/deagle_357/attachments_jade"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_jade.png"
-    },
-    "deagle_357_orange": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_orange",
-        "6": "tac:gunskin/deagle_357/attachments_orange"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_orange.png"
-    },
-    "deagle_357_pink": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_pink",
-        "6": "tac:gunskin/deagle_357/attachments_pink"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_pink.png"
-    },
-    "deagle_357_sand": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/deagle_357/deagle_357_sand",
-        "6": "tac:gunskin/deagle_357/attachments_sand"
-      },
-      "icon": "tac:textures/gunskin/icon/deagle_357_sand.png"
+      "icon": "tac:gunskin/icon/deagle_357"
     }
   },
 
   "scar_l": {
     "scar_l_black": {
-      "type": "texture",
+      "type": "common_texture",
       "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_black"
+        "5": "tac:gunskin/scar_l/scar_l"
       },
-      "icon": "tac:textures/gunskin/icon/scar_l_black.png"
-    },
-    "scar_l_blue": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_blue.png"
-    },
-    "scar_l_green": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_green"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_green.png"
-    },
-    "scar_l_jade": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_jade"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_jade.png"
-    },
-    "scar_l_orange": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_orange"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_orange.png"
-    },
-    "scar_l_pink": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_pink"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_pink.png"
-    },
-    "scar_l_white": {
-      "type": "texture",
-      "textures": {
-        "5": "tac:gunskin/scar_l/scar_l_white"
-      },
-      "icon": "tac:textures/gunskin/icon/scar_l_white.png"
+      "icon": "tac:gunskin/icon/scar_l"
     }
   },
 
   "udp_9": {
     "udp_9_black": {
-      "type": "texture",
+      "type": "common_texture",
       "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_black"
+        "4": "tac:gunskin/udp_9/udp_9"
       },
-      "icon": "tac:textures/gunskin/icon/udp_9_black.png"
-    },
-    "udp_9_blue": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_blue.png"
-    },
-    "udp_9_green": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_green"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_green.png"
-    },
-    "udp_9_jade": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_jade"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_jade.png"
-    },
-    "udp_9_orange": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_orange"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_orange.png"
-    },
-    "udp_9_pink": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_pink"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_pink.png"
-    },
-    "udp_9_white": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/udp_9/udp_9_white"
-      },
-      "icon": "tac:textures/gunskin/icon/udp_9_white.png"
+      "icon": "tac:gunskin/icon/udp_9"
     }
   },
 
   "tec_9": {
-    "tec_9_black": {
-      "type": "texture",
+    "common": {
+      "type": "common_texture",
       "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_black"
+        "4": "tac:gunskin/tec_9/tec_9"
       },
-      "icon": "tac:textures/gunskin/icon/tec_9_black.png"
-    },
-    "tec_9_blue": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_blue.png"
-    },
-    "tec_9_brown": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_brown"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_brown.png"
-    },
-    "tec_9_dark_blue": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_dark_blue"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_dark_blue.png"
-    },
-    "tec_9_dark_green": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_dark_green"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_dark_green.png"
-    },
-    "tec_9_gray": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_gray"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_gray.png"
-    },
-    "tec_9_green": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_green"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_green.png"
-    },
-    "tec_9_jade": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_jade"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_jade.png"
-    },
-    "tec_9_light_gray": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_light_gray"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_light_gray.png"
-    },
-    "tec_9_magenta": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_magenta"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_magenta.png"
-    },
-    "tec_9_orange": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_orange"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_orange.png"
-    },
-    "tec_9_pink": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_pink"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_pink.png"
-    },
-    "tec_9_purple": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_purple"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_purple.png"
-    },
-    "tec_9_red": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_red"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_red.png"
-    },
-    "tec_9_sand": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_sand"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_sand.png"
-    },
-    "tec_9_white": {
-      "type": "texture",
-      "textures": {
-        "4": "tac:gunskin/tec_9/tec_9_white"
-      },
-      "icon": "tac:textures/gunskin/icon/tec_9_white.png"
+      "icon": "tac:gunskin/icon/tec_9"
     }
   }
 }

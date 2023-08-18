@@ -21,10 +21,14 @@ public class DamageSourceProjectile extends IndirectEntityDamageSource
 
     private ItemStack weapon;
 
-    public DamageSourceProjectile(String damageTypeIn, Entity source, @Nullable Entity indirectEntityIn, ItemStack weapon)
+    private boolean isHeadShot;
+
+    public DamageSourceProjectile(String damageTypeIn, Entity source,
+                                  @Nullable Entity indirectEntityIn, ItemStack weapon, boolean isHeadShot)
     {
         super(damageTypeIn, source, indirectEntityIn);
         this.weapon = weapon;
+        this.isHeadShot = isHeadShot;
     }
 
     public ItemStack getWeapon()
@@ -38,5 +42,9 @@ public class DamageSourceProjectile extends IndirectEntityDamageSource
         ITextComponent textComponent = this.getTrueSource() == null ? this.damageSourceEntity.getDisplayName() : this.getTrueSource().getDisplayName();
         String deathKey = String.format("death.attack.%s.%s.%s", Reference.MOD_ID, this.damageType, DEATH_TYPES[RAND.nextInt(DEATH_TYPES.length)]);
         return new TranslationTextComponent(deathKey, entityLivingBaseIn.getDisplayName(), textComponent);
+    }
+
+    public boolean isHeadShot() {
+        return isHeadShot;
     }
 }
