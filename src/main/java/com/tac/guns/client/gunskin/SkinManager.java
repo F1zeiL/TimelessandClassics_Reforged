@@ -176,13 +176,20 @@ public class SkinManager {
                     "ak47.GOLDEN",
                     "ak47.SILVER",
 
-                    "all.BEIGE",
                     "all.BLACK",
                     "all.BLUE",
+                    "all.BROWN",
+                    "all.DARK_BLUE",
+                    "all.DARK_GREEN",
+                    "all.GRAY",
                     "all.GREEN",
                     "all.JADE",
+                    "all.LIGHT_GRAY",
+                    "all.MAGENTA",
                     "all.ORANGE",
                     "all.PINK",
+                    "all.PURPLE",
+                    "all.RED",
                     "all.SAND",
                     "all.WHITE"
             };

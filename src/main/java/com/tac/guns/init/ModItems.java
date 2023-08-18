@@ -279,20 +279,35 @@ public class ModItems {
     public static final RegistryObject<Item> SKIN_AK_SILVER = REGISTER.register("skin_ak_silver",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_AK_SILVER), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 
-    public static final RegistryObject<Item> SKIN_BEIGE = REGISTER.register("skin_beige",
-            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_BEIGE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_BLACK), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_BLUE = REGISTER.register("skin_blue",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_BLUE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_BROWN = REGISTER.register("skin_brown",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_BROWN), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_DARK_BLUE = REGISTER.register("skin_dark_blue",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_DARK_BLUE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_DARK_GREEN = REGISTER.register("skin_dark_green",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_DARK_GREEN), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_GRAY = REGISTER.register("skin_gray",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_GRAY), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_GREEN = REGISTER.register("skin_green",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_GREEN), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_JADE = REGISTER.register("skin_jade",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_JADE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_LIGHT_GRAY = REGISTER.register("skin_light_gray",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_LIGHT_GRAY), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_MAGENTA = REGISTER.register("skin_magenta",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_MAGENTA), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_ORANGE = REGISTER.register("skin_orange",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_ORANGE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_PINK = REGISTER.register("skin_pink",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_PINK), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_PURPLE = REGISTER.register("skin_purple",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_PURPLE), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_RAD = REGISTER.register("skin_red",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_RED), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_SAND = REGISTER.register("skin_sand",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_SAND), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_WHITE = REGISTER.register("skin_white",

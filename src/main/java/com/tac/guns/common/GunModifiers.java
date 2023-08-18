@@ -1494,12 +1494,6 @@ public class GunModifiers {
         }
     };
 
-    public static final IGunModifier SKIN_BEIGE = new IGunModifier() {
-        @Override
-        public String additionalSkin() {
-            return "BEIGE";
-        }
-    };
     public static final IGunModifier SKIN_BLACK = new IGunModifier() {
         @Override
         public String additionalSkin() {
@@ -1510,6 +1504,30 @@ public class GunModifiers {
         @Override
         public String additionalSkin() {
             return "BLUE";
+        }
+    };
+    public static final IGunModifier SKIN_BROWN = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "BROWN";
+        }
+    };
+    public static final IGunModifier SKIN_DARK_BLUE = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "DARK_BLUE";
+        }
+    };
+    public static final IGunModifier SKIN_DARK_GREEN = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "DARK_GREEN";
+        }
+    };
+    public static final IGunModifier SKIN_GRAY = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "GRAY";
         }
     };
     public static final IGunModifier SKIN_GREEN = new IGunModifier() {
@@ -1524,6 +1542,18 @@ public class GunModifiers {
             return "JADE";
         }
     };
+    public static final IGunModifier SKIN_LIGHT_GRAY = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "LIGHT_GRAY";
+        }
+    };
+    public static final IGunModifier SKIN_MAGENTA = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "MAGENTA";
+        }
+    };
     public static final IGunModifier SKIN_ORANGE = new IGunModifier() {
         @Override
         public String additionalSkin() {
@@ -1534,6 +1564,18 @@ public class GunModifiers {
         @Override
         public String additionalSkin() {
             return "PINK";
+        }
+    };
+    public static final IGunModifier SKIN_PURPLE = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "PURPLE";
+        }
+    };
+    public static final IGunModifier SKIN_RED = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "RED";
         }
     };
     public static final IGunModifier SKIN_SAND = new IGunModifier() {
