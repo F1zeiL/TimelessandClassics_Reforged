@@ -421,8 +421,6 @@ public class ServerPlayHandler
     {
         ItemStack heldItem = player.getHeldItemMainhand();
         try {
-
-            //TODO Fix double click req
             if (heldItem.getItem() instanceof GunItem) {
                 if (heldItem.getTag() == null) {
                     heldItem.getOrCreateTag();
@@ -436,21 +434,28 @@ public class ServerPlayHandler
                 } else if (!Arrays.equals(gunItemFireModes, gun.getGeneral().getRateSelector())) {
                     heldItem.getTag().putIntArray("supportedFireModes", gun.getGeneral().getRateSelector());
                 }
-                int toCheck = ArrayUtils.indexOf(gunItemFireModes, heldItem.getTag().getInt("CurrentFireMode"));
-                if (toCheck >= (heldItem.getTag().getIntArray("supportedFireModes").length-1)) {
+
+                int toCheck = ArrayUtils.indexOf(gunItemFireModes, heldItem.getTag().getInt("CurrentFireMode")) + 1;
+                if (toCheck > (heldItem.getTag().getIntArray("supportedFireModes").length - 1)) {
                     heldItem.getTag().remove("CurrentFireMode");
                     heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
                 } else {
                     heldItem.getTag().remove("CurrentFireMode");
-                    heldItem.getTag().putInt("CurrentFireMode", heldItem.getTag().getIntArray("supportedFireModes")[toCheck + 1]);
+                    heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[toCheck]);
                 }
 
-                if (!Config.COMMON.gameplay.safetyExistence.get() && heldItem.getTag().getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 2) {
-                    heldItem.getTag().remove("CurrentFireMode");
-                    heldItem.getTag().putInt("CurrentFireMode", heldItem.getTag().getIntArray("supportedFireModes")[1]);
+                if (!Config.COMMON.gameplay.safetyExistence.get() && heldItem.getTag().getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1) {
+                    toCheck = ArrayUtils.indexOf(gunItemFireModes, heldItem.getTag().getInt("CurrentFireMode")) + 1;
+                    if (toCheck > (heldItem.getTag().getIntArray("supportedFireModes").length - 1)) {
+                        heldItem.getTag().remove("CurrentFireMode");
+                        heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
+                    } else {
+                        heldItem.getTag().remove("CurrentFireMode");
+                        heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[toCheck]);
+                    }
                 } else if (!Config.COMMON.gameplay.safetyExistence.get() && heldItem.getTag().getInt("CurrentFireMode") == 0) {
                     heldItem.getTag().remove("CurrentFireMode");
-                    heldItem.getTag().putInt("CurrentFireMode", heldItem.getTag().getIntArray("supportedFireModes")[0]);
+                    heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
                 }
 
                 ResourceLocation fireModeSound = gun.getSounds().getCock(); // Use cocking sound for now
@@ -734,23 +739,23 @@ public class ServerPlayHandler
                     NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
                     player.closeScreen();
                 }
-                else if (heldItem.getItem() == ModItems.MODULE.get() && ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getCount() < 3)
-                {
-                    if( ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getItem() != ModItems.MODULE.get() ) {
-                        ((UpgradeBenchTileEntity) tileEntity).setInventorySlotContents(1,
-                                heldItem.copy());
-                        ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).setCount(1);
-                    }
-                    else {
-                        ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).setCount(((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getCount() + 1);
-                    }
-                    player.getHeldItem(Hand.MAIN_HAND).setCount(player.getHeldItem(Hand.MAIN_HAND).getCount()-1);
-                    /// I hate this last part, this is used in order to reset the TileRenderer,
-                    // without this the item stack is added, but the visual is only reset on
-                    // entering GUI, gotta Check what Yor said about this portion.
-                    NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
-                    player.closeScreen();
-                }
+//                else if (heldItem.getItem() == ModItems.MODULE.get() && ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getCount() < 3)
+//                {
+//                    if( ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getItem() != ModItems.MODULE.get() ) {
+//                        ((UpgradeBenchTileEntity) tileEntity).setInventorySlotContents(1,
+//                                heldItem.copy());
+//                        ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).setCount(1);
+//                    }
+//                    else {
+//                        ((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).setCount(((UpgradeBenchTileEntity) tileEntity).getStackInSlot(1).getCount() + 1);
+//                    }
+//                    player.getHeldItem(Hand.MAIN_HAND).setCount(player.getHeldItem(Hand.MAIN_HAND).getCount()-1);
+//                    /// I hate this last part, this is used in order to reset the TileRenderer,
+//                    // without this the item stack is added, but the visual is only reset on
+//                    // entering GUI, gotta Check what Yor said about this portion.
+//                    NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
+//                    player.closeScreen();
+//                }
                 else
                 {
                     player.inventory.addItemStackToInventory(((UpgradeBenchTileEntity) tileEntity).getStackInSlot(0));

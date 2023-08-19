@@ -6,9 +6,9 @@
     "gripType": "tac:two_handed_ak47",
     "recoilAngle": 3.35,
     "horizontalRecoilAngle": 1.25,
-    "recoilKick": 1.325,
-    "recoilAdsReduction": 0.225,
-    "weaponRecoilOffset": 0.865,
+    "recoilKick": 1.375,
+    "recoilAdsReduction": 0.25,
+    "weaponRecoilOffset": 0.78,
     "cameraRecoilDuration": 1.025,
     "cameraRecoilModifier": 1.125,
     "recoilDuration": 0.225,
@@ -37,9 +37,13 @@
     "critical": 0.00,
     "criticalDamage": 0.75,
     "headDamage": 1.0,
+    "closeDamage": 1.1,
+    "decayStart": 0.17,
+    "minDecayMultiplier": 0.5,
+    "decayEnd": 1.0,
     "size": 0.075,
     "speed": 20,
-    "life": 11,
+    "life": 9,
     "trailLengthMultiplier": 2.25,
     "ricochet": true
   },
@@ -59,13 +63,33 @@
       "size": 0.90,
       "trailAdjust": 1.25
     },
+    "shellCasing": {
+      "tickLife":10,
+      "yOffset": 1,
+      "xOffset": 0,
+      "zOffset": 0,
+      "scale": 0.75,
+      "velocityX": 9,
+      "velocityY": 1.5,
+      "velocityZ": -1,
+      "rVelocityX": 1,
+      "rVelocityY": 1.5,
+      "rVelocityZ": 0.0,
+      "aVelocityX": 15.0,
+      "aVelocityY": -120.0,
+      "aVelocityZ": 15.0,
+      "casingModel": "tac:special/shell_large"
+    },
+    "hipfireScale": 1.25,
+    "hipfireMoveScale": 0.25,
+    "hipfireRecoilScale": 1.00,
     "weaponType": 0
   },
   "modules": {
     "zoom": {
       "fovModifier": 0.8,
       "yOffset": 12.58,
-      "zOffset": -0.5
+      "zOffset": 0
     },
     "attachments": {
       "scope": {
@@ -99,6 +123,11 @@
         "scale": 0.00
       },
       "irDevice": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
+      },
+      "gunSkin": {
         "yOffset": 7.799,
         "zOffset": -2.35,
         "scale": 0.00

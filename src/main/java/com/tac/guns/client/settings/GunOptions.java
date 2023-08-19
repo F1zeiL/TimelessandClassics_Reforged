@@ -22,7 +22,7 @@ public class GunOptions
 {
     private static final DecimalFormat FORMAT = new DecimalFormat("0.0#");
 
-    public static final SliderPercentageOption ADS_SENSITIVITY = new GunSliderPercentageOption("tac.options.adsSensitivity", 0.0, 1.0, 0.01F, gameSettings -> {
+    public static final SliderPercentageOption ADS_SENSITIVITY = new GunSliderPercentageOption("tac.options.adsSensitivity", 0.0, 2.0, 0.01F, gameSettings -> {
         return Config.CLIENT.controls.aimDownSightSensitivity.get();
     }, (gameSettings, value) -> {
         Config.CLIENT.controls.aimDownSightSensitivity.set(MathHelper.clamp(value, 0.0, 2.0));
@@ -77,6 +77,12 @@ public class GunOptions
         return Config.CLIENT.display.scopeDoubleRender.get();
     }, (settings, value) -> {
         Config.CLIENT.display.scopeDoubleRender.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption BANNED_DROP = new BooleanOption("tac.options.bannedDrop", (settings) -> {
+        return Config.COMMON.gameplay.bannedDrop.get();
+    }, (settings, value) -> {
+        Config.COMMON.gameplay.bannedDrop.set(value);
         Config.saveClientConfig();
     });
     public static final BooleanOption SHOW_FPS_TRAILS_EXIST = new BooleanOption("tac.options.showFirstPersonBulletTrails", (settings) -> {

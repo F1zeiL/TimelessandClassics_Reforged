@@ -1,109 +1,200 @@
 package com.tac.guns.client;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import net.minecraft.util.text.ITextComponent;
+import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.client.util.InputMappings.Type;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.function.BiConsumer;
 
 /**
  * Helps to fix key conflict issue. Adapted solution from FMUM.
- * 
+ *
  * @see InputHandler
  * @author Giant_Salted_Fish
  */
-@OnlyIn( Dist.CLIENT )
-public final class KeyBind
+public class KeyBind
 {
 	public static final HashMap< String, KeyBind > REGISTRY = new HashMap<>();
 	
-	public boolean down = false;
+	/**
+	 * To handle the special cases, for example, binding ctrl to a key bind.
+	 */
+	static final HashMap< Input, KeyModifier > SP_KEY_2_MODIFIER = new HashMap<>();
+	static
+	{
+		final BiConsumer< Integer, KeyModifier > add = ( key_code, key_modifier )
+			-> SP_KEY_2_MODIFIER.put( Type.KEYSYM.getOrMakeInput( key_code ), key_modifier );
+		add.accept( GLFW.GLFW_KEY_LEFT_CONTROL, KeyModifier.CONTROL );
+		add.accept( GLFW.GLFW_KEY_RIGHT_CONTROL, KeyModifier.CONTROL );
+		add.accept( GLFW.GLFW_KEY_LEFT_SHIFT , KeyModifier.SHIFT );
+		add.accept( GLFW.GLFW_KEY_RIGHT_SHIFT , KeyModifier.SHIFT );
+		add.accept( GLFW.GLFW_KEY_LEFT_ALT, KeyModifier.ALT );
+		add.accept( GLFW.GLFW_KEY_RIGHT_ALT, KeyModifier.ALT );
+	}
 	
-	private Input keyCode;
+	protected final KeyBinding vanilla_key_bind;
 	
-	private final LinkedList< Runnable > keyPressCallbacks = new LinkedList<>();
+	protected Input key_code;
+	protected KeyModifier key_modifier;
+	
+	private boolean is_down;
+	
+	private final LinkedList< Runnable >
+		press_callbacks = new LinkedList<>(),
+		release_callbacks = new LinkedList<>();
 	
 	/**
-	 * The corresponding vanilla key bind object. Its key bind will be set to
-	 * {@link InputMappings#INPUT_INVALID} to avoid key conflict in game.
+	 * Create a new key binding with default key set to {@link InputMappings#INPUT_INVALID}.
 	 */
-	private KeyBinding keyBind;
+	KeyBind( String name ) {
+		this( name, InputMappings.INPUT_INVALID, KeyModifier.NONE );
+	}
 	
 	/**
-	 * Use {@link #KeyBind(String, String, int, Type...)} if you want to specify key category
-	 * 
-	 * @param inputType Will be {@link Type#KEYSYM} if not present
+	 * Create a new key binding with default key set to given key on keyboard.
+	 *
+	 * @param key_code
+	 *     Must be a keyboard key code. See fields in {@link GLFW} with {@code GLFW_KEY_} prefix.
 	 */
-	KeyBind( String name, int keyCode, Type... inputType ) {
-		this( name, "key.categories.tac", keyCode, inputType );
+	KeyBind( String name, int key_code ) {
+		this( name, key_code, KeyModifier.NONE );
+	}
+	
+	/**
+	 * Create a new key binding with default key set to given key on keyboard.
+	 *
+	 * @param key_code
+	 *     Must be a keyboard key code. See fields in {@link GLFW} with {@code GLFW_KEY_} prefix.
+	 * @param key_modifier Combination key to be used for bounden key.
+	 */
+	KeyBind( String name, int key_code, KeyModifier key_modifier ) {
+		this( name, Type.KEYSYM.getOrMakeInput( key_code ), key_modifier );
+	}
+	
+	/**
+	 * Can be used to create key bindings with default key set to mouse buttons.
+	 *
+	 * @param key_code_type Use {@link Type#MOUSE} if you want to bound to mouse button.
+	 * @param key_code See fields in {@link GLFW} with {@code GLFW_MOUSE_BUTTON_} prefix.
+	 */
+	KeyBind( String name, Type key_code_type, int key_code ) {
+		this( name, key_code_type.getOrMakeInput( key_code ), KeyModifier.NONE );
+	}
+	
+	KeyBind( String name, Input key_code, KeyModifier key_modifier )
+	{
+		REGISTRY.put( name, this );
+		
+		this.is_down = false;
+		this.setKeyCodeAndModifier( key_code, key_modifier );
+		this.vanilla_key_bind = this._createVanillaShadowKeyBinding( name, key_code, key_modifier );
+	}
+	
+	protected KeyBinding _createVanillaShadowKeyBinding(
+		String name, Input key_code, KeyModifier key_modifier
+	) {
+		final KeyBinding vanilla_key_bind = new KeyBinding(
+			name, GunConflictContext.IN_GAME_HOLDING_WEAPON,
+			key_modifier, key_code, "key.categories.tac"
+		);
+		
+		// Clear key bind to avoid conflict.
+		vanilla_key_bind.setKeyModifierAndCode( KeyModifier.NONE, InputMappings.INPUT_INVALID );
+		return vanilla_key_bind;
+	}
+	
+	public String name() {
+		return this.vanilla_key_bind.getKeyDescription();
+	}
+	
+	public final boolean isDown() {
+		return this.is_down;
+	}
+	
+	public Input keyCode() {
+		return this.key_code;
+	}
+	
+	public KeyModifier keyModifier() {
+		return this.key_modifier;
+	}
+	
+	public void setKeyCodeAndModifier( Input key_code, KeyModifier key_modifier )
+	{
+		this.key_code = key_code;
+		this.key_modifier = SP_KEY_2_MODIFIER.getOrDefault( key_code, key_modifier );
+	}
+	
+	/**
+	 * This will be called once the key is pressed. It will never be called again until the key is
+	 * released and pressed again.
+	 *
+	 * @see #addReleaseCallback(Runnable)
+	 */
+	public final void addPressCallback( Runnable callback ) {
+		this.press_callbacks.add( callback );
+	}
+	
+	/**
+	 * This will be called once the key is released.
+	 *
+	 * @see #addPressCallback(Runnable)
+	 */
+	public final void addReleaseCallback( Runnable callback ) {
+		this.release_callbacks.add( callback );
 	}
 
-	/**
-	 * @see #KeyBind(String, int, Type...)
-	 */
-	KeyBind( String name, String category, int keyCode, Type... inputType )
-	{
-		final boolean isValidKey = keyCode >= 0;
-		if ( isValidKey )
-		{
-			final Type type = inputType.length > 0 ? inputType[ 0 ] : Type.KEYSYM;
-			this.keyCode = type.getOrMakeInput( keyCode );
-		}
-		else this.keyCode = InputMappings.INPUT_INVALID;
-		
-		final GunConflictContext conflictContext = GunConflictContext.IN_GAME_HOLDING_WEAPON;
-		this.keyBind = new KeyBinding( name, conflictContext, this.keyCode, category );
-		
-		// Bind to none to avoid conflict
-		this.keyBind.bind( InputMappings.INPUT_INVALID );
-		
-		REGISTRY.put( this.name(), this );
+	public final ITextComponent getBoundenKeyPrompt() {
+		return this.key_modifier.getCombinedName( this.key_code, this.key_code::func_237520_d_ );
 	}
 	
-	public String name() { return this.keyBind.getKeyDescription(); }
-	
-	public Input keyCode() { return this.keyCode; }
-	
-	public void setKeyCode( Input keyCode ) { this.keyCode = keyCode; }
-	
-	/**
-	 * Add a callback that will be invoked on the press of this key. It will only be invoked once
-	 * until the key is released and pressed again.
-	 */
-	public void addPressCallback( Runnable callback ) { this.keyPressCallbacks.add( callback ); }
-	
-	void update( boolean down )
+	final void _activeUpdate( boolean is_down )
 	{
-		if ( down ^ this.down )
+		if ( this.is_down != is_down )
 		{
-			this.down = down;
-			if ( down ) { this.keyPressCallbacks.forEach( Runnable::run ); }
+			this.is_down = is_down;
+			( is_down ? this.press_callbacks : this.release_callbacks ).forEach( Runnable::run );
 		}
 	}
 	
-	void inactiveUpdate( boolean down )
+	final void _inactiveUpdate( boolean is_down )
 	{
-		// Only handle key release if is inactive
-		if( !down ) { this.down = down; }
+		if ( !is_down && this.is_down )
+		{
+			this.is_down = false;
+			this.release_callbacks.forEach( Runnable::run );
+		}
 	}
 	
-	void restoreKeyBind() { this.keyBind.bind( this.keyCode ); }
+	protected void _restoreVanillaKeyBind() {
+		this.vanilla_key_bind.setKeyModifierAndCode( this.key_modifier, this.key_code );
+	}
 	
-	boolean clearKeyBind()
+	protected boolean _clearVanillaKeyBind()
 	{
-		final Input code = this.keyBind.getKey();
-		if( code == this.keyCode ) { return false; }
+		final Input key_code = this.vanilla_key_bind.getKey();
+		final KeyModifier key_modifier = this.vanilla_key_bind.getKeyModifier();
+		final boolean is_key_bind_changed
+			= this.key_code != key_code || this.key_modifier != key_modifier;
+		if ( is_key_bind_changed ) {
+			this.setKeyCodeAndModifier( key_code, key_modifier );
+		}
 		
-		// Key bind has been changed, update it
-		this.setKeyCode( code );
-		this.keyBind.bind( InputMappings.INPUT_INVALID );
-		return true;
+		// Do not forget to clear vanilla key binding.
+		this.vanilla_key_bind.setKeyModifierAndCode(
+			KeyModifier.NONE, InputMappings.INPUT_INVALID );
+		return is_key_bind_changed;
 	}
 	
-	void regis() { ClientRegistry.registerKeyBinding( this.keyBind ); }
+	protected void _selfRegis() {
+		ClientRegistry.registerKeyBinding( this.vanilla_key_bind );
+	}
 }
