@@ -29,10 +29,6 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
  */
 public class tti_g34_animation extends SkinAnimationModel {
 
-    public tti_g34_animation() {
-        extraOffset.put(LASER_BASIC, new Vector3d(0, 0, -0.25));
-    }
-
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         TtiG34AnimationController controller = TtiG34AnimationController.getInstance();
@@ -43,8 +39,11 @@ public class tti_g34_animation extends SkinAnimationModel {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), TtiG34AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack).getItem() == ModItems.BASIC_LASER.orElse(ItemStack.EMPTY.getItem())) {
                 RenderUtil.renderModel(getModelComponent(skin, LASER_BASIC_DEVICE), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, light, overlay);
-                if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
+                if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get()) {
+                    matrices.translate(0, 0, -0.25);
                     RenderUtil.renderModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
+                    matrices.translate(0, 0, 0.25);
+                }
             }
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
                 RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);

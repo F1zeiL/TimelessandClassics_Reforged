@@ -33,10 +33,6 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
  */
 public class timeless_50_animation extends SkinAnimationModel {
 
-    public timeless_50_animation() {
-        extraOffset.put(MUZZLE_SILENCER, new Vector3d(0, 0, -0.3125));
-    }
-
     //The render method, similar to what is in DartEntity. We can render the item
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
@@ -57,7 +53,9 @@ public class timeless_50_animation extends SkinAnimationModel {
             } else if (Gun.getAttachment(IAttachment.Type.BARREL, stack).getItem() == ModItems.SILENCER.get()) {
                 RenderUtil.renderModel(getModelComponent(skin, BARREL_STANDARD), stack, matrices, renderBuffer, light, overlay);
                 RenderUtil.renderModel(getModelComponent(skin, NEKOOO), stack, matrices, renderBuffer, 15728880, overlay);
+                matrices.translate(0, 0, -0.3125);
                 RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
+                matrices.translate(0, 0, 0.3125);
             } else {
                 RenderUtil.renderModel(getModelComponent(skin, BARREL_STANDARD), stack, matrices, renderBuffer, light, overlay);
                 RenderUtil.renderModel(getModelComponent(skin, NEKOOO), stack, matrices, renderBuffer, 15728880, overlay);

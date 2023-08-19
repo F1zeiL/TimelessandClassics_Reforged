@@ -20,8 +20,6 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
 public class mrad_animation extends SkinAnimationModel {
 
     public mrad_animation() {
-        extraOffset.put(BARREL, new Vector3d(0, 0, -0.55));
-        extraOffset.put(BIPOD, new Vector3d(0, 0, -0.25));
         extraOffset.put(LASER_BASIC, new Vector3d(0, 0, -0.3));
     }
 
@@ -38,8 +36,11 @@ public class mrad_animation extends SkinAnimationModel {
 
             renderGrip(stack, matrices, renderBuffer, light, overlay, skin);
 
+            matrices.translate(0, 0, -0.55);
             RenderUtil.renderModel(getModelComponent(skin, BARREL), stack, matrices, renderBuffer, light, overlay);
+            matrices.translate(0, 0, 0.3);
             RenderUtil.renderModel(getModelComponent(skin, BIPOD), stack, matrices, renderBuffer, light, overlay);
+            matrices.translate(0, 0, 0.25);
 
             renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
 

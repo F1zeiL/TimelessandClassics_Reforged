@@ -29,7 +29,7 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
 public class m82a2_animation extends SkinAnimationModel {
 
     public m82a2_animation() {
-        extraOffset.put(BARREL, new Vector3d(0, 0, -1.5));
+        //extraOffset.put(BARREL, new Vector3d(0, 0, -1.5));
     }
 
     @Override
@@ -59,7 +59,9 @@ public class m82a2_animation extends SkinAnimationModel {
                 matrices.translate(0, 0, 0.375f * v1);
                 matrices.translate(0, 0, 0.025F);
             }
+            matrices.translate(0, 0, -1.5F);
             RenderUtil.renderModel(getModelComponent(skin, BARREL), stack, matrices, renderBuffer, light, overlay);
+            matrices.translate(0, 0, 1.5F);
             //matrices.pop();
         }
         matrices.pop();

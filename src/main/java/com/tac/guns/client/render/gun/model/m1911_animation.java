@@ -33,10 +33,6 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
  */
 public class m1911_animation extends SkinAnimationModel {
 
-    public m1911_animation() {
-        extraOffset.put(MUZZLE_SILENCER, new Vector3d(0, 0, -0.0475));
-    }
-
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
@@ -47,7 +43,9 @@ public class m1911_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY),M1911AnimationController.INDEX_BODY,transformType,matrices);
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
+                matrices.translate(0, 0, -0.0475);
                 RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
+                matrices.translate(0, 0, 0.0475);
             }
             RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
         }

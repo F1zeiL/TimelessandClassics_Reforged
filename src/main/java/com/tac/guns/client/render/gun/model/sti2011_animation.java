@@ -34,10 +34,6 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
  */
 public class sti2011_animation extends SkinAnimationModel {
 
-    public sti2011_animation() {
-        extraOffset.put(MUZZLE_SILENCER, new Vector3d(0, 0, -0.105));
-    }
-
     //The render method, similar to what is in DartEntity. We can render the item
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
@@ -53,7 +49,9 @@ public class sti2011_animation extends SkinAnimationModel {
                     RenderUtil.renderModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
             }
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
+                matrices.translate(0, 0, -0.105);
                 RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
+                matrices.translate(0, 0, 0.105);
             }
             RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
         }

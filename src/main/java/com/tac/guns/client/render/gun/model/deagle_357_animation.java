@@ -44,7 +44,8 @@ public class deagle_357_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Deagle50AnimationController.EXTRA_MAG, transformType, matrices);
-            renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if (transformType.isFirstPerson())
+                renderMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
 
