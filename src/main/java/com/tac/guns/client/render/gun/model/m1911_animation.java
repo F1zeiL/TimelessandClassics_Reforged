@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3d;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -34,14 +33,13 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
 public class m1911_animation extends SkinAnimationModel {
 
     @Override
-    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
-    {
+    public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         M1911AnimationController controller = M1911AnimationController.getInstance();
         GunSkin skin = SkinManager.getSkin(stack);
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(getModelComponent(skin, BODY),M1911AnimationController.INDEX_BODY,transformType,matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1911AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
                 matrices.translate(0, 0, -0.0475);
                 RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
@@ -52,7 +50,7 @@ public class m1911_animation extends SkinAnimationModel {
         matrices.pop();
         matrices.push();
         {
-            controller.applySpecialModelTransform(getModelComponent(skin, BODY),M1911AnimationController.INDEX_MAG,transformType,matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1911AnimationController.INDEX_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
@@ -62,14 +60,15 @@ public class m1911_animation extends SkinAnimationModel {
 
         matrices.push();
         {
-            if(transformType.isFirstPerson()) {
+            if (transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1911AnimationController.INDEX_SLIDE, transformType, matrices);
                 AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
                 boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
 
                 if (Gun.hasAmmo(stack) || shouldOffset) {
-                    matrices.translate(0, 0, 0.1925f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
-                    GunRenderingHandler.get().opticMovement = 0.1925f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0);
+                    double v1 = -4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0;
+                    matrices.translate(0, 0, 0.1925f * v1);
+                    GunRenderingHandler.get().opticMovement = 0.1925f * v1;
                 } else if (!Gun.hasAmmo(stack)) {
                     double opticMovement = 0.1925f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0);
                     matrices.translate(0, 0, opticMovement);
@@ -81,6 +80,6 @@ public class m1911_animation extends SkinAnimationModel {
         }
         matrices.pop();
 
-        PlayerHandAnimation.render(controller,transformType,matrices,renderBuffer,light);
+        PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
     }
 }
