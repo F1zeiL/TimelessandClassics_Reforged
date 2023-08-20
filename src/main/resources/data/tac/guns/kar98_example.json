@@ -21,8 +21,7 @@
   },
   "reloads": {
     "stripperClip": true,
-    "openBolt": false,
-    "maxAmmo": 6,
+    "maxAmmo": 5,
 
     "additionalReloadEmptyMagTimer": 31,
     "stripperClipReloadAmount": 5,

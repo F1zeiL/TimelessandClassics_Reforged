@@ -113,6 +113,23 @@ public class ReloadTracker
                 reload = deltaTicks > interval; // deltaTicks > 0 &&
             }
         }
+        else if(gun.getReloads().isStripperClip())
+        {
+            CompoundNBT tag = this.stack.getOrCreateTag();
+            int toReload = gun.getReloads().getMaxAmmo() - tag.getInt("AmmoCount");
+            if(toReload >= gun.getReloads().getStripperClipReloadAmount())
+            {
+                int deltaTicks = player.ticksExisted - this.startTick;
+                int interval = gun.getReloads().getAdditionalReloadEmptyMagTimer();
+                reload = deltaTicks > interval;
+            }
+            else
+            {
+                int deltaTicks = player.ticksExisted - this.startTick;
+                int interval = GunEnchantmentHelper.getReloadInterval(this.stack);
+                reload = deltaTicks > 0 && deltaTicks % interval == 0;
+            }
+        }
         else
         {
             int deltaTicks = player.ticksExisted - this.startTick;
@@ -192,19 +209,39 @@ public class ReloadTracker
         }
     }
 
-    private void increaseMagAmmo(PlayerEntity player)
+    private void increaseAmmoFromStripperClip(PlayerEntity player)
     {
-        /*ItemStack rig = WearableHelper.PlayerWornRig(player);
-        if(rig != null) {
-            RigSlotsHandler itemHandler = (RigSlotsHandler) rig.getCapability(ArmorRigCapabilityProvider.capability).resolve().get();
-            for (ItemStack x : itemHandler.getStacks()) {
-                if(Gun.isAmmo(x, this.gun.getProjectile().getItem()))
-                    ammoStacks.add(x);
-            }
-        }*/
         ItemStack[] ammoStacks = Gun.findAmmo(player, this.gun.getProjectile().getItem());
         int stackItor = 0;
-        //ItemStack ammo = Gun.findAmmo(player, this.gun.getProjectile().getItem());
+        if(ammoStacks.length > 0)
+        {
+            CompoundNBT tag = this.stack.getTag();
+            int ammoAmount = this.gun.getReloads().getStripperClipReloadAmount(); //Math.min(calcMaxReserveAmmo(ammoStacks), GunModifierHelper.getAmmoCapacity(this.stack, this.gun));
+            if (tag != null) {
+                int currentAmmo = tag.getInt("AmmoCount");
+                int maxAmmo = GunModifierHelper.getAmmoCapacity(this.stack, this.gun);
+                int amount = maxAmmo - currentAmmo;
+                if(currentAmmo == 0)
+                {
+                    if(ammoAmount < amount) {
+                        tag.putInt("AmmoCount", currentAmmo+ammoAmount);
+                        this.shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
+                    }
+                }
+            }
+        }
+
+        ResourceLocation reloadSound = this.gun.getSounds().getReloadEnd();
+        if(reloadSound != null)
+        {
+            MessageGunSound message = new MessageGunSound(reloadSound, SoundCategory.PLAYERS, (float) player.getPosX(), (float) player.getPosY() + 1.0F, (float) player.getPosZ(), 1.0F, 1.0F, player.getEntityId(), false, true);
+            PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(player.getPosX(), (player.getPosY() + 1.0), player.getPosZ(), 16.0, player.world.getDimensionKey())), message);
+        }
+    }
+    private void increaseMagAmmo(PlayerEntity player)
+    {
+        ItemStack[] ammoStacks = Gun.findAmmo(player, this.gun.getProjectile().getItem());
+        int stackItor = 0;
         if(ammoStacks.length > 0)
         {
             CompoundNBT tag = this.stack.getTag();
@@ -282,14 +319,14 @@ public class ReloadTracker
                         RELOAD_TRACKER_MAP.remove(player);
                         SyncedPlayerData.instance().set(player, ModSyncedDataKeys.RELOADING, false);
                         SyncedPlayerData.instance().set(player, ModSyncedDataKeys.STOP_ANIMA, false);
-                        /*DelayedTask.runAfter(2, () ->
-                        {
-                            ResourceLocation cockSound = gun.getSounds().getCock();
-                            if (cockSound != null && finalPlayer.isAlive()) {
-                                MessageGunSound messageSound = new MessageGunSound(cockSound, SoundCategory.PLAYERS, (float) finalPlayer.getPosX(), (float) (finalPlayer.getPosY() + 1.0), (float) finalPlayer.getPosZ(), 1.0F, 1.0F, finalPlayer.getEntityId(), false, true);
-                                PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(finalPlayer.getPosX(), (finalPlayer.getPosY() + 1.0), finalPlayer.getPosZ(), 16.0, finalPlayer.world.getDimensionKey())), messageSound);
-                            }
-                        });*/
+                    }
+                    else if(gun.getReloads().isStripperClip() && gun.getReloads().getMaxAmmo() - player.getHeldItemMainhand().getOrCreateTag().getInt("AmmoCount") >=gun.getReloads().getStripperClipReloadAmount())
+                    {
+                        tracker.increaseAmmoFromStripperClip(player);
+                        ServerPlayHandler.handleRigAmmoCount((ServerPlayerEntity)player, gun.getProjectile().getItem());
+                        RELOAD_TRACKER_MAP.remove(player);
+                        SyncedPlayerData.instance().set(player, ModSyncedDataKeys.RELOADING, false);
+                        SyncedPlayerData.instance().set(player, ModSyncedDataKeys.STOP_ANIMA, false);
                     }
                     else {
                         tracker.increaseAmmo(player);
@@ -298,14 +335,7 @@ public class ReloadTracker
                             RELOAD_TRACKER_MAP.remove(player);
                             SyncedPlayerData.instance().set(player, ModSyncedDataKeys.RELOADING, false);
                             SyncedPlayerData.instance().set(player, ModSyncedDataKeys.STOP_ANIMA, false);
-                            /*DelayedTask.runAfter(4, () ->
-                            {
-                                ResourceLocation cockSound = gun.getSounds().getCock();
-                                if (cockSound != null && finalPlayer.isAlive()) {
-                                    MessageGunSound messageSound = new MessageGunSound(cockSound, SoundCategory.PLAYERS, (float) finalPlayer.getPosX(), (float) (finalPlayer.getPosY() + 1.0), (float) finalPlayer.getPosZ(), 1.0F, 1.0F, finalPlayer.getEntityId(), false, true);
-                                    PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(finalPlayer.getPosX(), (finalPlayer.getPosY() + 1.0), finalPlayer.getPosZ(), 16.0, finalPlayer.world.getDimensionKey())), messageSound);
-                                }
-                            });*/
+
                         }
                     }
                 }
