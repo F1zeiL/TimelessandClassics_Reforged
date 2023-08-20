@@ -29,6 +29,8 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
  */
 public class deagle_357_animation extends SkinAnimationModel {
 
+    protected boolean isEmp = false;
+
     @Override
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
         Deagle50AnimationController controller = Deagle50AnimationController.getInstance();
@@ -44,7 +46,12 @@ public class deagle_357_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Deagle50AnimationController.EXTRA_MAG, transformType, matrices);
-            if (transformType.isFirstPerson())
+            if (controller.isAnimationRunning())
+                if (controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY))
+                    isEmp = true;
+                else if (!controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC))
+                    isEmp = false;
+            if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp)))
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();

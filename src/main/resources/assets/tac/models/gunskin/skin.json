@@ -27,7 +27,7 @@
   },
 
   "deagle_357": {
-    "deagle_357_black": {
+    "common": {
       "type": "common_texture",
       "textures": {
         "5": "tac:gunskin/deagle_357/deagle_357",
@@ -38,7 +38,7 @@
   },
 
   "scar_l": {
-    "scar_l_black": {
+    "common": {
       "type": "common_texture",
       "textures": {
         "5": "tac:gunskin/scar_l/scar_l"
@@ -47,8 +47,19 @@
     }
   },
 
+ "scar_h": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "3":"tac:gunskin/scar_h/scar_h",
+        "2":"tac:gunskin/scar_h/extd_mag_6"
+      },
+      "icon": "tac:gunskin/icon/scar_h"
+    }
+  },
+
   "udp_9": {
-    "udp_9_black": {
+    "common": {
       "type": "common_texture",
       "textures": {
         "4": "tac:gunskin/udp_9/udp_9"
