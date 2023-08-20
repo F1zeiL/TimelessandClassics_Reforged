@@ -99,7 +99,7 @@ public class hk_mp5a5_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.HK_MP5A5_BODY.getModel(), HkMp5a5AnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.HK_MP5A5_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.HK_MP5A5_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

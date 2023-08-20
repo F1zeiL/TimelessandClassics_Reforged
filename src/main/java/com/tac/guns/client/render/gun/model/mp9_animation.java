@@ -59,7 +59,7 @@ public class mp9_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.MP9.getModel(), MP9AnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.MP9_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.MP9_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

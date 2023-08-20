@@ -88,7 +88,7 @@ public class qbz_191_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.QBZ_191_BODY.getModel(), Type191AnimationController.INDEX_MAG, transformType, matrices);
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.QBZ_191_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.QBZ_191_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -100,7 +100,7 @@ public class qbz_191_animation implements IOverrideModel {
             matrices.push();
             {
                 controller.applySpecialModelTransform(SpecialModels.QBZ_191_BODY.getModel(), Type191AnimationController.INDEX_EXTRA_MAG, transformType, matrices);
-                if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+                if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
                 {
                     RenderUtil.renderModel(SpecialModels.QBZ_191_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 }

@@ -39,7 +39,7 @@ public class sks_animation implements IOverrideModel {
             RenderUtil.renderModel(SpecialModels.AK47_OPTIC_MOUNT.getModel(), stack, matrices, renderBuffer, light, overlay);
         }*/
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.SKS_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

@@ -85,7 +85,7 @@ public class aa_12_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.AA_12_BODY.getModel(), AA12AnimationController.INDEX_MAGAZINE,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.AA_12_DRUM_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.AA_12_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

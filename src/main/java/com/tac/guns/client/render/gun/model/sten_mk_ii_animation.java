@@ -32,7 +32,7 @@ public class sten_mk_ii_animation implements IOverrideModel {
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
 
         
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             if(Gun.hasAmmo(stack))
                 RenderUtil.renderModel(SpecialModels.STEN_MK_II_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

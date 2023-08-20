@@ -80,7 +80,7 @@ public class x95r_animation implements IOverrideModel {
 
         RenderUtil.renderModel(SpecialModels.X95R.getModel(), stack, matrices, renderBuffer, light, overlay);
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.X95R_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

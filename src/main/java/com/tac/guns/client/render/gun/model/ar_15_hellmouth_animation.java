@@ -53,7 +53,7 @@ public class ar_15_hellmouth_animation implements IOverrideModel {
             RenderUtil.renderModel(SpecialModels.AR_15_HEAVY_STOCK.getModel(), stack, matrices, renderBuffer, light, overlay);
         }
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.AR_15_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

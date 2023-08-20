@@ -107,7 +107,7 @@ public class fn_fal_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.FN_FAL.getModel(), FNFALAnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.FN_FAL_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.FN_FAL_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

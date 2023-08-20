@@ -42,7 +42,7 @@ public class deagle_357_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.DEAGLE_50.getModel(), Deagle50AnimationController.INDEX_MAG, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.DEAGLE_50_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.DEAGLE_50_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -53,7 +53,7 @@ public class deagle_357_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.DEAGLE_50.getModel(), Deagle50AnimationController.EXTRA_MAG, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.DEAGLE_50_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.DEAGLE_50_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

@@ -93,7 +93,7 @@ public class scar_h_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.SCAR_H_BODY.getModel(), SCAR_HAnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.SCAR_H_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.SCAR_H_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -105,7 +105,7 @@ public class scar_h_animation implements IOverrideModel {
         {
             if(transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(SpecialModels.SCAR_H_BODY.getModel(), SCAR_HAnimationController.INDEX_MAGAZINE2, transformType, matrices);
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.SCAR_H_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.SCAR_H_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

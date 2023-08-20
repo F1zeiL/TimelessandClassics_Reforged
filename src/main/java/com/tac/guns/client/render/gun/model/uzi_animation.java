@@ -50,7 +50,7 @@ public class uzi_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.UZI.getModel(), UZIAnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.UZI_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }
@@ -99,7 +99,7 @@ public class uzi_animation implements IOverrideModel {
             {
                 controller.applySpecialModelTransform(SpecialModels.UZI.getModel(), UZIAnimationController.INDEX_EXTENDED_MAGAZINE, transformType, matrices);
 
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.UZI_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.UZI_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

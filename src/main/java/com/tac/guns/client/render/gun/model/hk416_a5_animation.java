@@ -112,7 +112,7 @@ public class hk416_a5_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.HK416_A5_BODY.getModel(),HK416A5AnimationController.INDEX_MAGAZINE,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.HK416_A5_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.HK416_A5_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -125,7 +125,7 @@ public class hk416_a5_animation implements IOverrideModel {
         {
             if(transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(SpecialModels.HK416_A5_BODY.getModel(), HK416A5AnimationController.INDEX_EXTRA_MAGAZINE, transformType, matrices);
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.HK416_A5_EXTRA_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.HK416_A5_EXTRA_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

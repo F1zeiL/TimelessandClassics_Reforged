@@ -129,7 +129,7 @@ public class m4_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.M4_BODY.getModel(), M4AnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.M4_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.M4_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

@@ -80,7 +80,7 @@ public class ai_awp_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.AI_AWP.getModel(), AWPAnimationController.INDEX_MAGAZINE, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.AI_AWP_MAG_EXTENDED.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.AI_AWP_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

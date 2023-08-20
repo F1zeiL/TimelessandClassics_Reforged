@@ -105,7 +105,7 @@ public class spr_15_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.SPR_15_BODY.getModel(), SPR15AnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.SPR_15_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.SPR_15_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -118,7 +118,7 @@ public class spr_15_animation implements IOverrideModel {
             {
                 controller.applySpecialModelTransform(SpecialModels.SPR_15_BODY.getModel(), SPR15AnimationController.INDEX_EXTRA_MAGAZINE, transformType, matrices);
 
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.SPR_15_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.SPR_15_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

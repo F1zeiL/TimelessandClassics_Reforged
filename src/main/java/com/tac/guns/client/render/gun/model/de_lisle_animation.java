@@ -39,7 +39,7 @@ public class de_lisle_animation implements IOverrideModel {
     public void render(float v, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay)
     {
         
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.DE_LISLE_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

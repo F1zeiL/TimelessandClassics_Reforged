@@ -120,7 +120,7 @@ public class mk18_mod1_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.MK18_MOD1_BODY.getModel(), MK18MOD1AnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.MK18_MOD1_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.MK18_MOD1_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

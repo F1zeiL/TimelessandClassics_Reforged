@@ -104,7 +104,7 @@ public class udp_9_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.UDP_9.getModel(),UDP9AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.UDP_9_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.UDP_9_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

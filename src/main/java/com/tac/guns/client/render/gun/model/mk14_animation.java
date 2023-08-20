@@ -125,7 +125,7 @@ public class mk14_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(MK14_BODY.getModel(), MK14AnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

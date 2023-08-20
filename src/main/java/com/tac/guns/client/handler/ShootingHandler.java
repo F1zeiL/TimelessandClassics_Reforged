@@ -407,7 +407,7 @@ public class  ShootingHandler
 
     private boolean magError(PlayerEntity player, ItemStack heldItem) {
         int[] extraAmmo = ((TimelessGunItem)heldItem.getItem()).getGun().getReloads().getMaxAdditionalAmmoPerOC();
-        int magMode = GunModifierHelper.getAmmoCapacity(heldItem);
+        int magMode = GunModifierHelper.getAmmoCapacityWeight(heldItem);
         if(magMode < 0) {
             if(heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount")-1 > ((TimelessGunItem)heldItem.getItem()).getGun().getReloads().getMaxAmmo()) {
                 return true;

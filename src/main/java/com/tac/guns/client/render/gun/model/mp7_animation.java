@@ -75,7 +75,7 @@ public class mp7_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.MP7.getModel(),Mp7AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.MP7_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.MP7_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

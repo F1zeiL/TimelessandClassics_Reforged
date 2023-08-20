@@ -99,7 +99,7 @@ public class ar_10_animation implements IOverrideModel {
             RenderUtil.renderModel(SpecialModels.AR15_HELLMOUTH_TACTICAL_GRIP.getModel(), stack, matrices, renderBuffer, light, overlay);
         }
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.AR_10_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

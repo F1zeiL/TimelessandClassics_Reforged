@@ -355,7 +355,7 @@ public class ReloadHandler {
                             if (this.startReloadTick == -1) {
                                 this.startReloadTick = player.ticksExisted + 5;
                             }
-                            if (gun.getReloads().getMaxAmmo() - tag.getInt("AmmoCount") > gun.getReloads().getStripperClipReloadAmount()) {
+                            if (GunModifierHelper.getAmmoCapacity(stack, gun) - tag.getInt("AmmoCount") > gun.getReloads().getStripperClipReloadAmount()) {
                                 if (this.reloadTimer < gun.getReloads().getAdditionalReloadEmptyMagTimer()) {
                                     this.reloadTimer++;
                                 }

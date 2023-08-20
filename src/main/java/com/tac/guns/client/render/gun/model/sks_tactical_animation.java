@@ -96,7 +96,7 @@ public class sks_tactical_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.SKS_TACTICAL.getModel(), SKSTacticalAnimationController.INDEX_MAGAZINE,transformType,matrices);
 
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.SKS_TACTICAL_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }

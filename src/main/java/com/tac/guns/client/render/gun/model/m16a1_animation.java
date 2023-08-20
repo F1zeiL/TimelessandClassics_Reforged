@@ -32,7 +32,7 @@ public class m16a1_animation implements IOverrideModel {
     {
         /**/
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.M16_A1_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

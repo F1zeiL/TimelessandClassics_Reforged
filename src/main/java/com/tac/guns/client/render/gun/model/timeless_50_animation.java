@@ -107,7 +107,7 @@ public class timeless_50_animation implements IOverrideModel {
             controller.applySpecialModelTransform(SpecialModels.TIMELESS_50.getModel(), Timeless50AnimationController.INDEX_MAG, transformType, matrices);
             if (controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) || controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY).equals(controller.getPreviousAnimation()))
                 matrices.translate(-0.00175, 0, 0); //-0.02, 0.05);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.TIMELESS_50_E_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.TIMELESS_50_S_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -120,7 +120,7 @@ public class timeless_50_animation implements IOverrideModel {
             {
                 controller.applySpecialModelTransform(SpecialModels.TIMELESS_50.getModel(), Timeless50AnimationController.INDEX_EXTRA_MAG, transformType, matrices);
                 matrices.translate(0.0, -0.1, 2.2);
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.TIMELESS_50_E_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.TIMELESS_50_S_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

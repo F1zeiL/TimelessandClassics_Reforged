@@ -35,7 +35,7 @@ public class vz61_animation implements IOverrideModel
         
 
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.VZ61_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

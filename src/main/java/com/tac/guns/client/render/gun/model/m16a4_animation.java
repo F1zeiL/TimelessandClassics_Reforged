@@ -104,7 +104,7 @@ public class m16a4_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.M16A4_BODY.getModel(), M16A4AnimationController.INDEX_MAGAZINE,transformType,matrices);
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.M16A4_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }

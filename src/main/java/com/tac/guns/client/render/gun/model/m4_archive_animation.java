@@ -93,7 +93,7 @@ public class m4_archive_animation implements IOverrideModel {
         {
             RenderUtil.renderModel(SpecialModels.M4_BRAKE.getModel(), stack, matrices, renderBuffer, light, overlay);
         }
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.M4_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

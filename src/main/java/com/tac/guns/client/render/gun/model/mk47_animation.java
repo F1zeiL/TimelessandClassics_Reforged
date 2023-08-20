@@ -86,7 +86,7 @@ public class mk47_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.MK47_BODY.getModel(),MK47AnimationController.INDEX_MAGAZINE,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.MK47_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.MK47_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

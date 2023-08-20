@@ -38,7 +38,7 @@ public class mosberg590_animation implements IOverrideModel {
             RenderUtil.renderModel(SpecialModels.MOSBERG590_SIGHTS.getModel(), stack, matrices, renderBuffer, light, overlay);
         }
 
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.MOSBERG590_BULLETS.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

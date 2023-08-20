@@ -55,7 +55,7 @@ public class mk23_animation implements IOverrideModel
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.MK23.getModel(),MK23AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.MK23_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.MK23_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

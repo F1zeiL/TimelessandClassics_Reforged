@@ -53,7 +53,7 @@ public class tti_g34_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.TTI_G34.getModel(),TtiG34AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.TTI_G34_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.TTI_G34_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -67,7 +67,7 @@ public class tti_g34_animation implements IOverrideModel {
             {
 
                 controller.applySpecialModelTransform(SpecialModels.TTI_G34.getModel(), TtiG34AnimationController.INDEX_EXTRA_MAG, transformType, matrices);
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.TTI_G34_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.TTI_G34_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

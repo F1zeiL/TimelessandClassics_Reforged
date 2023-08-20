@@ -116,7 +116,7 @@ public class ReloadTracker
         else if(gun.getReloads().isStripperClip())
         {
             CompoundNBT tag = this.stack.getOrCreateTag();
-            int toReload = gun.getReloads().getMaxAmmo() - tag.getInt("AmmoCount");
+            int toReload = GunModifierHelper.getAmmoCapacity(stack, gun) - tag.getInt("AmmoCount");
             if(toReload >= gun.getReloads().getStripperClipReloadAmount())
             {
                 int deltaTicks = player.ticksExisted - this.startTick;
@@ -219,11 +219,11 @@ public class ReloadTracker
             int ammoAmount = this.gun.getReloads().getStripperClipReloadAmount(); //Math.min(calcMaxReserveAmmo(ammoStacks), GunModifierHelper.getAmmoCapacity(this.stack, this.gun));
             if (tag != null) {
                 int currentAmmo = tag.getInt("AmmoCount");
-                int maxAmmo = GunModifierHelper.getAmmoCapacity(this.stack, this.gun);
+                int maxAmmo = GunModifierHelper.getAmmoCapacity(stack, gun);
                 int amount = maxAmmo - currentAmmo;
                 if(currentAmmo == 0)
                 {
-                    if(ammoAmount < amount) {
+                    if(ammoAmount <= amount) {
                         tag.putInt("AmmoCount", currentAmmo+ammoAmount);
                         this.shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
                     }

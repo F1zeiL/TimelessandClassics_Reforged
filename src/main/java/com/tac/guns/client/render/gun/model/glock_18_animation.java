@@ -61,7 +61,7 @@ public class glock_18_animation implements IOverrideModel
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.GLOCK_18.getModel(),Glock18AnimationController.INDEX_MAG,transformType,matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.GLOCK_18_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(SpecialModels.GLOCK_18_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
@@ -73,7 +73,7 @@ public class glock_18_animation implements IOverrideModel
             matrices.push();
             {
                 controller.applySpecialModelTransform(SpecialModels.GLOCK_18.getModel(), Glock18AnimationController.INDEX_EXTRA_MAG, transformType, matrices);
-                if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+                if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                     RenderUtil.renderModel(SpecialModels.GLOCK_18_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
                 } else {
                     RenderUtil.renderModel(SpecialModels.GLOCK_18_STANDARD_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);

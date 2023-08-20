@@ -29,7 +29,7 @@ public class c96_animation implements IOverrideModel {
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay) {
 
         GunItem gunItem = ((GunItem) stack.getItem());
-        if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+        if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
         {
             RenderUtil.renderModel(SpecialModels.C96_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
         }

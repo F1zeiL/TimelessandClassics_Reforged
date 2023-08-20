@@ -79,7 +79,7 @@ public class rpk_animation implements IOverrideModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(SpecialModels.RPK.getModel(),RPKAnimationController.INDEX_MAGAZINE,transformType,matrices);
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.RPK_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }

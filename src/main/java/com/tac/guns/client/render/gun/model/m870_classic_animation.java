@@ -60,7 +60,7 @@ public class m870_classic_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.M870_CLASSIC_BODY.getModel(), M870AnimationController.INDEX_BODY, transformType, matrices);
 
-            if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
                 RenderUtil.renderModel(SpecialModels.M870_CLASSIC_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }
         }

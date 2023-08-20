@@ -55,7 +55,7 @@ public class type81_x_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.TYPE81_X.getModel(),Type81AnimationController.INDEX_MAGAZINE,transformType,matrices);
 
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.TYPE81_X_EXT_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }

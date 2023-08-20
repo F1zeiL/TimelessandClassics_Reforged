@@ -53,7 +53,7 @@ public class micro_uzi_animation implements IOverrideModel {
         {
             controller.applySpecialModelTransform(SpecialModels.MICRO_UZI_BODY.getModel(), MAC10AnimationController.INDEX_MAGAZINE, transformType, matrices);
 
-            if(GunModifierHelper.getAmmoCapacity(stack) > -1)
+            if(GunModifierHelper.getAmmoCapacityWeight(stack) > -1)
             {
                 RenderUtil.renderModel(SpecialModels.MICRO_UZI_EXTENDED_MAG.getModel(), stack, matrices, renderBuffer, light, overlay);
             }
