@@ -431,15 +431,14 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          * @return Percentage of movement inaccuracy modification ((spread * (movement)) * movementInaccuracy)
          */
         public float getMovementInaccuracy() {
-            return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.COMMON.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.general) ? this.movementInaccuracy : this.movementInaccuracy;//*1.25f;
+            return this.movementInaccuracy;//*1.25f;
         }
 
         /**
          * @return Percentage of movement inaccuracy modification ((spread * (movement)) * movementInaccuracy)
          */
         public float getHipFireInaccuracy() {
-            return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.COMMON.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.general) ? this.hipFireInaccuracy * 1.75f :
-                    this.hipFireInaccuracy * 1.75f;//*1.25f;
+            return this.hipFireInaccuracy * 1.75f;//*1.25f;
         }
 
         /**
@@ -484,6 +483,19 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private boolean openBolt = false;
 
+        public int getStripperClipReloadAmount() {
+            return stripperClipReloadAmount;
+        }
+
+        public boolean isStripperClip() {
+            return stripperClip;
+        }
+
+        @Optional
+        private int stripperClipReloadAmount = 5;
+        @Optional
+        private boolean stripperClip = false;
+
         @Override
         public CompoundNBT serializeNBT() {
             CompoundNBT tag = new CompoundNBT();
@@ -496,6 +508,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putInt("ReloadPauseTicks", this.preReloadPauseTicks);
             tag.putInt("InterReloadPauseTicks", this.interReloadPauseTicks);
             tag.putBoolean("OpenBolt", this.openBolt);
+            tag.putInt("StripperClipReloadAmount", this.stripperClipReloadAmount);
+            tag.putBoolean("StripperClip", this.stripperClip);
             return tag;
         }
 
@@ -528,6 +542,12 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("OpenBolt", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.openBolt = tag.getBoolean("OpenBolt");
             }
+            if (tag.contains("StripperClipReloadAmount", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.stripperClipReloadAmount = tag.getInt("StripperClipReloadAmount");
+            }
+            if (tag.contains("StripperClip", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.stripperClip = tag.getBoolean("StripperClip");
+            }
         }
 
         /**
@@ -544,6 +564,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             reloads.preReloadPauseTicks = this.preReloadPauseTicks;
             reloads.interReloadPauseTicks = this.interReloadPauseTicks;
             reloads.openBolt = this.openBolt;
+            reloads.stripperClipReloadAmount = this.stripperClipReloadAmount;
+            reloads.stripperClip = this.stripperClip;
             return reloads;
         }
 

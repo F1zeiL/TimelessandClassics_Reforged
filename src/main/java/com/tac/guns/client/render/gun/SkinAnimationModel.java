@@ -122,7 +122,7 @@ public abstract class SkinAnimationModel implements IOverrideModel {
     }
 
     protected void renderMag(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {
-        if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+        if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
             RenderUtil.renderModel(getModelComponent(skin, MAG_EXTENDED), stack, matrices, renderBuffer, light, overlay);
         } else {
             RenderUtil.renderModel(getModelComponent(skin, MAG_STANDARD), stack, matrices, renderBuffer, light, overlay);
@@ -130,7 +130,7 @@ public abstract class SkinAnimationModel implements IOverrideModel {
     }
 
     protected void renderDrumMag(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin) {
-        if (GunModifierHelper.getAmmoCapacity(stack) > -1) {
+        if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
             RenderUtil.renderModel(getModelComponent(skin, MAG_DRUM), stack, matrices, renderBuffer, light, overlay);
         } else {
             RenderUtil.renderModel(getModelComponent(skin, MAG_STANDARD), stack, matrices, renderBuffer, light, overlay);

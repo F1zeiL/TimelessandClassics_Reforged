@@ -39,7 +39,7 @@ public class micro_uzi_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MAC10AnimationController.INDEX_BODY, transformType, matrices);
-            if (GunModifierHelper.getAmmoCapacity(stack) > 0) {
+            if (GunModifierHelper.getAmmoCapacityWeight(stack) > 0) {
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_FOLDED), stack, matrices, renderBuffer, light, overlay);

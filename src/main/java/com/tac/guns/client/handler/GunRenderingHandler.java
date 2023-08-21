@@ -615,7 +615,7 @@ public class GunRenderingHandler {
                 /* Reverses the original first person translations */
                 //matrixStack.translate(-0.56 * side * transition, 0.52 * transition, 0);
                 matrixStack.translate(xOffset * side * resultZ - 0.56 * side * resultZ,
-                        yOffset * result + 0.52 * resultFix - 0.07 + Math.abs(0.5 - resultZFix) * 0.14 + this.fix,
+                        (yOffset * result + 0.52 * resultFix - 0.07 + Math.abs(0.5 - resultZFix) * 0.14 + this.fix),
                         zOffset * result - 0.036 + 0.06 * Math.abs(0.6 - resultZ));
                 matrixStack.rotate(Vector3f.ZP.rotationDegrees((5 * (1 - result))));
                 /* Reverses the first person translations of the item in order to position it in the center of the screen */
@@ -646,9 +646,9 @@ public class GunRenderingHandler {
 
         //Set Delayed Sway config options
 
-        this.maxRotationDegree = Config.CLIENT.display.weaponDelayedSwayMaximum.get().floatValue(); // 3.95f or 4.5f
-        this.delayedSwayMultiplier = Config.CLIENT.display.weaponDelayedSwayMultiplier.get().floatValue(); // Lower = a more delayed sway
-        this.YDIR = Config.CLIENT.display.weaponDelayedSwayDirection.get() ? Vector3f.YN : Vector3f.YP;
+        maxRotationDegree = Config.CLIENT.display.weaponDelayedSwayMaximum.get().floatValue(); // 3.95f or 4.5f
+        delayedSwayMultiplier = Config.CLIENT.display.weaponDelayedSwayMultiplier.get().floatValue(); // Lower = a more delayed sway
+        YDIR = Config.CLIENT.display.weaponDelayedSwayDirection.get() ? Vector3f.YN : Vector3f.YP;
 
         applyDelayedSwayTransforms(matrixStack, entity, event.getPartialTicks());
         float equipProgress = this.getEquipProgress(event.getPartialTicks());
@@ -660,10 +660,6 @@ public class GunRenderingHandler {
         blockLight += (this.entityIdForMuzzleFlash.contains(entity.getEntityId()) ? 3 : 0); // 3
         blockLight = Math.min(blockLight, 15);
         int packedLight = LightTexture.packLight(blockLight, entity.world.getLightFor(LightType.SKY, new BlockPos(entity.getEyePosition(event.getPartialTicks()))));
-
-        /* Renders the reload arm. Will only render if actually reloading. This is applied before
-         * any recoil or reload rotations as the animations would be borked if applied after. */
-        //this.renderReloadArm(matrixStack, event.getBuffers(), event.getLight(), modifiedGun, heldItem, hand);
 
         /* Translate the item position based on the hand side */
         int offset = right ? 1 : -1;
@@ -741,6 +737,7 @@ public class GunRenderingHandler {
     // made public for adjusting hands within animator instances
     public float sOT = 0.0f;
     public float wSpeed = 0.0f;
+
     private void applyLightWeightAnimation(MatrixStack matrixStack, float leftHanded, float draw) {
         float result = sprintDynamicsHSS.update(0.05f, sOT) * draw;
         float result2 = sprintDynamicsZHSS.update(0.05f, sOT) * draw;
@@ -750,6 +747,7 @@ public class GunRenderingHandler {
         matrixStack.rotate(Vector3f.XP.rotationDegrees(60f * result2));
         matrixStack.rotate(Vector3f.ZP.rotationDegrees(-25f * result2));
     }
+
     private void applyDefaultAnimation(MatrixStack matrixStack, float leftHanded, float draw) {
         float result = sprintDynamics.update(0.05f, sOT) * draw;
         float result2 = sprintDynamicsZ.update(0.05f, sOT) * draw;
@@ -759,6 +757,7 @@ public class GunRenderingHandler {
         matrixStack.rotate(Vector3f.XP.rotationDegrees(15F * result2));
         matrixStack.rotate(Vector3f.ZP.rotationDegrees(20f * result2));
     }
+
     private void applySprintingTransforms(ItemStack gun, HandSide hand,
                                           MatrixStack matrixStack, float partialTicks) {
         TimelessGunItem modifiedGun = (TimelessGunItem) gun.getItem();
@@ -766,25 +765,20 @@ public class GunRenderingHandler {
         float draw = (controller == null || !controller.isAnimationRunning(GunAnimationController.AnimationLabel.DRAW) ? 1 : 0);
         float leftHanded = hand == HandSide.LEFT ? -1 : 1;
         this.sOT = (this.prevSprintTransition + (this.sprintTransition - this.prevSprintTransition) * partialTicks) / 5F;
-        this.wSpeed = getGunWeightSpeed(modifiedGun.getGun(),gun);
+        this.wSpeed = getGunWeightSpeed(modifiedGun.getGun(), gun);
         // Lightweight animation, used for SMGS and light rifles like the hk416
         if (wSpeed > 0.094f) {
             applyLightWeightAnimation(matrixStack, leftHanded, draw);
-        }
-        // Default
-        else {
+        } else {
             applyDefaultAnimation(matrixStack, leftHanded, draw);
         }
     }
+
     private static float getGunWeightSpeed(Gun gunType, ItemStack gun) {
         return ServerPlayHandler.calceldGunWeightSpeed(gunType, gun);
     }
-    private void applyReloadTransforms(MatrixStack matrixStack, HandSide hand, float partialTicks, ItemStack modifiedGun) {
-        /*float reloadProgress = ReloadHandler.get().getRepairProgress(partialTicks, stack);
-        matrixStack.translate(0, 0.35 * reloadProgress, 0);
-        matrixStack.translate(0, 0, -0.1 * reloadProgress);
-        matrixStack.rotate(Vector3f.XP.rotationDegrees(45F * reloadProgress));*/
 
+    private void applyReloadTransforms(MatrixStack matrixStack, HandSide hand, float partialTicks, ItemStack modifiedGun) {
         float reloadProgress = ReloadHandler.get().getReloadProgress(partialTicks, modifiedGun);
 
         if (reloadProgress > 0) {
@@ -954,18 +948,14 @@ public class GunRenderingHandler {
     // TODO: Update noises for breathing animation per new weapon held, aka give weapons customization of their breathing, pistols for example should be realatively unstable, along with lighter weapons
     private final OneDimensionalPerlinNoise noiseX = new OneDimensionalPerlinNoise(-0.003f, 0.003f, 2400);
     private final OneDimensionalPerlinNoise noiseY = new OneDimensionalPerlinNoise(-0.003f, 0.003f, 2800);
-
     {
         noiseY.setReverse(true);
     }
-
     private final OneDimensionalPerlinNoise aimed_noiseX = new OneDimensionalPerlinNoise(-0.00075f, 0.00075f, 1650);
     private final OneDimensionalPerlinNoise aimed_noiseY = new OneDimensionalPerlinNoise(-0.00135f, 0.00135f, 1650);
-
     {
         noiseY.setReverse(true);
     }
-
     private final OneDimensionalPerlinNoise additionNoiseY = new OneDimensionalPerlinNoise(-0.002f, 0.002f, 1300);
 
     private final OneDimensionalPerlinNoise noiseRotationY = new OneDimensionalPerlinNoise(-0.8f, 0.8f, 2000);
@@ -974,11 +964,11 @@ public class GunRenderingHandler {
     public void applyNoiseMovementTransform(MatrixStack matrixStack) {
         //matrixStack.translate(noiseX.getValue()* (1 - AimingHandler.get().getNormalisedRepairProgress()), (noiseY.getValue() + additionNoiseY.getValue()) * (1 - AimingHandler.get().getNormalisedRepairProgress()), 0);
         if (AimingHandler.get().getNormalisedAdsProgress() == 1) {
-            matrixStack.translate(aimed_noiseX.getValue(), aimed_noiseY.getValue() + additionNoiseY.getValue(), 0);
+            matrixStack.translate(aimed_noiseX.getValue(), aimed_noiseY.getValue(), 0);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(aimed_noiseRotationY.getValue()));
             matrixStack.rotate(Vector3f.ZP.rotationDegrees((float) (aimed_noiseRotationY.getValue() * 0.85)));
         } else {
-            matrixStack.translate(noiseX.getValue(), noiseY.getValue() + additionNoiseY.getValue(), 0);
+            matrixStack.translate(noiseX.getValue(), noiseY.getValue(), 0);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(noiseRotationY.getValue()));
         }
 
@@ -987,11 +977,11 @@ public class GunRenderingHandler {
     public void applyNoiseMovementTransform(MatrixStack matrixStack, float reverser) {
         //matrixStack.translate(noiseX.getValue()* (1 - AimingHandler.get().getNormalisedRepairProgress()), (noiseY.getValue() + additionNoiseY.getValue()) * (1 - AimingHandler.get().getNormalisedRepairProgress()), 0);
         if (AimingHandler.get().getNormalisedAdsProgress() == 1) {
-            matrixStack.translate(aimed_noiseX.getValue() * (reverser * 2), (aimed_noiseY.getValue() + additionNoiseY.getValue()) * reverser, 0);
+            matrixStack.translate(aimed_noiseX.getValue() * (reverser * 2), aimed_noiseY.getValue() * reverser, 0);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(aimed_noiseRotationY.getValue() * reverser));
             matrixStack.rotate(Vector3f.ZP.rotationDegrees((float) (aimed_noiseRotationY.getValue() * 0.85 * reverser)));
         } else {
-            matrixStack.translate(noiseX.getValue() * (reverser * 2), (noiseY.getValue() + additionNoiseY.getValue()) * reverser, 0);
+            matrixStack.translate(noiseX.getValue() * (reverser * 2), noiseY.getValue() * reverser, 0);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(noiseRotationY.getValue() * reverser));
         }
 
@@ -1012,8 +1002,7 @@ public class GunRenderingHandler {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
                 if (serverPlayer.connection == null)
                     return;
-                if (serverPlayer.connection.getNetworkManager() == null)
-                    return;
+                serverPlayer.connection.getNetworkManager();
                 PacketHandler.getPlayChannel().sendTo(new MessagePlayerShake(player), serverPlayer.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT);
             }
         }

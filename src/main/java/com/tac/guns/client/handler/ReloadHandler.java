@@ -333,6 +333,25 @@ public class ReloadHandler {
                             }
                         } else
                             this.startUpReloadTimer--;
+                    } else if (gun.getReloads().isStripperClip()) {
+                        if (this.startUpReloadTimer == 0) {
+                            if (this.startReloadTick == -1) {
+                                this.startReloadTick = player.ticksExisted + 5;
+                            }
+                            if (GunModifierHelper.getAmmoCapacity(stack, gun) - tag.getInt("AmmoCount") > gun.getReloads().getStripperClipReloadAmount()) {
+                                if (this.reloadTimer < gun.getReloads().getAdditionalReloadEmptyMagTimer()) {
+                                    this.reloadTimer++;
+                                }
+                            } else {
+                                if (this.reloadTimer < gun.getReloads().getinterReloadPauseTicks()) {
+                                    this.reloadTimer++;
+                                }
+                                if (this.reloadTimer == gun.getReloads().getinterReloadPauseTicks()) {
+                                    this.reloadTimer = 0;
+                                }
+                            }
+                        } else
+                            this.startUpReloadTimer--;
                     } else {
                         if (this.startUpReloadTimer == 0) {
                             if (this.startReloadTick == -1) {
@@ -408,9 +427,20 @@ public class ReloadHandler {
         if (tag != null) {
             isEmpty = tag.getInt("AmmoCount") <= 0;
         }
-        return this.startUpReloadTimer == 0 ? (gunItem.getGun().getReloads().isMagFed() ? (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer())) : ((this.reloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks)) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()))
-        )
-                : 1F;
+        return this.startUpReloadTimer == 0 ? getReloadProgressPerType(gunItem, isEmpty, partialTicks) : 1F;
+    }
+
+    private float getReloadProgressPerType(GunItem gunItem, boolean isEmpty, float partialTicks) {
+        if (gunItem.getGun().getReloads().isMagFed())
+            return (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) /
+                    ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) :
+                    ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer()));
+        else if (gunItem.getGun().getReloads().isStripperClip())
+            return (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) /
+                    ((float) gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) :
+                    ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getinterReloadPauseTicks()));
+        else
+            return ((this.reloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks)) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()));
     }
 
     @SubscribeEvent
@@ -432,27 +462,4 @@ public class ReloadHandler {
             }
         }
     }
-
-    /*public float getRepairProgress(float partialTicks, ItemStack stack)
-    {
-        boolean isEmpty = false;
-        GunItem gunItem = (GunItem)stack.getItem();
-        CompoundNBT tag = stack.getTag();
-        if(tag != null)
-        {
-            isEmpty=tag.getInt("AmmoCount")<=0;
-        }
-        return this.startUpReloadTimer == 0 ?
-                (
-                        gunItem.getGun().getReloads().isMagFed() ?
-                                (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer()))
-                                : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()) )
-                )
-                : 1F;
-    }*/
-
-    //public boolean isReloading()
-    //{
-    //    return this.startReloadTick != -1;
-    //}
 }

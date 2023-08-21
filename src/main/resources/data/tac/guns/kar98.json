@@ -1,0 +1,88 @@
+{
+  "general": {
+    "boltAction": false,
+    "rate": 200,
+    "rateSelector": [1],
+    "gripType": "tac:two_handed_mosin",
+    "recoilAngle": 7.85,
+    "recoilKick": 1.75,
+    "horizontalRecoilAngle": 0.325,
+    "recoilAdsReduction": 0.35,
+    "weaponRecoilDuration": 0.625,
+    "recoilDuration": 0.35,
+    "cameraRecoilModifier": 1.325,
+    "weightKilo": 8.0,
+    "spread": 0.60,
+    "firstShotSpread": 0.30,
+    "hipFireInaccuracy": 13.5,
+    "projToMinAccuracy": 2,
+    "msToAccuracyReset": 0,
+    "movementInaccuracy": 0.5
+  },
+  "reloads": {
+    "stripperClip": true,
+    "maxAmmo": 5,
+
+    "additionalReloadEmptyMagTimer": 31,
+    "stripperClipReloadAmount": 5,
+    "interReloadPauseTicks": 21,
+    "preReloadPauseTicks": 21,
+
+    "maxAdditionalAmmoPerOC": [0, 0, 0]
+  },
+  "projectile": {
+    "item": "tac:lapua338",
+    "visible": false,
+    "gravity": true,
+    "damage": 36.0,
+    "armorIgnore": 1.15,
+    "critical": 0.0,
+    "criticalDamage": 1.0,
+    "headDamage": 2.0,
+    "closeDamage": 1.0,
+    "decayStart": 0.11,
+    "minDecayMultiplier": 0.3,
+    "decayEnd": 0.65,
+    "size": 0.175,
+    "speed": 36,
+    "trailLengthMultiplier": 3.75,
+    "life": 12
+  },
+  "sounds": {
+    "fire": "tac:item.kar98_fire",
+    "reloadIntro": "tac:animation.kar98_reload_intro",
+    "reloadLoop": "tac:animation.kar98_reload_loop",
+    "reloadEnd": "tac:animation.kar98_reload_norm_end",
+    "reloadEndEmpty": "tac:animation.kar98_reload_empty_end",
+    "reloadEmpty": "tac:animation.kar98_reload_empty",
+    "draw": "tac:animation.kar98_draw",
+    "inspect": "tac:animation.kar98_inspect",
+    "pullBolt": "tac:animation.kar98_bolt",
+    "cock": "tac:item.pistol.cock",
+    "silencedFire": "tac:item.kar98_fire_s"
+  },
+  "display": {
+    "flash": {
+      "yOffset": 7,
+      "zOffset": -21.5,
+      "size": 1.05,
+      "trailAdjust": 1.5
+    },
+    "weaponType": 5,
+    "showDynamicHipfire": false
+  },
+  "modules": {
+    "zoom": {
+      "fovModifier": 0.67,
+      "yOffset": 8.515,
+      "zOffset": -4.5
+    },
+    "attachments": {
+      "scope": {
+        "yOffset": 7.545,
+        "zOffset": 6.425,
+        "scale": 1.0
+      }
+    }
+  }
+}
