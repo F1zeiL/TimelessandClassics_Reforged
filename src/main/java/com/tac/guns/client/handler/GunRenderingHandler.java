@@ -974,6 +974,7 @@ public class GunRenderingHandler {
 
     }
 
+    //TODO: Clumsy, simplify this crap
     public void applyNoiseMovementTransform(MatrixStack matrixStack, float reverser) {
         //matrixStack.translate(noiseX.getValue()* (1 - AimingHandler.get().getNormalisedRepairProgress()), (noiseY.getValue() + additionNoiseY.getValue()) * (1 - AimingHandler.get().getNormalisedRepairProgress()), 0);
         if (AimingHandler.get().getNormalisedAdsProgress() == 1) {
