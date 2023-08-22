@@ -58,6 +58,6 @@ public class BaseballGrenadeEntity extends ThrowableGrenadeEntity implements IEx
     }
     @Override
     public DamageSourceExplosion createDamageSource(){
-        return new DamageSourceExplosion(func_234616_v_(),ModItems.LIGHT_GRENADE.getId());
+        return new DamageSourceExplosion(func_234616_v_(),ModItems.BASEBALL_GRENADE.getId());
     }
 }

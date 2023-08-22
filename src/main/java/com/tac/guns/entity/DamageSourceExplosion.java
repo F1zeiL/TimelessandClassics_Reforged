@@ -12,4 +12,7 @@ public class DamageSourceExplosion extends EntityDamageSource {
         super("explosion.player", damageSourceEntityIn);
         this.item = item;
     }
+    public ResourceLocation getItem() {
+        return item;
+    }
 }
