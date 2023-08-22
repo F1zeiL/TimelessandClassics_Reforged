@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -17,7 +18,7 @@ import net.minecraft.world.World;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class MissileEntity extends ProjectileEntity
+public class MissileEntity extends ProjectileEntity implements IExplosionProvider
 {
     private float power;
     public MissileEntity(EntityType<? extends ProjectileEntity> entityType, World worldIn)
@@ -65,5 +66,11 @@ public class MissileEntity extends ProjectileEntity
     public void onExpired()
     {
         createExplosion(this, this.power*Config.COMMON.missiles.explosionRadius.get().floatValue());
+    }
+
+    @Override
+    public DamageSourceExplosion createDamageSource(){
+        ResourceLocation item = getWeapon().getItem().getRegistryName();
+        return new DamageSourceExplosion(shooter,item);
     }
 }
