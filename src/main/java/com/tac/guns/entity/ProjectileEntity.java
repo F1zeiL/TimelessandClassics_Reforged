@@ -886,8 +886,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         Explosion.Mode mode = Config.COMMON.gameplay.enableExplosionBreak.get() ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
         DamageSource source = null;
-        if (entity instanceof ProjectileEntity)
-            source = DamageSource.causeExplosionDamage(((ProjectileEntity) entity).shooter);
+        if(entity instanceof IExplosionProvider){
+            source = ((IExplosionProvider) entity).createDamageSource();
+        }
         Explosion explosion = new ProjectileExplosion(world, entity, source, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), radius, mode);
 
         if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, explosion))
