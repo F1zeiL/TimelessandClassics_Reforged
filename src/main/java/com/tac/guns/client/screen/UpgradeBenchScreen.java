@@ -7,7 +7,6 @@ import com.tac.guns.client.handler.GunRenderingHandler;
 import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.container.UpgradeBenchContainer;
-import com.tac.guns.init.ModItems;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageUpgradeBenchApply;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
@@ -22,21 +21,16 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -263,7 +257,7 @@ public class UpgradeBenchScreen extends ContainerScreen<UpgradeBenchContainer>
                 this.font.drawString(matrixStack, "x "+moduleCount, startX, startY, Color.WHITE.getRGB());*/
                 ItemStack moduleRender = this.workbench.getInventory().get(1).copy();
                 if(moduleRender == null || moduleRender.isEmpty())
-                    moduleRender = new ItemStack(ModItems.MODULE.get().getItem());
+                    //moduleRender = new ItemStack(ModItems.MODULE.get().getItem());
                 moduleRender.setCount(moduleCount);
                 Minecraft.getInstance().getItemRenderer().renderItemAndEffectIntoGUI(moduleRender, startX, startY);
                 Minecraft.getInstance().getItemRenderer().renderItemOverlayIntoGUI(this.font, moduleRender, startX, startY, null);

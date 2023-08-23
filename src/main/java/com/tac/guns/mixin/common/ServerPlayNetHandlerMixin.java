@@ -1,7 +1,5 @@
 package com.tac.guns.mixin.common;
 
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
-import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.network.CommonStateBox;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.ServerPlayNetHandler;

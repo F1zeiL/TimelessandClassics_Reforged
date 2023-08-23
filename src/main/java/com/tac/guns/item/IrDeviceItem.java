@@ -1,9 +1,7 @@
 package com.tac.guns.item;
 
-import com.tac.guns.item.attachment.ISideRail;
 import com.tac.guns.item.attachment.IirDevice;
 import com.tac.guns.item.attachment.impl.IrDevice;
-import com.tac.guns.item.attachment.impl.SideRail;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;

@@ -7,13 +7,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.Collections;
 import java.util.List;
 
-public class Config
-{
+public class Config {
     /**
      * Client related config options, Original by Mr.Crayfish, extra config options added by ClumsyAlien
      */
-    public static class Client
-    {
+    public static class Client {
         public final Sounds sounds;
         public final Display display;
         public final Particle particle;
@@ -22,8 +20,7 @@ public class Config
         public final WeaponGUI weaponGUI;
         public final Quality quality;
 
-        public Client(ForgeConfigSpec.Builder builder)
-        {
+        public Client(ForgeConfigSpec.Builder builder) {
             builder.push("client");
             {
                 this.sounds = new Sounds(builder);
@@ -40,8 +37,7 @@ public class Config
     /**
      * Sound related config options
      */
-    public static class Sounds
-    {
+    public static class Sounds {
         public final ForgeConfigSpec.BooleanValue playSoundWhenHeadshot;
         public final ForgeConfigSpec.ConfigValue<String> headshotSound;
         public final ForgeConfigSpec.BooleanValue playSoundWhenCritical;
@@ -55,8 +51,7 @@ public class Config
 
         public final ForgeConfigSpec.DoubleValue weaponsVolume;
 
-        public Sounds(ForgeConfigSpec.Builder builder)
-        {
+        public Sounds(ForgeConfigSpec.Builder builder) {
             builder.comment("Control sounds triggered by guns").push("sounds");
             {
                 this.weaponsVolume = builder.comment("Show your ammunition as numbers, reloading timer, weapon icon, and fire mode all on the HUD.").defineInRange("weaponsVolume", 1.0, 0.0, 1.0);
@@ -79,8 +74,7 @@ public class Config
     /**
      * Display related config options
      */
-    public static class Display
-    {
+    public static class Display {
         public final ForgeConfigSpec.BooleanValue oldAnimations;
         public final ForgeConfigSpec.ConfigValue<String> crosshair;
         public final ForgeConfigSpec.BooleanValue weaponAmmoBar;
@@ -100,10 +94,9 @@ public class Config
         public final ForgeConfigSpec.BooleanValue showBulletTrails;
         public final ForgeConfigSpec.DoubleValue bulletTrailOpacity;
 
-
         public final ForgeConfigSpec.BooleanValue showHitMarkers;
-        public Display(ForgeConfigSpec.Builder builder)
-        {
+
+        public Display(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for display related options").push("display");
             {
                 this.oldAnimations = builder.comment("If true, uses the old animation poses for weapons. This is only for nostalgic reasons and not recommended to switch back.").define("oldAnimations", false);
@@ -132,14 +125,13 @@ public class Config
                 this.showBulletTrails = builder.comment("Choose to see any bullet trails, trails by you or any other player / bot will not appear. Helps with Shader compatability.").define("showBulletTrails", true);
                 this.bulletTrailOpacity = builder.comment("Adjusts the opacity, AKA how see through the bullet trails are seen as, higher values can be seen better indoors or at daytime.").defineInRange("bulletTrailOpacity", 0.5, 0.1, 1.0);
 
-                this.showHitMarkers = builder.comment("true if you want hitmarkers to appear, both in hipfire and optics when hitting an entity.").define("showHitMarkers", true);
+                this.showHitMarkers = builder.comment("True if you want hitmarkers to appear, both in hipfire and optics when hitting an entity.").define("showHitMarkers", true);
             }
             builder.pop();
         }
     }
 
-    public static class WeaponGUI
-    {
+    public static class WeaponGUI {
         public final ForgeConfigSpec.BooleanValue weaponGui;
 
         public final WeaponTypeIcon weaponTypeIcon;
@@ -148,8 +140,7 @@ public class Config
         public final WeaponReloadTimer weaponReloadTimer;
 
 
-        public WeaponGUI(ForgeConfigSpec.Builder builder)
-        {
+        public WeaponGUI(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD additions").push("weaponGui");
             {
                 this.weaponGui = builder.comment("Show your ammunition as numbers, reloading timer, weapon icon, and fire mode all on the HUD.").define("weaponGui", true);
@@ -162,16 +153,15 @@ public class Config
             builder.pop();
         }
     }
-    public static class WeaponTypeIcon
-    {
+
+    public static class WeaponTypeIcon {
         public final ForgeConfigSpec.BooleanValue showWeaponIcon;
         public final ForgeConfigSpec.DoubleValue weaponIconSize;
 
         public final ForgeConfigSpec.DoubleValue x;
         public final ForgeConfigSpec.DoubleValue y;
 
-        public WeaponTypeIcon(ForgeConfigSpec.Builder builder)
-        {
+        public WeaponTypeIcon(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD additions").push("weaponTypeIcon");
             {
                 this.showWeaponIcon = builder.comment("Display the weapon type Icon on your HUD.").define("showWeaponIcon", true);
@@ -184,37 +174,34 @@ public class Config
         }
     }
 
-    public static class WeaponAmmoCounter
-    {
+    public static class WeaponAmmoCounter {
         public final ForgeConfigSpec.BooleanValue showWeaponAmmoCounter;
         public final ForgeConfigSpec.DoubleValue weaponAmmoCounterSize;
 
         public final ForgeConfigSpec.DoubleValue x;
         public final ForgeConfigSpec.DoubleValue y;
 
-        public WeaponAmmoCounter(ForgeConfigSpec.Builder builder)
-        {
+        public WeaponAmmoCounter(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD additions").push("weaponAmmoCounter");
             {
                 this.showWeaponAmmoCounter = builder.comment("Display the amount of ammunition your weapon holds and can hold on your HUD.").define("showWeaponAmmoCounter", true);
                 this.weaponAmmoCounterSize = builder.comment("Size of the weapon ammunition counter on your HUD").defineInRange("weaponAmmoCounterSize", 1.0, 0.01, 4.0);
 
-                this.x = builder.comment("X Position on your HUD.").defineInRange("XLocation", 0,-500d, 500d);
-                this.y = builder.comment("Y Position on your HUD.").defineInRange("YLocation", 0,-500d, 500d);
+                this.x = builder.comment("X Position on your HUD.").defineInRange("XLocation", 0, -500d, 500d);
+                this.y = builder.comment("Y Position on your HUD.").defineInRange("YLocation", 0, -500d, 500d);
             }
             builder.pop();
         }
     }
-    public static class WeaponFireMode
-    {
+
+    public static class WeaponFireMode {
         public final ForgeConfigSpec.BooleanValue showWeaponFireMode;
         public final ForgeConfigSpec.DoubleValue weaponFireModeSize;
 
         public final ForgeConfigSpec.DoubleValue x;
         public final ForgeConfigSpec.DoubleValue y;
 
-        public WeaponFireMode(ForgeConfigSpec.Builder builder)
-        {
+        public WeaponFireMode(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD additions").push("weaponFireMode");
             {
                 this.showWeaponFireMode = builder.comment("Display the weapon's fire mode on your HUD.").define("showWeaponFireMode", true);
@@ -226,23 +213,22 @@ public class Config
             builder.pop();
         }
     }
-    public static class WeaponReloadTimer
-    {
+
+    public static class WeaponReloadTimer {
         public final ForgeConfigSpec.BooleanValue showWeaponReloadTimer;
         public final ForgeConfigSpec.DoubleValue weaponReloadTimerSize;
 
         public final ForgeConfigSpec.DoubleValue x;
         public final ForgeConfigSpec.DoubleValue y;
 
-        public WeaponReloadTimer(ForgeConfigSpec.Builder builder)
-        {
+        public WeaponReloadTimer(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD reloading timer bar").push("weaponReloadTimer");
             {
                 this.showWeaponReloadTimer = builder.comment("Display the amount of ammunition your weapon holds and can hold on your HUD.").define("showWeaponAmmoCounter", true);
                 this.weaponReloadTimerSize = builder.comment("Size of the weapon ammunition counter on your HUD").defineInRange("weaponAmmoCounterSize", 1.0, 0.01, 4.0);
 
-                this.x = builder.comment("X Position on your HUD.").defineInRange("XLocation", 0,-500d, 500d);
-                this.y = builder.comment("Y Position on your HUD.").defineInRange("YLocation", 0,-500d, 500d);
+                this.x = builder.comment("X Position on your HUD.").defineInRange("XLocation", 0, -500d, 500d);
+                this.y = builder.comment("Y Position on your HUD.").defineInRange("YLocation", 0, -500d, 500d);
             }
             builder.pop();
         }
@@ -251,15 +237,13 @@ public class Config
     /**
      * Particle related config options
      */
-    public static class Particle
-    {
+    public static class Particle {
         public final ForgeConfigSpec.IntValue bulletHoleLifeMin;
         public final ForgeConfigSpec.IntValue bulletHoleLifeMax;
         public final ForgeConfigSpec.DoubleValue bulletHoleFadeThreshold;
         public final ForgeConfigSpec.BooleanValue enableBlood;
 
-        public Particle(ForgeConfigSpec.Builder builder)
-        {
+        public Particle(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to particles").push("particle");
             {
                 this.bulletHoleLifeMin = builder.comment("The minimum duration in ticks before bullet holes will disappear").defineInRange("bulletHoleLifeMin", 250, 0, Integer.MAX_VALUE);
@@ -271,19 +255,16 @@ public class Config
         }
     }
 
-    public static class Controls
-    {
+    public static class Controls {
         public final ForgeConfigSpec.DoubleValue aimDownSightSensitivity;
 
-        public final ForgeConfigSpec.IntValue toggleAimDelay;
         public final ForgeConfigSpec.BooleanValue burstPress;
-        public Controls(ForgeConfigSpec.Builder builder)
-        {
+
+        public Controls(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to controls").push("controls");
             {
-                this.aimDownSightSensitivity = builder.comment("A value to multiple the mouse sensitivity by when aiming down weapon sights. Go to (Options > Controls > Mouse Settings > ADS Sensitivity) in game to change this!").defineInRange("aimDownSightSensitivity", 0.75, 0.0, 2.0);
+                this.aimDownSightSensitivity = builder.comment("A value to multiple the mouse sensitivity by when aiming down weapon sights. Go to (Options > Controls > Mouse Settings > ADS Sensitivity) in game to change this!").defineInRange("aimDownSightSensitivity", 1.0, 0.0, 2.0);
 
-                this.toggleAimDelay = builder.comment("The delay in ticks before being able to activate your toggleAim again, recommended to leave alone or increase past default!").defineInRange("toggleAimDelay", 8, 1, 60);
                 this.burstPress = builder.comment("Press to use a burst fire a gun, or hold to continue a burst, un-clicking cancels your burst").define("burstPress", true);
             }
             builder.pop();
@@ -293,15 +274,13 @@ public class Config
     /**
      * Gameplay related config options
      */
-    public static class Quality
-    {
+    public static class Quality {
         public final ForgeConfigSpec.BooleanValue reducedQualityHotBar;
         //public final ForgeConfigSpec.BooleanValue reducedGuiScopeQuality;
         //public final ForgeConfigSpec.BooleanValue reducedGuiAmmunitionQuality;
         //public final ForgeConfigSpec.BooleanValue reducedEffects;
 
-        public Quality(ForgeConfigSpec.Builder builder)
-        {
+        public Quality(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to improving graphical performance (Currently unsupported, do not attempt to change these settings until announcements are made about these features!)").push("quality");
             {
                 this.reducedQualityHotBar = builder.comment("If enabled all main weapons will be unloaded and replaced with lower quality and legacy models, not all guns maybe replaced with this mode!").define("reducedQualityHotBar", true);
@@ -316,8 +295,7 @@ public class Config
     /**
      * Common config options
      */
-    public static class Common
-    {
+    public static class Common {
         public final Gameplay gameplay;
         public final Network network;
         public final AggroMobs aggroMobs;
@@ -328,8 +306,7 @@ public class Config
         public final Development development;
 
 
-        public Common(ForgeConfigSpec.Builder builder)
-        {
+        public Common(ForgeConfigSpec.Builder builder) {
             builder.push("common");
             {
                 this.gameplay = new Gameplay(builder);
@@ -348,9 +325,10 @@ public class Config
     /**
      * Gameplay related config options
      */
-    public static class Gameplay
-    {
+    public static class Gameplay {
         public final ForgeConfigSpec.BooleanValue enableGunGriefing;
+        public final ForgeConfigSpec.BooleanValue glassDrop;
+        public final ForgeConfigSpec.BooleanValue enableExplosionBreak;
         public final ForgeConfigSpec.DoubleValue growBoundingBoxAmountV2;
         public final ForgeConfigSpec.BooleanValue enableHeadShots;
         public final ForgeConfigSpec.DoubleValue headShotDamageMultiplier;
@@ -374,12 +352,19 @@ public class Config
 
         public final ForgeConfigSpec.BooleanValue forceCameraShakeOnFire;
 
+        public final ForgeConfigSpec.BooleanValue explosionCauseFire;
+        public final ForgeConfigSpec.BooleanValue fireStarterCauseFire;
+        public final ForgeConfigSpec.BooleanValue bannedDrop;
+        public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
+        public final ForgeConfigSpec.BooleanValue gunOfKindness;
+        public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
 
-        public Gameplay(ForgeConfigSpec.Builder builder)
-        {
+        public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
             {
-                this.enableGunGriefing = builder.comment("If enable, allows guns to shoot out glass and remove blocks on explosions").define("enableGunGriefing", true);
+                this.enableGunGriefing = builder.comment("If enable, allows guns to shoot out glass").define("enableGunGriefing", true);
+                this.glassDrop = builder.comment("True if you want glass drop while been broken by shoot").define("glassDrop", false);
+                this.enableExplosionBreak = builder.comment("If enable, allows guns to remove blocks on explosions").define("enableExplosionBreak", false);
                 this.growBoundingBoxAmountV2 = builder.comment("The extra amount to expand an entity's bounding box when checking for projectile collision. Setting this value higher will make it easier to hit entities").defineInRange(
                         "growBoundingBoxAmountV2", 0.0, 0.0, 1.0);
                 this.enableHeadShots = builder.comment("Enables the check for head shots for players. Projectiles that hit the head of a player will have increased damage.").define("enableHeadShots", true);
@@ -388,7 +373,7 @@ public class Config
                 this.ignoreLeaves = builder.comment("If true, projectiles will ignore leaves when checking for collision").define("ignoreLeaves", true);
                 this.enableKnockback = builder.comment("If true, projectiles will cause knockback when an entity is hit. By default this is set to true to match the behaviour of Minecraft.").define("enableKnockback", true);
                 this.knockbackStrength = builder.comment("Sets the strength of knockback when shot by a bullet projectile. Knockback must be enabled for this to take effect. If value is equal to zero, knockback will use default minecraft value").defineInRange("knockbackStrength", 0.15, 0.0, 1.0);
-                this.improvedHitboxes = builder.comment("If true, improves the accuracy of weapons by considering the ping of the player. This has no affect on singleplayer. This will add a little overhead if enabled.").define("improvedHitboxes", false);
+                this.improvedHitboxes = builder.comment("If true, improves the accuracy of weapons by considering the ping of the player. This has no affect on singleplayer. This will add a little overhead if enabled.").define("improvedHitboxes", true);
 
                 this.safetyExistence = builder.comment("Enables the safe mode on weapons, false completely nullifies the existence of the safety").define("safetyExistence", false);
 
@@ -400,34 +385,37 @@ public class Config
                 this.bulletsIgnoreStandardArmor = builder.comment("Bullets completely ignore Minecraft armor, forcing you to use our armor system.").define("bulletsIgnoreStandardArmor", true);
                 this.percentDamageIgnoresStandardArmor =
                         builder.comment("The percent of the damage ignore the armor, 0 = Minecraft armor effectiveness doesn't change, 1 = Minecraft armor never effects bullet damage.").defineInRange(
-                        "percentDamageIgnoresStandardArmor", 0.5, 0.0, 1.0);
+                                "percentDamageIgnoresStandardArmor", 0.5, 0.0, 1.0);
                 this.renderTaCArmor = builder.comment("Enable rendering of TaC armor on the player, useful if other armors are taking priority, doesn't fit gameplay theme, or not performant enough.").define("renderTaCArmor",
                         true);
                 this.armorBluntDamage = builder.comment("All weapons have a percentage of damage applied, no matter the class match up, false means blunt damage is never applied before armor calc.").define("armorBluntDamage", true);
 
                 this.forceCameraShakeOnFire = builder.comment("Force camera shake on for all players, since control over the weapon is reduced with this off, having a client only options could lead to balance issues.").define("forceCameraShakeOnFire",
                         false);
-
+                this.explosionCauseFire = builder.comment("If enable, explosion will cause fire (ignite the block)").define("explosionCauseFire", false);
+                this.fireStarterCauseFire = builder.comment("If enable, Fire Starter will cause fire (ignite the block)").define("fireStarterCauseFire", false);
+                this.bannedDrop = builder.comment("True if you don't want pack up the item on your left hand, this option will keep the item but unable to use it and stop render it.").define("bannedDrop", true);
+                this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
+                this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
+                this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
             }
             builder.pop();
         }
     }
 
-    public static class Development
-    {
+    public static class Development {
         public final ForgeConfigSpec.BooleanValue permanentCrosshair;
         public final ForgeConfigSpec.BooleanValue enableTDev;
         public final ForgeConfigSpec.ConfigValue<String> TDevPath;
         public final ForgeConfigSpec.BooleanValue bulletSelfHarm;
 
-        public Development(ForgeConfigSpec.Builder builder)
-        {
+        public Development(ForgeConfigSpec.Builder builder) {
             builder.comment("Development").push("development");
             {
                 this.permanentCrosshair = builder.comment("If enabled any crosshair will continue to render on aim.").define("permanentCrosshair", false);
-                this.enableTDev = builder.comment("If enabled, /tdev will both be registered (Upon restart), and function! Used as well to speed up tag checks").define("enableTDev", false);
-                this.TDevPath = builder.comment("Directory to build all TaC sub-directories, these will contain export data from /tdev functions").define("tDevPath", "");
-                this.bulletSelfHarm = builder.comment("Wether the shooters bullets can harm the shooter, great for testing armor and onhit effects with the development gun").define("bulletSelfHarm", false);
+                this.enableTDev = builder.comment("If enabled, /t dev will both be registered (Upon restart), and function! Used as well to speed up tag checks").define("enableTDev", false);
+                this.TDevPath = builder.comment("Directory to build all TaC sub-directories, these will contain export data from /t dev functions").define("tDevPath", "");
+                this.bulletSelfHarm = builder.comment("Whether the shooters bullets can harm the shooter, great for testing armor and on hit effects with the development gun").define("bulletSelfHarm", true);
             }
             builder.pop();
         }
@@ -470,12 +458,10 @@ public class Config
     /**
      * Network related config options
      */
-    public static class Network
-    {
+    public static class Network {
         public final ForgeConfigSpec.DoubleValue projectileTrackingRange;
 
-        public Network(ForgeConfigSpec.Builder builder)
-        {
+        public Network(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to network").push("network");
             {
                 this.projectileTrackingRange = builder.comment("The distance players need to be within to be able to track new projectiles trails. Higher values means you can see projectiles from that start from further away.").defineInRange("projectileTrackingRange", 200.0, 1, Double.MAX_VALUE);
@@ -487,15 +473,13 @@ public class Config
     /**
      * Mob aggression related config options
      */
-    public static class AggroMobs
-    {
+    public static class AggroMobs {
         public final ForgeConfigSpec.BooleanValue enabled;
         public final ForgeConfigSpec.BooleanValue angerHostileMobs;
         public final ForgeConfigSpec.DoubleValue range;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> exemptEntities;
 
-        public AggroMobs(ForgeConfigSpec.Builder builder)
-        {
+        public AggroMobs(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to mob aggression").push("aggro_mobs");
             {
                 this.enabled = builder.comment("If true, nearby mobs are angered and/or scared by the firing of guns.").define("enabled", true);
@@ -510,12 +494,10 @@ public class Config
     /**
      * Missile related config options
      */
-    public static class Missiles
-    {
+    public static class Missiles {
         public final ForgeConfigSpec.DoubleValue explosionRadius;
 
-        public Missiles(ForgeConfigSpec.Builder builder)
-        {
+        public Missiles(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to missiles").push("missiles");
             {
                 this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 5.0, 0.0, Double.MAX_VALUE);
@@ -527,12 +509,10 @@ public class Config
     /**
      * Grenade related config options
      */
-    public static class Grenades
-    {
+    public static class Grenades {
         public final ForgeConfigSpec.DoubleValue explosionRadius;
 
-        public Grenades(ForgeConfigSpec.Builder builder)
-        {
+        public Grenades(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to grenades").push("grenades");
             {
                 this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 5.0, 0.0, Double.MAX_VALUE);
@@ -544,13 +524,11 @@ public class Config
     /**
      * Stun Grenade related config options
      */
-    public static class StunGrenades
-    {
+    public static class StunGrenades {
         public final Blind blind;
         public final Deafen deafen;
 
-        public StunGrenades(ForgeConfigSpec.Builder builder)
-        {
+        public StunGrenades(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to stun grenades").push("stun_grenades");
             {
                 this.blind = new Blind(builder);
@@ -563,13 +541,11 @@ public class Config
     /**
      * Stun grenade blinding related config options
      */
-    public static class Blind
-    {
+    public static class Blind {
         public final EffectCriteria criteria;
         public final ForgeConfigSpec.BooleanValue blindMobs;
 
-        public Blind(ForgeConfigSpec.Builder builder)
-        {
+        public Blind(ForgeConfigSpec.Builder builder) {
             builder.comment("Blinding properties of stun grenades").push("blind");
             {
                 this.criteria = new EffectCriteria(builder, 15, 220, 10, 170, 0.75, true);
@@ -582,13 +558,11 @@ public class Config
     /**
      * Stun grenade deafening related config options
      */
-    public static class Deafen
-    {
+    public static class Deafen {
         public final EffectCriteria criteria;
         public final ForgeConfigSpec.BooleanValue panicMobs;
 
-        public Deafen(ForgeConfigSpec.Builder builder)
-        {
+        public Deafen(ForgeConfigSpec.Builder builder) {
             builder.comment("Deafening properties of stun grenades").push("deafen");
             {
                 this.criteria = new EffectCriteria(builder, 15, 280, 100, 360, 0.75, false);
@@ -601,8 +575,7 @@ public class Config
     /**
      * Config options for effect criteria
      */
-    public static class EffectCriteria
-    {
+    public static class EffectCriteria {
         public final ForgeConfigSpec.DoubleValue radius;
         public final ForgeConfigSpec.IntValue durationMax;
         public final ForgeConfigSpec.IntValue durationMin;
@@ -610,8 +583,7 @@ public class Config
         public final ForgeConfigSpec.DoubleValue angleAttenuationMax;
         public final ForgeConfigSpec.BooleanValue raytraceOpaqueBlocks;
 
-        public EffectCriteria(ForgeConfigSpec.Builder builder, double radius, int durationMax, int durationMin, double angleEffect, double angleAttenuationMax, boolean raytraceOpaqueBlocks)
-        {
+        public EffectCriteria(ForgeConfigSpec.Builder builder, double radius, int durationMax, int durationMin, double angleEffect, double angleAttenuationMax, boolean raytraceOpaqueBlocks) {
             builder.push("effect_criteria");
             {
                 this.radius = builder.comment("Grenade must be no more than this many meters away to have an effect.").defineInRange("radius", radius, 0.0, Double.MAX_VALUE);
@@ -628,18 +600,12 @@ public class Config
     /**
      * Projectile spread config options
      */
-    public static class ProjectileSpread
-    {
-        public final ForgeConfigSpec.IntValue spreadThreshold;
-        public final ForgeConfigSpec.IntValue maxCount;
+    public static class ProjectileSpread {
         public final ForgeConfigSpec.BooleanValue movementInaccuracy;
-        public ProjectileSpread(ForgeConfigSpec.Builder builder)
-        {
+
+        public ProjectileSpread(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to projectile spread").push("projectile_spread");
             {
-                this.spreadThreshold = builder.comment("The amount of time in milliseconds before logic to apply spread is skipped. The value indicates a reasonable amount of time before a weapon is considered stable again.").defineInRange("spreadThreshold", 300, 0, 1000);
-                this.maxCount = builder.comment("The amount of times a player has to shoot within" +
-                        " the spread threshold before the maximum amount of spread is applied. Setting the value higher means it will take longer for the spread to be applied.").defineInRange("maxCount", 3, 1, Integer.MAX_VALUE);
                 this.movementInaccuracy = builder.comment("Weapon grows more inaccurate depending if the player is in motion (Forward, Strafing, Jumping)").define("movementInaccuracy", true);
             }
             builder.pop();
@@ -649,8 +615,7 @@ public class Config
     /**
      * Server related config options
      */
-    public static class Server
-    {
+    public static class Server {
         public final ForgeConfigSpec.IntValue alphaOverlay;
         public final ForgeConfigSpec.IntValue alphaFadeThreshold;
         public final ForgeConfigSpec.DoubleValue soundPercentage;
@@ -660,8 +625,7 @@ public class Config
         public final ForgeConfigSpec.BooleanValue enableCameraRecoil;
 
 
-        public Server(ForgeConfigSpec.Builder builder)
-        {
+        public Server(ForgeConfigSpec.Builder builder) {
             builder.push("server");
             {
                 builder.comment("Stun Grenade related properties").push("grenade");
@@ -695,8 +659,7 @@ public class Config
     static final ForgeConfigSpec serverSpec;
     public static final Config.Server SERVER;
 
-    static
-    {
+    static {
         final Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Config.Client::new);
         clientSpec = clientSpecPair.getRight();
         CLIENT = clientSpecPair.getLeft();
@@ -710,8 +673,7 @@ public class Config
         SERVER = serverSpecPair.getLeft();
     }
 
-    public static void saveClientConfig()
-    {
+    public static void saveClientConfig() {
         clientSpec.save();
     }
 }

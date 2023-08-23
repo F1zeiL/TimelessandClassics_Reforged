@@ -727,58 +727,60 @@
          { "name": "tac:item/udp_9_fire" }
       ]
    },
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   "item.uzi_fire_s": {
+      "subtitle": "subtitle.tac.uzi_fire_s",
+      "sounds": [
+         { "name": "tac:item/uzi_fire_s" }
+      ]
+   },
+   "item.uzi_fire": {
+      "subtitle": "subtitle.tac.uzi_fire",
+      "sounds": [
+         { "name": "tac:item/uzi_fire" }
+      ]
+   },
+   "item.mrad_fire_s": {
+      "subtitle": "subtitle.tac.mrad_fire_s",
+      "sounds": [
+         { "name": "tac:item/mrad_fire_s" }
+      ]
+   },
+   "item.mrad_fire": {
+      "subtitle": "subtitle.tac.mrad_fire",
+      "sounds": [
+         { "name": "tac:item/mrad_fire" }
+      ]
+   },
+   "item.mk20_fire_s": {
+      "subtitle": "subtitle.tac.mk20_fire_s",
+      "sounds": [
+         { "name": "tac:item/mk20_fire_s" }
+      ]
+   },
+   "item.mk20_fire": {
+      "subtitle": "subtitle.tac.mk20_fire",
+      "sounds": [
+         { "name": "tac:item/mk20_fire" }
+      ]
+   },
+   "item.hk_g3_fire_s": {
+      "subtitle": "subtitle.tac.hk_g3_fire_s",
+      "sounds": [
+         { "name": "tac:item/hk_g3_fire_s" }
+      ]
+   },
+   "item.hk_g3_fire": {
+      "subtitle": "subtitle.tac.hk_g3_fire",
+      "sounds": [
+         { "name": "tac:item/hk_g3_fire" }
+      ]
+   },
+   "item.tec_9_fire": {
+      "subtitle": "subtitle.tac.tec_9_fire",
+      "sounds": [
+         { "name": "tac:item/tec_9_fire" }
+      ]
+   },
 
 
 
@@ -814,13 +816,6 @@
          { "name": "tac:item/noammo" }
       ]
    },
-
-
-
-
-
-
-
 
 
 
@@ -2182,6 +2177,161 @@
       "subtitle": "animation.udp_9_reload_empty",
       "sounds": [
          { "name": "tac:animation/udp_9_reload_empty"}
+      ]
+   },
+
+   "animation.uzi_draw": {
+      "subtitle": "animation.uzi_draw",
+      "sounds": [
+         { "name": "tac:animation/uzi_draw"}
+      ]
+   },
+   "animation.uzi_reload_norm": {
+      "subtitle": "animation.uzi_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/uzi_reload_norm"}
+      ]
+   },
+   "animation.uzi_inspect": {
+      "subtitle": "animation.uzi_inspect",
+      "sounds": [
+         { "name": "tac:animation/uzi_inspect"}
+      ]
+   },
+   "animation.uzi_inspect_empty": {
+      "subtitle": "animation.uzi_inspect_empty",
+      "sounds": [
+         { "name": "tac:animation/uzi_inspect_empty"}
+      ]
+   },
+   "animation.uzi_reload_empty": {
+      "subtitle": "animation.uzi_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/uzi_reload_empty"}
+      ]
+   },
+
+   "animation.mrad_reload_empty": {
+      "subtitle": "animation.mrad_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/mrad_reload_empty"}
+      ]
+   },
+   "animation.mrad_reload_norm": {
+      "subtitle": "animation.mrad_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/mrad_reload_norm"}
+      ]
+   },
+   "animation.mrad_inspect": {
+      "subtitle": "animation.mrad_inspect",
+      "sounds": [
+         { "name": "tac:animation/mrad_inspect"}
+      ]
+   },
+   "animation.mrad_draw": {
+      "subtitle": "animation.mrad_draw",
+      "sounds": [
+         { "name": "tac:animation/mrad_draw"}
+      ]
+   },
+   "animation.mrad_bolt": {
+      "subtitle": "animation.mrad_bolt",
+      "sounds": [
+         { "name": "tac:animation/mrad_bolt"}
+      ]
+   },
+
+   "animation.hk_g3_reload_empty": {
+      "subtitle": "animation.hk_g3_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/hk_g3_reload_empty"}
+      ]
+   },
+   "animation.hk_g3_reload_norm": {
+      "subtitle": "animation.hk_g3_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/hk_g3_reload_norm"}
+      ]
+   },
+   "animation.hk_g3_inspect": {
+      "subtitle": "animation.hk_g3_inspect",
+      "sounds": [
+         { "name": "tac:animation/hk_g3_inspect"}
+      ]
+   },
+   "animation.hk_g3_draw": {
+      "subtitle": "animation.hk_g3_draw",
+      "sounds": [
+         { "name": "tac:animation/hk_g3_draw"}
+      ]
+   },
+
+   "animation.kar98_reload_empty": {
+      "subtitle": "animation.kar98_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/kar98_reload_empty"}
+      ]
+   },
+   "animation.kar98_reload_intro": {
+      "subtitle": "animation.kar98_reload_intro",
+      "sounds": [
+         { "name": "tac:animation/kar98_reload_intro"}
+      ]
+   },
+   "animation.kar98_reload_loop": {
+      "subtitle": "animation.kar98_reload_loop",
+      "sounds": [
+         { "name": "tac:animation/kar98_reload_loop"}
+      ]
+   },
+   "animation.kar98_reload_end": {
+      "subtitle": "animation.kar98_reload_end",
+      "sounds": [
+         { "name": "tac:animation/kar98_reload_end"}
+      ]
+   },
+   "animation.kar98_inspect": {
+      "subtitle": "animation.kar98_inspect",
+      "sounds": [
+         { "name": "tac:animation/kar98_inspect"}
+      ]
+   },
+   "animation.kar98_draw": {
+      "subtitle": "animation.kar98_draw",
+      "sounds": [
+         { "name": "tac:animation/kar98_draw"}
+      ]
+   },
+   "animation.kar98_bolt": {
+      "subtitle": "animation.kar98_bolt",
+      "sounds": [
+         { "name": "tac:animation/kar98_bolt"}
+      ]
+   },
+
+   "animation.tec_9_reload_empty": {
+      "subtitle": "animation.tec_9_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/tec_9_reload_empty"}
+      ]
+   },
+   "animation.tec_9_reload_norm": {
+      "subtitle": "animation.tec_9_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/tec_9_reload_norm"}
+      ]
+   },
+   "animation.tec_9_inspect": {
+      "subtitle": "animation.tec_9_inspect",
+      "sounds": [
+         { "name": "tac:animation/tec_9_inspect"}
+      ]
+   },
+   "animation.tec_9_draw": {
+      "subtitle": "animation.tec_9_draw",
+      "sounds": [
+         { "name": "tac:animation/tec_9_draw"}
       ]
    }
 }

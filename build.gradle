@@ -22,14 +22,14 @@ apply plugin: 'org.spongepowered.mixin'
 //apply plugin: 'eclipse'
 //apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
 
-version = "0.3.6.1-1.16.5"
+version = "0.3.9.1-1.16.5"
 group = "com.tac"
-archivesBaseName = "tac-pra"
+archivesBaseName = "tac-test"
 
 
 //name = "tac-a-0.3.0.44-1.16.5"
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+//sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 //sourceSets.main.resources { srcDir 'src/generated/resources' }
 
@@ -113,7 +113,6 @@ dependencies {
     implementation ('com.fasterxml.jackson.core:jackson-databind:2.12.4')
     //implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 
-    implementation fg.deobf('curse.maven:curios-309927:3661903')
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
     implementation fg.deobf('curse.maven:dynamicsounds-238891:3502320')
@@ -161,7 +160,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file://C:/dev/maven/mcmodsrepo"
+            url "./build/maven"
         }
     }
 }

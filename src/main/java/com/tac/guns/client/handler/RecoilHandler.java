@@ -1,16 +1,12 @@
 package com.tac.guns.client.handler;
 
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
 import com.tac.guns.common.Gun;
-import com.tac.guns.common.SpreadTracker;
 import com.tac.guns.event.GunFireEvent;
-import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -21,7 +17,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -38,6 +36,7 @@ public class RecoilHandler
         }
         return instance;
     }
+    private final Map<PlayerEntity, RecoilTracker> trackerMap = new WeakHashMap<>();
 
     private Random random = new Random();
     private int recoilRand;
@@ -103,6 +102,10 @@ public class RecoilHandler
         horizontalProgressCameraRecoil = 0F;
 
         timer = recoilDuration;
+
+        RecoilTracker tracker = getRecoilTracker(event.getPlayer());
+        tracker.needRecoil = true;
+        tracker.tick = 1;
     }
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent event)
@@ -130,7 +133,9 @@ public class RecoilHandler
 
         float progressForward = mc.player.getHeldItemMainhand().getItem() instanceof GunItem ? ((GunItem) mc.player.getHeldItemMainhand().getItem()).getGun().getGeneral().getRecoilDuration() *
                 GunModifierHelper.getRecoilSmootheningTime(mc.player.getHeldItemMainhand()) : 0.25F;
-        if(startProgress < progressForward) // && startProgress > 0.125F
+        float delay = 0.10F;
+        float slow = 1.75F;
+        if(startProgress < progressForward - delay) // && startProgress > 0.125F
         {
             mc.player.rotationPitch -= ((endProgress - startProgress) / progressForward) * this.cameraRecoil / cameraRecoilModifer;
             if(recoilRand == 1)
@@ -140,11 +145,11 @@ public class RecoilHandler
         }
         else if(startProgress > progressForward)
         {
-            mc.player.rotationPitch += ((endProgress - startProgress) / (1-progressForward) ) * this.cameraRecoil / (cameraRecoilModifer*1.025); // 0.75F
+            mc.player.rotationPitch += ((endProgress - startProgress) / (1 - progressForward) ) * this.cameraRecoil / (cameraRecoilModifer * slow); // 0.75F
             if(recoilRand == 1)
-                mc.player.rotationYaw -= ((endProgress - startProgress) / (1-progressForward)) * -this.horizontalCameraRecoil / (cameraRecoilModifer*1.025);
+                mc.player.rotationYaw -= ((endProgress - startProgress) / (1 - progressForward)) * -this.horizontalCameraRecoil / (cameraRecoilModifer * slow);
             else
-                mc.player.rotationYaw -= ((endProgress - startProgress) / (1-progressForward)) * this.horizontalCameraRecoil / (cameraRecoilModifer*1.025);
+                mc.player.rotationYaw -= ((endProgress - startProgress) / (1 - progressForward)) * this.horizontalCameraRecoil / (cameraRecoilModifer * slow);
         }
 
         this.progressCameraRecoil += recoilAmount;
@@ -162,6 +167,20 @@ public class RecoilHandler
             this.horizontalCameraRecoil = 0;
             this.horizontalProgressCameraRecoil = 0;
         }
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event){
+        trackerMap.values().forEach(tracker -> {
+            if(tracker.tick > 8) {
+                tracker.needRecoil = false;
+                tracker.tick = 0;
+            }
+            else if(tracker.tick > 0){
+                tracker.needRecoil = true;
+                tracker.tick++;
+            }
+        });
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -192,7 +211,7 @@ public class RecoilHandler
             this.gunRecoilNormal = 1 - (--amount);
         }
         else {
-            float amount = ( (cooldown) / modifiedGun.getGeneral().getWeaponRecoilOffset() );
+            float amount = ((cooldown) / modifiedGun.getGeneral().getWeaponRecoilOffset());
             this.gunRecoilNormal = amount < 0.5 ? 2 * amount * amount : -1 + (4 - 2 * amount) * amount;
         }
 
@@ -222,6 +241,11 @@ public class RecoilHandler
 
     public double getRecoilProgress() {return timer / (double)recoilDuration;}
 
+    public RecoilTracker getRecoilTracker(PlayerEntity player)
+    {
+        return trackerMap.computeIfAbsent(player, player1 -> new RecoilTracker());
+    }
+
     private static Vector3d getVectorFromRotation(float pitch, float yaw)
     {
         float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
@@ -235,4 +259,16 @@ public class RecoilHandler
     public float lastRandPitch = 0f;
     public float lastRandYaw = 0f;
 
+    public static class RecoilTracker{
+        private boolean needRecoil = false;
+        private int tick = 0;
+
+        public boolean isNeedRecoil() {
+            return needRecoil;
+        }
+
+        public int getTick() {
+            return tick;
+        }
+    }
 }

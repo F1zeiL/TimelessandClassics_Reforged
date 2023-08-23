@@ -2,7 +2,6 @@ package com.tac.guns.client.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.handler.GunRenderingHandler;
-import com.tac.guns.init.ModItems;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
 import net.minecraft.client.Minecraft;
@@ -60,20 +59,20 @@ public class UpgradeBenchRenderUtil extends TileEntityRenderer<UpgradeBenchTileE
         }*/
         matrixStack.translate(-0.14, -0.4200001, 0);
         matrixStack.translate(0.205, 1.48, 0.19);
-        if(tileEntityMBE21.getStackInSlot(1).getItem() == ModItems.MODULE.get())
-        {
-            if(tileEntityMBE21.getStackInSlot(1).getCount() > 0) {
-                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
-            }
-            if(tileEntityMBE21.getStackInSlot(1).getCount() > 1) {
-                matrixStack.translate(0.12, 0, 0);
-                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
-            }
-            if(tileEntityMBE21.getStackInSlot(1).getCount() > 2) {
-                matrixStack.translate(0.12, 0, 0);
-                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
-            }
-        }
+//        if(tileEntityMBE21.getStackInSlot(1).getItem() == ModItems.MODULE.get())
+//        {
+//            if(tileEntityMBE21.getStackInSlot(1).getCount() > 0) {
+//                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
+//            }
+//            if(tileEntityMBE21.getStackInSlot(1).getCount() > 1) {
+//                matrixStack.translate(0.12, 0, 0);
+//                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
+//            }
+//            if(tileEntityMBE21.getStackInSlot(1).getCount() > 2) {
+//                matrixStack.translate(0.12, 0, 0);
+//                Minecraft.getInstance().getItemRenderer().renderItem(tileEntityMBE21.getStackInSlot(1), ItemCameraTransforms.TransformType.GROUND, combinedLight, combinedOverlay, matrixStack, renderBuffers);
+//            }
+//        }
 
         matrixStack.pop();
     }

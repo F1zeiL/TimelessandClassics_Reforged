@@ -2,9 +2,8 @@ package com.fasterxml.jackson.databind.ser.impl;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import com.fasterxml.jackson.databind.introspect.ObjectIdInfo;
-import com.fasterxml.jackson.databind.ser.*;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 
 public class PropertyBasedObjectIdGenerator
     extends ObjectIdGenerators.PropertyGenerator

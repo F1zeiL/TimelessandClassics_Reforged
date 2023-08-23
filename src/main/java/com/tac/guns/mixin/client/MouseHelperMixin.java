@@ -12,7 +12,6 @@ import net.minecraft.client.MouseHelper;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import org.apache.commons.lang3.ArrayUtils;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,12 +39,15 @@ public class MouseHelperMixin
 
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
-                            newFov -= scope.getAdditionalZoom().getFovZoom();// * (Config.CLIENT.display.scopeDoubleRender.get() ? 1:1.25);
-
-                            additionalAdsSensitivity = MathHelper.clamp(1.0F - (1.0F / newFov) / 10F, 0.0F, 1.0F) * ((Config.CLIENT.display.scopeDoubleRender.get() && scope.getAdditionalZoom().getFovZoom() > -1) || scope.getAdditionalZoom().getFovZoom() == 0 ? 1F:0.7F);
+                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
+                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
+                                    scope.getTagName() == "qmk152") {
+                                newFov = (0.8F - scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F));
+                            } else {
+                                newFov -= scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F);
+                            }
                         }
-                        else
-                            additionalAdsSensitivity = MathHelper.clamp(1.0F - (1.0F / newFov) / 10F, 0.0F, 1.0F);
+                        additionalAdsSensitivity = MathHelper.clamp(1.0F - (1.0F / newFov) / 10F, 0.0F, 1.0F);
                     }
                 }
             }

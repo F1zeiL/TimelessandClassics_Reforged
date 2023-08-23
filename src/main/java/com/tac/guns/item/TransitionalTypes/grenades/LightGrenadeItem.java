@@ -2,17 +2,9 @@ package com.tac.guns.item.TransitionalTypes.grenades;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.specifics.LightGrenadeEntity;
-import com.tac.guns.init.ModSounds;
-import com.tac.guns.item.AmmoItem;
 import com.tac.guns.item.GrenadeItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 /**

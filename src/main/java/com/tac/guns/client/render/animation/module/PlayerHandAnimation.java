@@ -2,9 +2,7 @@ package com.tac.guns.client.render.animation.module;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.handler.GunRenderingHandler;
-import com.tac.guns.client.handler.command.ObjectRenderEditor;
 import com.tac.guns.client.util.RenderUtil;
-import com.tac.guns.common.Gun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -12,8 +10,6 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Vector;
 
 @OnlyIn(Dist.CLIENT)
 public class PlayerHandAnimation {

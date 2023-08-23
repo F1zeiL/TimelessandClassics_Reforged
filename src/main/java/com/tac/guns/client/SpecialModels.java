@@ -1,8 +1,11 @@
 package com.tac.guns.client;
 
 import com.tac.guns.Reference;
+import com.tac.guns.client.gunskin.ResourceReloadListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,8 +18,16 @@ import net.minecraftforge.fml.common.Mod;
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public enum SpecialModels
-{
+public enum SpecialModels {
+    BULLET_SHELL("bullet_shell"), // Simply for testing fall back, FOR REMOVAL
+    BULLET_SHELL_HIGH_CAL("shell_huge"),
+    BULLET_SHELL_RIFLE("shell_large"),
+    BULLET_SHELL_SHOTGUN("shell_shotgun"),
+    BULLET_SHELL_PISTOL("shell_small"),
+    BULLET_SHELL_PISTOL_SILVER("shell_silver"),
+    BULLET_SHELL_RIFLE_SURPLUS("shell_steel"),
+
+
     FLAME("flame"),
     MINI_GUN_BASE("mini_gun_base"),
     MINI_GUN_BARRELS("mini_gun_barrels"),
@@ -35,22 +46,21 @@ public enum SpecialModels
     M1928_DRUM_MAG("m1928_drum_mag"),
     MOSIN("mosin"),
     MOSIN_BOLT("mosin_bolt"),
-    AK47("ak47"),
-    AK47_BOLT("ak47_bolt"),
     M60("m60"),
     M60_MAG("m60_mag"),
     M60_STANDARD_MAG("m60_standard_mag"),
     M60_EXTENDED_MAG("m60_extended_mag"),
     M60_CAPS("m60_caps"),
     M60_HANDLE("m60_handle"),
-    AK47_OPTIC_MOUNT("ak47_mount"),
     M1917("m1917"),
     M1917_CYLINDER("m1917_cylinder"),
     GLOCK_17("glock_17"),
+    GLOCK_17_BULLET("glock_17_bullet"),
     GLOCK_17_SLIDE("glock_17_slide"),
+    GLOCK_17_SIGHT("glock_17_sight"),
     GLOCK_17_STANDARD_MAG("glock_17_standard_mag"),
     GLOCK_17_EXTENDED_MAG("glock_17_extended_mag"),
-    GLOCK_17_SUPPRESSOR_OVERIDE("glock_17_suppressor"),
+    GLOCK_17_SUPPRESSOR("glock_17_suppressor"),
     DP_28("dp28"),
     DP_28_MAG("dp28_mag"),
     DP_28_BOLT("dp28_bolt"),
@@ -69,12 +79,14 @@ public enum SpecialModels
     STI2011_BULLET2("sti2011_bullet2"),
     STI2011_HAMMER("sti2011_hammer"),
     STI2011_BODY("sti2011_body"),
+    STI2011_SIGHT_LIGHT("sti2011_sight_light"),
     STI2011_SLIDE("sti2011_slide"),
     STI2011_STANDARD_MAG("sti2011_standard_mag"),
     STI2011_RAIL("sti2011_rail"),
     AK74("ak74"),
     M92FS("m92fs"),
     M92FS_SLIDE("m92fs_slide"),
+    M92FS_SIGHT_LIGHT("m92fs_sight_light"),
 
     M92FS_BULLET("m92fs_bullet"),
     M92FS_STANDARD_MAG("m92fs_standard_mag"),
@@ -94,6 +106,7 @@ public enum SpecialModels
     AR15_P_TACTICAL_GRIP("ar_15_p_tactical_grip"),
     AR15_BOLT("ar_15_bolt"),
     VECTOR45_BODY("vector45_body"),
+    VECTOR45_BODY_LIGHT("vector45_body_light"),
     VECTOR45_BOLT("vector45_bolt"),
     VECTOR45_HANDLE("vector45_handle"),
     VECTOR45_EXTENDED_MAG("vector45_extended_mag"),
@@ -101,6 +114,7 @@ public enum SpecialModels
     VECTOR45_HEAVY_STOCK("vector45_heavy_stock"),
     VECTOR45_LIGHT_STOCK("vector45_light_stock"),
     VECTOR45_SIGHT("vector45_sight"),
+    VECTOR45_SIGHT_LIGHT("vector45_sight_light"),
     VECTOR45_SILENCER("vector45_silencer"),
     VECTOR45_STANDARD_MAG("vector45_standard_mag"),
     VECTOR45_TACTICAL_STOCK("vector45_tactical_stock"),
@@ -132,11 +146,6 @@ public enum SpecialModels
     WALTHER_PPK_EXTENDED_MAG("walther_ppk_extended_mag"),
     WALTHER_PPK_SLIDE("walther_ppk_slide"),
     WALTHER_PPK_STANDARD_MAG("walther_ppk_standard_mag"),
-    M4_BODY("m4_body"),
-    M4_BOLT("m4_bolt"),
-    M4_BOLT_HANDLE("m4_bolt_handle"),
-    M4_SIGHT("m4_sight"),
-    M4_TACTICAL_STOCK("m4_tactical_stock"),
     M24_BODY("m24_body"),
     M24_EXTENDED_MAG("m24_extended_mag"),
     M24_BULLET_SHELL("m24_bullet_shell"),
@@ -144,6 +153,7 @@ public enum SpecialModels
     M24_MAG("m24_mag"),
     M24_BOLT("m24_bolt"),
     M24_IRON_SIGHT("m24_iron_sight"),
+    M24_SIGHT_LIGHT("m24_sight_light"),
     COYOTE_SIGHT("coyote_sight"),
     MIDRANGE_DOT_SCOPE("midrange_dot_scope"),
     PPSH_41("ppsh_41"),
@@ -151,6 +161,7 @@ public enum SpecialModels
     PPSH_41_STANDARD_MAG("ppsh_41_standard_mag"),
     PPSH_41_EXTENDED_MAG("ppsh_41_extended_mag"),
     QBZ_95_BODY("type_95_longbow"),
+    QBZ_95_BODY_LIGHT("type_95_longbow_light"),
     QBZ_95_BOLT("type_95_longbow_bolt"),
     QBZ_95_SUPPRESSOR("type_95_longbow_s_muzzle"),
     QBZ_95_BRAKE("type_95_longbow_b_muzzle"),
@@ -164,7 +175,9 @@ public enum SpecialModels
     DEAGLE_50("deagle_50_body"),
     DEAGLE_50_EXTENDED_MAG("deagle_50_extended_mag"),
     DEAGLE_50_SLIDE("deagle_50_slide"),
+    DEAGLE_50_SLIDE_LIGHT("deagle_50_slide_light"),
     DEAGLE_50_STANDARD_MAG("deagle_50_standard_mag"),
+    DEAGLE_50_SIGHT_LIGHT("deagle_50_sight_light"),
     AA_12_BODY("aa_12_body"),
     AA_12_BOLT("aa_12_bolt"),
     AA_12_BOLT_HANDLE("aa_12_bolt_handle"),
@@ -172,6 +185,7 @@ public enum SpecialModels
     AA_12_GRIP("aa_12_forgrip"),
     AA_12_LIGHT_GRIP("aa_12_light_grip"),
     AA_12_SIGHT("aa_12_sight"),
+    AA_12_SIGHT_LIGHT("aa_12_sight_light"),
     AA_12_SILENCER("aa_12_suppressor"),
     AA_12_BRAKE("aa_12_brake"),
     AA_12_COMPENSATOR("aa_12_compensator"),
@@ -200,21 +214,6 @@ public enum SpecialModels
     M60_FOLDED_SIGHT("m60_folded_sight"),
     M60_BOLT("m60_bolt"),
     M60_BULLET_CHAIN("m60_bullet_chain"),
-    AK47_BUTT_HEAVY("ak47_heavy_stock"),
-    AK47_BUTT_LIGHTWEIGHT("ak47_light_stock"),
-    AK47_BUTT_TACTICAL("ak47_tactical_stock"),
-    AK47_SILENCER("ak47_silencer"),
-    AK47_MAGAZINE("ak47_magazine"),
-    AK74_BUTT_HEAVY("ak74_heavy_stock"),
-    AK74_BUTT_TACTICAL("ak74_tactical_stock"),
-    AR_15_CQB_IRONS("ar_15_cqb_irons"),
-    AR_15_CQB_IRONS_2("ar_15_cqb_irons_2"),
-    AR_15_CQB_DEFAULT_BARREL("ar_15_cqb_default_barrel"),
-    AR_15_CQB_BRAKE("ar_15_cqb_brake"),
-    AR_15_CQB_COMPENSATOR("ar_15_cqb_compensator"),
-    AR_15_CQB_STANDARD_FLASHLIGHT("ar_15_standard_flashlight"),
-    AK47_BRAKE("ak47_brake"),
-    AK47_COMPENSATOR("ak47_compensator"),
     AR_10_BODY("ar_10_body"),
     AR_10_DEFAULT_BARREL("ar_10_default_muzzle"),
     AR_10_BRAKE("ar_10_brake"),
@@ -225,19 +224,6 @@ public enum SpecialModels
     AR_10_HEAVY_STOCK("ar_10_heavy_stock"),
     AR_10_STANDARD_MAG("ar_10_standard_mag"),
     AR_10_TACTICAL_GRIP("ar_10_tactical_grip"),
-    M4_COMPENSATOR("m4a1_compensator"),
-    M4_DEFAULT_HANDGUARD("m4a1_default_handguard"),
-    M4_DEFAULT_BARREL("m4a1_default_muzzle"),
-    M4_EXTENDED_HANDGUARD("m4a1_extended_handguard"),
-    M4_EXTENDED_MAG("m4a1_extended_mag"),
-    M4_SUPPRESSOR("m4a1_silencer"),
-    M4_STANDARD_MAG("m4a1_standard_mag"),
-    M4_CARRY("m4a1_carry"),
-    M4_BRAKE("m4a1_brake"),
-    M4_H_STOCK("m4_heavy_stock"),
-    M4_L_GRIP("m4_l_grip"),
-    M4_T_GRIP("m4_t_grip"),
-    M4_LIGHT_STOCK("m4_light_stock"),
     M1A1_SMG_STANDARD_MAG("m1a1_smg_standard_mag"),
     M1A1_SMG_DRUM_MAG("m1a1_smg_drum_mag"),
     M1A1_SMG_BULLET("m1a1_smg_bullet"),
@@ -251,6 +237,7 @@ public enum SpecialModels
     DEAGLE_50_BRAKE("deagle_50_brake"),
     DEAGLE_50_COMPENSATOR("deagle_50_compensator"),
     HK_MP5A5_BODY("hk_mp5a5"),
+    HK_MP5A5_SIGHT_LIGHT("hk_mp5a5_sight_light"),
     HK_MP5A5_BRAKE("hk_mp5a5_brake"),
     HK_MP5A5_COMPENSATOR("hk_mp5a5_compensator"),
     HK_MP5A5_BOLT("hk_mp5a5_bolt"),
@@ -281,6 +268,7 @@ public enum SpecialModels
     STEN_MK_II_EXTENDED_MAG_EMPTY("sten_mk_ii_extended_mag_empty"),
     GLOCK_18("glock_18"),
     GLOCK_18_SLIDE("glock_18_slide"),
+    GLOCK_18_SIGHT("glock_18_sight"),
     GLOCK_18_STANDARD_MAG("glock_18_standard_mag"),
     GLOCK_18_EXTENDED_MAG("glock_18_extended_mag"),
     GLOCK_18_SUPPRESSOR("glock_18_suppressor"),
@@ -304,10 +292,7 @@ public enum SpecialModels
     VZ61_EXTENDED_MAG("vz61_extended_mag"),
     QSZ92G1("qsz92g1"),
     QSZ92G1_SLIDE("qsz92g1_slide"),
-    KAR98("kar98"),
-    KAR98_BOLT("kar98_bolt_rotate"),
-    KAR98_BOLT_EXTRA("kar98_bolt_fixed"),
-    KAR98_BULLET("kar98_bullet"),
+
     HK416_A5_BODY("hk416_a5"),
     HK416_A5_BULLET("hk416_a5_bullet"),
     HK416_A5_BRAKE("hk416_a5_brake"),
@@ -332,8 +317,6 @@ public enum SpecialModels
     HK416_A5_IR_LASER_DEVICE("hk416_a5_ir_laser_device"),
     HK416_A5_IR_LASER("hk416_a5_ir_laser"),
 
-    GLOCK_17_SUPPRESSOR("glock_17_suppressor"),
-    GLOCK_17_BULLET("glock_17_bullet"),
     STI2011_SUPPRESSOR("sti2011_suppressor"),
     STI2011_EXTENDED_MAG("sti2011_extended_mag"),
     M92FS_SUPPRESSOR("m92fs_suppressor"),
@@ -363,6 +346,7 @@ public enum SpecialModels
     PKP_PENCHENNBERG_MOUNT("pkp_penchenberg_mount"),
     MP7("mp7"),
     MP7_SIGHT("mp7_sight"),
+    MP7_SIGHT_LIGHT("mp7_sight_light"),
     MP7_BRAKE("mp7_brake"),
     MP7_COMPENSATOR("mp7_compensator"),
     MP7_SUPPRESSOR("mp7_silencer"),
@@ -382,6 +366,7 @@ public enum SpecialModels
     M82A2_BODY("m82a2_body"),
     M82A2_HANDLE("m82a2_handle"),
     M82A2_SIGHT("m82a2_sight"),
+    M82A2_SIGHT_LIGHT("m82a2_sight_light"),
     M82A2_SIGHT_FOLDED("m82a2_sight_fold"),
     M82A2_BOLT("m82a2_bolt"),
     M82A2_BULLET("m82a2_bullet"),
@@ -393,15 +378,13 @@ public enum SpecialModels
     AI_AWP_SUPPRESSOR("ai_awp_silencer"),
     AI_AWP("ai_awp"),
     AI_AWP_SIGHT("ai_awp_sight"),
+    AI_AWP_SIGHT_LIGHT("ai_awp_sight_light"),
     AI_AWP_BOLT("ai_awp_bolt"),
     AI_AWP_BOLT_EXTRA("ai_awp_bolt_extra"),
     AI_AWP_BULLET_SHELL("ai_awp_bullet_shell"),
     AI_AWP_MAG("ai_awp_mag"),
     AI_AWP_MAG_EXTENDED("ai_awp_extended_mag"),
-    TEC_9("tec_9"),
-    TEC_9_BOLT("tec_9_bolt"),
-    TEC_9_STANDARD_MAG("tec_9_standard_mag"),
-    TEC_9_EXTENDED_MAG("tec_9_extended_mag"),
+
     RPK("rpk"),
     RPK_BOLT("rpk_bolt"),
     RPK_STANDARD_MAG("rpk_standard_mag"),
@@ -414,6 +397,7 @@ public enum SpecialModels
     RPG7_ROCKET("rpg7_rocket"),
     FN_FAL("fn_fal"),
     FN_FAL_BOLT("fn_fal_bolt"),
+    FN_FAL_SIGHT_LIGHT("fn_fal_sight_light"),
     FN_FAL_STANDARD_MAG("fn_fal_standard_mag"),
     FN_FAL_EXTENDED_MAG("fn_fal_extended_mag"),
     FN_FAL_MOUNT("fn_fal_mount"),
@@ -427,6 +411,25 @@ public enum SpecialModels
     AR15_HELLMOUTH_STANDARD_MAG("ar_15_hellmouth_standard_mag"),
     AR15_HELLMOUTH_EXTENDED_MAG("ar_15_hellmouth_extended_mag"),
     AR15_HELLMOUTH_DD_MAG("ar_15_hellmouth_dd_mag"),
+    M4_BODY("m4_body"),
+    M4_BOLT("m4_bolt"),
+    M4_BOLT_HANDLE("m4_bolt_handle"),
+    M4_SIGHT("m4_sight"),
+    M4_SIGHT_LIGHT("m4_sight_light"),
+    M4_TACTICAL_STOCK("m4_tactical_stock"),
+    M4_COMPENSATOR("m4a1_compensator"),
+    M4_DEFAULT_HANDGUARD("m4a1_default_handguard"),
+    M4_DEFAULT_BARREL("m4a1_default_muzzle"),
+    M4_EXTENDED_HANDGUARD("m4a1_extended_handguard"),
+    M4_EXTENDED_MAG("m4a1_extended_mag"),
+    M4_SUPPRESSOR("m4a1_silencer"),
+    M4_STANDARD_MAG("m4a1_standard_mag"),
+    M4_CARRY("m4a1_carry"),
+    M4_BRAKE("m4a1_brake"),
+    M4_H_STOCK("m4_heavy_stock"),
+    M4_L_GRIP("m4_l_grip"),
+    M4_T_GRIP("m4_t_grip"),
+    M4_LIGHT_STOCK("m4_light_stock"),
     M4_EXTENDED_HANDGUARD_V2("m4a1_extended_handguard_v2"),
     M4_EXTENDED_HANDGUARD_V2_L_COVER("m4a1_extended_handguard_v2_left_cover"),
     M4_EXTENDED_HANDGUARD_V2_L_RAIL("m4a1_extended_handguard_v2_left_rail"),
@@ -455,6 +458,7 @@ public enum SpecialModels
     SIG_MCX_SPEAR_BOLT("sig_mcx_spear_bolt"),
     SIG_MCX_SPEAR_BULLET("sig_mcx_spear_bullet"),
     SIG_MCX_SPEAR_SIGHT("sig_mcx_spear_sight"),
+    SIG_MCX_SPEAR_SIGHT_LIGHT("sig_mcx_spear_sight_light"),
     SIG_MCX_SPEAR_HANDLE1("sig_mcx_spear_handle1"),
     SIG_MCX_SPEAR_HANDLE2("sig_mcx_spear_handle2"),
     SIG_MCX_SPEAR_MAG("sig_mcx_spear_mag"),
@@ -505,7 +509,9 @@ public enum SpecialModels
     M1014_BULLET("m1014_bullet"),
     M1014_BOLT("m1014_bolt"),
     M1014_SHELL("m1014_shell"),
+    M1014_SIGHT_LIGHT("m1014_sight_light"),
     M249("m249"),
+    M249_SIGHT_LIGHT("m249_sight_light"),
     M249_ROTATE("m249_rotate"),
     M249_IRON("m249_iron"),
     M249_MAG("m249_mag"),
@@ -522,6 +528,7 @@ public enum SpecialModels
 
     MK23("mk23"),
     MK23_SLIDE("mk23_slide"),
+    MK23_SIGHT_LIGHT("mk23_sight_light"),
     MK23_BULLET("mk23_bullet"),
     MK23_SUPPRESSOR("mk23_suppressor"),
     MK23_EXTENDED_MAG("mk23_extended_mag"),
@@ -542,20 +549,29 @@ public enum SpecialModels
     QBZ_191_SUPPRESSOR("qbz_191_muz_suppressor"),
     QBZ_191F("qbz_191_sightsf"),
     QBZ_191NF("qbz_191_sightsnf"),
+    QBZ_191NF_L("qbz_191_sightsnf_light"),
     C96("c96"),
     C96_BOLT("c96_bolt"),
     C96_EXTENDED_MAG("c96_extended_mag"),
     C96_STANDARD_MAG("c96_standard_mag"),
     STEN_MK_II_OSS("sten_mk_ii_oss"),
 
+    KAR98_BODY("kar98_body"),
+    KAR98_BOLT_FIXED("kar98_bolt_fixed"),
+    KAR98_BOLT_ROTATE("kar98_bolt_rotate"),
+    KAR98_BULLET2("kar98_bullet2"),
+    KAR98_BULLET3("kar98_bullet3"),
+    KAR98_BULLETS("kar98_bullets"),
+    KAR98_CLIP("kar98_clip"),
+    KAR98_FRONT("kar98_front"),
+    KAR98_MOUNT("kar98_mount"),
+    KAR98_SHELL("kar98_shell"),
+
     ESPADON("espadon"),
     ESPADON_SIGHT("espadon_sight"),
     ESPADON_RAIL("espadon_rail"),
-
-    AK47_EXTENDED_MAG("ak47_extended_mag"),
-    AK47_STANDARD_MAG("ak47_standard_mag"),
-
     M16A4_BODY("m16a4"),
+    M16A4_SIGHT_LIGHT("m16a4_sight_light"),
     M16A4_BOLT("m16a4_bolt"),
     M16A4_PULL_HANDLE("m16a4_pull_handle"),
     M16A4_COMPENSATOR("m16a4_c_muzzle"),
@@ -584,7 +600,9 @@ public enum SpecialModels
     SCAR_H_SUPPRESSOR("scar_h_s_muzzle"),
     SCAR_H_STANDARD_MAG("scar_h_standard_mag"),
     SCAR_H_FS("scar_h_fs"),
+    SCAR_H_FS_L("scar_h_fs_light"),
     SCAR_H_FSU("scar_h_fsu"),
+    SCAR_H_FSU_L("scar_h_fsu_light"),
     SCAR_H_BRAKE("scar_h_b_muzzle"),
     SCAR_H_TAC_GRIP("scar_h_tac_grip"),
     SCAR_H_LIGHT_GRIP("scar_h_light_grip"),
@@ -597,7 +615,9 @@ public enum SpecialModels
     SCAR_L_SUPPRESSOR("scar_l_s_muzzle"),
     SCAR_L_STANDARD_MAG("scar_l_standard_mag"),
     SCAR_L_FS("scar_l_fs"),
+    SCAR_L_FS_L("scar_l_fs_light"),
     SCAR_L_FSU("scar_l_fsu"),
+    SCAR_L_FSU_L("scar_l_fsu_light"),
     SCAR_L_BRAKE("scar_l_b_muzzle"),
     SCAR_L_TAC_GRIP("scar_l_tac_grip"),
     SCAR_L_LIGHT_GRIP("scar_l_light_grip"),
@@ -614,30 +634,31 @@ public enum SpecialModels
     MK47_SUPPRESSOR("mk47_s_muzzle"),
     MK47_STANDARD_MAG("mk47_standard_mag"),
     MK47_FS("mk47_sightsf"),
+    MK47_SIGHTSF_LIGHT("mk47_sightsf_light"),
     MK47_FSU("mk47_sights"),
+    MK47_SIGHTS_LIGHT("mk47_sights_light"),
     MK47_BRAKE("mk47_b_muzzle"),
     MK47_TACTICAL_STOCK("mk47_tac_stock"),
     MK47_LIGHT_STOCK("mk47_light_stock"),
     MK47_HEAVY_STOCK("mk47_heavy_stock"),
     MK47_PULL("mk47_pull"),
-    KAR98_MOUNT("kar98_mount"),
 
-   AR_15_BODY("ar_15_body"),
-   AR_15_BOLT("ar_15h_bolt"),
-   AR_15_COMPENSATOR("ar_15_c_muzzle"),
-   AR_15_DEFAULT_BARREL("ar_15_d_muzzle"),
-   AR_15_EXTENDED_MAG("ar_15_extended_mag"),
-   AR_15_SUPPRESSOR("ar_15_s_muzzle"),
-   AR_15_STANDARD_MAG("ar_15_standard_mag"),
-   AR_15_FS("ar_15_fs"),
-   AR_15_FSU("ar_15_fsu"),
-   AR_15_BRAKE("ar_15_b_muzzle"),
-   AR_15_TACTICAL_STOCK("ar_15_tac_stock"),
-   AR_15_LIGHT_STOCK("ar_15_light_stock"),
-   AR_15_HEAVY_STOCK("ar_15_heavy_stock"),
-   AR_15_GRIP("ar_15_grip"),
-   AR_15_LIGHT_GRIP("ar_15_l_grip"),
-   AR_15_TAC_GRIP("ar_15_t_grip"),
+    AR_15_BODY("ar_15_body"),
+    AR_15_BOLT("ar_15h_bolt"),
+    AR_15_COMPENSATOR("ar_15_c_muzzle"),
+    AR_15_DEFAULT_BARREL("ar_15_d_muzzle"),
+    AR_15_EXTENDED_MAG("ar_15_extended_mag"),
+    AR_15_SUPPRESSOR("ar_15_s_muzzle"),
+    AR_15_STANDARD_MAG("ar_15_standard_mag"),
+    AR_15_FS("ar_15_fs"),
+    AR_15_FSU("ar_15_fsu"),
+    AR_15_BRAKE("ar_15_b_muzzle"),
+    AR_15_TACTICAL_STOCK("ar_15_tac_stock"),
+    AR_15_LIGHT_STOCK("ar_15_light_stock"),
+    AR_15_HEAVY_STOCK("ar_15_heavy_stock"),
+    AR_15_GRIP("ar_15_grip"),
+    AR_15_LIGHT_GRIP("ar_15_l_grip"),
+    AR_15_TAC_GRIP("ar_15_t_grip"),
 
     SPR_15_BODY("spr15"),
     SPR_15_PULL_HANDLE("spr15_pull_handle"),
@@ -648,7 +669,9 @@ public enum SpecialModels
     SPR_15_SUPPRESSOR("spr15_s_muzzle"),
     SPR_15_STANDARD_MAG("spr15_mag"),
     SPR_15_SIGHT("spr15_sight"),
+    SPR_15_SIGHT_LIGHT("spr15_sight_light"),
     SPR_15_SIGHT_FOLDED("spr15_sight_folded"),
+    SPR_15_SIGHT_FOLDED_LIGHT("spr15_sight_folded_light"),
     SPR_15_BRAKE("spr15_b_muzzle"),
     SPR_15_TACTICAL_STOCK("spr15_tac_stock"),
     SPR_15_LIGHT_STOCK("spr15_light_stock"),
@@ -662,6 +685,7 @@ public enum SpecialModels
 
     TTI_G34("tti_g34"),
     TTI_G34_SLIDE("tti_g34_slide"),
+    TTI_G34_SLIDE_LIGHT("tti_g34_slide_light"),
     TTI_G34_STANDARD_MAG("tti_g34_standard_mag"),
     TTI_G34_EXTENDED_MAG("tti_g34_extended_mag"),
     TTI_G34_SUPPRESSOR("tti_g34_suppressor"),
@@ -679,7 +703,9 @@ public enum SpecialModels
     UDP_9_LIGHT_GRIP("udp_9_light_grip"),
     UDP_9_LIGHT_STOCK("udp_9_light_stock"),
     UDP_9_SIGHT("udp_9_sight"),
+    UDP_9_SIGHT_LIGHT("udp_9_sight_light"),
     UDP_9_SIGHT_FOLDED("udp_9_sight_folded"),
+    UDP_9_SIGHT_FOLDED_LIGHT("udp_9_sight_folded_light"),
     UDP_9_STANDARD_MAG("udp_9_standard_mag"),
     UDP_9_SUPPRESSOR("udp_9_suppressor"),
     UDP_9_TACTICAL_GRIP("udp_9_tactical_grip"),
@@ -687,6 +713,17 @@ public enum SpecialModels
     UDP_9_B_LASER_DEVICE("udp_9_b_laser_device"),
     UDP_9_RAIL_COVER("udp_9_rail_cover"),
     UDP_9_B_LASER("udp_9_b_laser"),
+
+    UZI("uzi"),
+    UZI_LIGHT("uzi_light"),
+    UZI_BOLT("uzi_bolt"),
+    UZI_BULLET("uzi_bullet"),
+    UZI_EXTENDED_MAG("uzi_extended_mag"),
+    UZI_EXTENDED_STOCK("uzi_extended_stock"),
+    UZI_FOLDED_STOCK("uzi_folded_stock"),
+    UZI_HANDLE("uzi_handle"),
+    UZI_STANDARD_MAG("uzi_standard_mag"),
+    UZI_SUPPRESSOR("uzi_suppressor"),
 
     MK18_MOD1_BODY("mk18_mod1"),
     MK18_MOD1_BOLT("mk18_mod1_bolt"),
@@ -696,7 +733,9 @@ public enum SpecialModels
     MK18_MOD1_SUPPRESSOR("mk18_mod1_s_muzzle"),
     MK18_MOD1_STANDARD_MAG("mk18_mod1_standard_mag"),
     MK18_MOD1_SIGHT("mk18_mod1_sight"),
+    MK18_MOD1_SIGHT_LIGHT("mk18_mod1_sight_light"),
     MK18_MOD1_SIGHT_FOLDED("mk18_mod1_sight_folded"),
+    MK18_MOD1_SIGHT_FOLDED_LIGHT("mk18_mod1_sight_folded_light"),
     MK18_MOD1_BRAKE("mk18_mod1_b_muzzle"),
     MK18_MOD1_B5_STOCK("mk18_mod1_b5_stock"),
     //MK18_MOD1_LIGHT_STOCK("spr15_light_stock"),
@@ -711,11 +750,11 @@ public enum SpecialModels
     MK18_MOD1_BASIC_LASER_DEVICE("mk18_mod1_b_laser_device"),
     MK18_MOD1_BASIC_LASER("mk18_mod1_b_laser"),
 
-       MP7_IR_DEVICE("mp7_ir_device"),
-       MP7_IR_LASER("mp7_ir_laser"),
+    MP7_IR_DEVICE("mp7_ir_device"),
+    MP7_IR_LASER("mp7_ir_laser"),
 
-       MP7_BASIC_LASER_DEVICE("mp7_b_laser_device"),
-       MP7_BASIC_LASER("mp7_b_laser"),
+    MP7_BASIC_LASER_DEVICE("mp7_b_laser_device"),
+    MP7_BASIC_LASER("mp7_b_laser"),
 
     FN_FAL_IR_DEVICE("fn_fal_ir_device"),
     FN_FAL_IR_LASER("fn_fal_ir_laser"),
@@ -733,7 +772,9 @@ public enum SpecialModels
     SCAR_MK20_SUPPRESSOR("scar_mk20_s_muzzle"),
     SCAR_MK20_STANDARD_MAG("scar_mk20_standard_mag"),
     SCAR_MK20_FS("scar_mk20_sight_folded"),
+    SCAR_MK20_FS_L("scar_mk20_sight_folded_light"),
     SCAR_MK20_FSU("scar_mk20_sight"),
+    SCAR_MK20_FSU_L("scar_mk20_sight_light"),
     SCAR_MK20_BRAKE("scar_mk20_b_muzzle"),
     SCAR_MK20_TAC_GRIP("scar_mk20_t_grip"),
     SCAR_MK20_LIGHT_GRIP("scar_mk20_l_grip"),
@@ -743,6 +784,50 @@ public enum SpecialModels
     SCAR_MK20_IR_LASER_DEVICE("scar_mk20_ir_laser_device"),
     GLOCK_17_B_LASER_DEVICE("glock_17_b_laser_device"),
     GLOCK_17_B_LASER("glock_17_b_laser"),
+
+    MRAD_BODY("mrad"),
+    MRAD_BOLT("mrad_bolt"),
+    MRAD_BOLT_EXTRA("mrad_bolt_extra"),
+    MRAD_BARREL("mrad_barrel"),
+    MRAD_BIPOD("mrad_bipod"),
+    MRAD_EXTENDED_MAG("mrad_extended_mag"),
+    MRAD_STANDARD_MAG("mrad_standard_mag"),
+    MRAD_SF("mrad_sightf"),
+    MRAD_SF_L("mrad_sightf_light"),
+    MRAD_S("mrad_sight"),
+    MRAD_S_L("mrad_sight_light"),
+    MRAD_TACTICAL_GRIP("mrad_tactical_grip"),
+    MRAD_LIGHT_GRIP("mrad_light_grip"),
+    MRAD_BULLET("mrad_bullet"),
+    MRAD_SHELL("mrad_shell"),
+    MRAD_IR_DEVICE("mrad_ir_laser_device"),
+    MRAD_IR_LASER("mrad_ir_laser"),
+    MRAD_B_LASER_DEVICE("mrad_b_laser_device"),
+    MRAD_B_LASER("mrad_b_laser"),
+
+    HK_G3_BODY("hk_g3"),
+    HK_G3_BOLT("hk_g3_bolt"),
+    HK_G3_COMPENSATOR("hk_g3_c_muzzle"),
+    HK_G3_DEFAULT_MUZZLE("hk_g3_d_muzzle"),
+    HK_G3_DEFAULT_STOCK("hk_g3_d_stock"),
+    HK_G3_HEAVY_STOCK("hk_g3_h_stock"),
+    HK_G3_TACTICAL_STOCK("hk_g3_t_stock"),
+    HK_G3_LIGHT_STOCK("hk_g3_l_stock"),
+    HK_G3_EXTENDED_MAG("hk_g3_e_mag"),
+    HK_G3_SUPPRESSOR("hk_g3_s_muzzle"),
+    HK_G3_SIGHT_LIGHT("hk_g3_sight_light"),
+    HK_G3_STANDARD_MAG("hk_g3_s_mag"),
+    HK_G3_HANDLE("hk_g3_handle"),
+    HK_G3_PULL("hk_g3_pull"),
+    HK_G3_RAIL("hk_g3_rail"),
+    HK_G3_BULLET("hk_g3_bullet"),
+    HK_G3_BRAKE("hk_g3_b_muzzle"),
+    HK_G3_TAC_GRIP("hk_g3_t_grip"),
+    HK_G3_LIGHT_GRIP("hk_g3_l_grip"),
+    HK_G3_DEFAULT_HG("hk_g3_d_hg"),
+    HK_G3_TACTICAL_HG("hk_g3_t_hg"),
+    HK_G3_B_LASER_DEVICE("hk_g3_b_laser_device"),
+    HK_G3_B_LASER("hk_g3_b_laser"),
 
     M92FS_B_LASER_DEVICE("m92fs_b_laser_device"),
     M92FS_B_LASER("m92fs_b_laser"),
@@ -754,19 +839,46 @@ public enum SpecialModels
     MK47_B_LASER_DEVICE("mk47_b_laser_device"),
     MK47_B_LASER("mk47_b_laser"),
 
-    MK14_BODY1 ("mk14"),
+    MK14_BODY1("mk14"),
+    MK14_SIGHT_LIGHT("mk14_sight_light"),
     BOLT1("mk14_bolt"),
-    STANDARD_MAG1 ("mk14_standard_mag"),
+    STANDARD_MAG1("mk14_standard_mag"),
     EXTENDED_MAG1("mk14_extended_mag"),
     T_GRIP1("mk14_tac_grip"),
-    L_GRIP1 ("mk14_light_grip"),
-    SCOPE_MOUNT1 ("mk14_mount"),
-    BOLT_HANDLE1 ("mk14_bolt_handle"),
+    L_GRIP1("mk14_light_grip"),
+    SCOPE_MOUNT1("mk14_mount"),
+    BOLT_HANDLE1("mk14_bolt_handle"),
 
     MK14_B_LASER_DEVICE("mk14_b_laser_device"),
     MK14_B_LASER("mk14_b_laser"),
     MK14_IR_LASER_DEVICE("mk14_ir_laser_device"),
     MK14_IR_LASER("mk14_ir_laser"),
+
+    TIMELESS_50("timeless_50"),
+    TIMELESS_50_S_SLIDE("timeless_50_s_slide"),
+    TIMELESS_50_S_SLIDE_LIGHT("timeless_50_s_slide_light"),
+    TIMELESS_50_S_BARREL("timeless_50_s_barrel"),
+    TIMELESS_50_E_SLIDE("timeless_50_e_slide"),
+    TIMELESS_50_E_SLIDE_LIGHT("timeless_50_e_slide_light"),
+    TIMELESS_50_E_BARREL("timeless_50_e_barrel"),
+    TIMELESS_50_E_MAG("timeless_50_e_mag"),
+    TIMELESS_50_S_MAG("timeless_50_s_mag"),
+    TIMELESS_50_CLUMSYYY("timeless_50_clumsyyy"),
+    TIMELESS_50_NEKOOO("timeless_50_nekooo"),
+    TIMELESS_50_HAMMER("timeless_50_hammer"),
+    TIMELESS_50_BULLET1("timeless_50_bullet1"),
+    TIMELESS_50_BULLET2("timeless_50_bullet2"),
+    TIMELESS_50_SUPPRESSOR("timeless_50_suppressor"),
+
+    TEC_9_BODY("tec_9_body"),
+
+    TEC_9_BOLT("tec_9_bolt"),
+
+    TEC_9_BULLET("tec_9_bullet"),
+
+    TEC_9_EXTENDED_MAG("tec_9_extended_mag"),
+
+    TEC_9_STANDARD_MAG("tec_9_standard_mag"),
 
     //Everything from this point on is all scope additions
 
@@ -801,8 +913,7 @@ public enum SpecialModels
      *
      * @param modelName name of the model file
      */
-    SpecialModels(String modelName)
-    {
+    SpecialModels(String modelName) {
         this(new ResourceLocation(Reference.MOD_ID, "special/" + modelName), true);
     }
 
@@ -811,19 +922,17 @@ public enum SpecialModels
      *
      * @param modelName name of the model file
      */
-    SpecialModels(SpecialModel modelName)
-    {
+    SpecialModels(SpecialModel modelName) {
         this(new ResourceLocation(Reference.MOD_ID, "special/" + modelName), true);
     }
 
     /**
      * Sets the model's location
      *
-     * @param resource name of the model file
+     * @param resource     name of the model file
      * @param specialModel if the model is a special model
      */
-    SpecialModels(ResourceLocation resource, boolean specialModel)
-    {
+    SpecialModels(ResourceLocation resource, boolean specialModel) {
         this.modelLocation = resource;
         this.specialModel = specialModel;
     }
@@ -834,13 +943,10 @@ public enum SpecialModels
      * @return isolated model
      */
     @OnlyIn(Dist.CLIENT)
-    public IBakedModel getModel()
-    {
-        if(this.cachedModel == null)
-        {
+    public IBakedModel getModel() {
+        if (this.cachedModel == null) {
             IBakedModel model = Minecraft.getInstance().getModelManager().getModel(this.modelLocation);
-            if(model == Minecraft.getInstance().getModelManager().getMissingModel())
-            {
+            if (model == Minecraft.getInstance().getModelManager().getMissingModel()) {
                 return model;
             }
             this.cachedModel = model;
@@ -850,14 +956,19 @@ public enum SpecialModels
 
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public static void register(ModelRegistryEvent event)
-    {
-        for(SpecialModels model : values())
-        {
-            if(model.specialModel)
-            {
+    public static void register(ModelRegistryEvent event) {
+        for (SpecialModels model : values()) {
+            if (model.specialModel) {
                 ModelLoader.addSpecialModel(model.modelLocation);
             }
+        }
+        IResourceManager manager = Minecraft.getInstance().getResourceManager();
+        ((SimpleReloadableResourceManager) manager).addReloadListener(new ResourceReloadListener());
+    }
+
+    public static void cleanCache() {
+        for (SpecialModels model : values()) {
+            model.cachedModel = null;
         }
     }
 }

@@ -6,7 +6,6 @@ import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-import com.tac.guns.util.GunModifierHelper;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -517,7 +516,7 @@ public class GunModifierHelper
     public static int getAmmoCapacity(ItemStack weapon, Gun modifiedGun)
     {
         int capacity = modifiedGun.getReloads().isOpenBolt() ? modifiedGun.getReloads().getMaxAmmo() : modifiedGun.getReloads().getMaxAmmo()+1;
-        int level = getAmmoCapacity(weapon);
+        int level = getAmmoCapacityWeight(weapon);
         if(level > -1 && level < modifiedGun.getReloads().getMaxAdditionalAmmoPerOC().length)
         {
             capacity += modifiedGun.getReloads().getMaxAdditionalAmmoPerOC()[level];
@@ -528,7 +527,7 @@ public class GunModifierHelper
         }
         return capacity;
     }
-    public static int getAmmoCapacity(ItemStack weapon)
+    public static int getAmmoCapacityWeight(ItemStack weapon)
     {
         int modifierWeight = -1;
         for(int i = 0; i < IAttachment.Type.values().length; i++)
@@ -536,14 +535,24 @@ public class GunModifierHelper
             IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
             for(IGunModifier modifier : modifiers)
             {
-                modifierWeight = modifier.additionalAmmunition() > modifierWeight ? modifier.additionalAmmunition() : modifierWeight;
+                modifierWeight = Math.max(modifier.additionalAmmunition(), modifierWeight);
             }
         }
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
-            modifierWeight = modifier.additionalAmmunition() > modifierWeight ? modifier.additionalAmmunition() : modifierWeight;
+            modifierWeight = Math.max(modifier.additionalAmmunition(), modifierWeight);
         }
         return modifierWeight;
+    }
+
+    public static String getAdditionalSkin(ItemStack weapon)
+    {
+        IGunModifier[] skin = getModifiers(weapon, IAttachment.Type.GUN_SKIN);
+
+        if(skin.length>0){
+            return skin[0].additionalSkin();
+        }
+        return "NONE";
     }
 }

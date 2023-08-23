@@ -1,8 +1,7 @@
 package com.tac.guns.client.handler;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
-
-import com.tac.guns.client.InputHandler;
+import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PumpShotgunAnimationController;
 import com.tac.guns.common.Gun;
@@ -12,25 +11,19 @@ import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageReload;
-import com.tac.guns.network.message.MessageToClientRigInv;
 import com.tac.guns.network.message.MessageUnload;
 import com.tac.guns.network.message.MessageUpdateGunID;
-import com.tac.guns.util.GunEnchantmentHelper;
-
-import com.tac.guns.util.WearableHelper;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.datafix.fixes.SwapHandsFix;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import com.tac.guns.util.GunModifierHelper;
 
 
 /**
@@ -210,41 +203,34 @@ public class ReloadHandler {
 
     public int rigAmmoCount = 0;
 
-    private ReloadHandler()
-    {
-    	InputHandler.RELOAD.addPressCallback( () -> {
-    		final ClientPlayerEntity player = Minecraft.getInstance().player;
-			if( player == null ) return;
-			
-			final ItemStack stack = player.getHeldItemMainhand();
-			if( stack.getItem() instanceof GunItem )
-			{
-				PacketHandler.getPlayChannel().sendToServer( new MessageUpdateGunID() );
-				if( !SyncedPlayerData.instance().get( player, ModSyncedDataKeys.RELOADING))
-                {
+    private ReloadHandler() {
+        Keys.RELOAD.addPressCallback(() -> {
+            final ClientPlayerEntity player = Minecraft.getInstance().player;
+            if (player == null) return;
+
+            final ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem() instanceof GunItem) {
+                PacketHandler.getPlayChannel().sendToServer(new MessageUpdateGunID());
+                if (!SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
                     ShootingHandler.get().burstTracker = 0;
                     this.setReloading(true);
+                } else if (
+                        GunAnimationController.fromItem(stack.getItem())
+                                instanceof PumpShotgunAnimationController
+                ) {
+                    this.setReloading(false);
                 }
-				else if(
-					GunAnimationController.fromItem( stack.getItem() )
-						instanceof PumpShotgunAnimationController
-				) {
-                    this.setReloading( false );
-                }
-			}
-		} );
-    	
-    	final Runnable callback = () -> {
-    		if( !this.isReloading() )
-			{
-				final SimpleChannel channel = PacketHandler.getPlayChannel();
-				channel.sendToServer( new MessageUpdateGunID() );
-				this.setReloading( false );
-				channel.sendToServer( new MessageUnload() );
-			}
-    	};
-    	InputHandler.UNLOAD.addPressCallback( callback );
-    	InputHandler.CO_UNLOAD.addPressCallback( callback );
+            }
+        });
+
+        Keys.UNLOAD.addPressCallback(() -> {
+            if (!this.isReloading()) {
+                final SimpleChannel channel = PacketHandler.getPlayChannel();
+                channel.sendToServer(new MessageUpdateGunID());
+                this.setReloading(false);
+                channel.sendToServer(new MessageUnload());
+            }
+        });
     }
 
     @SubscribeEvent
@@ -299,16 +285,7 @@ public class ReloadHandler {
                         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
                         if (tag.getInt("AmmoCount") >= GunModifierHelper.getAmmoCapacity(stack, gun)) {
                             return;
-                        }
-                        ItemStack rig = WearableHelper.PlayerWornRig(player);
-                        if(!player.isCreative() && rig != null)
-                        {
-                            PacketHandler.getPlayChannel().sendToServer(new MessageToClientRigInv(((GunItem)stack.getItem()).getGun().getProjectile().getItem()));
-                            if (Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1 && rigAmmoCount < 1) {
-                                return;
-                            }
-                        }
-                        else if (!player.isCreative() && Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {
+                        } else if (!player.isCreative() && Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {
                             return;
                         }
                         if (MinecraftForge.EVENT_BUS.post(new GunReloadEvent.Pre(player, stack)))
@@ -321,7 +298,7 @@ public class ReloadHandler {
                     }
                 }
             } else {
-                if(prevItemStack != null) AnimationHandler.INSTANCE.onGunReload(false, prevItemStack);
+                if (prevItemStack != null) AnimationHandler.INSTANCE.onGunReload(false, prevItemStack);
                 SyncedPlayerData.instance().set(player, ModSyncedDataKeys.RELOADING, false);
                 PacketHandler.getPlayChannel().sendToServer(new MessageReload(false));
                 this.reloadingSlot = -1;
@@ -352,6 +329,25 @@ public class ReloadHandler {
                             } else {
                                 if (this.reloadTimer < gun.getReloads().getReloadMagTimer()) {
                                     this.reloadTimer++;
+                                }
+                            }
+                        } else
+                            this.startUpReloadTimer--;
+                    } else if (gun.getReloads().isStripperClip()) {
+                        if (this.startUpReloadTimer == 0) {
+                            if (this.startReloadTick == -1) {
+                                this.startReloadTick = player.ticksExisted + 5;
+                            }
+                            if (GunModifierHelper.getAmmoCapacity(stack, gun) - tag.getInt("AmmoCount") > gun.getReloads().getStripperClipReloadAmount()) {
+                                if (this.reloadTimer < gun.getReloads().getAdditionalReloadEmptyMagTimer()) {
+                                    this.reloadTimer++;
+                                }
+                            } else {
+                                if (this.reloadTimer < gun.getReloads().getinterReloadPauseTicks()) {
+                                    this.reloadTimer++;
+                                }
+                                if (this.reloadTimer == gun.getReloads().getinterReloadPauseTicks()) {
+                                    this.reloadTimer = 0;
                                 }
                             }
                         } else
@@ -431,50 +427,39 @@ public class ReloadHandler {
         if (tag != null) {
             isEmpty = tag.getInt("AmmoCount") <= 0;
         }
-        return this.startUpReloadTimer == 0 ? (gunItem.getGun().getReloads().isMagFed() ? (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer())) : ((this.reloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks)) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()))
-                )
-                : 1F;
+        return this.startUpReloadTimer == 0 ? getReloadProgressPerType(gunItem, isEmpty, partialTicks) : 1F;
+    }
+
+    private float getReloadProgressPerType(GunItem gunItem, boolean isEmpty, float partialTicks) {
+        if (gunItem.getGun().getReloads().isMagFed())
+            return (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) /
+                    ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) :
+                    ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer()));
+        else if (gunItem.getGun().getReloads().isStripperClip())
+            return (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) /
+                    ((float) gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) :
+                    ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getinterReloadPauseTicks()));
+        else
+            return ((this.reloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks)) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()));
     }
 
     @SubscribeEvent
     public void onGunFire(GunFireEvent.Pre event) {
         PlayerEntity player = event.getPlayer();
-        if(player == null) return;
+        if (player == null) return;
         ItemStack stack = player.getHeldItemMainhand();
         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-        if(GunAnimationController.fromItem(stack.getItem()) instanceof PumpShotgunAnimationController && isReloading()) event.setCanceled(true);
+        if (GunAnimationController.fromItem(stack.getItem()) instanceof PumpShotgunAnimationController && isReloading())
+            event.setCanceled(true);
         CompoundNBT tag = stack.getOrCreateTag();
         if (tag.getInt("AmmoCount") <= 0) {
             if (gun.getReloads().getReloadMagTimer() + gun.getReloads().getAdditionalReloadEmptyMagTimer() - reloadTimer > 5) {
-                if(isReloading()) event.setCanceled(true);
+                if (isReloading()) event.setCanceled(true);
             }
         } else {
-            if (gun.getReloads().getReloadMagTimer() - reloadTimer >5) {
-                if(isReloading()) event.setCanceled(true);
+            if (gun.getReloads().getReloadMagTimer() - reloadTimer > 5) {
+                if (isReloading()) event.setCanceled(true);
             }
         }
     }
-
-    /*public float getRepairProgress(float partialTicks, ItemStack stack)
-    {
-        boolean isEmpty = false;
-        GunItem gunItem = (GunItem)stack.getItem();
-        CompoundNBT tag = stack.getTag();
-        if(tag != null)
-        {
-            isEmpty=tag.getInt("AmmoCount")<=0;
-        }
-        return this.startUpReloadTimer == 0 ?
-                (
-                        gunItem.getGun().getReloads().isMagFed() ?
-                                (isEmpty ? ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getReloadMagTimer() + gunItem.getGun().getReloads().getAdditionalReloadEmptyMagTimer())) : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / (float) gunItem.getGun().getReloads().getReloadMagTimer()))
-                                : ((this.prevReloadTimer + ((this.reloadTimer - this.prevReloadTimer) * partialTicks) + this.startUpReloadTimer) / ((float) gunItem.getGun().getReloads().getinterReloadPauseTicks()) )
-                )
-                : 1F;
-    }*/
-
-    //public boolean isReloading()
-    //{
-    //    return this.startReloadTick != -1;
-    //}
 }

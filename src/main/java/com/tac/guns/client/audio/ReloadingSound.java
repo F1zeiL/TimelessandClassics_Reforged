@@ -7,7 +7,7 @@ import net.minecraft.util.SoundEvent;
 
 public class ReloadingSound extends EntityTickableSound {
 
-
+    //TODO: Find wether MC already has an easier way to call localized tickable sounds, or simply do it ourselves using a dist algo and Override tick()
     public ReloadingSound(SoundEvent sound, SoundCategory category, Entity entity) {
         super(sound, category, entity);
     }

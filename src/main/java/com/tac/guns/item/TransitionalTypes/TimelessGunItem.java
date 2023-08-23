@@ -3,7 +3,7 @@ package com.tac.guns.item.TransitionalTypes;
 
 import com.tac.guns.Config;
 import com.tac.guns.GunMod;
-import com.tac.guns.client.InputHandler;
+import com.tac.guns.client.Keys;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.network.ServerPlayHandler;
 import com.tac.guns.interfaces.IGunModifier;
@@ -27,13 +27,12 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import com.tac.guns.util.GunModifierHelper;
-import org.lwjgl.glfw.GLFW;
 
 
 public class TimelessGunItem extends GunItem {
     private final IGunModifier[] modifiers;
     private Boolean integratedOptic = false;
+
     public TimelessGunItem(Process<Item.Properties> properties, IGunModifier... modifiers) {
         super(properties.process(new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
         this.modifiers = modifiers;
@@ -87,20 +86,22 @@ public class TimelessGunItem extends GunItem {
             }
         }
 
-        boolean isShift = InputHandler.MORE_INFO_HOLD.down;
-        if(!isShift) {
+        boolean isShift = Keys.MORE_INFO_HOLD.isDown();
+        if (!isShift) {
             //String text = "SHIFT";
             //if(!InputHandler.MORE_INFO_HOLD.keyCode().equals(GLFW.GLFW_KEY_LEFT_SHIFT))
-            String text = (new KeybindTextComponent("key.tac.moreInfoHold")).getString().toUpperCase(Locale.ENGLISH);
+            String text = (new KeybindTextComponent("key.sneak")).getString().toUpperCase(Locale.ENGLISH);
             tooltip.add((new TranslationTextComponent("info.tac.more_info_gunitem", text)).mergeStyle(TextFormatting.YELLOW));
         }
-        if(isShift) {
+        if (isShift) {
             GunItem gun = (GunItem) stack.getItem();
             if (tagCompound != null) {
-                double armorPen = (1-(1 - Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * gun.getGun().getProjectile().getGunArmorIgnore()))*100;
+                double armorPen = gun.getGun().getProjectile().getGunArmorIgnore() >= 0 ?
+                        Math.min((Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * gun.getGun().getProjectile().getGunArmorIgnore() * 100), 100F) : 0F;
                 tooltip.add((new TranslationTextComponent("info.tac.armorPen", new TranslationTextComponent(String.format("%.1f", armorPen) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_AQUA)));
 
-                int headDamgeModifier = (int)(Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())*100;
+                int headDamgeModifier = Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage() >= 0 ?
+                        (int) (Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage() * 100) : 0;
                 tooltip.add((new TranslationTextComponent("info.tac.headDamageModifier", new TranslationTextComponent(String.format("%d", headDamgeModifier) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_AQUA)));
 
                 float speed = ServerPlayHandler.calceldGunWeightSpeed(gun.getGun(), stack);
@@ -116,7 +117,8 @@ public class TimelessGunItem extends GunItem {
                 tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))
                         .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
             }
-            tooltip.add((new TranslationTextComponent("info.tac.attachment_help", (new KeybindTextComponent("key.tac.attachments")).getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
+
+            tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
             if (gun.getGun().canAttachType(IAttachment.Type.PISTOL_SCOPE))
                 tooltip.add((new TranslationTextComponent("info.tac.pistolScope", new TranslationTextComponent("MiniScope").mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.LIGHT_PURPLE)));
             if (gun.getGun().canAttachType(IAttachment.Type.IR_DEVICE))

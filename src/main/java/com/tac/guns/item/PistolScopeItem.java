@@ -1,6 +1,5 @@
 package com.tac.guns.item;
 
-import com.tac.guns.item.ScopeItem;
 import com.tac.guns.item.attachment.impl.Scope;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;

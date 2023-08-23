@@ -4,12 +4,9 @@ import com.tac.guns.client.screen.UpgradeBenchScreen;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModEnchantments;
 import com.tac.guns.item.GunItem;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

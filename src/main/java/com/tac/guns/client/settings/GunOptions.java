@@ -1,11 +1,8 @@
 package com.tac.guns.client.settings;
 
-import java.text.DecimalFormat;
-
 import com.tac.guns.Config;
 import com.tac.guns.client.handler.CrosshairHandler;
 import com.tac.guns.client.render.crosshair.Crosshair;
-
 import net.minecraft.client.AbstractOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -15,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import java.text.DecimalFormat;
+
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
@@ -22,7 +21,7 @@ public class GunOptions
 {
     private static final DecimalFormat FORMAT = new DecimalFormat("0.0#");
 
-    public static final SliderPercentageOption ADS_SENSITIVITY = new GunSliderPercentageOption("tac.options.adsSensitivity", 0.0, 1.0, 0.01F, gameSettings -> {
+    public static final SliderPercentageOption ADS_SENSITIVITY = new GunSliderPercentageOption("tac.options.adsSensitivity", 0.0, 2.0, 0.01F, gameSettings -> {
         return Config.CLIENT.controls.aimDownSightSensitivity.get();
     }, (gameSettings, value) -> {
         Config.CLIENT.controls.aimDownSightSensitivity.set(MathHelper.clamp(value, 0.0, 2.0));
@@ -77,6 +76,12 @@ public class GunOptions
         return Config.CLIENT.display.scopeDoubleRender.get();
     }, (settings, value) -> {
         Config.CLIENT.display.scopeDoubleRender.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption BANNED_DROP = new BooleanOption("tac.options.bannedDrop", (settings) -> {
+        return Config.COMMON.gameplay.bannedDrop.get();
+    }, (settings, value) -> {
+        Config.COMMON.gameplay.bannedDrop.set(value);
         Config.saveClientConfig();
     });
     public static final BooleanOption SHOW_FPS_TRAILS_EXIST = new BooleanOption("tac.options.showFirstPersonBulletTrails", (settings) -> {

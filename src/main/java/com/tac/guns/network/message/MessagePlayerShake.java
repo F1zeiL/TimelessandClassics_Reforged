@@ -2,10 +2,8 @@ package com.tac.guns.network.message;
 
 
 import com.tac.guns.Config;
-import com.tac.guns.common.network.ServerPlayHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

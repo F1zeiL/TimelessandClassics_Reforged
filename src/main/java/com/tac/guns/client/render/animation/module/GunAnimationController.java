@@ -5,7 +5,6 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageAnimationRun;
-import com.tac.guns.network.message.MessageAnimationSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -15,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,6 +37,7 @@ public abstract class GunAnimationController {
         INSPECT_EMPTY,
         DRAW,
         STATIC,
+        BULLET_CHAIN
     }
     private AnimationMeta previousAnimation;
 
@@ -155,6 +156,14 @@ public abstract class GunAnimationController {
         if( isFirstPerson ) Animations.pushNode(previousAnimation, index);
         Animations.applyAnimationTransform(itemStack, ItemCameraTransforms.TransformType.NONE, entity, matrixStack);
         if( isFirstPerson ) Animations.popNode();
+    }
+
+    public Vector3f getYPRAngle(int index){
+        if(previousAnimation == null) return new Vector3f(0,0,0);
+        Animations.pushNode(previousAnimation, index);
+        Vector3f result = Animations.getAlphaYPRAngle();
+        Animations.popNode();
+        return result;
     }
 
     public void applyRightHandTransform(MatrixStack matrixStack)

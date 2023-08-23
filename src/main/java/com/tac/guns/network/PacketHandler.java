@@ -10,15 +10,13 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
-public class PacketHandler
-{
+public class PacketHandler {
     public static final String PROTOCOL_VERSION = "1";
     private static SimpleChannel handshakeChannel;
     private static SimpleChannel playChannel;
     private static int nextMessageId = 0;
 
-    public static void init()
-    {
+    public static void init() {
         handshakeChannel = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(Reference.MOD_ID, "handshake"))
                 .networkProtocolVersion(() -> PROTOCOL_VERSION)
@@ -38,14 +36,6 @@ public class PacketHandler
                 .decoder(HandshakeMessages.S2CUpdateGuns::decode)
                 .encoder(HandshakeMessages.S2CUpdateGuns::encode)
                 .consumer(FMLHandshakeHandler.biConsumerFor((handler, msg, supplier) -> HandshakeHandler.handleUpdateGuns(msg, supplier)))
-                .markAsLoginPacket()
-                .add();
-
-        handshakeChannel.messageBuilder(HandshakeMessages.S2CUpdateRigs.class, 2)
-                .loginIndex(HandshakeMessages.LoginIndexedMessage::getLoginIndex, HandshakeMessages.LoginIndexedMessage::setLoginIndex)
-                .decoder(HandshakeMessages.S2CUpdateRigs::decode)
-                .encoder(HandshakeMessages.S2CUpdateRigs::encode)
-                .consumer(FMLHandshakeHandler.biConsumerFor((handler, msg, supplier) -> HandshakeHandler.handleUpdateRigs(msg, supplier)))
                 .markAsLoginPacket()
                 .add();
 
@@ -69,7 +59,6 @@ public class PacketHandler
         registerPlayMessage(MessageInspection.class, MessageInspection::new, LogicalSide.SERVER);
         registerPlayMessage(MessageColorBench.class, MessageColorBench::new, LogicalSide.SERVER);
         registerPlayMessage(MessageUpdateGuns.class, MessageUpdateGuns::new, LogicalSide.CLIENT);
-        registerPlayMessage(MessageUpdateRigs.class, MessageUpdateRigs::new, LogicalSide.CLIENT);
         registerPlayMessage(MessageBlood.class, MessageBlood::new, LogicalSide.CLIENT);
         registerPlayMessage(MessageShooting.class, MessageShooting::new, LogicalSide.SERVER);
         registerPlayMessage(MessageGunSound.class, MessageGunSound::new, LogicalSide.CLIENT);
@@ -80,35 +69,31 @@ public class PacketHandler
         registerPlayMessage(MessageUpdateGunID.class, MessageUpdateGunID::new, LogicalSide.SERVER);
         registerPlayMessage(MessageUpgradeBenchApply.class, MessageUpgradeBenchApply::new, LogicalSide.SERVER);
         registerPlayMessage(MessageUpdateMoveInacc.class, MessageUpdateMoveInacc::new, LogicalSide.SERVER);
+        registerPlayMessage(MessageAimingState.class, MessageAimingState::new, LogicalSide.SERVER);
         registerPlayMessage(MessageEmptyMag.class, MessageEmptyMag::new, LogicalSide.SERVER);
-        registerPlayMessage(MessageArmorRepair.class, MessageArmorRepair::new, LogicalSide.SERVER);
 
         registerPlayMessage(MessagePlayerShake.class, MessagePlayerShake::new, LogicalSide.CLIENT);
 
         registerPlayMessage(MessageUpdatePlayerMovement.class, MessageUpdatePlayerMovement::new, LogicalSide.SERVER);
         registerPlayMessage(MessageAnimationSound.class, MessageAnimationSound::new, LogicalSide.CLIENT);
         registerPlayMessage(MessageAnimationRun.class, MessageAnimationRun::new, LogicalSide.SERVER);
-
-        registerPlayMessage(MessageRigInvToClient.class, MessageRigInvToClient::new, LogicalSide.CLIENT);
-        registerPlayMessage(MessageToClientRigInv.class, MessageToClientRigInv::new, LogicalSide.SERVER);
     }
 
     /**
      * Register an {@link IMessage} to the play network channel.
      *
-     * @param clazz the class of the message
+     * @param clazz           the class of the message
      * @param messageSupplier a supplier to create an get of the message
-     * @param side the logical side this message is to be handled on
-     * @param <T> inferred by first parameter, class must implement {@link IMessage}
+     * @param side            the logical side this message is to be handled on
+     * @param <T>             inferred by first parameter, class must implement {@link IMessage}
      */
-    private static <T extends IMessage> void registerPlayMessage(Class<T> clazz, Supplier<T> messageSupplier, LogicalSide side)
-    {
+    private static <T extends IMessage> void registerPlayMessage(Class<T> clazz, Supplier<T> messageSupplier, LogicalSide side) {
         playChannel.registerMessage(nextMessageId++, clazz, IMessage::encode, buffer -> {
             T t = messageSupplier.get();
             t.decode(buffer);
             return t;
         }, (t, supplier) -> {
-            if(supplier.get().getDirection().getReceptionSide() != side)
+            if (supplier.get().getDirection().getReceptionSide() != side)
                 throw new RuntimeException("Attempted to handle message " + clazz.getSimpleName() + " on the wrong logical side!");
             t.handle(supplier);
         });
@@ -117,16 +102,14 @@ public class PacketHandler
     /**
      * Gets the handshake network channel for MrCrayfish's Gun Mod
      */
-    public static SimpleChannel getHandshakeChannel()
-    {
+    public static SimpleChannel getHandshakeChannel() {
         return handshakeChannel;
     }
 
     /**
      * Gets the play network channel for MrCrayfish's Gun Mod
      */
-    public static SimpleChannel getPlayChannel()
-    {
+    public static SimpleChannel getPlayChannel() {
         return playChannel;
     }
 }

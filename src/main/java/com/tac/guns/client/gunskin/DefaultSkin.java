@@ -1,0 +1,20 @@
+package com.tac.guns.client.gunskin;
+
+import com.tac.guns.client.SpecialModel;
+import net.minecraft.util.ResourceLocation;
+
+public class DefaultSkin extends GunSkin{
+    public DefaultSkin(String gun) {
+        super("default",gun,null);
+    }
+
+    @Override
+    public SpecialModel getModel(ModelComponent component){
+        return models.get(component);
+    }
+
+    @Override
+    public ResourceLocation getIcon() {
+        return this.icon;
+    }
+}

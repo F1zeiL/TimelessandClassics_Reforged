@@ -1,6 +1,5 @@
 package com.tac.guns.item;
 
-import com.tac.guns.item.IColored;
 import com.tac.guns.item.attachment.IBarrel;
 import com.tac.guns.item.attachment.impl.Barrel;
 import net.minecraft.client.util.ITooltipFlag;
