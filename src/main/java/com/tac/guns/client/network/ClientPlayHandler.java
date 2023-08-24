@@ -103,6 +103,7 @@ public class ClientPlayHandler {
         }
     }
 
+    //TODO: Expand on possible particle effects
     public static void handleExplosionStunGrenade(MessageStunGrenade message) {
         Minecraft mc = Minecraft.getInstance();
         ParticleManager particleManager = mc.particles;
@@ -113,14 +114,14 @@ public class ClientPlayHandler {
 
         /* Spawn lingering smoke particles */
         for (int i = 0; i < 30; i++) {
-            spawnParticle(particleManager, ParticleTypes.CLOUD, x, y, z, world.rand, 0.2);
+            spawnParticle(particleManager, ParticleTypes.CLOUD, x, y, z, world.rand, 0.6);
         }
 
         /* Spawn fast moving smoke/spark particles */
-        for (int i = 0; i < 30; i++) {
-            Particle smoke = spawnParticle(particleManager, ParticleTypes.SMOKE, x, y, z, world.rand, 4.0);
+        for (int i = 0; i < 40; i++) {
+            Particle smoke = spawnParticle(particleManager, ParticleTypes.SMOKE, x, y, z, world.rand, 9.0);
             smoke.setMaxAge((int) ((8 / (Math.random() * 0.1 + 0.4)) * 0.5));
-            spawnParticle(particleManager, ParticleTypes.CRIT, x, y, z, world.rand, 4.0);
+            spawnParticle(particleManager, ParticleTypes.CRIT, x, y, z, world.rand, 9.0);
         }
     }
 

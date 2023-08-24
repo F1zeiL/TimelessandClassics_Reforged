@@ -1,4 +1,4 @@
-package com.tac.guns.entity.specifics;
+package com.tac.guns.entity.specifics.explosives;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.ThrowableItemEntity;

@@ -166,7 +166,7 @@ public class ModItems {
             () -> new BaseballGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20 * 7, 1.425f, 1.135f));
 
     /* Utility throwables */
-    public static final RegistryObject<Item> STANDARD_FLASH_GRENADE = REGISTER.register("flase_grenade",
+    public static final RegistryObject<Item> STANDARD_FLASH_GRENADE = REGISTER.register("flash_grenade",
             () -> new StunGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 25 * 4, 0.95f));
 
     /* Scope Attachments */

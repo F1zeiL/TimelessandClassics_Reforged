@@ -2,6 +2,7 @@ package com.tac.guns.item;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.ThrowableStunGrenadeEntity;
+import com.tac.guns.entity.specifics.utility.StandardFlashGrenade;
 import com.tac.guns.init.ModSounds;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -21,7 +22,7 @@ public class StunGrenadeItem extends GrenadeItem
     @Override
     public ThrowableGrenadeEntity create(World world, LivingEntity entity, int timeLeft)
     {
-        return new ThrowableStunGrenadeEntity(world, entity, 20 * 2);
+        return new StandardFlashGrenade(world, entity, super.maxCookTime);
     }
 
     @Override
