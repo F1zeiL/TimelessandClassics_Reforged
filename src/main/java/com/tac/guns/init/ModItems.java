@@ -165,6 +165,10 @@ public class ModItems {
     public static final RegistryObject<Item> BASEBALL_GRENADE = REGISTER.register("baseball_grenade",
             () -> new BaseballGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20 * 7, 1.425f, 1.135f));
 
+    /* Utility throwables */
+    public static final RegistryObject<Item> STANDARD_FLASH_GRENADE = REGISTER.register("flase_grenade",
+            () -> new StunGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 25 * 4, 0.95f));
+
     /* Scope Attachments */
     public static final RegistryObject<Item> COYOTE_SIGHT = REGISTER.register("coyote_sight",
             () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(0.00F, 0.00F)}, 2.15F, 0.325F, "coyote",
