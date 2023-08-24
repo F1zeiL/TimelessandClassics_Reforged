@@ -1,5 +1,7 @@
 package com.tac.guns.entity.specifics;
 
+import com.tac.guns.entity.DamageSourceExplosion;
+import com.tac.guns.entity.IExplosionProvider;
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.ThrowableItemEntity;
 import com.tac.guns.init.ModEntities;
@@ -13,7 +15,7 @@ import net.minecraft.world.World;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class LightGrenadeEntity extends ThrowableGrenadeEntity
+public class LightGrenadeEntity extends ThrowableGrenadeEntity implements IExplosionProvider
 {
     public LightGrenadeEntity(EntityType<? extends ThrowableItemEntity> entityType, World worldIn)
     {
@@ -53,5 +55,9 @@ public class LightGrenadeEntity extends ThrowableGrenadeEntity
         {
             this.world.addParticle(ParticleTypes.SMOKE, true, this.getPosX(), this.getPosY() + 0.25, this.getPosZ(), 0, 0.135, 0);
         }
+    }
+    @Override
+    public DamageSourceExplosion createDamageSource(){
+        return new DamageSourceExplosion(func_234616_v_(),ModItems.LIGHT_GRENADE.getId());
     }
 }

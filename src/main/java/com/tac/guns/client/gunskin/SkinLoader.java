@@ -237,6 +237,11 @@ public enum SkinLoader {
             skin.setIcon(iconLoc);
         }
 
+        ResourceLocation miniIconLoc = ResourceLocation.tryCreate("tac:textures/gui/icon/mini/"+this.name+".png");
+        if(iconLoc!=null && Minecraft.getInstance().getResourceManager().hasResource(iconLoc)){
+            skin.setMiniIcon(miniIconLoc);
+        }
+
         return skin;
     }
 
@@ -274,6 +279,21 @@ public enum SkinLoader {
             ResourceLocation tl = ResourceLocation.tryCreate(iconLocation.getNamespace()+":textures/"+iconLocation.getPath()+".png");
             if(tl !=null && Minecraft.getInstance().getResourceManager().hasResource(tl)){
                 skin.setIcon(tl);
+                return true;
+            }else {
+                return false;
+            }
+        }
+    }
+
+    public boolean loadSkinMiniIcon(@Nonnull GunSkin skin, @Nonnull ResourceLocation iconLocation){
+        if(Minecraft.getInstance().getResourceManager().hasResource(iconLocation)){
+            skin.setIcon(iconLocation);
+            return true;
+        }else{
+            ResourceLocation tl = ResourceLocation.tryCreate(iconLocation.getNamespace()+":textures/"+iconLocation.getPath()+".png");
+            if(tl !=null && Minecraft.getInstance().getResourceManager().hasResource(tl)){
+                skin.setMiniIcon(tl);
                 return true;
             }else {
                 return false;
