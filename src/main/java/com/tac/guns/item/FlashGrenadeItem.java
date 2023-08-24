@@ -1,7 +1,6 @@
 package com.tac.guns.item;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
-import com.tac.guns.entity.ThrowableStunGrenadeEntity;
 import com.tac.guns.entity.specifics.utility.StandardFlashGrenade;
 import com.tac.guns.init.ModSounds;
 import net.minecraft.entity.LivingEntity;
@@ -12,9 +11,9 @@ import net.minecraft.world.World;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class StunGrenadeItem extends GrenadeItem
+public class FlashGrenadeItem extends GrenadeItem
 {
-    public StunGrenadeItem(Item.Properties properties, int maxCookTime, float speed)
+    public FlashGrenadeItem(Item.Properties properties, int maxCookTime, float speed)
     {
         super(properties, maxCookTime, 1, speed);
     }

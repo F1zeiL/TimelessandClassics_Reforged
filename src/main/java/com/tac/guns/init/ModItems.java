@@ -7,6 +7,7 @@ import com.tac.guns.item.*;
 import com.tac.guns.item.TransitionalTypes.*;
 import com.tac.guns.item.TransitionalTypes.grenades.BaseballGrenadeItem;
 import com.tac.guns.item.TransitionalTypes.grenades.LightGrenadeItem;
+import com.tac.guns.item.TransitionalTypes.grenades.utility.ImpactFlashGrenadeItem;
 import com.tac.guns.item.attachment.impl.*;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
@@ -167,7 +168,12 @@ public class ModItems {
 
     /* Utility throwables */
     public static final RegistryObject<Item> STANDARD_FLASH_GRENADE = REGISTER.register("flash_grenade",
-            () -> new StunGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 25 * 4, 0.95f));
+            () -> new FlashGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES),20 * 5, 0.95f));
+    public static final RegistryObject<Item> IMPACT_FLASH_GRENADE = REGISTER.register("impact_flash_grenade",
+            () -> new ImpactFlashGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20*100, 1.10f));
+    //TODO: Implement stun type, save screenstate and overlay, apply some form of accuracy reduction, (more recoil, slow sensitivity, ADS force false, one of which etc.)
+    /*public static final RegistryObject<Item> STUN_GRENADE = REGISTER.register("stun_grenade",
+            () -> new ImpactFlashGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20 * 5, 0.95f));*/
 
     /* Scope Attachments */
     public static final RegistryObject<Item> COYOTE_SIGHT = REGISTER.register("coyote_sight",

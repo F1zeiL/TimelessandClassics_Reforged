@@ -108,7 +108,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         }
     }
 
-    private boolean calculateAndApplyEffect(Effect effect, EffectCriteria criteria, LivingEntity entity, Vector3d grenade, Vector3d eyes, double distance, double angle)
+    protected boolean calculateAndApplyEffect(Effect effect, EffectCriteria criteria, LivingEntity entity, Vector3d grenade, Vector3d eyes, double distance, double angle)
     {
         double angleMax = criteria.angleEffect.get() * 0.5;
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
