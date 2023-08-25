@@ -2,7 +2,6 @@ package com.tac.guns.item.TransitionalTypes.grenades.utility;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.specifics.utility.ImpactFlashGrenade;
-import com.tac.guns.item.FlashGrenadeItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -20,5 +19,10 @@ public class ImpactFlashGrenadeItem extends FlashGrenadeItem
     public ThrowableGrenadeEntity create(World world, LivingEntity entity, int timeLeft)
     {
         return new ImpactFlashGrenade(world, entity, super.maxCookTime);
+    }
+    @Override
+    public boolean canCook()
+    {
+        return false;
     }
 }

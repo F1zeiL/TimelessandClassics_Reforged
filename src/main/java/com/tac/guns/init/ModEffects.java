@@ -16,5 +16,6 @@ public class ModEffects
     public static final DeferredRegister<Effect> REGISTER = DeferredRegister.create(ForgeRegistries.POTIONS, Reference.MOD_ID);
 
     public static final RegistryObject<IncurableEffect> BLINDED = REGISTER.register("blinded", () -> new IncurableEffect(EffectType.HARMFUL, 0));
+    public static final RegistryObject<IncurableEffect> STUNNED = REGISTER.register("stunned", () -> new IncurableEffect(EffectType.HARMFUL, 0));
     public static final RegistryObject<IncurableEffect> DEAFENED = REGISTER.register("deafened", () -> new IncurableEffect(EffectType.HARMFUL, 0));
 }

@@ -4,7 +4,6 @@ import com.tac.guns.Config;
 import com.tac.guns.Config.EffectCriteria;
 import com.tac.guns.init.ModEffects;
 import com.tac.guns.init.ModEntities;
-import com.tac.guns.init.ModItems;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageStunGrenade;
@@ -14,7 +13,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Direction;
@@ -52,14 +50,22 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
     }
 
     @SubscribeEvent
-    public static void blindMobs(LivingSetAttackTargetEvent event)
+    public static void stunMobs(LivingSetAttackTargetEvent event)
     {
-        if(Config.COMMON.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity && event.getEntityLiving().isPotionActive(ModEffects.BLINDED.get()))
+        if(Config.COMMON.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity &&
+                (event.getEntityLiving().isPotionActive(ModEffects.BLINDED.get()) || event.getEntityLiving().isPotionActive(ModEffects.STUNNED.get())))
         {
             ((MobEntity) event.getEntityLiving()).setAttackTarget(null);
         }
     }
 
+    protected Effect getBlindType() {
+        return ModEffects.BLINDED.get();
+    }
+    // Force the stun to not work through objects that have <100 opacity
+    protected boolean canSuppOpac() {
+        return true;
+    }
     @Override
     public void onDeath()
     {
@@ -101,7 +107,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
             {
                 entity.setRevengeTarget(entity);
             }
-            if(this.calculateAndApplyEffect(ModEffects.BLINDED.get(), Config.COMMON.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
+            if(this.calculateAndApplyEffect(this.getBlindType(), Config.COMMON.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
             {
                 ((MobEntity) entity).setAttackTarget(null);
             }
@@ -114,7 +120,8 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
         {
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
-            if(effect != ModEffects.BLINDED.get() || !Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
+            if(effect != this.getBlindType() || (!Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() && this.canSuppOpac())
+                    || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
             {
                 // Duration attenuated by distance
                 int durationBlinded = (int) Math.round(criteria.durationMax.get() - (criteria.durationMax.get() - criteria.durationMin.get()) * (distance / criteria.radius.get()));
@@ -130,6 +137,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         return false;
     }
 
+    //TODO: Turn this into utility method
     @Nullable
     public RayTraceResult rayTraceOpaqueBlocks(World world, Vector3d start, Vector3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock)
     {
