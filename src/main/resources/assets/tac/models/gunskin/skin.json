@@ -10,14 +10,14 @@
   },
 
   "ak47": {
-    "ak47_golden": {
+    "golden": {
       "type": "texture",
       "textures": {
         "0": "tac:gunskin/ak47/ak47_golden"
       },
       "icon": "tac:gunskin/icon/ak47_golden"
     },
-    "ak47_silver": {
+    "silver": {
       "type": "custom",
       "models": {
         "auto": "tac:gunskin/ak47/ak47_silver"

@@ -131,8 +131,12 @@ public class SkinManager {
                         if(skinObject.get("icon")!=null){
                             icon = ResourceLocation.tryCreate(skinObject.get("icon").getAsString());
                         }
+                        ResourceLocation miniIcon = null;
+                        if(skinObject.get("mini_icon")!=null){
+                            miniIcon = ResourceLocation.tryCreate(skinObject.get("mini_icon").getAsString());
+                        }
 
-                        int cnt = registerCommonSkins(loader,textures,icon);
+                        int cnt = registerCommonSkins(loader,textures,icon,miniIcon);
                         GunMod.LOGGER.info("Loaded common gun skins of {}, total: {}", gun, cnt);
                         continue;
                     }else {
@@ -145,6 +149,14 @@ public class SkinManager {
                         GunSkin skin = getSkin(gun,skinLoc);
                         if(skin!=null && rl!=null){
                             loader.loadSkinIcon(skin,rl);
+                        }
+                    }
+
+                    if(skinObject.get("mini_icon")!=null){
+                        ResourceLocation rl = ResourceLocation.tryCreate(skinObject.get("mini_icon").getAsString());
+                        GunSkin skin = getSkin(gun,skinLoc);
+                        if(skin!=null && rl!=null){
+                            loader.loadSkinMiniIcon(skin,rl);
                         }
                     }
 
@@ -167,7 +179,8 @@ public class SkinManager {
     /**
      * Try to load preset dyed skins for a gun.
      */
-    private static int registerCommonSkins(SkinLoader loader, List<Pair<String, ResourceLocation>> textures,ResourceLocation icon){
+    private static int registerCommonSkins(SkinLoader loader, List<Pair<String, ResourceLocation>> textures,
+                                           ResourceLocation icon,ResourceLocation mini_icon){
         String[] skinList = {
                 "black", "blue", "brown", "dark_blue", "dark_green",
                 "gray", "green", "jade", "light_gray", "magenta",
@@ -180,10 +193,18 @@ public class SkinManager {
                     textures.stream().map(
                             (p)-> new Pair<>(p.getKey(),ResourceLocation.tryCreate(p.getValue()+"_"+color))
                     ).collect(Collectors.toList());
-            if(registerTextureOnlySkin(loader,rl,skinTextures) && icon!=null){
+            if(registerTextureOnlySkin(loader,rl,skinTextures)){
                 cnt++;
                 GunSkin gunSkin = getSkin(loader.getGun(),rl);
-                if(gunSkin!=null)loader.loadSkinIcon(gunSkin,icon);
+                if(gunSkin!=null){
+                    if(icon!=null){
+                        loader.loadSkinIcon(gunSkin,icon);
+                    }
+                    if(mini_icon!=null){
+                        loader.loadSkinMiniIcon(gunSkin,mini_icon);
+                    }
+                }
+
             }
         }
         return cnt;
