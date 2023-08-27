@@ -1,5 +1,6 @@
 package com.tac.guns.client.render.animation.module;
 
+import com.tac.guns.client.audio.ReloadingSound;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.EntityTickableSound;
 import net.minecraft.client.audio.ISound;
@@ -24,13 +25,13 @@ public enum AnimationSoundManager {
         ISound sound = map.get(animationMeta.getResourceLocation());
         if(sound == null) {
             SoundEvent soundEvent = new SoundEvent(soundMeta.getResourceLocation());
-            sound = new EntityTickableSound(soundEvent, SoundCategory.PLAYERS, player);
+            sound = new ReloadingSound(soundEvent, SoundCategory.PLAYERS, player);
         }
         if(sound instanceof EntityTickableSound){
             EntityTickableSound entityTickableSound = (EntityTickableSound) sound;
             if(entityTickableSound.isDonePlaying()){
                 SoundEvent soundEvent = new SoundEvent(soundMeta.getResourceLocation());
-                sound = new EntityTickableSound(soundEvent, SoundCategory.PLAYERS, player);
+                sound = new ReloadingSound(soundEvent, SoundCategory.PLAYERS, player);
             }
         }
         if(Minecraft.getInstance().getSoundHandler().isPlaying(sound)) return;

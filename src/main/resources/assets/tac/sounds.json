@@ -2333,5 +2333,17 @@
       "sounds": [
          { "name": "tac:animation/tec_9_draw"}
       ]
+   },
+   "stun.ring": {
+      "subtitle": "stun_grenade_ringing",
+      "sounds": [
+         { "name": "tac:entity/stun_grenade/ring"}
+      ]
+   },
+   "stun.explosion": {
+      "subtitle": "stun_grenade_exploded",
+      "sounds": [
+         { "name": "tac:entity/stun_grenade/explosion"}
+      ]
    }
 }

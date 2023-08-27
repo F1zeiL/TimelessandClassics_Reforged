@@ -1,7 +1,7 @@
 package com.tac.guns.item.TransitionalTypes.grenades;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
-import com.tac.guns.entity.specifics.LightGrenadeEntity;
+import com.tac.guns.entity.specifics.explosives.LightGrenadeEntity;
 import com.tac.guns.item.GrenadeItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
