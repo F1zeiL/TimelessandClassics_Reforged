@@ -48,7 +48,6 @@ public class SoundHandler
 
     private void initReflection()
     {
-        // Relection Error, will make crash log report, currently instanceToChannel is never detected
         this.playingSounds = ObfuscationReflectionHelper.findField(SoundEngine.class, "field_217942_m");
     }
 
@@ -70,7 +69,7 @@ public class SoundHandler
             }
         }
 
-        if(Config.SERVER.ringVolume.get() > 0 && (this.ringing == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.ringing)))
+        if(/*Config.SERVER.ringVolume.get() > 0 && */(this.ringing == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.ringing)))
         {
             this.ringing = new StunRingingSound();
             Minecraft.getInstance().getSoundHandler().play(this.ringing);

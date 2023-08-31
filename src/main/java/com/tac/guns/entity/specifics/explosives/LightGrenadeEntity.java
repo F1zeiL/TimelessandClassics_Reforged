@@ -1,4 +1,4 @@
-package com.tac.guns.entity.specifics;
+package com.tac.guns.entity.specifics.explosives;
 
 import com.tac.guns.entity.DamageSourceExplosion;
 import com.tac.guns.entity.IExplosionProvider;

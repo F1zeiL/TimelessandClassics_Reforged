@@ -39,25 +39,33 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
     public ThrowableStunGrenadeEntity(EntityType<? extends ThrowableGrenadeEntity> entityType, World world, LivingEntity player)
     {
         super(entityType, world, player);
-        //this.setItem(new ItemStack(ModItems.STUN_GRENADE.get()));
+        //this.setItem(new ItemStack(ModItems.STANDARD_FLASH_GRENADE.get()));
     }
 
     public ThrowableStunGrenadeEntity(World world, LivingEntity player, int maxCookTime)
     {
         super(ModEntities.THROWABLE_STUN_GRENADE.get(), world, player);
-        //this.setItem(new ItemStack(ModItems.STUN_GRENADE.get()));
+        //this.setItem(new ItemStack(ModItems.STANDARD_FLASH_GRENADE.get()));
         this.setMaxLife(maxCookTime);
     }
 
     @SubscribeEvent
-    public static void blindMobs(LivingSetAttackTargetEvent event)
+    public static void stunMobs(LivingSetAttackTargetEvent event)
     {
-        if(Config.COMMON.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity && event.getEntityLiving().isPotionActive(ModEffects.BLINDED.get()))
+        if(Config.COMMON.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity &&
+                (event.getEntityLiving().isPotionActive(ModEffects.BLINDED.get()) || event.getEntityLiving().isPotionActive(ModEffects.STUNNED.get())))
         {
             ((MobEntity) event.getEntityLiving()).setAttackTarget(null);
         }
     }
 
+    protected Effect getBlindType() {
+        return ModEffects.BLINDED.get();
+    }
+    // Force the stun to not work through objects that have <100 opacity
+    protected boolean canSuppOpac() {
+        return true;
+    }
     @Override
     public void onDeath()
     {
@@ -99,20 +107,21 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
             {
                 entity.setRevengeTarget(entity);
             }
-            if(this.calculateAndApplyEffect(ModEffects.BLINDED.get(), Config.COMMON.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
+            if(this.calculateAndApplyEffect(this.getBlindType(), Config.COMMON.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
             {
                 ((MobEntity) entity).setAttackTarget(null);
             }
         }
     }
 
-    private boolean calculateAndApplyEffect(Effect effect, EffectCriteria criteria, LivingEntity entity, Vector3d grenade, Vector3d eyes, double distance, double angle)
+    protected boolean calculateAndApplyEffect(Effect effect, EffectCriteria criteria, LivingEntity entity, Vector3d grenade, Vector3d eyes, double distance, double angle)
     {
         double angleMax = criteria.angleEffect.get() * 0.5;
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
         {
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
-            if(effect != ModEffects.BLINDED.get() || !Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
+            if(effect != this.getBlindType() || (!Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() && this.canSuppOpac())
+                    || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
             {
                 // Duration attenuated by distance
                 int durationBlinded = (int) Math.round(criteria.durationMax.get() - (criteria.durationMax.get() - criteria.durationMin.get()) * (distance / criteria.radius.get()));
@@ -128,6 +137,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         return false;
     }
 
+    //TODO: Turn this into utility method
     @Nullable
     public RayTraceResult rayTraceOpaqueBlocks(World world, Vector3d start, Vector3d end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock)
     {
