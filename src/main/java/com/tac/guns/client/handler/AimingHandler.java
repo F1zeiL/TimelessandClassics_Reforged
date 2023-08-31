@@ -146,13 +146,19 @@ public class AimingHandler {
         if (player == null)
             return;
 
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (heldItem.getItem() instanceof TimelessGunItem) {
+            SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, 1F - (float) this.getNormalisedAdsProgress());
+            PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(1F - (float) this.getNormalisedAdsProgress()));
+        }
+
         if (this.isAiming()) {
-            if (!canceling) {
+            if (!canceling && !this.aiming) {
                 SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING, true);
                 PacketHandler.getPlayChannel().sendToServer(new MessageAim(true));
                 this.aiming = true;
             }
-        } else {
+        } else if (this.aiming) {
             SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING, false);
             PacketHandler.getPlayChannel().sendToServer(new MessageAim(false));
             this.aiming = false;
@@ -332,13 +338,13 @@ public class AimingHandler {
                     }
                 } else amplifier = 0.8;
             }
-            float t = (float) (1F - currentAim / 4);
-            float dist = (t >= 0 || t <= 1 ? t : 0);
-            if(prevDist != dist) {
-                SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, dist);
-                PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(dist));
-            }
-            prevDist = dist;
+//            float t = (float) (1F - currentAim / 4);
+//            float dist = (t >= 0 || t <= 1 ? t : 0);
+//            if(prevDist != dist) {
+//                SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, dist);
+//                PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(dist));
+//            }
+//            prevDist = dist;
         }
 
         public boolean isAiming() {
