@@ -20,7 +20,7 @@ public final class Keys {
 
     public static KeyBind
             RELOAD = _addNormal(new KeyBind("key.tac.reload", GLFW.GLFW_KEY_R)),
-            UNLOAD = _addNormal(new KeyBind("key.tac.unload", GLFW.GLFW_KEY_R, KeyModifier.CONTROL)),
+            UNLOAD = _addNormal(new KeyBind("key.tac.unload", GLFW.GLFW_KEY_R, KeyModifier.ALT)),
             ATTACHMENTS = _addNormal(new KeyBind("key.tac.attachments", GLFW.GLFW_KEY_Z)),
             FIRE_SELECT = _addNormal(new KeyBind("key.tac.fireSelect", GLFW.GLFW_KEY_G)),
             INSPECT = _addNormal(new KeyBind("key.tac.inspect", GLFW.GLFW_KEY_H)),
