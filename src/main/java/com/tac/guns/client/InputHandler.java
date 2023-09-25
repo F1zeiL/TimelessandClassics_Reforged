@@ -93,7 +93,6 @@ public final class InputHandler
 	
 	private static void __dispatchInput( Input input, boolean is_down, int modifier_bits )
 	{
-		final boolean none_modifier_active = modifier_bits == 0;
 		final boolean is_ctrl_active = ( modifier_bits & GLFW.GLFW_MOD_CONTROL ) != 0;
 		final boolean is_shift_active = ( modifier_bits & GLFW.GLFW_MOD_SHIFT ) != 0;
 		final boolean is_alt_active = ( modifier_bits & GLFW.GLFW_MOD_ALT ) != 0;
@@ -103,21 +102,27 @@ public final class InputHandler
 		final Consumer< KeyBind > inactive_updater = kb -> kb._inactiveUpdate( is_down );
 		final Function< Boolean, Consumer< KeyBind > > kb_updater_dispatcher =
 			active_flag -> active_mask && active_flag ? active_updater : inactive_updater;
-		
+
+		boolean is_combination_key = false;
+
+		if ((is_ctrl_active && CTRL_TABLE.containsKey(input)) ||
+				(is_shift_active && SHIFT_TABLE.containsKey(input)) ||
+				(is_alt_active && ALT_TABLE.containsKey(input)))
+			is_combination_key = true;
+		else
+			is_combination_key = false;
+
 		GLOBAL_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( true ) );
-		NORMAL_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( none_modifier_active ) );
+		NORMAL_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( !is_combination_key ) );
 		CTRL_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( is_ctrl_active ) );
 		SHIFT_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( is_shift_active ) );
 		ALT_TABLE.get( input ).forEach( kb_updater_dispatcher.apply( is_alt_active ) );
-		
+
 		final KeyBind kb = Keys.MORE_INFO_HOLD;
 		if ( input == kb.keyCode() )
 		{
 			switch( kb.keyModifier() )
 			{
-			case NONE:
-				( none_modifier_active ? active_updater : inactive_updater ).accept( kb );
-				break;
 			case CONTROL:
 				( is_ctrl_active ? active_updater : inactive_updater ).accept( kb );
 				break;
