@@ -12,25 +12,31 @@ public class GunSkin {
     protected final Map<ModelComponent, SpecialModel> models = new HashMap<>();
     protected Map<ModelComponent, Vector3d> extraOffset;
     public final ResourceLocation registerName;
-    public final String gun;
+    public final ResourceLocation gun;
     protected ResourceLocation icon;
     protected ResourceLocation miniIcon;
     private DefaultSkin defaultSkin;
 
-    public GunSkin(String skinName,String gun,DefaultSkin skin){
+    public GunSkin(String skinName, String gun, DefaultSkin skin){
         this.registerName = ResourceLocation.tryCreate("tac:"+skinName);
-        this.gun=gun;
+        this.gun = ResourceLocation.tryCreate("tac:" + gun);
         this.defaultSkin=skin;
     }
 
-    public GunSkin(ResourceLocation registerName,String gun,DefaultSkin skin){
-        this.gun=gun;
+    public GunSkin(ResourceLocation registerName, String gun, DefaultSkin skin){
+        this.gun = ResourceLocation.tryCreate("tac:" + gun);
         this.registerName = registerName;
         this.defaultSkin=skin;
     }
 
-    protected GunSkin(ResourceLocation registerName, String gun){
-        this.gun=gun;
+    public GunSkin(ResourceLocation skinName, ResourceLocation gun, DefaultSkin skin){
+        this.registerName = skinName;
+        this.gun = gun;
+        this.defaultSkin=skin;
+    }
+
+    protected GunSkin(ResourceLocation registerName, ResourceLocation gun){
+        this.gun = gun;
         this.registerName = registerName;
     }
 
