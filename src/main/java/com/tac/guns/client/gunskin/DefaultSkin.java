@@ -8,6 +8,10 @@ public class DefaultSkin extends GunSkin{
         super("default",gun,null);
     }
 
+    public DefaultSkin(ResourceLocation gun) {
+        super(new ResourceLocation(gun.getNamespace()+":default"),gun,null);
+    }
+
     @Override
     public SpecialModel getModel(ModelComponent component){
         return models.get(component);
