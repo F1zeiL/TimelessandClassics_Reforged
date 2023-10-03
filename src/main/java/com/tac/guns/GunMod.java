@@ -212,6 +212,7 @@ public class GunMod {
         ModSounds.REGISTER.register(bus);
         ModTileEntities.REGISTER.register(bus);
         ModSyncedDataKeys.register();
+        ModTags.init();
         bus.addListener(this::onCommonSetup);
         bus.addListener(this::onClientSetup);
         bus.addListener(this::dataSetup);
