@@ -10,6 +10,7 @@ import com.tac.guns.event.GunProjectileHitEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModEnchantments;
 import com.tac.guns.init.ModSyncedDataKeys;
+import com.tac.guns.init.ModTags;
 import com.tac.guns.interfaces.IExplosionDamageable;
 import com.tac.guns.interfaces.IHeadshotBox;
 import com.tac.guns.item.GunItem;
@@ -221,11 +222,10 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 endVec = endVec.subtract(v);
             }
             RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) result;
-            BlockPos pos = blockRayTraceResult.getPos();
-            BlockState state = this.world.getBlockState(pos);
-            Block block = state.getBlock();
-            if (result.getType() != RayTraceResult.Type.MISS && (!(block instanceof FenceBlock || block instanceof FenceGateBlock || ((block instanceof PaneBlock) && state.getMaterial() == Material.IRON)) && Config.COMMON.gameplay.canPassFence.get())) {
+
+
+
+            if (result.getType() != RayTraceResult.Type.MISS) {
                 endVec = result.getHitVec();
             }
 
@@ -255,8 +255,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     }
                 }
             } else {
-                if (!(block instanceof FenceBlock || block instanceof FenceGateBlock || ((block instanceof PaneBlock) && state.getMaterial() == Material.IRON)) && Config.COMMON.gameplay.canPassFence.get())
-                    this.onHit(result, startVec, endVec); // Issue
+                this.onHit(result, startVec, endVec);
             }
         }
 
@@ -794,7 +793,10 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     private static BlockRayTraceResult rayTraceBlocks(World world, RayTraceContext context) {
         return performRayTrace(context, (rayTraceContext, blockPos) -> {
             BlockState blockState = world.getBlockState(blockPos);
-            if (ProjectileEntity.IGNORE_LEAVES.test(blockState)) return null;
+            Block block = blockState.getBlock();
+            boolean pass = block.isIn(ModTags.bullet_ignore);
+            if(pass)return null;
+
             return getBlockRayTraceResult(world, rayTraceContext, blockPos, blockState);
         }, (rayTraceContext) -> {
             Vector3d Vector3d = rayTraceContext.getStartVec().subtract(rayTraceContext.getEndVec());
