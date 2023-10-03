@@ -221,7 +221,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 endVec = endVec.subtract(v);
             }
             RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
-            if (result.getType() != RayTraceResult.Type.MISS) {
+            BlockRayTraceResult blockRayTraceResult = (BlockRayTraceResult) result;
+            BlockPos pos = blockRayTraceResult.getPos();
+            BlockState state = this.world.getBlockState(pos);
+            Block block = state.getBlock();
+            if (result.getType() != RayTraceResult.Type.MISS && (!(block instanceof FenceBlock || block instanceof FenceGateBlock || ((block instanceof PaneBlock) && state.getMaterial() == Material.IRON)) && Config.COMMON.gameplay.canPassFence.get())) {
                 endVec = result.getHitVec();
             }
 
@@ -251,7 +255,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     }
                 }
             } else {
-                this.onHit(result, startVec, endVec); // Issue
+                if (!(block instanceof FenceBlock || block instanceof FenceGateBlock || ((block instanceof PaneBlock) && state.getMaterial() == Material.IRON)) && Config.COMMON.gameplay.canPassFence.get())
+                    this.onHit(result, startVec, endVec); // Issue
             }
         }
 

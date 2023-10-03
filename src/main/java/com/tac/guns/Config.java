@@ -358,6 +358,7 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
         public final ForgeConfigSpec.BooleanValue gunOfKindness;
         public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
+        public final ForgeConfigSpec.BooleanValue canPassFence;
 
         public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
@@ -398,6 +399,7 @@ public class Config {
                 this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
                 this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
                 this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
+                this.canPassFence = builder.comment("True if you want to pass fence.").define("canPassFence", false);
             }
             builder.pop();
         }
