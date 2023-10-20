@@ -14,6 +14,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 
 /**
@@ -82,18 +83,19 @@ public class AttachmentSlot extends Slot {
                 this.player.getHeldItemMainhand().getItem() instanceof SideRailItem ||
                 this.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem ||
                 this.player.getHeldItemMainhand().getItem() instanceof GunSkinItem)
-            if (stack.getItem() instanceof DyeItem)
-                return true;
-            else
-                return false;
+            return stack.getItem() instanceof DyeItem;
         else {
             GunItem item = (GunItem) this.weapon.getItem();
             Gun modifiedGun = item.getModifiedGun(this.weapon);
-            if (stack.getItem() instanceof IAttachment && ((IAttachment) stack.getItem()).getType() == this.type && modifiedGun.canAttachType(this.type))
-                return true;
-            else if (types != null && stack.getItem() instanceof IAttachment) {
+            if (stack.getItem() instanceof IAttachment &&
+                    ((IAttachment<?>) stack.getItem()).getType() == this.type && modifiedGun.canAttachType(this.type))
+            {
+                if(stack.getItem() instanceof GunSkinItem){
+                    return ((GunSkinItem) stack.getItem()).canApplyOn(stack, (TimelessGunItem) this.weapon.getItem());
+                }else return true;
+            } else if (types != null && stack.getItem() instanceof IAttachment) {
                 for (IAttachment.Type x : types) {
-                    if (((IAttachment) stack.getItem()).getType() == x)
+                    if (((IAttachment<?>) stack.getItem()).getType() == x)
                         return true;
                 }
             }

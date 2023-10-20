@@ -54,8 +54,7 @@ public interface IGunModifier
      *
      * @return additional damage to add on top of the weapon damage
      */
-    default float additionalDamage()
-    {
+    default float additionalDamage() {
         return 0.0F;
     }
 

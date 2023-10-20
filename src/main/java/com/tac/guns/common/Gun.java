@@ -11,6 +11,7 @@ import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -2464,6 +2465,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         return ItemStack.EMPTY;
     }
 
+    /**This method will only get additional-damage directly attached to the nbt of the gun itself.
+     * To get the total additional-damage of the weapon, please use {@link GunModifierHelper#getAdditionalDamage(ItemStack weapon)}
+     * */
     public static float getAdditionalDamage(ItemStack gunStack) {
         CompoundNBT tag = gunStack.getOrCreateTag();
         return tag.getFloat("AdditionalDamage");

@@ -289,8 +289,17 @@ public class AttachmentContainer extends Container {
         } else if (this.weapon.getItem() instanceof TimelessGunItem) {
             for (int i = 0; i < 7; i++) {
                 ItemStack attachment = this.getSlot(i).getStack();
-                if (attachment.getItem() instanceof IAttachment)
-                    attachments.put(((IAttachment) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+                if(i == 6){
+                    if (attachment.getItem() instanceof GunSkinItem){
+                        if( ((GunSkinItem) attachment.getItem()).canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
+                            attachments.put(((IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+                        }
+                    }
+                }else {
+                    if (attachment.getItem() instanceof IAttachment){
+                        attachments.put(((IAttachment) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+                    }
+                }
             }
         }
 

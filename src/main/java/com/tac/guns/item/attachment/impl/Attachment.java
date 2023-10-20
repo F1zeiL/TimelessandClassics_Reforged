@@ -1,17 +1,26 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.Reference;
+import com.tac.guns.init.ModItems;
 import com.tac.guns.interfaces.IGunModifier;
+import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +54,7 @@ public abstract class Attachment
         }
     }
 
-    List<ITextComponent> getPerks()
-    {
+    List<ITextComponent> getPerks() {
         return this.perks;
     }
 
@@ -253,7 +261,27 @@ public abstract class Attachment
                 event.getToolTip().add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
                 event.getToolTip().addAll(positivePerks);
             }
+            if (stack.getTag() != null && stack.getTag().contains("Limit", Constants.NBT.TAG_LIST)) {
+                ListNBT listNBT = stack.getTag().getList("Limit",Constants.NBT.TAG_STRING);
+                List<ITextComponent> list = new ArrayList<>();
+                if(!listNBT.isEmpty()){
+                    for (int i = 0; i < listNBT.size(); i++) {
+                        String s = listNBT.getString(i);
+                        ResourceLocation location = ResourceLocation.tryCreate(s);
+                        if(location!=null){
+                            Item item = ForgeRegistries.ITEMS.getValue(location);
+                            if(item instanceof TimelessGunItem){
+                                list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
+                            }
+                        }
 
+                    }
+                }
+                if(!list.isEmpty()){
+                    event.getToolTip().add(new StringTextComponent("适用于：").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                    event.getToolTip().addAll(list);
+                }
+            }
         }
     }
 

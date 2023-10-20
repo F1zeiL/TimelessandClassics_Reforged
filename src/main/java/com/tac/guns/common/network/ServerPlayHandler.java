@@ -130,7 +130,7 @@ public class ServerPlayHandler {
                         IProjectileFactory factory = ProjectileManager.getInstance().getFactory(projectileProps.getItem());
                         ProjectileEntity projectileEntity = factory.create(world, player, heldItem, item, modifiedGun, randP, randY);
                         projectileEntity.setWeapon(heldItem);
-                        projectileEntity.setAdditionalDamage(Gun.getAdditionalDamage(heldItem));
+                        projectileEntity.setAdditionalDamage(GunModifierHelper.getAdditionalDamage(heldItem));
                         world.addEntity(projectileEntity);
                         spawnedProjectiles[i] = projectileEntity;
                         projectileEntity.tick();

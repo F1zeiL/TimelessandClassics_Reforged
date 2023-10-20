@@ -5,7 +5,9 @@ import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.util.Constants;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -330,20 +332,28 @@ public class GunModifierHelper
         return MathHelper.clamp(minRadius, 0.0, Double.MAX_VALUE);
     }
 
-    public static float getAdditionalDamage(ItemStack weapon)
-    {
+    public static float getAdditionalDamage(ItemStack weapon) {
         float additionalDamage = 0.0F;
+
         for(int i = 0; i < IAttachment.Type.values().length; i++)
         {
+            //from attachment item
             IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-            for(IGunModifier modifier : modifiers)
-            {
+            for(IGunModifier modifier : modifiers) {
                 additionalDamage += modifier.additionalDamage();
             }
+            //from attachment nbt
+            ItemStack attachment = Gun.getAttachment(IAttachment.Type.values()[i], weapon);
+            if(attachment.hasTag()){
+                additionalDamage += Gun.getAdditionalDamage(attachment);
+            }
         }
+
+        //from gun nbt
+        additionalDamage += Gun.getAdditionalDamage(weapon);
+        //from gun item
         IGunModifier[] modifiers = getModifiers(weapon);
-        for(IGunModifier modifier : modifiers)
-        {
+        for(IGunModifier modifier : modifiers) {
             additionalDamage += modifier.additionalDamage();
         }
         return additionalDamage;
@@ -546,13 +556,32 @@ public class GunModifierHelper
         return modifierWeight;
     }
 
-    public static String getAdditionalSkin(ItemStack weapon)
+    public static ResourceLocation getAdditionalSkin(ItemStack weapon)
     {
         IGunModifier[] skin = getModifiers(weapon, IAttachment.Type.GUN_SKIN);
 
-        if(skin.length>0){
-            return skin[0].additionalSkin();
+        ItemStack stack = Gun.getAttachment(IAttachment.Type.GUN_SKIN, weapon);
+        if(!stack.isEmpty()){
+            if (stack.getTag() != null){
+                if(stack.hasTag() && stack.getTag().contains("CustomSkin", Constants.NBT.TAG_STRING)){
+                    String raw = stack.getTag().getString("CustomSkin");
+                    ResourceLocation rl;
+                    if(raw.indexOf(':')>0){
+                        rl = ResourceLocation.tryCreate(raw);
+                    }else{
+                        rl = ResourceLocation.tryCreate("tac:"+raw);
+                    }
+                    if(rl!=null) {
+                        return rl;
+                    }
+                }
+            }
         }
-        return "NONE";
+
+        if(skin.length>0){
+            return new ResourceLocation("tac:"+skin[0].additionalSkin().toLowerCase());
+        }
+
+        return null;
     }
 }

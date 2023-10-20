@@ -253,11 +253,8 @@ public class SkinManager {
     private static GunSkin getAttachedSkin(ItemStack weapon) {
         if (weapon.getItem() instanceof TimelessGunItem) {
             ResourceLocation gun = weapon.getItem().getRegistryName();
-            String skin = GunModifierHelper.getAdditionalSkin(weapon).toLowerCase();
-            if(!"NONE".equals(skin)){
-                ResourceLocation rl = new ResourceLocation("tac:"+skin);
-                return getSkin(gun,rl);
-            }
+            ResourceLocation skin = GunModifierHelper.getAdditionalSkin(weapon);
+            return getSkin(gun,skin);
         }
         return null;
     }
