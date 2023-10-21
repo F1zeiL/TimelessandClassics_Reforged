@@ -1,7 +1,6 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.Reference;
-import com.tac.guns.init.ModItems;
 import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
@@ -9,9 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,7 +24,7 @@ import java.util.List;
 
 /**
  * The base attachment object
- *
+ * <p>
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
@@ -76,6 +73,27 @@ public abstract class Attachment
             return false;
         }
         return true;
+    }
+
+    private static List<ITextComponent> getSuitableGuns(ItemStack stack) {
+        List<ITextComponent> list = new ArrayList<>();
+        if(stack.getTag()!=null){
+            ListNBT listNBT = stack.getTag().getList("Limit",Constants.NBT.TAG_STRING);
+            if(!listNBT.isEmpty()){
+                for (int i = 0; i < listNBT.size(); i++) {
+                    String s = listNBT.getString(i);
+                    ResourceLocation location = ResourceLocation.tryCreate(s);
+                    if(location!=null){
+                        Item item = ForgeRegistries.ITEMS.getValue(location);
+                        if(item instanceof TimelessGunItem){
+                            list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
+                        }
+                    }
+
+                }
+            }
+        }
+        return list;
     }
 
     /* Determines the perks of attachments and caches them */
@@ -199,9 +217,9 @@ public abstract class Attachment
                 outputFirstSpread = modifier.modifyFirstShotSpread(outputFirstSpread);
             }
             if (outputFirstSpread > inputFirstSpread) {
-                addPerkN(negativePerks, "perk.tac.projectile_spread_first.negativev2", String.valueOf(Math.round((10.0F - outputFirstSpread) * 10f)) + "%");
+                addPerkN(negativePerks, "perk.tac.projectile_spread_first.negativev2", Math.round((10.0F - outputFirstSpread) * 10f) + "%");
             } else if (outputFirstSpread < inputFirstSpread) {
-                addPerkP(positivePerks, "perk.tac.projectile_spread_first.positivev2", String.valueOf(Math.round((10.0F - outputFirstSpread) * 10f)) + "%");
+                addPerkP(positivePerks, "perk.tac.projectile_spread_first.positivev2", Math.round((10.0F - outputFirstSpread) * 10f) + "%");
             }
 
             /* Test for modified projectile spread */
@@ -211,9 +229,9 @@ public abstract class Attachment
                 outputHipFireSpread = modifier.modifyHipFireSpread(outputHipFireSpread);
             }
             if (outputHipFireSpread > inputHipFireSpread) {
-                addPerkN(negativePerks, "perk.tac.projectile_spread_hip.negativev2", String.valueOf(Math.round((10.0F - outputHipFireSpread) * 10f)) + "%");
+                addPerkN(negativePerks, "perk.tac.projectile_spread_hip.negativev2", Math.round((10.0F - outputHipFireSpread) * 10f) + "%");
             } else if (outputHipFireSpread < inputHipFireSpread) {
-                addPerkP(positivePerks, "perk.tac.projectile_spread_hip.positivev2", String.valueOf(Math.round((10.0F - outputHipFireSpread) * 10f)) + "%");
+                addPerkP(positivePerks, "perk.tac.projectile_spread_hip.positivev2", Math.round((10.0F - outputHipFireSpread) * 10f) + "%");
             }
 
             /* Test for modified projectile life */
@@ -235,9 +253,9 @@ public abstract class Attachment
                 outputRecoil *= modifier.recoilModifier();
             }
             if (outputRecoil > inputRecoil) {
-                addPerkN(negativePerks, "perk.tac.recoil.negativev2",  String.valueOf(Math.round((10.0F - outputRecoil) * -10f))+ "%");
+                addPerkN(negativePerks, "perk.tac.recoil.negativev2", Math.round((10.0F - outputRecoil) * -10f) + "%");
             } else if (outputRecoil < inputRecoil) {
-                addPerkP(positivePerks, "perk.tac.recoil.positivev2",  String.valueOf(Math.round((10.0F - outputRecoil) * -10f))+ "%");
+                addPerkP(positivePerks, "perk.tac.recoil.positivev2", Math.round((10.0F - outputRecoil) * -10f) + "%");
             }
 
             float inputHRecoil = 10.0F;
@@ -246,9 +264,9 @@ public abstract class Attachment
                 outputHRecoil *= modifier.horizontalRecoilModifier();
             }
             if (outputHRecoil > inputHRecoil) {
-                addPerkN(negativePerks, "perk.tac.recoilh.negativev2", String.valueOf(Math.round((10.0F - outputHRecoil) * -10f))+ "%");
+                addPerkN(negativePerks, "perk.tac.recoilh.negativev2", Math.round((10.0F - outputHRecoil) * -10f) + "%");
             } else if (outputHRecoil < inputHRecoil) {
-                addPerkP(positivePerks, "perk.tac.recoilh.positivev2", String.valueOf(Math.round((10.0F - outputHRecoil) * -10f))+ "%");
+                addPerkP(positivePerks, "perk.tac.recoilh.positivev2", Math.round((10.0F - outputHRecoil) * -10f) + "%");
             }
 
             /* Test for aim down sight speed */
@@ -258,9 +276,9 @@ public abstract class Attachment
                 outputAdsSpeed = modifier.modifyAimDownSightSpeed(outputAdsSpeed);
             }
             if (outputAdsSpeed > inputAdsSpeed) {
-                addPerkP(positivePerks, "perk.tac.ads_speed.positivev2", String.valueOf(Math.round((10.0F - outputAdsSpeed) * 10f))+ "%");
+                addPerkP(positivePerks, "perk.tac.ads_speed.positivev2", Math.round((10.0F - outputAdsSpeed) * 10f) + "%");
             } else if (outputAdsSpeed < inputAdsSpeed) {
-                addPerkN(negativePerks, "perk.tac.ads_speed.negativev2", String.valueOf(Math.round((10.0F - outputAdsSpeed) * 10f))+ "%");
+                addPerkN(negativePerks, "perk.tac.ads_speed.negativev2", Math.round((10.0F - outputAdsSpeed) * 10f) + "%");
             }
 
             /* Test for fire rate */
@@ -277,28 +295,14 @@ public abstract class Attachment
 
             positivePerks.addAll(negativePerks);
             attachment.getProperties().setPerks(positivePerks);
-            if (positivePerks.size() > 0) {
+            if (!positivePerks.isEmpty()) {
                 event.getToolTip().add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
                 event.getToolTip().addAll(positivePerks);
             }
             if (stack.getTag() != null && stack.getTag().contains("Limit", Constants.NBT.TAG_LIST)) {
-                ListNBT listNBT = stack.getTag().getList("Limit",Constants.NBT.TAG_STRING);
-                List<ITextComponent> list = new ArrayList<>();
-                if(!listNBT.isEmpty()){
-                    for (int i = 0; i < listNBT.size(); i++) {
-                        String s = listNBT.getString(i);
-                        ResourceLocation location = ResourceLocation.tryCreate(s);
-                        if(location!=null){
-                            Item item = ForgeRegistries.ITEMS.getValue(location);
-                            if(item instanceof TimelessGunItem){
-                                list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
-                            }
-                        }
-
-                    }
-                }
+                List<ITextComponent> list = getSuitableGuns(stack);
                 if(!list.isEmpty()){
-                    event.getToolTip().add(new StringTextComponent("适用于：").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                    event.getToolTip().add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
                     event.getToolTip().addAll(list);
                 }
             }

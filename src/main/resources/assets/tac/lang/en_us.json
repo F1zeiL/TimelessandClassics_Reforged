@@ -321,6 +321,7 @@
   "perk.tac.recoilh.negativev2": "-Horizontal Recoil %s",
   "perk.tac.ads_speed.positivev2": "-ADS Speed %s",
   "perk.tac.ads_speed.negativev2": "+ADS Speed %s",
+  "limit.tac.title": "Can apply on:",
   "updateCheck.tac": "TaC can be updated to %s \n %s",
   "key.categories.tac": "Timeless and Classic Guns",
   "key.tac.pull_trigger": "Pull Trigger",

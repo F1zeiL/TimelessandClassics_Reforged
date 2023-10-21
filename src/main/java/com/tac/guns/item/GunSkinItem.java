@@ -37,24 +37,7 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
         return enchantment == Enchantments.BINDING_CURSE || super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
-    public boolean canApplyOn(ItemStack attachment, TimelessGunItem gun){
-        if(gun.getRegistryName()==null)return false;
-        if(!attachment.hasTag())return true;
-        if (attachment.getTag() != null && attachment.getTag().contains("Limit", Constants.NBT.TAG_LIST)) {
-            ListNBT listNBT = attachment.getTag().getList("Limit",Constants.NBT.TAG_STRING);
-
-            if(listNBT.isEmpty()) return true;
-
-            for (int i = 0; i < listNBT.size(); i++) {
-                String s = listNBT.getString(i);
-                if(s.equals(gun.getRegistryName().toString()))return true;
-            }
-
-        }
-        return false;
-    }
-
-    //todo: custom item name
+    //todo: custom item name?
     @Override
     public String getTranslationKey(ItemStack stack) {
         return super.getTranslationKey(stack);
