@@ -8,6 +8,7 @@ import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessOldRifleGunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessPistolGunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -238,6 +239,7 @@ public class AttachmentContainer extends Container {
     @Override
     public void onCraftMatrixChanged(IInventory inventoryIn) // something with this...
     {
+        //todo:maybe it needs to be optimized?
         CompoundNBT attachments = new CompoundNBT();
 
         if (this.weapon.getItem() instanceof ScopeItem ||
@@ -289,16 +291,8 @@ public class AttachmentContainer extends Container {
         } else if (this.weapon.getItem() instanceof TimelessGunItem) {
             for (int i = 0; i < 7; i++) {
                 ItemStack attachment = this.getSlot(i).getStack();
-                if(i == 6){
-                    if (attachment.getItem() instanceof GunSkinItem){
-                        if( ((GunSkinItem) attachment.getItem()).canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
-                            attachments.put(((IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
-                        }
-                    }
-                }else {
-                    if (attachment.getItem() instanceof IAttachment){
-                        attachments.put(((IAttachment) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
-                    }
+                if (attachment.getItem() instanceof IAttachment){
+                    checkAndWrite(attachment, attachments);
                 }
             }
         }
@@ -306,6 +300,12 @@ public class AttachmentContainer extends Container {
         CompoundNBT tag = this.weapon.getOrCreateTag();
         tag.put("Attachments", attachments);
         super.detectAndSendChanges();
+    }
+
+    private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
+        if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
+            attachments.put(((IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+        }
     }
 
     @Override

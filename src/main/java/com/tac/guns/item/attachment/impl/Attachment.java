@@ -46,8 +46,7 @@ public abstract class Attachment
         return this.modifiers;
     }
 
-    void setPerks(List<ITextComponent> perks)
-    {
+    void setPerks(List<ITextComponent> perks) {
         if(this.perks == null)
         {
             this.perks = perks;
@@ -56,6 +55,27 @@ public abstract class Attachment
 
     List<ITextComponent> getPerks() {
         return this.perks;
+    }
+    /** Extra check of an attachment, limited by the tag on it.
+     * @param attachment the attachment about to apply
+     * @param gun the gun item
+     * */
+    public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun){
+        if(gun.getRegistryName()==null)return false;
+        if(!attachment.hasTag())return true;
+        if (attachment.getTag() != null && attachment.getTag().contains("Limit", Constants.NBT.TAG_LIST)) {
+            ListNBT listNBT = attachment.getTag().getList("Limit",Constants.NBT.TAG_STRING);
+
+            if(listNBT.isEmpty()) return true;
+
+            for (int i = 0; i < listNBT.size(); i++) {
+                String s = listNBT.getString(i);
+                if(s.equals(gun.getRegistryName().toString()))return true;
+            }
+
+            return false;
+        }
+        return true;
     }
 
     /* Determines the perks of attachments and caches them */
@@ -69,7 +89,7 @@ public abstract class Attachment
             IAttachment<?> attachment = (IAttachment<?>) stack.getItem();
             List<ITextComponent> perks = attachment.getProperties().getPerks();
 
-            if (perks != null && perks.size() > 0) {
+            if (perks != null && !perks.isEmpty()) {
                 event.getToolTip().add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GOLD, TextFormatting.BOLD));
                 event.getToolTip().addAll(perks);
                 return;

@@ -2492,6 +2492,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         return stacks.toArray(new ItemStack[]{});
     }
 
+    public static int getAmmo(ItemStack stack) {
+        return stack.getOrCreateTag().getInt("AmmoCount");
+    }
+
     public static boolean isAmmo(ItemStack stack, ResourceLocation id) {
         return stack != null && stack.getItem().getRegistryName().equals(id);
     }

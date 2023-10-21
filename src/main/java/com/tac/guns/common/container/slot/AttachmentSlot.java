@@ -8,6 +8,7 @@ import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.*;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -23,9 +24,9 @@ import net.minecraft.util.SoundCategory;
 public class AttachmentSlot extends Slot {
     private AttachmentContainer container;
     private ItemStack weapon;
-    private IAttachment.Type type;
+    private IAttachment.Type type;    //accept specific type of attachment
     private PlayerEntity player;
-    private IAttachment.Type[] types;
+    private IAttachment.Type[] types;    //accept multiple types of attachment
     private int index;
 
     public AttachmentSlot(AttachmentContainer container, IInventory weaponInventory, ItemStack weapon, IAttachment.Type type, PlayerEntity player, int index, int x, int y) {
@@ -76,31 +77,50 @@ public class AttachmentSlot extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if ((this.type == IAttachment.Type.EXTENDED_MAG && this.weapon.getOrCreateTag().getInt("AmmoCount") > ((TimelessGunItem) this.weapon.getItem()).getGun().getReloads().getMaxAmmo()) || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
-            return false;
-        }
-        if (this.player.getHeldItemMainhand().getItem() instanceof ScopeItem ||
-                this.player.getHeldItemMainhand().getItem() instanceof SideRailItem ||
-                this.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem ||
-                this.player.getHeldItemMainhand().getItem() instanceof GunSkinItem)
-            return stack.getItem() instanceof DyeItem;
-        else {
-            GunItem item = (GunItem) this.weapon.getItem();
-            Gun modifiedGun = item.getModifiedGun(this.weapon);
-            if (stack.getItem() instanceof IAttachment &&
-                    ((IAttachment<?>) stack.getItem()).getType() == this.type && modifiedGun.canAttachType(this.type))
-            {
-                if(stack.getItem() instanceof GunSkinItem){
-                    return ((GunSkinItem) stack.getItem()).canApplyOn(stack, (TimelessGunItem) this.weapon.getItem());
-                }else return true;
-            } else if (types != null && stack.getItem() instanceof IAttachment) {
-                for (IAttachment.Type x : types) {
-                    if (((IAttachment<?>) stack.getItem()).getType() == x)
+        //todo: logic of this part has been reorganized, need to confirm if there are any side effects or bugs.
+        //gun attachments
+        if(this.weapon.getItem() instanceof TimelessGunItem){
+            if(!(stack.getItem() instanceof IAttachment))return false;
+
+            TimelessGunItem weapon = (TimelessGunItem) this.weapon.getItem();
+            int maxAmmo = weapon.getGun().getReloads().getMaxAmmo();
+            if(this.type == IAttachment.Type.EXTENDED_MAG && Gun.getAmmo(this.weapon) > maxAmmo){
+                return false;
+            }
+            if(SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)){
+                return false;
+            }
+            //check extra limit from nbt tags
+            Gun modifiedGun = weapon.getModifiedGun(this.weapon);
+            if(!Attachment.canApplyOn(stack,weapon)){
+                return false;
+            }
+            IAttachment.Type stackType = ((IAttachment<?>) stack.getItem()).getType();
+
+            if(this.type!=null){
+                return stackType == this.type && modifiedGun.canAttachType(this.type);
+            }else if(types!=null){
+                for (IAttachment.Type t : types) {
+                    if (stackType == t){
                         return true;
+                    }
                 }
             }
-            return false;
+
         }
+        //This part still feels messy
+        //maybe we should create a new class for dye slots?
+        //dye slot
+        if(this.type == IAttachment.Type.SCOPE_BODY_COLOR ||
+            this.type == IAttachment.Type.SCOPE_GLASS_COLOR ||
+            this.type == IAttachment.Type.SCOPE_RETICLE_COLOR)
+        {
+            if (this.weapon.getItem() instanceof IColored){
+                return  ((IColored) this.weapon.getItem()).canColor(this.weapon) && stack.getItem() instanceof DyeItem;
+            }
+        }
+
+        return false;
     }
 
     @Override
