@@ -1,0 +1,8 @@
+{
+  "id": "tac:test",
+  "model": "tac:attachment/test",
+  "additionalDamage": 1.0,
+  "canApplyOn": [
+    "tac:scar_l"
+  ]
+}

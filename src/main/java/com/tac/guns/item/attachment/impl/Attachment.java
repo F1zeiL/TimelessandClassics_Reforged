@@ -1,7 +1,10 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.Reference;
+import com.tac.guns.common.AttachmentManager;
+import com.tac.guns.common.CustomModifier;
 import com.tac.guns.interfaces.IGunModifier;
+import com.tac.guns.item.GunSkinItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.item.Item;
@@ -60,36 +63,37 @@ public abstract class Attachment
     public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun){
         if(gun.getRegistryName()==null)return false;
         if(!attachment.hasTag())return true;
-        if (attachment.getTag() != null && attachment.getTag().contains("Limit", Constants.NBT.TAG_LIST)) {
-            ListNBT listNBT = attachment.getTag().getList("Limit",Constants.NBT.TAG_STRING);
-
-            if(listNBT.isEmpty()) return true;
-
-            for (int i = 0; i < listNBT.size(); i++) {
-                String s = listNBT.getString(i);
-                if(s.equals(gun.getRegistryName().toString()))return true;
+        if (attachment.getTag() != null && attachment.getTag().contains(GunSkinItem.CUSTOM_MODIFIER, Constants.NBT.TAG_STRING)) {
+            String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
+            ResourceLocation location = ResourceLocation.tryCreate(raw);
+            if(location!=null){
+                CustomModifier modifier = AttachmentManager.getCustomModifier(location);
+                if(modifier!=null){
+                    if (modifier.getCanApplyOn() != null) {
+                        return modifier.getCanApplyOn().contains(gun.getRegistryName());
+                    }
+                }
             }
-
-            return false;
         }
         return true;
     }
 
-    private static List<ITextComponent> getSuitableGuns(ItemStack stack) {
+    public static List<ITextComponent> getSuitableGuns(ItemStack attachment) {
         List<ITextComponent> list = new ArrayList<>();
-        if(stack.getTag()!=null){
-            ListNBT listNBT = stack.getTag().getList("Limit",Constants.NBT.TAG_STRING);
-            if(!listNBT.isEmpty()){
-                for (int i = 0; i < listNBT.size(); i++) {
-                    String s = listNBT.getString(i);
-                    ResourceLocation location = ResourceLocation.tryCreate(s);
-                    if(location!=null){
-                        Item item = ForgeRegistries.ITEMS.getValue(location);
-                        if(item instanceof TimelessGunItem){
-                            list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
-                        }
+        if (attachment.getTag() != null && attachment.getTag().contains(GunSkinItem.CUSTOM_MODIFIER, Constants.NBT.TAG_STRING)) {
+            String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
+            ResourceLocation location = ResourceLocation.tryCreate(raw);
+            if(location!=null){
+                CustomModifier modifier = AttachmentManager.getCustomModifier(location);
+                if(modifier!=null){
+                    if (modifier.getCanApplyOn() != null) {
+                        modifier.getCanApplyOn().forEach((rl)->{
+                            Item item = ForgeRegistries.ITEMS.getValue(location);
+                            if(item instanceof TimelessGunItem){
+                                list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
+                            }
+                        });
                     }
-
                 }
             }
         }
@@ -101,6 +105,7 @@ public abstract class Attachment
     @SubscribeEvent
     public static void addInformationEvent(ItemTooltipEvent event)
     {
+        if(true)return;
         ItemStack stack = event.getItemStack();
         if(stack.getItem() instanceof IAttachment<?>)
         {

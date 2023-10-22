@@ -1,10 +1,7 @@
 package com.tac.guns.network;
 
 import com.google.common.collect.ImmutableMap;
-import com.tac.guns.common.CustomGun;
-import com.tac.guns.common.CustomGunLoader;
-import com.tac.guns.common.Gun;
-import com.tac.guns.common.NetworkGunManager;
+import com.tac.guns.common.*;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
@@ -42,9 +39,10 @@ public class HandshakeMessages {
         }
     }
 
-    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider {
+    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider, AttachmentManager.IAttachmentsProvider {
         private ImmutableMap<ResourceLocation, Gun> registeredGuns;
         private ImmutableMap<ResourceLocation, CustomGun> customGuns;
+        private ImmutableMap<ResourceLocation, CustomModifier> customAttachments;
 
         public S2CUpdateGuns() {
         }
@@ -56,12 +54,14 @@ public class HandshakeMessages {
             NetworkGunManager.get().writeRegisteredGuns(buffer);
             Validate.notNull(CustomGunLoader.get());
             CustomGunLoader.get().writeCustomGuns(buffer);
+            AttachmentManager.getInstance().writeAttachments(buffer);
         }
 
         static S2CUpdateGuns decode(PacketBuffer buffer) {
             S2CUpdateGuns message = new S2CUpdateGuns();
             message.registeredGuns = NetworkGunManager.readRegisteredGuns(buffer);
             message.customGuns = CustomGunLoader.readCustomGuns(buffer);
+            message.customAttachments = AttachmentManager.readAttachments(buffer);
             return message;
         }
 
@@ -75,6 +75,12 @@ public class HandshakeMessages {
         @Nullable
         public ImmutableMap<ResourceLocation, CustomGun> getCustomGuns() {
             return this.customGuns;
+        }
+
+        @Override
+        @Nullable
+        public ImmutableMap<ResourceLocation, CustomModifier> getAttachments() {
+            return this.customAttachments;
         }
     }
 }

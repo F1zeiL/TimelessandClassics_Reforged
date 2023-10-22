@@ -2,6 +2,7 @@ package com.tac.guns.network;
 
 import com.tac.guns.GunMod;
 import com.tac.guns.client.CustomGunManager;
+import com.tac.guns.common.AttachmentManager;
 import com.tac.guns.common.NetworkGunManager;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -35,6 +36,9 @@ public class HandshakeHandler {
                 updatedRegisteredGuns.set(false);
             }
             if (!CustomGunManager.updateCustomGuns(message)) {
+                updatedRegisteredGuns.set(false);
+            }
+            if (!AttachmentManager.updateCustomAttachments(message)){
                 updatedRegisteredGuns.set(false);
             }
             block.countDown();
