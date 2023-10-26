@@ -95,6 +95,11 @@ public class mk14_animation extends SkinAnimationModel {
         }
         matrices.pop();
 
-        PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);//0.2175?
+        matrices.push();
+        {
+            matrices.translate(0, 0, 0.2f);
+            PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
+        }
+        matrices.pop();
     }
 }
