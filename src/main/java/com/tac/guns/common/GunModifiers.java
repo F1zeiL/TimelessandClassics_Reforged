@@ -1481,16 +1481,10 @@ public class GunModifiers {
 
     //////////////////////// SPECIFICS PER SKIN ////////////////////////
 
-    public static final IGunModifier SKIN_AK_GOLDEN = new IGunModifier() {
+    public static final IGunModifier SKIN_AK_SPENT_BULLET = new IGunModifier() {
         @Override
         public String additionalSkin() {
-            return "ak47_GOLDEN";
-        }
-    };
-    public static final IGunModifier SKIN_AK_SILVER = new IGunModifier() {
-        @Override
-        public String additionalSkin() {
-            return "ak47_SILVER";
+            return "SPENT_BULLET";
         }
     };
 
