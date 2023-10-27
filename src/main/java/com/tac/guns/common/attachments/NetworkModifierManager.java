@@ -1,4 +1,4 @@
-package com.tac.guns.common;
+package com.tac.guns.common.attachments;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.annotation.Validator;
-import com.tac.guns.interfaces.IGunModifier;
+import com.tac.guns.common.JsonDeserializers;
 import net.minecraft.client.resources.ReloadListener;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -31,36 +31,29 @@ import java.util.Map;
  * Synchronize custom modifier defined by data pack.
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
-public class AttachmentManager extends ReloadListener<Map<ResourceLocation, CustomModifier>> {
+public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation, CustomModifierData>> {
     private static final Gson GSON_INSTANCE = Util.make(() -> {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(ResourceLocation.class, JsonDeserializers.RESOURCE_LOCATION);
         return builder.create();
     });
 
-    private static AttachmentManager instance;
+    private static NetworkModifierManager instance;
 
-    public static AttachmentManager getInstance() {
+    public static NetworkModifierManager getInstance() {
         return instance;
     }
 
-    public IGunModifier CUSTOM = new IGunModifier() {
-        @Override
-        public String additionalSkin() {
-            return IGunModifier.super.additionalSkin();
-        }
-    };
+    private static Map<ResourceLocation, CustomModifierData> infoMap = new HashMap<>();
 
-    private static Map<ResourceLocation, CustomModifier> infoMap = new HashMap<>();
-
-    public static CustomModifier getCustomModifier(ResourceLocation location){
+    public static CustomModifierData getCustomModifier(ResourceLocation location){
         if(infoMap!=null){
             return infoMap.get(location);
         }
         return null;
     }
 
-    public static Map<ResourceLocation, CustomModifier> getCustomModifiers(){
+    public static Map<ResourceLocation, CustomModifierData> getCustomModifiers(){
         if(infoMap!=null){
             return infoMap;
         }
@@ -68,16 +61,16 @@ public class AttachmentManager extends ReloadListener<Map<ResourceLocation, Cust
     }
 
     @Override
-    protected Map<ResourceLocation, CustomModifier> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
-        Map<ResourceLocation, CustomModifier> map = new HashMap<>();
-        resourceManagerIn.getAllResourceLocations("attachments/skin",(s)-> s.endsWith(".json"))
+    protected Map<ResourceLocation, CustomModifierData> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
+        Map<ResourceLocation, CustomModifierData> map = new HashMap<>();
+        resourceManagerIn.getAllResourceLocations("modifiers",(s)-> s.endsWith(".json"))
                 .forEach((resourceLocation)->{
                     try {
                         resourceManagerIn.getAllResources(resourceLocation).forEach((resource)->{
                             try(InputStream is = resource.getInputStream();
                                 Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)))
                             {
-                                CustomModifier skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifier.class);
+                                CustomModifierData skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifierData.class);
                                 if (skin != null && Validator.isValidObject(skin)) {
                                     map.put(skin.getId(),skin);
                                 }
@@ -97,7 +90,7 @@ public class AttachmentManager extends ReloadListener<Map<ResourceLocation, Cust
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, CustomModifier> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn) {
+    protected void apply(Map<ResourceLocation, CustomModifierData> objectIn, IResourceManager resourceManagerIn, IProfiler profilerIn) {
         infoMap = objectIn;
     }
 
@@ -109,16 +102,16 @@ public class AttachmentManager extends ReloadListener<Map<ResourceLocation, Cust
         });
     }
 
-    public static ImmutableMap<ResourceLocation, CustomModifier> readAttachments(PacketBuffer buffer)
+    public static ImmutableMap<ResourceLocation, CustomModifierData> readAttachments(PacketBuffer buffer)
     {
         int size = buffer.readVarInt();
         if(size > 0)
         {
-            ImmutableMap.Builder<ResourceLocation, CustomModifier> builder = ImmutableMap.builder();
+            ImmutableMap.Builder<ResourceLocation, CustomModifierData> builder = ImmutableMap.builder();
             for(int i = 0; i < size; i++)
             {
                 ResourceLocation id = buffer.readResourceLocation();
-                CustomModifier info = new CustomModifier();
+                CustomModifierData info = new CustomModifierData();
                 CompoundNBT nbt = buffer.readCompoundTag();
                 if(nbt!=null){
                     info.deserializeNBT(nbt);
@@ -131,7 +124,7 @@ public class AttachmentManager extends ReloadListener<Map<ResourceLocation, Cust
     }
 
     public interface IAttachmentsProvider{
-        ImmutableMap<ResourceLocation, CustomModifier> getAttachments();
+        ImmutableMap<ResourceLocation, CustomModifierData> getAttachments();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -146,7 +139,7 @@ public class AttachmentManager extends ReloadListener<Map<ResourceLocation, Cust
 
     @SubscribeEvent
     public static void addReloadListenerEvent(AddReloadListenerEvent event) {
-        instance = new AttachmentManager();
+        instance = new NetworkModifierManager();
         event.addListener(instance);
     }
 }

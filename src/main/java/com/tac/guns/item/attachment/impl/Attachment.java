@@ -1,15 +1,14 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.Reference;
-import com.tac.guns.common.AttachmentManager;
-import com.tac.guns.common.CustomModifier;
+import com.tac.guns.common.attachments.NetworkModifierManager;
+import com.tac.guns.common.attachments.CustomModifierData;
 import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.GunSkinItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -67,10 +66,10 @@ public abstract class Attachment
             String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
             ResourceLocation location = ResourceLocation.tryCreate(raw);
             if(location!=null){
-                CustomModifier modifier = AttachmentManager.getCustomModifier(location);
+                CustomModifierData modifier = NetworkModifierManager.getCustomModifier(location);
                 if(modifier!=null){
-                    if (modifier.getCanApplyOn() != null) {
-                        return modifier.getCanApplyOn().contains(gun.getRegistryName());
+                    if (modifier.getSuitableGuns() != null) {
+                        return modifier.getSuitableGuns().contains(gun.getRegistryName());
                     }
                 }
             }
@@ -84,10 +83,10 @@ public abstract class Attachment
             String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
             ResourceLocation location = ResourceLocation.tryCreate(raw);
             if(location!=null){
-                CustomModifier modifier = AttachmentManager.getCustomModifier(location);
+                CustomModifierData modifier = NetworkModifierManager.getCustomModifier(location);
                 if(modifier!=null){
-                    if (modifier.getCanApplyOn() != null) {
-                        modifier.getCanApplyOn().forEach((rl)->{
+                    if (modifier.getSuitableGuns() != null) {
+                        modifier.getSuitableGuns().forEach((rl)->{
                             Item item = ForgeRegistries.ITEMS.getValue(location);
                             if(item instanceof TimelessGunItem){
                                 list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));

@@ -1,4 +1,4 @@
-package com.tac.guns.common;
+package com.tac.guns.common.attachments;
 
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
@@ -14,11 +14,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-
-public class CustomModifier implements INBTSerializable<CompoundNBT> {
+/**Class used to serialize/deserialize and transfer from data pack.
+ * The data should be read from data pack rather than change or create directly.
+ */
+public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     private ResourceLocation id;
     @Optional
-    private ResourceLocation model;
+    private ResourceLocation skin;
     @Optional
     private float additionalDamage = 0;
     @Optional
@@ -28,22 +30,35 @@ public class CustomModifier implements INBTSerializable<CompoundNBT> {
         return id;
     }
 
-    public ResourceLocation getModel() {
-        return model;
+    public ResourceLocation getSkin() {
+        return skin;
     }
 
-    public float getAdditionalDamage(){return additionalDamage;}
+    public float getAdditionalDamage() {
+        return additionalDamage;
+    }
+
     @Nullable
-    public List<ResourceLocation> getCanApplyOn() {
+    public List<ResourceLocation> getSuitableGuns() {
         return canApplyOn;
+    }
+
+    public boolean canApplyOn(TimelessGunItem item){
+        if(item.getRegistryName()!=null){
+            if(canApplyOn==null)return true;
+            else {
+                return canApplyOn.contains(item.getRegistryName());
+            }
+        }
+        return false;
     }
 
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.putString("id",id.toString());
-        if(model!=null){
-            nbt.putString("model",model.toString());
+        if(skin !=null){
+            nbt.putString("model", skin.toString());
         }
         if(additionalDamage!=0){
             nbt.putFloat("additionalDamage",additionalDamage);
@@ -64,7 +79,7 @@ public class CustomModifier implements INBTSerializable<CompoundNBT> {
             this.id = ResourceLocation.tryCreate(nbt.getString("id"));
         }
         if(nbt.contains("model")){
-            this.model = ResourceLocation.tryCreate(nbt.getString("model"));
+            this.skin = ResourceLocation.tryCreate(nbt.getString("model"));
         }
         if(nbt.contains("additionalDamage")){
             this.additionalDamage = nbt.getFloat("additionalDamage");
@@ -85,6 +100,5 @@ public class CustomModifier implements INBTSerializable<CompoundNBT> {
             }
         }
     }
-
 
 }

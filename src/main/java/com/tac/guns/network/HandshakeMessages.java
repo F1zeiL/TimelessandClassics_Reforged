@@ -2,6 +2,8 @@ package com.tac.guns.network;
 
 import com.google.common.collect.ImmutableMap;
 import com.tac.guns.common.*;
+import com.tac.guns.common.attachments.NetworkModifierManager;
+import com.tac.guns.common.attachments.CustomModifierData;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
@@ -39,10 +41,10 @@ public class HandshakeMessages {
         }
     }
 
-    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider, AttachmentManager.IAttachmentsProvider {
+    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider, NetworkModifierManager.IAttachmentsProvider {
         private ImmutableMap<ResourceLocation, Gun> registeredGuns;
         private ImmutableMap<ResourceLocation, CustomGun> customGuns;
-        private ImmutableMap<ResourceLocation, CustomModifier> customAttachments;
+        private ImmutableMap<ResourceLocation, CustomModifierData> customAttachments;
 
         public S2CUpdateGuns() {
         }
@@ -54,14 +56,14 @@ public class HandshakeMessages {
             NetworkGunManager.get().writeRegisteredGuns(buffer);
             Validate.notNull(CustomGunLoader.get());
             CustomGunLoader.get().writeCustomGuns(buffer);
-            AttachmentManager.getInstance().writeAttachments(buffer);
+            NetworkModifierManager.getInstance().writeAttachments(buffer);
         }
 
         static S2CUpdateGuns decode(PacketBuffer buffer) {
             S2CUpdateGuns message = new S2CUpdateGuns();
             message.registeredGuns = NetworkGunManager.readRegisteredGuns(buffer);
             message.customGuns = CustomGunLoader.readCustomGuns(buffer);
-            message.customAttachments = AttachmentManager.readAttachments(buffer);
+            message.customAttachments = NetworkModifierManager.readAttachments(buffer);
             return message;
         }
 
@@ -79,7 +81,7 @@ public class HandshakeMessages {
 
         @Override
         @Nullable
-        public ImmutableMap<ResourceLocation, CustomModifier> getAttachments() {
+        public ImmutableMap<ResourceLocation, CustomModifierData> getAttachments() {
             return this.customAttachments;
         }
     }

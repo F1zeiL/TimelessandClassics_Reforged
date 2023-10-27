@@ -1,8 +1,11 @@
 {
   "id": "tac:test",
-  "model": "tac:attachment/test",
+  "skin": "tac:golden",
   "additionalDamage": 1.0,
   "canApplyOn": [
     "tac:scar_l"
+  ],
+  "canApplyTags": [
+
   ]
 }
