@@ -53,6 +53,8 @@ public class scar_mk20_animation extends SkinAnimationModel {
 
             renderBarrelWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
+            renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
+
             if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
                 renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
