@@ -1467,6 +1467,23 @@ public class GunModifiers {
         }
     };
 
+    public static final IGunModifier COLT_PYTHON_MOD = new IGunModifier() {
+        @Override
+        public double modifyFireSoundRadius(double radius) {
+            return radius * 1.25;
+        }
+
+        @Override
+        public double modifyAimDownSightSpeed(double speed) {
+            return speed * 1.25;
+        }
+
+        @Override
+        public double additionalProjectileGravity() {
+            return 0.0125;
+        }
+    };
+
     public static final IGunModifier PISTOL_MOD = new IGunModifier() {
         @Override
         public double modifyAimDownSightSpeed(double speed) {

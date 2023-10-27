@@ -9,6 +9,8 @@ public enum ModelComponent {
     CLUMSYYY("clumsyyy"),
     NEKOOO("nekooo"),
     BODY_LIGHT("body_light"),
+    LOADER("loader"),
+    ROTATE("rotate"),
 
     //main
     BODY("main"),                                   //static main part

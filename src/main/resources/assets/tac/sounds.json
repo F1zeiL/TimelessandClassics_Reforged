@@ -781,6 +781,24 @@
          { "name": "tac:item/tec_9_fire" }
       ]
    },
+   "item.colt_python_fire": {
+      "subtitle": "subtitle.tac.colt_python_fire",
+      "sounds": [
+         { "name": "tac:item/colt_python_fire" }
+      ]
+   },
+   "item.p90_fire": {
+      "subtitle": "subtitle.tac.p90_fire",
+      "sounds": [
+         { "name": "tac:item/p90_fire" }
+      ]
+   },
+   "item.p90_fire_s": {
+      "subtitle": "subtitle.tac.p90_fire_s",
+      "sounds": [
+         { "name": "tac:item/p90_fire_s" }
+      ]
+   },
 
 
 
@@ -2334,6 +2352,59 @@
          { "name": "tac:animation/tec_9_draw"}
       ]
    },
+
+   "animation.colt_python_reload_empty": {
+      "subtitle": "animation.colt_python_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/colt_python_reload_empty"}
+      ]
+   },
+   "animation.colt_python_reload_norm": {
+      "subtitle": "animation.colt_python_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/colt_python_reload_norm"}
+      ]
+   },
+   "animation.colt_python_inspect": {
+      "subtitle": "animation.colt_python_inspect",
+      "sounds": [
+         { "name": "tac:animation/colt_python_inspect"}
+      ]
+   },
+   "animation.colt_python_draw": {
+      "subtitle": "animation.colt_python_draw",
+      "sounds": [
+         { "name": "tac:animation/colt_python_draw"}
+      ]
+   },
+
+   "animation.p90_reload_empty": {
+      "subtitle": "animation.p90_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/p90_reload_empty"}
+      ]
+   },
+   "animation.p90_reload_norm": {
+      "subtitle": "animation.p90_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/p90_reload_norm"}
+      ]
+   },
+   "animation.p90_inspect": {
+      "subtitle": "animation.p90_inspect",
+      "sounds": [
+         { "name": "tac:animation/p90_inspect"}
+      ]
+   },
+   "animation.p90_draw": {
+      "subtitle": "animation.p90_draw",
+      "sounds": [
+         { "name": "tac:animation/p90_draw"}
+      ]
+   },
+
+
+
    "stun.ring": {
       "subtitle": "stun_grenade_ringing",
       "sounds": [
