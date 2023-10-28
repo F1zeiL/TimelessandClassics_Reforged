@@ -75,6 +75,10 @@ public class colt_python_animation extends SkinAnimationModel {
                 controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY).equals(controller.getPreviousAnimation())) &&
                 transformType.isFirstPerson()) {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), COLTPYTHONAnimationController.INDEX_BULLET2, transformType, matrices);
+            if (cooldownOg < 0.74) {
+                matrices.rotate(Vector3f.ZN.rotationDegrees(-45F * (cooldownOg * 1.74F)));
+                matrices.translate(1.45 * (cooldownOg * 1.74F) * 0.0625, -0.625 * (cooldownOg * 1.74F) * 0.0625, 0);
+            }
             RenderUtil.renderModel(getModelComponent(skin, BULLET2), stack, matrices, renderBuffer, light, overlay);
         }
         matrices.pop();

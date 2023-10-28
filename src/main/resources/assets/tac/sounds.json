@@ -2356,13 +2356,13 @@
    "animation.colt_python_reload_empty": {
       "subtitle": "animation.colt_python_reload_empty",
       "sounds": [
-         { "name": "tac:animation/colt_python_reload_empty"}
+         { "name": "tac:animation/colt_python_reload"}
       ]
    },
    "animation.colt_python_reload_norm": {
       "subtitle": "animation.colt_python_reload_norm",
       "sounds": [
-         { "name": "tac:animation/colt_python_reload_norm"}
+         { "name": "tac:animation/colt_python_reload"}
       ]
    },
    "animation.colt_python_inspect": {
