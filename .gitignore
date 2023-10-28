@@ -27,3 +27,5 @@ lib4
 classes
 
 src/generated/resources/.cache
+
+build.gradle
