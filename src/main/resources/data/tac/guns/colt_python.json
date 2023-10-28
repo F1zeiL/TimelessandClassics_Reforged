@@ -72,7 +72,7 @@
   "modules": {
     "zoom": {
       "fovModifier": 0.8,
-      "yOffset": 13.505,
+      "yOffset": 13.575,
       "zOffset": -3.15
     }
   }

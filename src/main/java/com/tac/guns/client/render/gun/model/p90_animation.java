@@ -82,7 +82,7 @@ public class p90_animation extends SkinAnimationModel {
 
                         IVertexBuilder builder;
 
-                        matrices.translate(0, -0.22, -0.55);
+                        matrices.translate(0.002, -0.21, -0.54);
 
                         double invertProgress = (1.0 - AimingHandler.get().getNormalisedAdsProgress());
                         matrices.translate(-0.04 * invertProgress, 0.01 * invertProgress, 0);
@@ -102,7 +102,7 @@ public class p90_animation extends SkinAnimationModel {
 
                         //matrixStack.rotate(Vector3f.ZP.rotationDegrees(-GunRenderingHandler.get().immersiveWeaponRoll));
                         GunRenderingHandler.get().applyBobbingTransforms(matrices, true);
-                        matrices.scale(8f, 8f, 8f);
+                        matrices.scale(6f, 6f, 6f);
                         //matrixStack.translate(-0.00335715, -0.0039355, 0.0000);
                         matrices.translate((-0.00335715 - 0.00375 - 0.00428) + scopeData.getReticleXMod(), (-0.0035055 - 0.00315) + scopeData.getReticleYMod(), 0.0000 + scopeData.getReticleZMod());
 
@@ -114,8 +114,15 @@ public class p90_animation extends SkinAnimationModel {
                         if (AimingHandler.get().isAiming())
                             aimed = true;
 
+                        GunRenderingHandler.get().applyDelayedSwayTransforms(matrices, Minecraft.getInstance().player, v, -0.075f);
+                        GunRenderingHandler.get().applyBobbingTransforms(matrices,true, 0.1f);
+                        GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
+                        GunRenderingHandler.get().applyJumpingTransforms(matrices, v,-0.05f);
+
                         matrices.translate(0, 0, -0.35);
-                        matrices.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.04775F));
+                        matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.15f));
+                        matrices.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.15f));
+                        matrices.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.25F));
                         matrices.translate(0, 0, 0.35);
 
                         int lightmapValue = 15728880;
