@@ -88,7 +88,8 @@ public enum AnimationHandler {
                 "MRADAnimationController",
                 "HK_G3AnimationController",
                 "TEC9AnimationController",
-                "COLTPYTHONAnimationController"
+                "COLTPYTHONAnimationController",
+                "P90AnimationController"
         };
 
         for (String controllerName : animationControllers) {

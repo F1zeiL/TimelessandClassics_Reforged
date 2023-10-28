@@ -739,6 +739,18 @@ public class GunModifiers {
         }
     };
 
+    public static final IGunModifier P90_MOD = new IGunModifier() {
+        @Override
+        public double modifyAimDownSightSpeed(double speed) {
+            return speed * 1.0;
+        }
+
+        @Override
+        public float modifyFireSoundVolume(float volume) {
+            return volume * 0.90F;
+        }
+    };
+
     public static final IGunModifier SKS_TAC_MOD = new IGunModifier() {
         @Override
         public double modifyFireSoundRadius(double radius) {
