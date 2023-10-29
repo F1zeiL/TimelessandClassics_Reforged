@@ -296,6 +296,8 @@ public class ModItems {
     /*** Skin ***/
     public static final RegistryObject<Item> SKIN_AK_SPENT_BULLET = REGISTER.register("skin_ak_spent_bullet",
             () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_AK_SPENT_BULLET), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_MP9_THUNDER = REGISTER.register("skin_mp9_thunder",
+            () -> new GunSkinItem(GunSkin.create(GunModifiers.SKIN_MP9_THUNDER), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 
     /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",

@@ -1516,6 +1516,12 @@ public class GunModifiers {
             return "SPENT_BULLET";
         }
     };
+    public static final IGunModifier SKIN_MP9_THUNDER = new IGunModifier() {
+        @Override
+        public String additionalSkin() {
+            return "THUNDER";
+        }
+    };
 
     public static final IGunModifier SKIN_BLACK = new IGunModifier() {
         @Override

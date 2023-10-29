@@ -27,16 +27,6 @@
     }
   },
 
-  "rpk": {
-    "common": {
-      "type": "common_texture",
-      "textures": {
-        "2": "tac:gunskin/rpk/rpk47"
-      },
-      "icon": "tac:gunskin/icon/rpk"
-    }
-  },
-
   "deagle_357": {
     "common": {
       "type": "common_texture",
@@ -45,6 +35,43 @@
         "6": "tac:gunskin/deagle_357/attachments"
       },
       "icon": "tac:gunskin/icon/deagle_357"
+    }
+  },
+
+  "mp9": {
+    "thunder": {
+      "type": "texture",
+      "textures": {
+        "2": "tac:gunskin/mp9/mp9_thunder"
+      },
+      "icon": "tac:gunskin/icon/mp9_thunder"
+    },
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/mp9/mp9"
+      },
+      "icon": "tac:gunskin/icon/mp9"
+    }
+  },
+
+  "p90": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/p90/p90"
+      },
+      "icon": "tac:gunskin/icon/rpk"
+    }
+  },
+
+  "rpk": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/rpk/rpk47"
+      },
+      "icon": "tac:gunskin/icon/rpk"
     }
   },
 
