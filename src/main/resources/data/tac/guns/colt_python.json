@@ -1,15 +1,15 @@
 {
   "general": {
-    "rate": 250,
+    "rate": 120,
     "rateSelector": [1],
     "gripType": "tac:one_handed_m1911",
-    "recoilAngle": 22.5,
-    "horizontalRecoilAngle": 3.15,
-    "recoilKick": 1.5,
-    "recoilAdsReduction": 0.225,
+    "recoilAngle": 19.5,
+    "horizontalRecoilAngle": 2.95,
+    "recoilKick": 1.7,
+    "recoilAdsReduction": 0.245,
     "weaponRecoilOffset": 0.875,
-    "cameraRecoilModifier": 2.125,
-    "recoilDuration": 0.215,
+    "cameraRecoilModifier": 1.925,
+    "recoilDuration": 0.245,
     "weightKilo": 2.8,
 
     "spread": 1.45,
@@ -40,9 +40,9 @@
     "minDecayMultiplier": 0.2,
     "decayEnd": 0.8,
     "size": 0.125,
-    "speed": 14.5,
+    "speed": 14.0,
     "trailLengthMultiplier": 3,
-    "life": 10
+    "life": 8
   },
   "sounds": {
     "fire": "tac:item.colt_python_fire",
