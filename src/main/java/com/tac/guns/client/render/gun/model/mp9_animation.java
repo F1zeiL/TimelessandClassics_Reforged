@@ -12,10 +12,14 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.vector.Vector3f;
+
+import java.util.Objects;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -43,9 +47,24 @@ public class mp9_animation extends SkinAnimationModel {
                     RenderUtil.renderLaserModuleModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
             }
             if (Gun.getScope(stack) != null) {
+                if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER"))
+                    RenderUtil.renderModel(getModelComponent(skin, LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_FOLDED), stack, matrices, renderBuffer, light, overlay);
+            }
+            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER")) {
+                RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+                if (stack.getTag().getInt("CurrentFireMode") == 1) {
+                    matrices.push();
+                    matrices.rotate(Vector3f.XN.rotationDegrees(20F));
+                    matrices.translate(0, 0.004, -0.02);
+                    RenderUtil.renderModel(getModelComponent(skin, SAFETY), stack, matrices, renderBuffer, light, overlay);
+                    matrices.rotate(Vector3f.XP.rotationDegrees(20F));
+                    matrices.translate(0, -0.004, 0.02);
+                    matrices.pop();
+                } else
+                    RenderUtil.renderModel(getModelComponent(skin, SAFETY), stack, matrices, renderBuffer, light, overlay);
             }
             RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
         }

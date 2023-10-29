@@ -12,6 +12,8 @@ public enum ModelComponent {
     LOADER("loader"),
     ROTATE("rotate"),
     SCOPE_DEFAULT("scope_default"),
+    LIGHT("light"),
+    SAFETY("safety"),
 
     //main
     BODY("main"),                                   //static main part
