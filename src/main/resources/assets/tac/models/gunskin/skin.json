@@ -40,9 +40,9 @@
 
   "mp9": {
     "thunder": {
-      "type": "texture",
-      "textures": {
-        "2": "tac:gunskin/mp9/mp9_thunder"
+      "type": "custom",
+      "models": {
+        "auto": "tac:gunskin/mp9/mp9_thunder"
       },
       "icon": "tac:gunskin/icon/mp9_thunder"
     },

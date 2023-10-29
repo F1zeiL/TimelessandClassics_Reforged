@@ -1,0 +1,82 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [128, 128],
+	"textures": {
+		"16": "tac:gunskin/mp9/mp9_thunder_texture",
+		"particle": "tac:gunskin/mp9/mp9_thunder_light_blue"
+	},
+	"elements": [
+		{
+			"from": [8.49417, 8.13486, 7.78125],
+			"to": [8.63644, 9.07186, 10.15625],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [7.80667, 8.23643, 9.41406]},
+			"faces": {
+				"north": {"uv": [0.25, 11.375, 0.28125, 11.5], "texture": "#16"},
+				"east": {"uv": [3.75, 0.25, 4.0625, 0.375], "texture": "#16"},
+				"south": {"uv": [11.375, 0.25, 11.40625, 0.375], "texture": "#16"},
+				"west": {"uv": [3.875, 2.875, 4.1875, 3], "texture": "#16"},
+				"up": {"uv": [6.28125, 8.9375, 6.25, 8.625], "texture": "#16"},
+				"down": {"uv": [8.65625, 6.25, 8.625, 6.5625], "texture": "#16"}
+			}
+		},
+		{
+			"from": [8.48112, 8.19046, 7.78125],
+			"to": [8.61214, 8.46013, 10.15625],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8.396, 8.87771, 8.5]},
+			"faces": {
+				"north": {"uv": [7.5, 14.125, 7.53125, 14.15625], "texture": "#16"},
+				"east": {"uv": [8.625, 6.75, 8.9375, 6.78125], "texture": "#16"},
+				"south": {"uv": [14.125, 7.5, 14.15625, 7.53125], "texture": "#16"},
+				"west": {"uv": [6.875, 8.625, 7.1875, 8.65625], "texture": "#16"},
+				"up": {"uv": [8.65625, 7.9375, 8.625, 7.625], "texture": "#16"},
+				"down": {"uv": [8.65625, 8.125, 8.625, 8.4375], "texture": "#16"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 0.5, -3.25],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 0.5, -3.25],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"firstperson_righthand": {
+			"rotation": [19, 38, -19],
+			"translation": [-8.25, 7, 2.25]
+		},
+		"firstperson_lefthand": {
+			"translation": [-6, 3.5, -2]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"gui": {
+			"rotation": [30, -145, 0],
+			"translation": [1.25, -1, 0],
+			"scale": [0.75, 0.75, 0.75]
+		},
+		"fixed": {
+			"rotation": [0, 90, 0],
+			"translation": [-5, -0.5, -2],
+			"scale": [1.1, 1.1, 1.1]
+		}
+	},
+	"groups": [
+		{
+			"name": "mp9_bolt",
+			"origin": [8, 8, 8],
+			"color": 8,
+			"children": [
+				{
+					"name": "(casing)",
+					"origin": [7.93167, 9.92393, 3.41406],
+					"color": 8,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}
