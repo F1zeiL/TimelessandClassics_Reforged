@@ -417,7 +417,7 @@ public class Config {
                 this.permanentCrosshair = builder.comment("If enabled any crosshair will continue to render on aim.").define("permanentCrosshair", false);
                 this.enableTDev = builder.comment("If enabled, /t dev will both be registered (Upon restart), and function! Used as well to speed up tag checks").define("enableTDev", false);
                 this.TDevPath = builder.comment("Directory to build all TaC sub-directories, these will contain export data from /t dev functions").define("tDevPath", "");
-                this.bulletSelfHarm = builder.comment("Whether the shooters bullets can harm the shooter, great for testing armor and on hit effects with the development gun").define("bulletSelfHarm", true);
+                this.bulletSelfHarm = builder.comment("Whether the shooters bullets can harm the shooter, great for testing armor and on hit effects with the development gun").define("bulletSelfHarm", false);
             }
             builder.pop();
         }
