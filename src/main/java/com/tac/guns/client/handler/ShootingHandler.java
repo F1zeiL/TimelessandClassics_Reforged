@@ -7,10 +7,8 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.mixin.client.MinecraftStaticMixin;
 import com.tac.guns.network.PacketHandler;
-import com.tac.guns.network.message.MessageEmptyMag;
 import com.tac.guns.network.message.MessageShoot;
 import com.tac.guns.network.message.MessageShooting;
 import com.tac.guns.network.message.MessageUpdateMoveInacc;
@@ -18,15 +16,11 @@ import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.glfw.GLFW;
 
 import static net.minecraftforge.event.TickEvent.Type.RENDER;
 
@@ -88,48 +82,6 @@ public class ShootingHandler {
         if (!mc.mouseHelper.isMouseGrabbed())
             return false;
         return mc.isGameFocused();
-    }
-
-    @SubscribeEvent
-    public void onKeyPressed(InputEvent.RawMouseEvent event) {
-        if (!this.isInGame())
-            return;
-
-        if (event.getAction() != GLFW.GLFW_PRESS)
-            return;
-
-        Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
-        if (player == null)
-            return;
-
-        ItemStack heldItem = player.getHeldItemMainhand();
-        IAttachment.Type type;
-        if (heldItem.getItem() instanceof GunItem) {
-            int button = event.getButton();
-            if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT || button == GLFW.GLFW_MOUSE_BUTTON_RIGHT && AimingHandler.get().isLookingAtInteractableBlock()) {
-                event.setCanceled(true);
-            }
-            if (Keys.PULL_TRIGGER.isDown()) {
-                if (magError(player, heldItem)) {
-                    player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-                    return;
-                }
-
-                if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0) {
-                    this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
-                    fire(player, heldItem);
-                    this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
-                } else if (this.burstCooldown == 0)
-                    fire(player, heldItem);
-
-                if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
-                    player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-                }
-            }
-        }
     }
 
     // CHECK HERE: Indicates the ticks left for next shot
@@ -245,7 +197,7 @@ public class ShootingHandler {
                 PacketHandler.getPlayChannel().sendToServer(new MessageUpdateMoveInacc(dist));
 
                 // Update #shooting state if it has changed
-                final boolean shooting = Keys.PULL_TRIGGER.isDown() && GunRenderingHandler.get().sprintTransition == 0;
+                final boolean shooting = Keys.PULL_TRIGGER.isKeyDown() && GunRenderingHandler.get().sprintTransition == 0;
                 // TODO: check if this is needed
 //              if(GunMod.controllableLoaded)
 //              {
@@ -299,7 +251,7 @@ public class ShootingHandler {
                     if (this.burstTracker > 0)
                         fire(player, heldItem);
                     return;
-                } else if (Keys.PULL_TRIGGER.isDown()) {
+                } else if (Keys.PULL_TRIGGER.isKeyDown()) {
                     Gun gun = ((TimelessGunItem) heldItem.getItem()).getModifiedGun(heldItem);
                     if (gun.getGeneral().isAuto() && heldItem.getTag().getInt("CurrentFireMode") == 2) {
                         fire(player, heldItem);

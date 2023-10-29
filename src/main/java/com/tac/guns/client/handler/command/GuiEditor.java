@@ -129,8 +129,8 @@ public class GuiEditor
         boolean isUp = event.getKeyCode() == GLFW.GLFW_KEY_UP;
         boolean isDown = event.getKeyCode() == GLFW.GLFW_KEY_DOWN;
 
-        boolean isShiftDown = Keys.SHIFTY.isDown(); // Increase Step Size
-        boolean isPeriodDown = Keys.SIZE_OPT.isDown();
+        boolean isShiftDown = Keys.SHIFTY.isKeyDown(); // Increase Step Size
+        boolean isPeriodDown = Keys.SIZE_OPT.isKeyDown();
 
         GUI_Element element = this.elements.isEmpty() || !this.elements.containsKey(this.currElement) ? new GUI_Element(0, 0, 0, 0) : this.elements.get(this.currElement);
         double xMod = element.xMod;

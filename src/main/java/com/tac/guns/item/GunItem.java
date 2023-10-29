@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -89,9 +90,23 @@ public class GunItem extends Item implements IColored {
             }
         }
 
-        tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
+        tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
     }
-
+    
+    @Override
+    public boolean onBlockStartBreak( ItemStack itemstack, BlockPos pos, PlayerEntity player )
+    {
+        final boolean stop_block_break = true;
+        return stop_block_break;
+    }
+    
+    @Override
+    public boolean onLeftClickEntity( ItemStack stack, PlayerEntity player, Entity entity )
+    {
+        final boolean stop_melee_attack = true;
+        return stop_melee_attack;
+    }
+    
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         return true;

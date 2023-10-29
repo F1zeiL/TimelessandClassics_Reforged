@@ -1,9 +1,21 @@
 package com.tac.guns.client;
 
 import com.tac.guns.Config;
-import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
-import com.tac.guns.client.handler.*;
+import com.tac.guns.client.handler.AimingHandler;
+import com.tac.guns.client.handler.AnimationHandler;
+import com.tac.guns.client.handler.BulletTrailRenderingHandler;
+import com.tac.guns.client.handler.CrosshairHandler;
+import com.tac.guns.client.handler.FireModeSwitchEvent;
+import com.tac.guns.client.handler.GunRenderingHandler;
+import com.tac.guns.client.handler.HUDRenderingHandler;
+import com.tac.guns.client.handler.MovementAdaptationsHandler;
+import com.tac.guns.client.handler.RecoilHandler;
+import com.tac.guns.client.handler.ReloadHandler;
+import com.tac.guns.client.handler.ScopeJitterHandler;
+import com.tac.guns.client.handler.ShootingHandler;
+import com.tac.guns.client.handler.SightSwitchEvent;
+import com.tac.guns.client.handler.SoundHandler;
 import com.tac.guns.client.handler.command.GuiEditor;
 import com.tac.guns.client.handler.command.GunEditor;
 import com.tac.guns.client.handler.command.ObjectRenderEditor;
@@ -14,8 +26,27 @@ import com.tac.guns.client.render.entity.MissileRenderer;
 import com.tac.guns.client.render.entity.ProjectileRenderer;
 import com.tac.guns.client.render.entity.ThrowableGrenadeRenderer;
 import com.tac.guns.client.render.gun.ModelOverrides;
-import com.tac.guns.client.render.gun.model.scope.*;
-import com.tac.guns.client.screen.*;
+import com.tac.guns.client.render.gun.model.scope.ACOG_4x_ScopeModel;
+import com.tac.guns.client.render.gun.model.scope.AimpointT1SightModel;
+import com.tac.guns.client.render.gun.model.scope.AimpointT2SightModel;
+import com.tac.guns.client.render.gun.model.scope.CoyoteSightModel;
+import com.tac.guns.client.render.gun.model.scope.EotechNSightModel;
+import com.tac.guns.client.render.gun.model.scope.EotechShortSightModel;
+import com.tac.guns.client.render.gun.model.scope.LongRange8xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.MiniDotSightModel;
+import com.tac.guns.client.render.gun.model.scope.OldLongRange4xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.OldLongRange8xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.Qmk152ScopeModel;
+import com.tac.guns.client.render.gun.model.scope.SroDotSightModel;
+import com.tac.guns.client.render.gun.model.scope.SrsRedDotSightModel;
+import com.tac.guns.client.render.gun.model.scope.VortexLPVO_1_4xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.VortexUh1SightModel;
+import com.tac.guns.client.render.gun.model.scope.elcan_14x_ScopeModel;
+import com.tac.guns.client.screen.AttachmentScreen;
+import com.tac.guns.client.screen.InspectScreen;
+import com.tac.guns.client.screen.TaCSettingsScreen;
+import com.tac.guns.client.screen.UpgradeBenchScreen;
+import com.tac.guns.client.screen.WorkbenchScreen;
 import com.tac.guns.client.settings.GunOptions;
 import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModContainers;
@@ -30,9 +61,7 @@ import com.tac.guns.util.math.SecondOrderDynamics;
 import de.javagl.jgltf.model.animation.AnimationRunner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.gui.screen.ControlsScreen;
 import net.minecraft.client.gui.screen.MouseSettingsScreen;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.VideoSettingsScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.list.OptionsRowList;
@@ -41,7 +70,6 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -51,8 +79,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Base64;
 
@@ -62,8 +88,6 @@ import java.util.Base64;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT)
 public class ClientHandler {
     private static Field mouseOptionsField;
-
-    private static File keyBindsFile;
 
     public static void setup(Minecraft mc) {
         MinecraftForge.EVENT_BUS.register(AimingHandler.get());
@@ -92,20 +116,6 @@ public class ClientHandler {
         }
 
         //ClientRegistry.bindTileEntityRenderer(ModTileEntities.UPGRADE_BENCH.get(), UpgradeBenchRenderUtil::new);
-
-        // Load key binds.
-        InputHandler.initInputSystem();
-        keyBindsFile = new File(mc.gameDir, "config/tac-key-binds-v2.json");
-        if (keyBindsFile.exists()) {
-            InputHandler._loadKeyBindsFrom(keyBindsFile);
-        } else {
-            try {
-                keyBindsFile.createNewFile();
-            } catch (IOException e) {
-                GunMod.LOGGER.error("Fail to create key bindings file");
-            }
-            InputHandler._saveKeyBindsTo(keyBindsFile);
-        }
 
         setupRenderLayers();
         registerEntityRenders();
@@ -227,28 +237,6 @@ public class ClientHandler {
                 Minecraft.getInstance().displayGuiScreen(new TaCSettingsScreen(screen, Minecraft.getInstance().gameSettings));
             })));
         }*/
-    }
-
-    private static Screen prev_screen = null;
-
-    @SubscribeEvent
-    public static void onGUIChange(GuiOpenEvent evt) {
-        final Screen gui = evt.getGui();
-
-        // Show key binds if control GUI is activated
-        if (gui instanceof ControlsScreen) {
-            InputHandler._restoreVanillaKeyBinds();
-        } else if (prev_screen instanceof ControlsScreen) {
-            InputHandler._clearVanillaKeyBinds(keyBindsFile);
-        }
-
-        // FIXME: It seems that comment these lines and the system will still work.
-        final boolean is_screen_open_and_not_before = gui != null && prev_screen == null;
-        if (is_screen_open_and_not_before) {
-            InputHandler.releaseAllKeys();
-        }
-
-        prev_screen = gui;
     }
 
     static {

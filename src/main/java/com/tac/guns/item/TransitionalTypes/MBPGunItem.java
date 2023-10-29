@@ -65,11 +65,11 @@ public class MBPGunItem extends TimelessGunItem {
         if (tagCompound != null) {
             if (tagCompound.get("CurrentFireMode") == null) {
             } else if (tagCompound.getInt("CurrentFireMode") == 0)
-                tooltip.add((new TranslationTextComponent("info.tac.firemode_safe", Keys.FIRE_SELECT.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.GREEN));
+                tooltip.add((new TranslationTextComponent("info.tac.firemode_safe", Keys.FIRE_SELECT.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.GREEN));
             else if (tagCompound.getInt("CurrentFireMode") == 1)
-                tooltip.add((new TranslationTextComponent("info.tac.firemode_semi", Keys.FIRE_SELECT.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.RED));
+                tooltip.add((new TranslationTextComponent("info.tac.firemode_semi", Keys.FIRE_SELECT.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.RED));
             else if (tagCompound.getInt("CurrentFireMode") == 2)
-                tooltip.add((new TranslationTextComponent("info.tac.firemode_auto", Keys.FIRE_SELECT.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.RED));
+                tooltip.add((new TranslationTextComponent("info.tac.firemode_auto", Keys.FIRE_SELECT.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.RED));
         }
 
         if (tagCompound != null) {
@@ -90,7 +90,7 @@ public class MBPGunItem extends TimelessGunItem {
             tooltip.add((new TranslationTextComponent("info.moonshine.oldRifleScope", new TranslationTextComponent("Rain").mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.BLUE)));
         }
 
-        tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
+        tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
     }
 
     public MBPGunItem() {

@@ -80,23 +80,23 @@ public class ScopeEditor
     private void handleScopeMod(InputEvent.KeyInputEvent event, ScopeData data)
     {
         double stepModifier = 1;
-        boolean isLeft = Keys.LEFT.isDown();
-        boolean isRight = Keys.RIGHT.isDown();
-        boolean isUp = Keys.UP.isDown();
-        boolean isDown = Keys.DOWN.isDown();
-        boolean isControlDown = Keys.CONTROLLY.isDown() || Keys.CONTROLLYR.isDown(); // Increase Module Size
-        boolean isShiftDown = Keys.SHIFTY.isDown() || Keys.SHIFTYR.isDown(); // Increase Step Size
-        boolean isAltDown = Keys.ALTY.isDown() || Keys.ALTYR.isDown(); // Swap X -> Z modify
+        boolean isLeft = Keys.LEFT.isKeyDown();
+        boolean isRight = Keys.RIGHT.isKeyDown();
+        boolean isUp = Keys.UP.isKeyDown();
+        boolean isDown = Keys.DOWN.isKeyDown();
+        boolean isControlDown = Keys.CONTROLLY.isKeyDown() || Keys.CONTROLLYR.isKeyDown(); // Increase Module Size
+        boolean isShiftDown = Keys.SHIFTY.isKeyDown() || Keys.SHIFTYR.isKeyDown(); // Increase Step Size
+        boolean isAltDown = Keys.ALTY.isKeyDown() || Keys.ALTYR.isKeyDown(); // Swap X -> Z modify
 
         if(isShiftDown)
             stepModifier*=10;
         if(isControlDown)
             stepModifier/=10;
 
-        boolean isPeriodDown = Keys.SIZE_OPT.isDown();
+        boolean isPeriodDown = Keys.SIZE_OPT.isKeyDown();
 
         PlayerEntity player = Minecraft.getInstance().player;
-        if(Keys.P.isDown()) // P will be for adjusting double render
+        if(Keys.P.isKeyDown()) // P will be for adjusting double render
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -140,7 +140,7 @@ public class ScopeEditor
                 player.sendStatusMessage(new TranslationTextComponent("DR X: "+data.getDrXZoomMod()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.L.isDown()) // L will be for adjusting reticle pos
+        else if(Keys.L.isKeyDown()) // L will be for adjusting reticle pos
         {
             if(isShiftDown)
                 stepModifier*=5;
@@ -182,7 +182,7 @@ public class ScopeEditor
                 player.sendStatusMessage(new TranslationTextComponent("Reticle X: "+data.getReticleXMod()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.M.isDown()) // L will be for adjusting reticle pos
+        else if(Keys.M.isKeyDown()) // L will be for adjusting reticle pos
         {
             if(isShiftDown)
                 stepModifier*=10;
