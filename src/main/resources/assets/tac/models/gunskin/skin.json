@@ -1,4 +1,14 @@
 {
+  "aa_12": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/aa_12/aa_12"
+      },
+      "icon": "tac:gunskin/icon/aa_12"
+    }
+  },
+
   "ai_awp": {
     "common": {
       "type": "common_texture",
@@ -24,6 +34,26 @@
         "2": "tac:gunskin/ak47/rpk47"
       },
       "icon": "tac:gunskin/icon/ak47"
+    }
+  },
+
+  "cz75": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "6": "tac:gunskin/cz75/cz75"
+      },
+      "icon": "tac:gunskin/icon/cz75"
+    }
+  },
+
+  "db_short": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "3": "tac:gunskin/db_short/db_s"
+      },
+      "icon": "tac:gunskin/icon/db_short"
     }
   },
 
