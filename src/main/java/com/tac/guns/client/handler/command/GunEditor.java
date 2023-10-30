@@ -173,12 +173,12 @@ public class GunEditor
         boolean isRight = event.getKey() == GLFW.GLFW_KEY_RIGHT;
         boolean isUp = event.getKey() == GLFW.GLFW_KEY_UP;
         boolean isDown = event.getKey() == GLFW.GLFW_KEY_DOWN;
-        boolean isControlDown = Keys.CONTROLLY.isDown() || Keys.CONTROLLYR.isDown(); // Increase Module Size
-        boolean isShiftDown = Keys.SHIFTY.isDown() || Keys.SHIFTYR.isDown(); // Increase Step Size
-        boolean isAltDown = Keys.ALTY.isDown() || Keys.ALTYR.isDown(); // Swap X -> Z modify
+        boolean isControlDown = Keys.CONTROLLY.isKeyDown() || Keys.CONTROLLYR.isKeyDown(); // Increase Module Size
+        boolean isShiftDown = Keys.SHIFTY.isKeyDown() || Keys.SHIFTYR.isKeyDown(); // Increase Step Size
+        boolean isAltDown = Keys.ALTY.isKeyDown() || Keys.ALTYR.isKeyDown(); // Swap X -> Z modify
         PlayerEntity player = Minecraft.getInstance().player;
         Gun gunTmp = gunItem.getGun();
-        if(Keys.P.isDown())
+        if(Keys.P.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -210,7 +210,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("VerticalRecoilAngle: "+gunTmp.getGeneral().getRecoilAngle()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.L.isDown())
+        else if(Keys.L.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=5;
@@ -232,7 +232,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("RecoilDuration: "+gunTmp.getGeneral().getRecoilDuration()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.O.isDown())
+        else if(Keys.O.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=5;
@@ -246,7 +246,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("CameraRecoilModifier: "+gunTmp.getGeneral().getCameraRecoilModifier()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.K.isDown())
+        else if(Keys.K.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=5;
@@ -260,7 +260,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("RecoilAdsReduction: "+gunTmp.getGeneral().getRecoilAdsReduction()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.M.isDown())
+        else if(Keys.M.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -276,7 +276,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Inaccuracy in Degrees: "+gunTmp.getGeneral().getSpread()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.I.isDown())
+        else if(Keys.I.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -292,7 +292,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Weight in Kilograms: "+gunTmp.getGeneral().getWeightKilo()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.J.isDown())
+        else if(Keys.J.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("Rate in Ticks: "+gunTmp.getGeneral().getRate()+" | Burst Rate in Ticks:: "+gunTmp.getGeneral().getBurstRate()),true);
             if (isLeft) {
@@ -312,7 +312,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Rate in Ticks: "+gunTmp.getGeneral().getRate()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.N.isDown())
+        else if(Keys.N.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("Projectile Amount: "+gunTmp.getGeneral().getProjectileAmount()),true);
             if (isUp) {
@@ -381,11 +381,11 @@ public class GunEditor
         double stepModifier = 1;
         boolean isUp = event.getKey() == GLFW.GLFW_KEY_UP;
         boolean isDown = event.getKey() == GLFW.GLFW_KEY_DOWN;
-        boolean isControlDown = Keys.CONTROLLY.isDown() || Keys.CONTROLLYR.isDown(); // Increase Module Size
-        boolean isShiftDown = Keys.SHIFTY.isDown() || Keys.SHIFTYR.isDown(); // Increase Step Size
+        boolean isControlDown = Keys.CONTROLLY.isKeyDown() || Keys.CONTROLLYR.isKeyDown(); // Increase Module Size
+        boolean isShiftDown = Keys.SHIFTY.isKeyDown() || Keys.SHIFTYR.isKeyDown(); // Increase Step Size
         PlayerEntity player = Minecraft.getInstance().player;
         Gun gunTmp = gunItem.getGun();
-        if(Keys.P.isDown())
+        if(Keys.P.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -433,7 +433,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Damage: "+gunTmp.getProjectile().getGunDecayEnd()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.L.isDown())
+        else if(Keys.L.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -449,7 +449,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Projectile size: "+gunTmp.getProjectile().getSize()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.O.isDown())
+        else if(Keys.O.isKeyDown())
         {
             if(isShiftDown)
                 stepModifier*=10;
@@ -463,7 +463,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("Speed: "+gunTmp.getProjectile().getSpeed()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.K.isDown())
+        else if(Keys.K.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("Ticks bullet Exists for: "+gunTmp.getProjectile().getLife()), true);
             if (isUp) {
@@ -514,7 +514,7 @@ public class GunEditor
         boolean isDown = event.getKey() == GLFW.GLFW_KEY_DOWN;
         PlayerEntity player = Minecraft.getInstance().player;
         Gun gunTmp = gunItem.getGun();
-        if(Keys.P.isDown())
+        if(Keys.P.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("ReloadMagTimer: "+gunTmp.getReloads().getReloadMagTimer()), true);
             if (isUp) {
@@ -526,7 +526,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("ReloadMagTimer: "+gunTmp.getReloads().getReloadMagTimer()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.L.isDown())
+        else if(Keys.L.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("AdditionalReloadEmptyMagTimer: "+gunTmp.getReloads().getAdditionalReloadEmptyMagTimer()), true);
             if (isUp) {
@@ -538,7 +538,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("AdditionalReloadEmptyMagTimer: "+gunTmp.getReloads().getAdditionalReloadEmptyMagTimer()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.O.isDown())
+        else if(Keys.O.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("ReloadAmount: "+gunTmp.getReloads().getReloadAmount()), true);
             if (isUp) {
@@ -550,7 +550,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("ReloadAmount: "+gunTmp.getReloads().getReloadAmount()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.K.isDown())
+        else if(Keys.K.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("PreReloadPauseTicks: "+gunTmp.getReloads().getPreReloadPauseTicks()), true);
             if (isUp) {
@@ -562,7 +562,7 @@ public class GunEditor
                 player.sendStatusMessage(new TranslationTextComponent("PreReloadPauseTicks: "+gunTmp.getReloads().getPreReloadPauseTicks()).mergeStyle(TextFormatting.DARK_RED), true);
             }
         }
-        else if(Keys.M.isDown())
+        else if(Keys.M.isKeyDown())
         {
             player.sendStatusMessage(new TranslationTextComponent("InterReloadPauseTicks: "+gunTmp.getReloads().getinterReloadPauseTicks()), true);
             if (isUp) {
@@ -620,17 +620,17 @@ public class GunEditor
     private boolean altToggle = false;
     private void handlePositionedMod(InputEvent.KeyInputEvent event, TimelessGunItem gunItem) {
         double stepModifier = 1;
-        boolean isLeft = Keys.LEFT.isDown();
-        boolean isRight = Keys.RIGHT.isDown();
-        boolean isUp = Keys.UP.isDown();
-        boolean isDown = Keys.DOWN.isDown();
+        boolean isLeft = Keys.LEFT.isKeyDown();
+        boolean isRight = Keys.RIGHT.isKeyDown();
+        boolean isUp = Keys.UP.isKeyDown();
+        boolean isDown = Keys.DOWN.isKeyDown();
         //boolean isControlDown = InputHandler.CONTROLLY.down || InputHandler.CONTROLLYR.down; // Increase Module Size
         //boolean isShiftDown = InputHandler.SHIFTY.down || InputHandler.SHIFTYR.down; // Increase Step Size
         //boolean isAltDown = InputHandler.ALTY.down || InputHandler.ALTYR.down; // Swap X -> Z modify
 
 
-        controlToggle = Keys.CONTROLLY.isDown() || Keys.CONTROLLYR.isDown();
-        altToggle = Keys.ALTY.isDown() || Keys.ALTYR.isDown();
+        controlToggle = Keys.CONTROLLY.isKeyDown() || Keys.CONTROLLYR.isKeyDown();
+        altToggle = Keys.ALTY.isKeyDown() || Keys.ALTYR.isKeyDown();
 
         if(controlToggle)
             stepModifier/=10;
@@ -697,13 +697,13 @@ public class GunEditor
     public double getSizeMod() {return this.sizeMod;}
     private void handleScaledPositionedMod(InputEvent.KeyInputEvent event, TimelessGunItem gunItem) {
         this.handlePositionedMod(event, gunItem);
-        boolean isPeriodDown = Keys.SIZE_OPT.isDown(); // Increase Step Size
+        boolean isPeriodDown = Keys.SIZE_OPT.isKeyDown(); // Increase Step Size
 
         if(isPeriodDown) {
             double stepModifier = 1;
-            boolean isUp = Keys.UP.isDown();
-            boolean isDown = Keys.DOWN.isDown();
-            boolean isShiftDown = Keys.SHIFTY.isDown() || Keys.SHIFTYR.isDown(); // Increase Step Size
+            boolean isUp = Keys.UP.isKeyDown();
+            boolean isDown = Keys.DOWN.isKeyDown();
+            boolean isShiftDown = Keys.SHIFTY.isKeyDown() || Keys.SHIFTYR.isKeyDown(); // Increase Step Size
 
             if (isShiftDown)
                 stepModifier *= 10;

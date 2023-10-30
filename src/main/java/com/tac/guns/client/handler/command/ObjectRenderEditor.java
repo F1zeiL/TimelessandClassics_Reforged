@@ -130,10 +130,10 @@ public class ObjectRenderEditor
         boolean isUp = event.getKey() == GLFW.GLFW_KEY_UP;
         boolean isDown = event.getKey() == GLFW.GLFW_KEY_DOWN;
 
-        boolean isControlDown = Keys.CONTROLLY.isDown() || Keys.CONTROLLYR.isDown(); // Increase Module Size
+        boolean isControlDown = Keys.CONTROLLY.isKeyDown() || Keys.CONTROLLYR.isKeyDown(); // Increase Module Size
         boolean isShiftDown = event.getKey() == GLFW.GLFW_KEY_LEFT_SHIFT; // Increase Step Size
-        boolean isAltDown = Keys.ALTY.isDown() || Keys.ALTYR.isDown(); // Swap X -> Z modify
-        boolean isPeriodDown = Keys.SIZE_OPT.isDown();
+        boolean isAltDown = Keys.ALTY.isKeyDown() || Keys.ALTYR.isKeyDown(); // Swap X -> Z modify
+        boolean isPeriodDown = Keys.SIZE_OPT.isKeyDown();
 
         RENDER_Element element = this.elements.size() == 0 || !this.elements.containsKey(this.currElement) ? new RENDER_Element(0, 0,0, 0) : this.elements.get(this.currElement);
         float xMod = element.xMod;

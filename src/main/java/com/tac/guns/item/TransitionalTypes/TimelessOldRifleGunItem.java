@@ -27,7 +27,7 @@ public class TimelessOldRifleGunItem extends TimelessGunItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flag) {
         CompoundNBT tagCompound = stack.getTag();
         super.addInformation(stack, worldIn, tooltip, flag);
-        boolean isShift = Keys.MORE_INFO_HOLD.isDown();
+        boolean isShift = Keys.MORE_INFO_HOLD.isKeyDown();
         if(isShift) {
             if (tagCompound != null) {
                 //tooltip.add((new TranslationTextComponent("info.tac.oldRifle", new TranslationTextComponent(IAttachment.Type.OLD_SCOPE.getTranslationKey())).mergeStyle(TextFormatting.GREEN)));

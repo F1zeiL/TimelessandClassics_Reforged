@@ -86,11 +86,11 @@ public class TimelessGunItem extends GunItem {
             }
         }
 
-        boolean isShift = Keys.MORE_INFO_HOLD.isDown();
+        boolean isShift = Keys.MORE_INFO_HOLD.isKeyDown();
         if (!isShift) {
             //String text = "SHIFT";
             //if(!InputHandler.MORE_INFO_HOLD.keyCode().equals(GLFW.GLFW_KEY_LEFT_SHIFT))
-            String text = (new KeybindTextComponent("key.sneak")).getString().toUpperCase(Locale.ENGLISH);
+            String text = (new KeybindTextComponent("key.tac.more_info_hold")).getString().toUpperCase(Locale.ENGLISH);
             tooltip.add((new TranslationTextComponent("info.tac.more_info_gunitem", text)).mergeStyle(TextFormatting.YELLOW));
         }
         if (isShift) {
@@ -118,7 +118,7 @@ public class TimelessGunItem extends GunItem {
                         .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
             }
 
-            tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.getBoundenKeyPrompt().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
+            tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));
             if (gun.getGun().canAttachType(IAttachment.Type.PISTOL_SCOPE))
                 tooltip.add((new TranslationTextComponent("info.tac.pistolScope", new TranslationTextComponent("MiniScope").mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.LIGHT_PURPLE)));
             if (gun.getGun().canAttachType(IAttachment.Type.IR_DEVICE))

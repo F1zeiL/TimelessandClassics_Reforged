@@ -31,7 +31,7 @@ public class TimelessPistolGunItem extends TimelessGunItem {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flag) {
         CompoundNBT tagCompound = stack.getTag();
         super.addInformation(stack, worldIn, tooltip, flag);
-        boolean isShift = Keys.MORE_INFO_HOLD.isDown();
+        boolean isShift = Keys.MORE_INFO_HOLD.isKeyDown();
         if(isShift) {
             if (tagCompound != null) {
                 tooltip.add((new TranslationTextComponent("info.tac.pistolBarrel", new TranslationTextComponent("PistolBarrel").mergeStyle(TextFormatting.BOLD)).mergeStyle(TextFormatting.LIGHT_PURPLE)));

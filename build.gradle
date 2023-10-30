@@ -1,5 +1,5 @@
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
+//import groovy.json.JsonOutput
+//import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        //classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7.+'
         classpath 'org.codehaus.groovy:groovy-all:2.4.15'
     }
@@ -26,10 +25,7 @@ version = "0.3.9.1-1.16.5"
 group = "com.tac"
 archivesBaseName = "tac-test"
 
-
-//name = "tac-a-0.3.0.44-1.16.5"
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
-//sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 //sourceSets.main.resources { srcDir 'src/generated/resources' }
 
@@ -38,14 +34,13 @@ mixin {
 }
 
 minecraft {
-    //mappings channel: 'official', version: '1.16.5'
-    //mappings channel: 'official', version: '1.16.5'
     mappings channel: 'snapshot', version: '20201028-1.16.3'
 
     runs {
         client {
             workingDirectory project.file('run')
-            property 'mixin.env.disableRefMap', 'true'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
             arg '-mixin.config=tac.mixins.json'
@@ -99,39 +94,29 @@ sourceSets.main.resources {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
-    //implementation fg.deobf('curse.maven:obfuscate-289380:3169369')
-    implementation fg.deobf('curse.maven:obfuscate-289380:3336021') // 3740120') // 3336021
+    implementation fg.deobf('curse.maven:obfuscate-289380:3336021')
     implementation fg.deobf('curse.maven:configured-457570:3434071')
+    implementation fg.deobf('curse.maven:dynamicsounds-238891:3502320')
+    implementation fg.deobf('curse.maven:keybindingpatch-928895:4825067')
     //implementation fg.deobf('curse.maven:enchancedvisuals-255389:3419985')
     //implementation fg.deobf('curse.maven:ccore-257814:3419983')
     //implementation fg.deobf('curse.maven:chisel-and-bits-231095:3593643')
     //implementation fg.deobf('curse.maven:flashlight-addon-227874:3381556')
-
     //implementation fg.deobf('curse.maven:extra-player-render-481042:3305584')
 
-    //implementation 'com.google.code.gson:gson:2.9.0'
-    implementation ('com.fasterxml.jackson.core:jackson-databind:2.12.4')
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
     //implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-
-    implementation fg.deobf('curse.maven:dynamicsounds-238891:3502320')
 }
+
 repositories {
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven {
         url = "https://www.cursemaven.com"
     }
 }
-/*repositories {
-    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-    maven {
-        url "https://cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-}*/
+
 jar {
     manifest {
         attributes([
@@ -152,6 +137,7 @@ def reobfArtifact = artifacts.add('default', reobfFile) {
     type 'jar'
     builtBy 'reobfJar'
 }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

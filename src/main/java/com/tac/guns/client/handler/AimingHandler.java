@@ -252,8 +252,8 @@ public class AimingHandler {
 
         boolean zooming;
 
-        if (Keys.AIM_HOLD.keyCode() != InputMappings.INPUT_INVALID) {
-            zooming = Keys.AIM_HOLD.isDown();
+        if (Keys.AIM_HOLD.getKey() != InputMappings.INPUT_INVALID) {
+            zooming = Keys.AIM_HOLD.isKeyDown();
 
             if (GunMod.controllableLoaded) {
                 // zooming |= ControllerHandler.isAiming();
