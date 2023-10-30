@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -26,6 +27,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static net.minecraftforge.event.TickEvent.Type.RENDER;
+import static org.orecruncher.lib.GameUtils.isInGame;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -259,6 +261,19 @@ public class ShootingHandler {
         if (player != null)
             if (this.burstCooldown > 0)
                 this.burstCooldown -= 1;
+    }
+
+    @SubscribeEvent
+    public void onClickInput( InputEvent.ClickInputEvent event ) {
+        if (!isInGame())
+            return;
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        ItemStack heldItem = player.getHeldItemMainhand();
+        if (heldItem.getItem() instanceof TimelessGunItem && event.isAttack()) {
+            event.setCanceled(true);
+            event.setSwingHand(false);
+        }
     }
 
     @SubscribeEvent

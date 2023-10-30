@@ -94,20 +94,6 @@ public class GunItem extends Item implements IColored {
     }
     
     @Override
-    public boolean onBlockStartBreak( ItemStack itemstack, BlockPos pos, PlayerEntity player )
-    {
-        final boolean stop_block_break = true;
-        return stop_block_break;
-    }
-    
-    @Override
-    public boolean onLeftClickEntity( ItemStack stack, PlayerEntity player, Entity entity )
-    {
-        final boolean stop_melee_attack = true;
-        return stop_melee_attack;
-    }
-    
-    @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         return true;
     }

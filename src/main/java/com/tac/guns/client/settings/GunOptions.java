@@ -72,6 +72,55 @@ public class GunOptions
         matrixStack.pop();
     });
 
+    public static final BooleanOption DISABLE_ALL_USE = new BooleanOption("tac.options.disableAllUse", (settings) -> {
+        return Config.CLIENT.rightClickUse.disableAllUse.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.disableAllUse.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_LEVER = new BooleanOption("tac.options.allowLever", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowLever.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowLever.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_BUTTON = new BooleanOption("tac.options.allowButton", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowButton.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowButton.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_DOORS = new BooleanOption("tac.options.allowDoors", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowDoors.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowDoors.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_TRAP_DOORS = new BooleanOption("tac.options.allowTrapDoors", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowTrapDoors.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowTrapDoors.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_CRAFTING_TABLE = new BooleanOption("tac.options.allowCraftingTable", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowCraftingTable.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowCraftingTable.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_CHESTS = new BooleanOption("tac.options.allowChests", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowChests.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowChests.set(value);
+        Config.saveClientConfig();
+    });
+    public static final BooleanOption ALLOW_FENCE_GATES = new BooleanOption("tac.options.allowFenceGates", (settings) -> {
+        return Config.CLIENT.rightClickUse.allowFenceGates.get();
+    }, (settings, value) -> {
+        Config.CLIENT.rightClickUse.allowFenceGates.set(value);
+        Config.saveClientConfig();
+    });
+
     public static final BooleanOption DOUBLE_RENDER_EXIST = new BooleanOption("tac.options.doubleRender", (settings) -> {
         return Config.CLIENT.display.scopeDoubleRender.get();
     }, (settings, value) -> {

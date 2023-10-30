@@ -16,7 +16,7 @@ public class Config {
         public final Display display;
         public final Particle particle;
         public final Controls controls;
-
+        public final RightClickUse rightClickUse;
         public final WeaponGUI weaponGUI;
         public final Quality quality;
 
@@ -27,6 +27,7 @@ public class Config {
                 this.display = new Display(builder);
                 this.particle = new Particle(builder);
                 this.controls = new Controls(builder);
+                this.rightClickUse = new RightClickUse(builder);
                 this.quality = new Quality(builder);
                 this.weaponGUI = new WeaponGUI(builder);
             }
@@ -257,15 +258,39 @@ public class Config {
 
     public static class Controls {
         public final ForgeConfigSpec.DoubleValue aimDownSightSensitivity;
-
         public final ForgeConfigSpec.BooleanValue burstPress;
 
         public Controls(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to controls").push("controls");
             {
                 this.aimDownSightSensitivity = builder.comment("A value to multiple the mouse sensitivity by when aiming down weapon sights. Go to (Options > Controls > Mouse Settings > ADS Sensitivity) in game to change this!").defineInRange("aimDownSightSensitivity", 1.0, 0.0, 2.0);
-
                 this.burstPress = builder.comment("Press to use a burst fire a gun, or hold to continue a burst, un-clicking cancels your burst").define("burstPress", true);
+            }
+            builder.pop();
+        }
+    }
+
+    public static class RightClickUse {
+        public final ForgeConfigSpec.BooleanValue disableAllUse;
+        public final ForgeConfigSpec.BooleanValue allowChests;
+        public final ForgeConfigSpec.BooleanValue allowLever;
+        public final ForgeConfigSpec.BooleanValue allowButton;
+        public final ForgeConfigSpec.BooleanValue allowDoors;
+        public final ForgeConfigSpec.BooleanValue allowTrapDoors;
+        public final ForgeConfigSpec.BooleanValue allowCraftingTable;
+        public final ForgeConfigSpec.BooleanValue allowFenceGates;
+
+        public RightClickUse(ForgeConfigSpec.Builder builder) {
+            builder.comment("Properties relating to controls").push("rightClickUses");
+            {
+                this.disableAllUse = builder.comment("True if want to disable all right click use (but can adjust respectively below)").define("disableAllUse", true);
+                this.allowChests = builder.comment("Allow chest use when disableAllUse is true").define("allowChests", false);
+                this.allowLever = builder.comment("Allow lever use when disableAllUse is true").define("allowLever", true);
+                this.allowButton = builder.comment("Allow button use when disableAllUse is true").define("allowButton", true);
+                this.allowDoors = builder.comment("Allow door use when disableAllUse is true").define("allowDoors", false);
+                this.allowTrapDoors = builder.comment("Allow trap door use when disableAllUse is true").define("allowTrapDoors", false);
+                this.allowCraftingTable = builder.comment("Allow crafting table use when disableAllUse is true").define("allowCraftingTable", false);
+                this.allowFenceGates = builder.comment("Allow fence gates use when disableAllUse is true").define("allowFenceGates", false);
             }
             builder.pop();
         }
@@ -297,6 +322,7 @@ public class Config {
      */
     public static class Common {
         public final Gameplay gameplay;
+        public final ForceRightClickUse forceRightClickUse;
         public final Network network;
         public final AggroMobs aggroMobs;
         public final Missiles missiles;
@@ -310,6 +336,7 @@ public class Config {
             builder.push("common");
             {
                 this.gameplay = new Gameplay(builder);
+                this.forceRightClickUse = new ForceRightClickUse(builder);
                 this.network = new Network(builder);
                 this.aggroMobs = new AggroMobs(builder);
                 this.missiles = new Missiles(builder);
@@ -400,6 +427,34 @@ public class Config {
                 this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
                 this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
                 this.canPassFence = builder.comment("True if you want to pass fence.").define("canPassFence", false);
+            }
+            builder.pop();
+        }
+    }
+
+    public static class ForceRightClickUse {
+        public final ForgeConfigSpec.BooleanValue forceRightClickUse;
+        public final ForgeConfigSpec.BooleanValue disableAllUse;
+        public final ForgeConfigSpec.BooleanValue allowChests;
+        public final ForgeConfigSpec.BooleanValue allowLever;
+        public final ForgeConfigSpec.BooleanValue allowButton;
+        public final ForgeConfigSpec.BooleanValue allowDoors;
+        public final ForgeConfigSpec.BooleanValue allowTrapDoors;
+        public final ForgeConfigSpec.BooleanValue allowCraftingTable;
+        public final ForgeConfigSpec.BooleanValue allowFenceGates;
+
+        public ForceRightClickUse(ForgeConfigSpec.Builder builder) {
+            builder.comment("Properties relating to controls").push("rightClickUses");
+            {
+                this.forceRightClickUse = builder.comment("True if you want to force right click use settings as the settings below (controlled by config file means client can't change it when playing)").define("forceRightClickUse", false);
+                this.disableAllUse = builder.comment("True if want to disable all right click use (but can adjust respectively below)").define("disableAllUse", true);
+                this.allowChests = builder.comment("Allow chest use when disableAllUse is true").define("allowChests", false);
+                this.allowLever = builder.comment("Allow lever use when disableAllUse is true").define("allowLever", true);
+                this.allowButton = builder.comment("Allow button use when disableAllUse is true").define("allowButton", true);
+                this.allowDoors = builder.comment("Allow door use when disableAllUse is true").define("allowDoors", false);
+                this.allowTrapDoors = builder.comment("Allow trap door use when disableAllUse is true").define("allowTrapDoors", false);
+                this.allowCraftingTable = builder.comment("Allow crafting table use when disableAllUse is true").define("allowCraftingTable", false);
+                this.allowFenceGates = builder.comment("Allow fence gates use when disableAllUse is true").define("allowFenceGates", false);
             }
             builder.pop();
         }

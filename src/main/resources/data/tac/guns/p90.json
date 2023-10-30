@@ -1,15 +1,15 @@
 {
   "general": {
     "auto": true,
-    "rate": 900,
+    "rate": 1200,
     "burstRate": 20,
     "burstCount": 5,
-    "rateSelector": [2, 3],
+    "rateSelector": [3, 1],
     "gripType": "tac:two_handed_vector",
-    "recoilAngle": 1.75,
-    "horizontalRecoilAngle": 1.35,
+    "recoilAngle": 2,
+    "horizontalRecoilAngle": 1.75,
     "recoilKick": 2.15,
-    "recoilAdsReduction": 0.35,
+    "recoilAdsReduction": 0.255,
     "weaponRecoilOffset": 0.975,
     "cameraRecoilModifier": 1.425,
     "recoilDuration": 0.265,
@@ -17,7 +17,7 @@
 
     "spread": 2.95,
     "firstShotSpread": 0.195,
-    "hipFireInaccuracy": 2.45,
+    "hipFireInaccuracy": 2.75,
     "projToMinAccuracy": 7,
     "msToAccuracyReset": 400,
     "movementInaccuracy": 0.15
@@ -30,10 +30,10 @@
     "preReloadPauseTicks": 0
   },
   "projectile": {
-    "item": "tac:9mm_round",
+    "item": "tac:46x30",
     "visible": false,
     "damage": 5.5,
-    "armorIgnore": 0.7,
+    "armorIgnore": 1.4,
     "critical": 0.0,
     "criticalDamage": 0.625,
     "headDamage": 0.625,
@@ -75,7 +75,7 @@
     "zoom": {
       "fovModifier": 0.8,
       "yOffset": 12.965,
-      "zOffset": 4.75
+      "zOffset": 10
     },
     "attachments": {
       "barrel": {
@@ -85,7 +85,7 @@
       },
       "scope": {
         "yOffset": 11.525,
-        "zOffset": -2.675,
+        "zOffset": -6,
         "scale": 1.00
       },
       "pistolScope": {
