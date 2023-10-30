@@ -433,7 +433,7 @@ public class Config {
     }
 
     public static class ForceRightClickUse {
-        public final ForgeConfigSpec.BooleanValue forceRightClickUse;
+        public final ForgeConfigSpec.BooleanValue forceRightClickControl;
         public final ForgeConfigSpec.BooleanValue disableAllUse;
         public final ForgeConfigSpec.BooleanValue allowChests;
         public final ForgeConfigSpec.BooleanValue allowLever;
@@ -446,7 +446,7 @@ public class Config {
         public ForceRightClickUse(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to controls").push("rightClickUses");
             {
-                this.forceRightClickUse = builder.comment("True if you want to force right click use settings as the settings below (controlled by config file means client can't change it when playing)").define("forceRightClickUse", false);
+                this.forceRightClickControl = builder.comment("True if you want to force right click use settings as the settings below (controlled by config file means client can't change it when playing)").define("forceRightClickControl", false);
                 this.disableAllUse = builder.comment("True if want to disable all right click use (but can adjust respectively below)").define("disableAllUse", true);
                 this.allowChests = builder.comment("Allow chest use when disableAllUse is true").define("allowChests", false);
                 this.allowLever = builder.comment("Allow lever use when disableAllUse is true").define("allowLever", true);
