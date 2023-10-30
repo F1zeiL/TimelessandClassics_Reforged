@@ -121,7 +121,7 @@ public class AimingHandler {
     @SubscribeEvent
     public void onClickInput( InputEvent.ClickInputEvent event ) {
         boolean disableAllUse, allowChests, allowLever, allowButton, allowDoors, allowTrapDoors, allowCraftingTable, allowFenceGates;
-        if (Config.COMMON.forceRightClickUse.forceRightClickUse.get()) {
+        if (Config.COMMON.forceRightClickUse.forceRightClickControl.get()) {
             disableAllUse = Config.COMMON.forceRightClickUse.disableAllUse.get();
             allowChests = Config.COMMON.forceRightClickUse.allowChests.get();
             allowLever = Config.COMMON.forceRightClickUse.allowLever.get();
