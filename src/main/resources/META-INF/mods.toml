@@ -30,3 +30,9 @@ description='''
     versionRange="[0.6.0,)"
     ordering="NONE"
     side="BOTH"
+[[dependencies.tac]]
+    modId="key_binding_patch"
+    mandatory=true
+    versionRange="[1.16.5-1.0.2.4,)"
+    ordering="NONE"
+    side="CLIENT"
