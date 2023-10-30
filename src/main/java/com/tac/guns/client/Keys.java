@@ -12,7 +12,6 @@ import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 
@@ -135,27 +134,25 @@ public final class Keys
     {
         if ( Config.COMMON.development.enableTDev.get() )
         {
-            Arrays.asList(
-                SHIFTY = new Builder( "key.tac.ss" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_SHIFT ).build(),
-                CONTROLLY = new Builder( "key.tac.cc" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_CONTROL ).build(),
-                ALTY = new Builder( "key.tac.aa" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_ALT ).build(),
-                SHIFTYR = new Builder( "key.tac.ssr" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_SHIFT ).build(),
-                CONTROLLYR = new Builder( "key.tac.ccr" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_CONTROL ).build(),
-                ALTYR = new Builder("key.tac.aar" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_ALT ).build(),
-                SIZE_OPT = new Builder( "key.tac.sizer" ).withKeyboardKey( GLFW.GLFW_KEY_PERIOD ).build(),
-                P = new Builder( "key.tac.p" ).withKeyboardKey( GLFW.GLFW_KEY_P ).build(),
-                L = new Builder( "key.tac.l" ).withKeyboardKey( GLFW.GLFW_KEY_L ).build(),
-                O = new Builder( "key.tac.o" ).withKeyboardKey( GLFW.GLFW_KEY_O ).build(),
-                K = new Builder( "key.tac.k" ).withKeyboardKey( GLFW.GLFW_KEY_K ).build(),
-                M = new Builder( "key.tac.m" ).withKeyboardKey( GLFW.GLFW_KEY_M ).build(),
-                I = new Builder( "key.tac.i" ).withKeyboardKey( GLFW.GLFW_KEY_I ).build(),
-                J = new Builder( "key.tac.j" ).withKeyboardKey( GLFW.GLFW_KEY_J ).build(),
-                N = new Builder( "key.tac.n" ).withKeyboardKey( GLFW.GLFW_KEY_N ).build(),
-                UP = new Builder( "key.tac.bbb" ).withKeyboardKey( GLFW.GLFW_KEY_UP ).build(),
-                RIGHT = new Builder( "key.tac.vvv" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT ).build(),
-                LEFT = new Builder( "key.tac.ccc" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT ).build(),
-                DOWN = new Builder( "key.tac.zzz" ).withKeyboardKey( GLFW.GLFW_KEY_DOWN ).build()
-            ).forEach( ClientRegistry::registerKeyBinding );
+            SHIFTY = new Builder( "key.tac.ss" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_SHIFT ).buildAndRegis();
+            CONTROLLY = new Builder( "key.tac.cc" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_CONTROL ).buildAndRegis();
+            ALTY = new Builder( "key.tac.aa" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_ALT ).buildAndRegis();
+            SHIFTYR = new Builder( "key.tac.ssr" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_SHIFT ).buildAndRegis();
+            CONTROLLYR = new Builder( "key.tac.ccr" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_CONTROL ).buildAndRegis();
+            ALTYR = new Builder("key.tac.aar" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT_ALT ).buildAndRegis();
+            SIZE_OPT = new Builder( "key.tac.sizer" ).withKeyboardKey( GLFW.GLFW_KEY_PERIOD ).buildAndRegis();
+            P = new Builder( "key.tac.p" ).withKeyboardKey( GLFW.GLFW_KEY_P ).buildAndRegis();
+            L = new Builder( "key.tac.l" ).withKeyboardKey( GLFW.GLFW_KEY_L ).buildAndRegis();
+            O = new Builder( "key.tac.o" ).withKeyboardKey( GLFW.GLFW_KEY_O ).buildAndRegis();
+            K = new Builder( "key.tac.k" ).withKeyboardKey( GLFW.GLFW_KEY_K ).buildAndRegis();
+            M = new Builder( "key.tac.m" ).withKeyboardKey( GLFW.GLFW_KEY_M ).buildAndRegis();
+            I = new Builder( "key.tac.i" ).withKeyboardKey( GLFW.GLFW_KEY_I ).buildAndRegis();
+            J = new Builder( "key.tac.j" ).withKeyboardKey( GLFW.GLFW_KEY_J ).buildAndRegis();
+            N = new Builder( "key.tac.n" ).withKeyboardKey( GLFW.GLFW_KEY_N ).buildAndRegis();
+            UP = new Builder( "key.tac.bbb" ).withKeyboardKey( GLFW.GLFW_KEY_UP ).buildAndRegis();
+            RIGHT = new Builder( "key.tac.vvv" ).withKeyboardKey( GLFW.GLFW_KEY_RIGHT ).buildAndRegis();
+            LEFT = new Builder( "key.tac.ccc" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT ).buildAndRegis();
+            DOWN = new Builder( "key.tac.zzz" ).withKeyboardKey( GLFW.GLFW_KEY_DOWN ).buildAndRegis();
         }
     }
     
