@@ -97,7 +97,7 @@ dependencies {
     implementation fg.deobf('curse.maven:obfuscate-289380:3336021')
     implementation fg.deobf('curse.maven:configured-457570:3434071')
     implementation fg.deobf('curse.maven:dynamicsounds-238891:3502320')
-    implementation fg.deobf('curse.maven:keybindingpatch-928895:4825067')
+    implementation fg.deobf('curse.maven:keybindingpatch-928895:4826793')
     //implementation fg.deobf('curse.maven:enchancedvisuals-255389:3419985')
     //implementation fg.deobf('curse.maven:ccore-257814:3419983')
     //implementation fg.deobf('curse.maven:chisel-and-bits-231095:3593643')

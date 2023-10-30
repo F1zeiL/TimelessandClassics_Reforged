@@ -9,6 +9,7 @@ import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.mixin.client.MinecraftStaticMixin;
 import com.tac.guns.network.PacketHandler;
+import com.tac.guns.network.message.MessageEmptyMag;
 import com.tac.guns.network.message.MessageShoot;
 import com.tac.guns.network.message.MessageShooting;
 import com.tac.guns.network.message.MessageUpdateMoveInacc;
@@ -16,6 +17,8 @@ import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -43,14 +46,6 @@ public class ShootingHandler {
         return shooting;
     }
 
-    public void setShooting(boolean shooting) {
-        this.shooting = shooting;
-    }
-
-    public void setShootingError(boolean shootErr) {
-        this.shootErr = shootErr;
-    }
-
     private boolean shooting;
 
     private boolean shootErr;
@@ -58,7 +53,42 @@ public class ShootingHandler {
     public int burstTracker = 0;
     private int burstCooldown = 0;
 
-    private ShootingHandler() {
+    private ShootingHandler()
+    {
+        Keys.PULL_TRIGGER.addPressCallback( () -> {
+            if (!this.isInGame())
+                return;
+            
+            final Minecraft mc = Minecraft.getInstance();
+            final PlayerEntity player = mc.player;
+            assert player != null;
+            
+            final ItemStack heldItem = player.getHeldItemMainhand();
+            final boolean is_gun_in_hand = heldItem.getItem() instanceof GunItem;
+            if (!is_gun_in_hand)
+                return;
+            
+            if (magError(player, heldItem))
+            {
+                player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle( TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                return;
+            }
+            
+            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0)
+            {
+                this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
+                fire(player, heldItem);
+                this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
+            }
+            else if (this.burstCooldown == 0)
+                fire(player, heldItem);
+            
+            if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
+                player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+            }
+        } );
     }
 
     @SubscribeEvent
@@ -83,7 +113,7 @@ public class ShootingHandler {
             return false;
         return mc.isGameFocused();
     }
-
+    
     // CHECK HERE: Indicates the ticks left for next shot
     private static float shootTickGapLeft = 0F;
 
@@ -203,7 +233,7 @@ public class ShootingHandler {
 //              {
 //                  shooting |= ControllerHandler.isShooting();
 //              }
-                if (shooting ^ this.shooting) {
+                if (shooting != this.shooting) {
                     this.shooting = shooting;
                     PacketHandler.getPlayChannel().sendToServer(new MessageShooting(shooting));
                     if (!shooting && originalSprint) {
