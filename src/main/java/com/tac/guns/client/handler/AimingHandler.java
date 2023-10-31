@@ -2,6 +2,7 @@ package com.tac.guns.client.handler;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
+import com.tac.guns.Config.RightClickUse;
 import com.tac.guns.GunMod;
 import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.crosshair.Crosshair;
@@ -119,55 +120,42 @@ public class AimingHandler {
     }
 
     @SubscribeEvent
-    public void onClickInput( InputEvent.ClickInputEvent event ) {
-        boolean disableAllUse, allowChests, allowLever, allowButton, allowDoors, allowTrapDoors, allowCraftingTable, allowFenceGates;
-        if (Config.COMMON.forceRightClickUse.forceRightClickControl.get()) {
-            disableAllUse = Config.COMMON.forceRightClickUse.disableAllUse.get();
-            allowChests = Config.COMMON.forceRightClickUse.allowChests.get();
-            allowLever = Config.COMMON.forceRightClickUse.allowLever.get();
-            allowButton = Config.COMMON.forceRightClickUse.allowButton.get();
-            allowDoors = Config.COMMON.forceRightClickUse.allowDoors.get();
-            allowTrapDoors = Config.COMMON.forceRightClickUse.allowTrapDoors.get();
-            allowCraftingTable = Config.COMMON.forceRightClickUse.allowCraftingTable.get();
-            allowFenceGates = Config.COMMON.forceRightClickUse.allowFenceGates.get();
-        } else {
-            disableAllUse = Config.CLIENT.rightClickUse.disableAllUse.get();
-            allowChests = Config.CLIENT.rightClickUse.allowChests.get();
-            allowLever = Config.CLIENT.rightClickUse.allowLever.get();
-            allowButton = Config.CLIENT.rightClickUse.allowButton.get();
-            allowDoors = Config.CLIENT.rightClickUse.allowDoors.get();
-            allowTrapDoors = Config.CLIENT.rightClickUse.allowTrapDoors.get();
-            allowCraftingTable = Config.CLIENT.rightClickUse.allowCraftingTable.get();
-            allowFenceGates = Config.CLIENT.rightClickUse.allowFenceGates.get();
+    public void onClickInput( InputEvent.ClickInputEvent event )
+    {
+        if ( !event.isUseItem() ) {
+            return;
         }
-
-        Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
-        ItemStack heldItem = player.getHeldItemMainhand();
-
-        if (disableAllUse) {
-            boolean isLookingAtInteractableBlock = false;
-            if (mc.objectMouseOver != null && mc.world != null) {
-                if (mc.objectMouseOver instanceof BlockRayTraceResult) {
-                    BlockRayTraceResult result = (BlockRayTraceResult) mc.objectMouseOver;
-                    BlockState state = mc.world.getBlockState(result.getPos());
-                    Block block = state.getBlock();
-                    isLookingAtInteractableBlock = (block instanceof ContainerBlock && !allowChests) ||
-                            (block.hasTileEntity(state) && !allowChests) ||
-                            (block == Blocks.CRAFTING_TABLE && !allowCraftingTable) ||
-                            block == ModBlocks.WORKBENCH.get() || /* ||*/
-                            (BlockTags.DOORS.contains(block) && !allowDoors) ||
-                            (BlockTags.TRAPDOORS.contains(block) && !allowTrapDoors) ||
-                            (Tags.Blocks.CHESTS.contains(block) && !allowChests) ||
-                            (Tags.Blocks.FENCE_GATES.contains(block) && !allowFenceGates) ||
-                            (BlockTags.BUTTONS.contains(block) && !allowButton) ||
-                            (block == Blocks.LEVER && !allowLever);
-                }
-            }
-            if (heldItem.getItem() instanceof TimelessGunItem && event.isUseItem() && isLookingAtInteractableBlock) {
-                event.setCanceled(true);
-                event.setSwingHand(false);
-            }
+        
+        final Minecraft mc = Minecraft.getInstance();
+        final boolean hasMouseOverBlock = mc.objectMouseOver instanceof BlockRayTraceResult;
+        if ( !hasMouseOverBlock ) {
+            return;
+        }
+        
+        final PlayerEntity player = mc.player; assert player != null;
+        final ItemStack heldItem = player.getHeldItemMainhand();
+        final boolean isGunInHand = heldItem.getItem() instanceof TimelessGunItem;
+        if ( !isGunInHand ) {
+            return;
+        }
+        
+        assert mc.world != null;
+        final BlockRayTraceResult result = ( BlockRayTraceResult ) mc.objectMouseOver;
+        final BlockState state = mc.world.getBlockState(result.getPos());
+        final Block block = state.getBlock();
+        final RightClickUse config = Config.CLIENT.rightClickUse;
+        if (
+            !config.allowChests.get() && ( block instanceof ContainerBlock || block.hasTileEntity( state ) )
+            || !config.allowCraftingTable.get() && ( block == Blocks.CRAFTING_TABLE || block == ModBlocks.WORKBENCH.get() )
+            || !config.allowDoors.get() && BlockTags.DOORS.contains(block)
+            || !config.allowTrapDoors.get() && BlockTags.TRAPDOORS.contains(block)
+            || !config.allowChests.get() && Tags.Blocks.CHESTS.contains(block)
+            || !config.allowFenceGates.get() && Tags.Blocks.FENCE_GATES.contains(block)
+            || !config.allowButton.get() && BlockTags.BUTTONS.contains(block)
+            || !config.allowLever.get() && block == Blocks.LEVER
+        ) {
+            event.setCanceled(true);
+            event.setSwingHand(false);
         }
     }
 
