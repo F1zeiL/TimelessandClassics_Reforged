@@ -2,6 +2,7 @@ package com.tac.guns.client.render.gun;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
+import com.tac.guns.client.gunskin.IModelComponent;
 import com.tac.guns.client.gunskin.ModelComponent;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
@@ -23,7 +24,7 @@ import static com.tac.guns.client.gunskin.ModelComponent.*;
 
 
 public abstract class SkinAnimationModel implements IOverrideModel {
-    protected Map<ModelComponent, Vector3d> extraOffset = new HashMap<>();
+    protected Map<IModelComponent, Vector3d> extraOffset = new HashMap<>();
     //    protected Map<ModelComponent,IBakedModel> defaultModels;
     private static List<SkinAnimationModel> models = new ArrayList<>();
 
@@ -31,7 +32,7 @@ public abstract class SkinAnimationModel implements IOverrideModel {
         models.add(this);
     }
 
-    public IBakedModel getModelComponent(GunSkin skin, ModelComponent key) {
+    public IBakedModel getModelComponent(GunSkin skin, IModelComponent key) {
         return (skin == null || skin.getModel(key) == null ?
                 Minecraft.getInstance().getModelManager().getMissingModel() :
                 skin.getModel(key).getModel());
@@ -47,7 +48,7 @@ public abstract class SkinAnimationModel implements IOverrideModel {
 //        }
 //    }
 
-    private void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, ModelComponent modelComponent) {
+    private void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
         if (extraOffset.containsKey(modelComponent)) {
             Vector3d x = extraOffset.get(modelComponent);
             matrices.push();
@@ -59,7 +60,7 @@ public abstract class SkinAnimationModel implements IOverrideModel {
             RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
     }
 
-    private void renderLaserModuleComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, ModelComponent modelComponent) {
+    private void renderLaserModuleComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
         if (extraOffset.containsKey(modelComponent)) {
             Vector3d x = extraOffset.get(modelComponent);
             matrices.push();
