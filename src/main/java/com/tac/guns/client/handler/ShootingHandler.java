@@ -265,8 +265,6 @@ public class ShootingHandler {
 
     @SubscribeEvent
     public void onClickInput( InputEvent.ClickInputEvent event ) {
-        if (!isInGame())
-            return;
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         ItemStack heldItem = player.getHeldItemMainhand();
