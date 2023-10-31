@@ -1,0 +1,26 @@
+{
+  "type": "tac:workbench",
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/gold"
+      },
+      "count": 5
+    },
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 40
+    },
+    {
+      "item": {
+        "tag": "forge:gems/quartz"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "item": "tac:hk_g3"
+  }
+}
