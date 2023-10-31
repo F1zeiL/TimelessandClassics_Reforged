@@ -28,7 +28,7 @@
     "openBolt": true
   },
   "projectile": {
-    "item": "tac:round45",
+    "item": "tac:b_magnum",
     "visible": false,
     "damage": 12,
     "armorIgnore": 0.7,
