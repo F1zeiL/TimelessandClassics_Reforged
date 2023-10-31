@@ -19,6 +19,9 @@ public enum SkinLoaders {
 
     COLT_PYTHON(ModItems.COLT_PYTHON, BODY, MAG, BULLET1, BULLET2, LOADER, ROTATE, SIGHT_LIGHT, HAMMER),
 
+    CROSSBOW(ModItems.CROSSBOW, BODY, BEND_L, BEND_R, BONE_L, BONE_R, SCOPE_DEFAULT, STRING_L_MAIN, STRING_R_MAIN, STRING_L_MOVE,
+            STRING_R_MOVE, WHEEL_L, WHEEL_R, BULLET),
+
     CZ75(ModItems.CZ75, BODY, MAG_EXTENDED, MAG_STANDARD, MUZZLE_BRAKE, MUZZLE_COMPENSATOR, MUZZLE_SILENCER, RAIL_SCOPE,
             SLIDE),
 
@@ -177,7 +180,7 @@ public enum SkinLoaders {
     ;
 
 
-    private final ModelComponent[] components;
+    private final IModelComponent[] components;
     private final ResourceLocation name;
 
     public static void init(){
@@ -187,12 +190,12 @@ public enum SkinLoaders {
         }
     }
 
-    SkinLoaders(ResourceLocation name, ModelComponent... components) {
+    SkinLoaders(ResourceLocation name, IModelComponent... components) {
         this.components = components;
         this.name = name;
     }
 
-    SkinLoaders(RegistryObject<?> item, ModelComponent... components) {
+    SkinLoaders(RegistryObject<?> item, IModelComponent... components) {
         this(item.getId(), components);
     }
 

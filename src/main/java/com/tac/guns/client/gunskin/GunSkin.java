@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GunSkin {
-    protected final Map<ModelComponent, SpecialModel> models = new HashMap<>();
-    protected Map<ModelComponent, Vector3d> extraOffset;
+    protected final Map<IModelComponent, SpecialModel> models = new HashMap<>();
+    protected Map<IModelComponent, Vector3d> extraOffset;
     public final ResourceLocation registerName;
     public final ResourceLocation gun;
     protected ResourceLocation icon;
@@ -45,14 +45,14 @@ public class GunSkin {
     }
 
     @Nullable
-    public SpecialModel getModel(ModelComponent component){
+    public SpecialModel getModel(IModelComponent component){
         return models.getOrDefault(component,defaultSkin.getModel(component));
     }
-    protected void addComponent(ModelComponent component,SpecialModel model){
+    protected void addComponent(IModelComponent component,SpecialModel model){
         this.models.put(component, model);
     }
 
-    public Map<ModelComponent,SpecialModel> getModels(){
+    public Map<IModelComponent,SpecialModel> getModels(){
         return this.models;
     }
 

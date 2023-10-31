@@ -26,14 +26,14 @@ public class SkinLoader {
     public static IUnbakedModel missingModel;
     public static Map<ResourceLocation, IUnbakedModel> unbakedModels;
     public static Map<ResourceLocation, IUnbakedModel> topUnbakedModels;
-    private final List<ModelComponent> components;
+    private final List<IModelComponent> components;
     private final ResourceLocation name;
-    public SkinLoader(ResourceLocation name, ModelComponent... components) {
+    public SkinLoader(ResourceLocation name, IModelComponent... components) {
         this.components = Arrays.asList(components);
         this.name = name;
     }
 
-    public SkinLoader(RegistryObject<?> item, ModelComponent... components) {
+    public SkinLoader(RegistryObject<?> item, IModelComponent... components) {
         this(item.getId(), components);
     }
 
@@ -41,7 +41,7 @@ public class SkinLoader {
         skinLoaders.put(name,loader);
     }
 
-    public List<ModelComponent> getComponents() {
+    public List<IModelComponent> getComponents() {
         return components;
     }
     public static SkinLoader getSkinLoader(String name) {
@@ -66,7 +66,7 @@ public class SkinLoader {
     public DefaultSkin loadDefaultSkin() {
         DefaultSkin skin = new DefaultSkin(this.name);
         String mainLoc = this.name.getNamespace()+ ":special/" + getGun().getPath();
-        for (ModelComponent key : this.components) {
+        for (IModelComponent key : this.components) {
             tryLoadComponent(skin, mainLoc, key);
         }
         this.defaultSkin = skin;
@@ -99,11 +99,11 @@ public class SkinLoader {
 
         if (models.containsKey("auto")) {
             String main = models.get("auto");
-            for (ModelComponent key : this.components) {
+            for (IModelComponent key : this.components) {
                 tryLoadComponent(skin, main, key);
             }
         } else {
-            for (ModelComponent key : this.components) {
+            for (IModelComponent key : this.components) {
                 tryLoadComponent(skin, models, key);
             }
         }
@@ -140,9 +140,9 @@ public class SkinLoader {
         }
     }
 
-    private static void tryLoadComponent(GunSkin skin, Map<String, String> models, ModelComponent component) {
-        if (models.containsKey(component.key)) {
-            ResourceLocation loc = ResourceLocation.tryCreate(models.get(component.key));
+    private static void tryLoadComponent(GunSkin skin, Map<String, String> models, IModelComponent component) {
+        if (models.containsKey(component.getKey())) {
+            ResourceLocation loc = ResourceLocation.tryCreate(models.get(component.getKey()));
             if (loc != null) {
                 SpecialModel mainModel = new SpecialModel(loc);
                 ModelLoader.addSpecialModel(loc);
@@ -151,7 +151,7 @@ public class SkinLoader {
         }
     }
 
-    private static void tryLoadComponent(GunSkin skin, String mainLocation, ModelComponent component) {
+    private static void tryLoadComponent(GunSkin skin, String mainLocation, IModelComponent component) {
         ResourceLocation loc = component.getModelLocation(mainLocation);
         if (loc != null) {
             ResourceLocation test = new ResourceLocation(loc.getNamespace(), "models/" + loc.getPath() + ".json");
@@ -176,7 +176,7 @@ public class SkinLoader {
         GunSkin skin = new GunSkin(skinName, this.getGun());
         skin.setDefaultSkin(this.defaultSkin);
         //create unbaked models for every component of this gun.
-        for (ModelComponent component : this.components) {
+        for (IModelComponent component : this.components) {
             ResourceLocation parent = component.getModelLocation(this.name.getNamespace()+ ":special/" + this.name.getPath());
             TextureModel model = TextureModel.tryCreateCopy(parent);
             if (model != null) {

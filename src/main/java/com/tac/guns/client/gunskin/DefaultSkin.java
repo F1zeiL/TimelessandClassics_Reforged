@@ -13,7 +13,7 @@ public class DefaultSkin extends GunSkin{
     }
 
     @Override
-    public SpecialModel getModel(ModelComponent component){
+    public SpecialModel getModel(IModelComponent component){
         return models.get(component);
     }
 

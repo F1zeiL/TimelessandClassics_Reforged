@@ -4,7 +4,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nullable;
 
-public enum ModelComponent {
+public enum ModelComponent implements IModelComponent {
     //special
     CLUMSYYY("clumsyyy"),
     NEKOOO("nekooo"),
@@ -14,6 +14,18 @@ public enum ModelComponent {
     SCOPE_DEFAULT("scope_default"),
     LIGHT("light"),
     SAFETY("safety"),
+
+    //crossbow
+    BEND_L("bend_l"),
+    BEND_R("bend_r"),
+    BONE_L("bone_l"),
+    BONE_R("bone_r"),
+    STRING_L_MAIN("string_l_main"),
+    STRING_R_MAIN("string_r_main"),
+    STRING_L_MOVE("string_l_move"),
+    STRING_R_MOVE("string_r_move"),
+    WHEEL_L("wheel_l"),
+    WHEEL_R("wheel_r"),
 
     //main
     BODY("main"),                                   //static main part
@@ -130,23 +142,8 @@ public enum ModelComponent {
     ModelComponent(String key){
         this.key = key;
     }
-    /**
-     * @return The default model location of the component according to the main component
-     * */
-    @Nullable
-    public static ResourceLocation getModelLocation(ModelComponent component, String mainLocation){
-        return component.getModelLocation(mainLocation);
-    }
-    @Nullable
-    public static ResourceLocation getModelLocation(ModelComponent component, ResourceLocation mainLocation){
-        return component.getModelLocation(mainLocation);
-    }
-    @Nullable
-    public ResourceLocation getModelLocation(String mainLocation){
-        return ResourceLocation.tryCreate(mainLocation+(this==BODY ? "" : "_" + this.key));
-    }
-    @Nullable
-    public ResourceLocation getModelLocation(ResourceLocation mainLocation){
-        return ResourceLocation.tryCreate(mainLocation+(this==BODY ? "" : "_" + this.key));
+    @Override
+    public String getKey() {
+        return key;
     }
 }
