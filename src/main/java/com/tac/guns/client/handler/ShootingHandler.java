@@ -27,7 +27,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static net.minecraftforge.event.TickEvent.Type.RENDER;
-import static org.orecruncher.lib.GameUtils.isInGame;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
