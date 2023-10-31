@@ -5,6 +5,8 @@ import com.tac.guns.item.IrDeviceItem;
 import com.tac.guns.item.ScopeItem;
 import com.tac.guns.item.SideRailItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyConflictContext;
 
@@ -18,11 +20,8 @@ public enum GunConflictContext implements IKeyConflictContext
         @Override
         public boolean isActive()
         {
-            return !KeyConflictContext.GUI.isActive() && Minecraft.getInstance().player != null &&
-                    (Minecraft.getInstance().player.getHeldItemMainhand().getItem() instanceof GunItem ||
-                            Minecraft.getInstance().player.getHeldItemMainhand().getItem() instanceof ScopeItem ||
-                            Minecraft.getInstance().player.getHeldItemMainhand().getItem() instanceof SideRailItem ||
-                            Minecraft.getInstance().player.getHeldItemMainhand().getItem() instanceof IrDeviceItem);
+            final Item item = Minecraft.getInstance().player.getHeldItemMainhand().getItem();
+            return !KeyConflictContext.GUI.isActive() && Minecraft.getInstance().player != null && (item instanceof GunItem || item instanceof ScopeItem || item instanceof SideRailItem || item instanceof IrDeviceItem);
         }
 
         @Override
