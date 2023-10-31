@@ -2,13 +2,15 @@ package com.tac.guns.client;
 
 import com.tac.guns.Config;
 import gsf.kbp.client.api.PatchedKeyBinding;
+import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.client.util.InputMappings.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
@@ -29,67 +31,68 @@ public final class Keys
         }
     }
     
-    public static final PatchedKeyBinding
-        PULL_TRIGGER = new Builder( "key.tac.pull_trigger" ).withMouseButton( GLFW.GLFW_MOUSE_BUTTON_LEFT ).buildAndRegis();
-    
-    public static final PatchedKeyBinding
-        AIM_TOGGLE = new PatchedKeyBinding(
-        "key.tac.aim_toggle",
-        GunConflictContext.IN_GAME_HOLDING_WEAPON,
-        InputMappings.INPUT_INVALID,
-        Collections.emptySet(),
-        "key.categories.tac"
-    ) {
-        @Override
-        public void setKeyAndCombinations( Input key, Set< Input > combinations )
+    private static class MouseKeyBinding extends PatchedKeyBinding
+    {
+        private MouseKeyBinding( String description, Input mouse_button )
         {
-            if ( key != InputMappings.INPUT_INVALID ) {
-                AIM_HOLD.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
-            }
-            
-            super.setKeyAndCombinations( key, combinations );
+            super(
+                description,
+                GunConflictContext.IN_GAME_HOLDING_WEAPON,
+                mouse_button,
+                Collections.emptySet(),
+                "key.categories.tac"
+            );
         }
         
         @Override
-        public void setKeyModifierAndCode( KeyModifier keyModifier, Input keyCode )
+        public boolean conflicts( KeyBinding binding )
         {
-            if ( keyCode != InputMappings.INPUT_INVALID ) {
-                AIM_HOLD.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
-            }
-            
-            super.setKeyModifierAndCode( keyModifier, keyCode );
+            // No conflict with vanilla attack and item use key binding.
+            final GameSettings settings = Minecraft.getInstance().gameSettings;
+            return(
+                binding != settings.keyBindAttack
+                && binding != settings.keyBindUseItem
+                && super.conflicts( binding )
+            );
         }
-    };
+    }
     
-    public static final PatchedKeyBinding AIM_HOLD = new PatchedKeyBinding(
-        "key.tac.aim_hold",
-        GunConflictContext.IN_GAME_HOLDING_WEAPON,
-        Type.MOUSE.getOrMakeInput( GLFW.GLFW_MOUSE_BUTTON_RIGHT ),
-        Collections.emptySet(),
-        "key.categories.tac"
-    ) {
-        @Override
-        public void setKeyAndCombinations( Input key, Set< Input > combinations )
-        {
-            if ( key != InputMappings.INPUT_INVALID ) {
-                AIM_TOGGLE.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
+    public static final PatchedKeyBinding
+        PULL_TRIGGER = new MouseKeyBinding(
+            "key.tac.pull_trigger",
+            Type.MOUSE.getOrMakeInput( GLFW.GLFW_MOUSE_BUTTON_LEFT )
+        ),
+        AIM_TOGGLE = new MouseKeyBinding(
+            "key.tac.aim_toggle",
+            InputMappings.INPUT_INVALID
+        ) {
+            @Override
+            public void setKeyAndCombinations( Input key, Set< Input > combinations )
+            {
+                if ( key != InputMappings.INPUT_INVALID ) {
+                    AIM_HOLD.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
+                }
+                
+                super.setKeyAndCombinations( key, combinations );
             }
-            
-            super.setKeyAndCombinations( key, combinations );
-        }
-        
-        @Override
-        public void setKeyModifierAndCode( KeyModifier keyModifier, Input keyCode )
-        {
-            if ( keyCode != InputMappings.INPUT_INVALID ) {
-                AIM_TOGGLE.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
+        },
+        AIM_HOLD = new MouseKeyBinding(
+            "key.tac.aim_hold",
+            Type.MOUSE.getOrMakeInput( GLFW.GLFW_MOUSE_BUTTON_RIGHT )
+        ) {
+            @Override
+            public void setKeyAndCombinations( Input key, Set< Input > combinations )
+            {
+                if ( key != InputMappings.INPUT_INVALID ) {
+                    AIM_TOGGLE.setKeyAndCombinations( InputMappings.INPUT_INVALID, Collections.emptySet() );
+                }
+                
+                super.setKeyAndCombinations( key, combinations );
             }
-            
-            super.setKeyModifierAndCode( keyModifier, keyCode );
-        }
-    };
+        };
     static
     {
+        ClientRegistry.registerKeyBinding( PULL_TRIGGER );
         ClientRegistry.registerKeyBinding( AIM_HOLD );
         ClientRegistry.registerKeyBinding( AIM_TOGGLE );
     }
