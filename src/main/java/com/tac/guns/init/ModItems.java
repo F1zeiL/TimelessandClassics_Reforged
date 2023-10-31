@@ -164,6 +164,7 @@ public class ModItems {
     public static final RegistryObject<Item> BULLET_LAPUA338 = REGISTER.register("lapua338", TimelessRFAmmoItem::new);
     //public static final RegistryObject<Item> GRENADE_40MM = REGISTER.register("grenade40mm", Timeless40AmmoItem::new);
     public static final RegistryObject<Item> BULLET_68 = REGISTER.register("bullet68", TimelessAmmoItem::new);
+    public static final RegistryObject<Item> BULLET_57 = REGISTER.register("57x28", TimelessAmmoItem::new);
 
     /*** Explosives ***/
     public static final RegistryObject<Item> RPG7_MISSILE = REGISTER.register("rpg7_missile",

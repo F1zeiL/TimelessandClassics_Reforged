@@ -30,7 +30,7 @@
     "preReloadPauseTicks": 0
   },
   "projectile": {
-    "item": "tac:46x30",
+    "item": "tac:57x28",
     "visible": false,
     "damage": 5.5,
     "armorIgnore": 1.4,
