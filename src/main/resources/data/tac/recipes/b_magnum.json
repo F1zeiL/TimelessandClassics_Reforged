@@ -5,17 +5,17 @@
       "item": {
         "tag": "forge:ingots/iron"
       },
-      "count": 2
+      "count": 5
     },
     {
       "item": {
         "tag": "forge:gunpowder"
       },
-      "count": 2
+      "count": 6
     }
   ],
   "result": {
     "item": "tac:b_magnum",
-    "count": 50
+    "count": 48
   }
 }

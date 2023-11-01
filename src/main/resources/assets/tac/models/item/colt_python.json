@@ -14,11 +14,11 @@
 			"scale": [0.35, 0.35, 0.35]
 		},
 		"firstperson_righthand": {
-			"translation": [-7.5, 4.75, -1],
+			"translation": [-6.5, 4.75, -2],
 			"scale": [0.5, 0.5, 0.5]
 		},
 		"firstperson_lefthand": {
-			"translation": [-7.5, 4.75, -1],
+			"translation": [-6.5, 4.75, -2],
 			"scale": [0.5, 0.5, 0.5]
 		},
 		"ground": {
