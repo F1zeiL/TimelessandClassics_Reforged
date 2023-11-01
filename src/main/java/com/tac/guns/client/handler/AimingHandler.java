@@ -141,22 +141,63 @@ public class AimingHandler {
         
         assert mc.world != null;
         final BlockRayTraceResult result = ( BlockRayTraceResult ) mc.objectMouseOver;
-        final BlockState state = mc.world.getBlockState(result.getPos());
+        final BlockState state = mc.world.getBlockState( result.getPos() );
         final Block block = state.getBlock();
         final RightClickUse config = Config.CLIENT.rightClickUse;
-        if (
-            !config.allowChests.get() && ( block instanceof ContainerBlock || block.hasTileEntity( state ) )
-            || !config.allowCraftingTable.get() && ( block == Blocks.CRAFTING_TABLE || block == ModBlocks.WORKBENCH.get() )
-            || !config.allowDoors.get() && BlockTags.DOORS.contains(block)
-            || !config.allowTrapDoors.get() && BlockTags.TRAPDOORS.contains(block)
-            || !config.allowChests.get() && Tags.Blocks.CHESTS.contains(block)
-            || !config.allowFenceGates.get() && Tags.Blocks.FENCE_GATES.contains(block)
-            || !config.allowButton.get() && BlockTags.BUTTONS.contains(block)
-            || !config.allowLever.get() && block == Blocks.LEVER
-        ) {
-            event.setCanceled(true);
-            event.setSwingHand(false);
+        if ( block instanceof ContainerBlock || block.hasTileEntity( state ) )
+        {
+            if ( config.allowChests.get() ) {
+                return;
+            }
         }
+        else if ( block == Blocks.CRAFTING_TABLE || block == ModBlocks.WORKBENCH.get() )
+        {
+            if ( config.allowCraftingTable.get() ) {
+                return;
+            }
+        }
+        else if ( BlockTags.DOORS.contains( block ) )
+        {
+            if ( config.allowDoors.get() ) {
+                return;
+            }
+        }
+        else if ( BlockTags.TRAPDOORS.contains( block ) )
+        {
+            if ( config.allowTrapDoors.get() ) {
+                return;
+            }
+        }
+        else if ( Tags.Blocks.CHESTS.contains( block ) )
+        {
+            if ( config.allowChests.get() ) {
+                return;
+            }
+        }
+        else if ( Tags.Blocks.FENCE_GATES.contains( block ) )
+        {
+            if ( config.allowFenceGates.get() ) {
+                return;
+            }
+        }
+        else if ( BlockTags.BUTTONS.contains( block ) )
+        {
+            if ( config.allowButton.get() ) {
+                return;
+            }
+        }
+        else if ( block == Blocks.LEVER )
+        {
+            if ( config.allowLever.get() ) {
+                return;
+            }
+        }
+        else if ( config.allowRestUse.get() ) {
+            return;
+        }
+        
+        event.setCanceled(true);
+        event.setSwingHand(false);
     }
 
     @Nullable
