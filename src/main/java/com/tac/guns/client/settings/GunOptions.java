@@ -72,12 +72,6 @@ public class GunOptions
         matrixStack.pop();
     });
 
-    public static final BooleanOption DISABLE_ALL_USE = new BooleanOption("tac.options.disableAllUse", (settings) -> {
-        return Config.CLIENT.rightClickUse.disableAllUse.get();
-    }, (settings, value) -> {
-        Config.CLIENT.rightClickUse.disableAllUse.set(value);
-        Config.saveClientConfig();
-    });
     public static final BooleanOption ALLOW_LEVER = new BooleanOption("tac.options.allowLever", (settings) -> {
         return Config.CLIENT.rightClickUse.allowLever.get();
     }, (settings, value) -> {

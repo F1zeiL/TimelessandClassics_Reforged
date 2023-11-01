@@ -217,10 +217,10 @@ public class ClientHandler {
             try {
                 OptionsRowList list = (OptionsRowList) mouseOptionsField.get(screen);
                 list.addOption(GunOptions.ADS_SENSITIVITY, GunOptions.CROSSHAIR);
-                list.addOption(GunOptions.DISABLE_ALL_USE, GunOptions.ALLOW_CHESTS);
+                list.addOption(GunOptions.ALLOW_CHESTS, GunOptions.ALLOW_FENCE_GATES);
                 list.addOption(GunOptions.ALLOW_LEVER, GunOptions.ALLOW_BUTTON);
                 list.addOption(GunOptions.ALLOW_DOORS, GunOptions.ALLOW_TRAP_DOORS);
-                list.addOption(GunOptions.ALLOW_CRAFTING_TABLE, GunOptions.ALLOW_FENCE_GATES);
+                list.addOption(GunOptions.ALLOW_CRAFTING_TABLE);
                 /*, GunOptions.BURST_MECH);*/
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
