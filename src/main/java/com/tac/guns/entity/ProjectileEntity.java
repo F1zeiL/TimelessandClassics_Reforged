@@ -251,7 +251,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                         }
                     }
                     if (result != null) {
-                        this.onHit(result, startVec, endVec);
+                        if (((EntityRayTraceResult) result).getEntity().isAlive())
+                            this.onHit(result, startVec, endVec);
                     }
                 }
             } else {
