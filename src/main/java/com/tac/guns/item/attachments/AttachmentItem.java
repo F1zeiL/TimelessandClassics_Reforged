@@ -2,7 +2,6 @@ package com.tac.guns.item.attachments;
 
 import com.tac.guns.common.attachments.*;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

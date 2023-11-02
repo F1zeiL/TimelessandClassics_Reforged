@@ -3,19 +3,16 @@ package com.tac.guns.common.container;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.attachments.AttachmentType;
 import com.tac.guns.common.container.slot.AttachmentSlot;
-import com.tac.guns.common.container.slot.LegacyAttachmentSlot;
 import com.tac.guns.init.ModContainers;
-import com.tac.guns.item.*;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
+import com.tac.guns.item.attachments.AttachmentItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -25,7 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 public class AttachmentContainer extends Container {
     private ItemStack weapon;
     private IInventory playerInventory;
-    private IInventory weaponInventory = new Inventory(IAttachment.Type.values().length) {
+    private IInventory weaponInventory = new Inventory(AttachmentType.values().length) {
         @Override
         public void markDirty() {
             super.markDirty();
@@ -38,11 +35,10 @@ public class AttachmentContainer extends Container {
     public AttachmentContainer(int windowId, PlayerInventory playerInventory, ItemStack stack) // reads from attachments inv
     {
         this(windowId, playerInventory);
-        ItemStack[] attachments = new ItemStack[AttachmentType.values().length];
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < attachments.length - 7; i++) {
-                attachments[i] = Gun.getAttachment(AttachmentType.values()[i], stack);
-                this.weaponInventory.setInventorySlotContents(i, attachments[i]);
+            for (int i = 0; i < 8; i++) {
+                ItemStack attachment = Gun.getAttachment(AttachmentType.values()[i], stack);
+                this.weaponInventory.setInventorySlotContents(i, attachment);
             }
         }
         this.loaded = true;
@@ -54,7 +50,7 @@ public class AttachmentContainer extends Container {
         this.playerInventory = playerInventory;
         // weapon
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < IAttachment.Type.values().length - 7; i++) {
+            for (int i = 0; i < 8; i++) {
                  if (i > 3) {
                     this.addSlot(new AttachmentSlot(
                             this, this.weaponInventory, this.weapon, AttachmentType.values()[i],
@@ -114,7 +110,7 @@ public class AttachmentContainer extends Container {
         if (this.weapon.getItem() instanceof TimelessGunItem) {
             for (int i = 0; i < 7; i++) {
                 ItemStack attachment = this.getSlot(i).getStack();
-                if (attachment.getItem() instanceof IAttachment){
+                if (attachment.getItem() instanceof AttachmentItem){
                     checkAndWrite(attachment, attachments);
                 }
             }
@@ -127,7 +123,7 @@ public class AttachmentContainer extends Container {
 
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
         if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
-            attachments.put(((IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+            attachments.put(( (AttachmentItem) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
         }
     }
 
@@ -136,60 +132,21 @@ public class AttachmentContainer extends Container {
         ItemStack copyStack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
-        if (this.weapon.getItem() instanceof ScopeItem ||
-                this.weapon.getItem() instanceof SideRailItem ||
-                this.weapon.getItem() instanceof IrDeviceItem) {
-            if (slot != null && slot.getHasStack()) {
-                ItemStack slotStack = slot.getStack();
-                copyStack = slotStack.copy();
+        if (slot != null && slot.getHasStack()) {
+            ItemStack slotStack = slot.getStack();
+            copyStack = slotStack.copy();
 
-                if (index == 0) {
-                    if (!this.mergeItemStack(slotStack, 0, 36, true)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else {
-                    if (slotStack.getItem() instanceof DyeItem) {
-                        if (!this.mergeItemStack(slotStack, 0, 3, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index < 28) {
-                        if (!this.mergeItemStack(slotStack, 28, 36, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (index <= 36 && !this.mergeItemStack(slotStack, 0, 28, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                }
-
-                if (slotStack.isEmpty()) {
-                    slot.putStack(ItemStack.EMPTY);
-                } else {
-                    slot.onSlotChanged();
-                }
-
-                if (slotStack.getCount() == copyStack.getCount()) {
+            if (index < this.weaponInventory.getSizeInventory()) {
+                if (!this.mergeItemStack(slotStack, this.weaponInventory.getSizeInventory(), this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-
-                slot.onTake(playerIn, slotStack);
+            } else if (!this.mergeItemStack(slotStack, 0, this.weaponInventory.getSizeInventory(), false)) {
+                return ItemStack.EMPTY;
             }
-        } else {
-            if (slot != null && slot.getHasStack()) {
-                ItemStack slotStack = slot.getStack();
-                copyStack = slotStack.copy();
-
-                if (index < this.weaponInventory.getSizeInventory()) {
-                    if (!this.mergeItemStack(slotStack, this.weaponInventory.getSizeInventory(), this.inventorySlots.size(), true)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.mergeItemStack(slotStack, 0, this.weaponInventory.getSizeInventory(), false)) {
-                    return ItemStack.EMPTY;
-                }
-                if (slotStack.isEmpty()) {
-                    slot.putStack(ItemStack.EMPTY);
-                } else {
-                    slot.onSlotChanged();
-                }
+            if (slotStack.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
             }
         }
 

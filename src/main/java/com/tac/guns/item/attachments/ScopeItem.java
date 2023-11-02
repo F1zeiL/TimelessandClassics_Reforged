@@ -9,8 +9,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ScopeItem extends AttachmentItem implements IColored
-{
+public class ScopeItem extends AttachmentItem implements IColored {
     private final boolean colored;
 
     public ScopeItem(Properties properties)
