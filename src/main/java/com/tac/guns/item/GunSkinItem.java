@@ -2,6 +2,8 @@ package com.tac.guns.item;
 
 import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.common.attachments.CustomModifierData;
+import com.tac.guns.common.attachments.PerkTipsBuilder;
+import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IgunSkin;
@@ -61,8 +63,8 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         CustomModifierData info = getCustomModifier(stack);
         if(info!=null){
-            List<ITextComponent> perks = new PerkTipsBuilder()
-                    .add(info.getAdditionalDamage(),Perks.additionalDamage)
+            List<ITextComponent> perks = new PerkTipsBuilder(info)
+                    .add(Perks.additionalDamage)
                     .build();
 
             if(!perks.isEmpty()){
@@ -126,24 +128,6 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
             });
         }
         return list;
-    }
-
-    public static class PerkTipsBuilder{
-        List<ITextComponent> positivePerks = new ArrayList<>();
-        List<ITextComponent> negativePerks = new ArrayList<>();
-        PerkTipsBuilder add(float value, Perks perk){
-            if (value > 0.0F) {
-                positivePerks.add(perk.getPositive(value));
-            } else if (value < 0.0F) {
-                negativePerks.add(perk.getNegative(value));
-            }
-            return this;
-        }
-
-        List<ITextComponent> build(){
-            positivePerks.addAll(negativePerks);
-            return positivePerks;
-        }
     }
 
 }

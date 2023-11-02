@@ -12,6 +12,7 @@ import com.tac.guns.item.TransitionalTypes.grenades.utility.ImpactFlashGrenadeIt
 import com.tac.guns.item.TransitionalTypes.grenades.utility.StunGrenadeItem;
 import com.tac.guns.item.attachment.impl.*;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -287,7 +288,10 @@ public class ModItems {
 
     /* Skin */
     public static final RegistryObject<Item> SKIN_CUSTOM = REGISTER.register("skin_custom",
-            () -> new GunSkinItem(GunSkin.create(), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+            () -> new com.tac.guns.item.attachments.GunSkinItem(
+                    new Item.Properties().maxStackSize(1).group(GunMod.SKINS),
+                    new ResourceLocation("tac:test")
+            ));
 
     /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",

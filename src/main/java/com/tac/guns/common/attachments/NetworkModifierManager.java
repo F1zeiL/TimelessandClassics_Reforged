@@ -63,7 +63,7 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
     @Override
     protected Map<ResourceLocation, CustomModifierData> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
         Map<ResourceLocation, CustomModifierData> map = new HashMap<>();
-        resourceManagerIn.getAllResourceLocations("modifiers",(s)-> s.endsWith(".json"))
+        resourceManagerIn.getAllResourceLocations("modifiers/",(s)-> s.endsWith(".json"))
                 .forEach((resourceLocation)->{
                     try {
                         resourceManagerIn.getAllResources(resourceLocation).forEach((resource)->{

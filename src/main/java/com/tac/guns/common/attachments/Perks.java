@@ -16,14 +16,8 @@ public class Perks {
 
     public static FloatPerk additionalDamage = registerPerk(
             new FloatPerk("additionalDamage",
-            "perk.tac.additional_damage.positivev2",
-            "perk.tac.additional_damage.positivev2",
-                    Formatter.TO_HEART){
-        @Override
-        public Float getValue(CustomModifierData data) {
-            return data.getAdditionalDamage();
-        }
-    });
+                    "perk.tac.additional_damage.positivev2", "perk.tac.additional_damage.positivev2",
+                    Formatter.TO_HEART, CustomModifierData::getAdditionalDamage));
 
     public static <T extends Perk<?>> T registerPerk(T perk){
         perkList.add(perk);

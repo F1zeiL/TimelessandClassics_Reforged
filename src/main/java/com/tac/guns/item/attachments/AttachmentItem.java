@@ -1,8 +1,8 @@
-package com.tac.guns.item;
+package com.tac.guns.item.attachments;
 
-import com.tac.guns.common.attachments.CustomModifierData;
-import com.tac.guns.common.attachments.NetworkModifierManager;
+import com.tac.guns.common.attachments.*;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,17 +20,16 @@ import java.util.List;
 
 public abstract class AttachmentItem extends Item {
     public static final String CUSTOM_MODIFIER = "CustomModifier";
-
     private ResourceLocation defaultModifier;
-
     public AttachmentItem(Properties properties) {
         super(properties);
     }
-
     public AttachmentItem(Properties properties, ResourceLocation defaultModifier) {
         super(properties);
         this.defaultModifier = defaultModifier;
     }
+
+    public abstract AttachmentType getType();
 
     public static boolean hasCustomModifier(ItemStack stack){
         return stack!=null && stack.getItem() instanceof AttachmentItem && stack.getTag()!=null &&
@@ -41,16 +40,22 @@ public abstract class AttachmentItem extends Item {
             stack.getOrCreateTag().putString(CUSTOM_MODIFIER, location.toString());
         }
     }
-
     @Nullable
-    public static CustomModifierData getCustomModifier(ItemStack stack){
-        if(hasCustomModifier(stack)) {
-            assert stack.getTag() != null;
-            String raw = stack.getTag().getString(CUSTOM_MODIFIER);
-            ResourceLocation loc = ResourceLocation.tryCreate(raw);
-            if(loc!=null){
-                return NetworkModifierManager.getCustomModifier(loc);
+    public static CustomModifierData getModifier(ItemStack stack){
+        if(stack.getItem() instanceof AttachmentItem){
+            CustomModifierData data = null;
+            if(hasCustomModifier(stack)) {
+                assert stack.getTag() != null;
+                String raw = stack.getTag().getString(CUSTOM_MODIFIER);
+                ResourceLocation loc = ResourceLocation.tryCreate(raw);
+                if(loc!=null){
+                    data = NetworkModifierManager.getCustomModifier(loc);
+                }
             }
+            if(data==null){
+                data = NetworkModifierManager.getCustomModifier( ((AttachmentItem) stack.getItem()).defaultModifier);
+            }
+            return data;
         }
         return null;
     }
@@ -68,45 +73,29 @@ public abstract class AttachmentItem extends Item {
         }
         return list;
     }
-
+    public static ITextComponent perks_title = new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD);
+    public static ITextComponent limits_title = new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD);
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        CustomModifierData info = getCustomModifier(stack);
+        CustomModifierData info = getModifier(stack);
         if(info!=null){
-            List<ITextComponent> perks = new PerkTipsBuilder()
-                    .add(info.getAdditionalDamage(), GunSkinItem.Perks.additionalDamage)
+            List<ITextComponent> perks = new PerkTipsBuilder(info)
+                    .add(Perks.additionalDamage)
                     .build();
 
             if(!perks.isEmpty()){
-                tooltip.add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                tooltip.add(perks_title);
                 tooltip.addAll(perks);
             }
 
             List<ITextComponent> list = getSuitableGuns(info);
+
             if (!list.isEmpty()) {
-                tooltip.add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                tooltip.add(limits_title);
                 tooltip.addAll(list);
             }
         }
 
-    }
-
-    public static class PerkTipsBuilder{
-        List<ITextComponent> positivePerks = new ArrayList<>();
-        List<ITextComponent> negativePerks = new ArrayList<>();
-        PerkTipsBuilder add(float value, Perks perk){
-            if (value > 0.0F) {
-                positivePerks.add(perk.getPositive(value));
-            } else if (value < 0.0F) {
-                negativePerks.add(perk.getNegative(value));
-            }
-            return this;
-        }
-
-        List<ITextComponent> build(){
-            positivePerks.addAll(negativePerks);
-            return positivePerks;
-        }
     }
 
 }

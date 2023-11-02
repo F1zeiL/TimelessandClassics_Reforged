@@ -1,6 +1,7 @@
 package com.tac.guns.common.attachments.perk;
 
 import com.tac.guns.common.attachments.CustomModifierData;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -9,32 +10,37 @@ import javax.annotation.Nullable;
 import java.util.function.Function;
 
 /** A single perk entry from the CustomModifier.<br>
- * Use to convenient access to an additional attribute and generate formatting tooltip.<br>
+ * Use to get additional attribute and generate formatting tooltip.<br>
  * Not storage actual data
  */
 public abstract class Perk<T> {
-    public final String key;
-    public final String keyPositive;
-    public final String keyNegative;
+    private final String key;
+    private final String keyPositive;
+    private final String keyNegative;
     @Nullable
-    public final Function<T, String> formatter;
+    private final Function<T, String> formatter;
 
-    Perk(String key, String keyPositive, String keyNegative, Function<T, String> formatter) {
+    public Perk(String key, String keyPositive, String keyNegative, Function<T, String> formatter) {
         this.key = key;
         this.keyPositive = keyPositive;
         this.keyNegative = keyNegative;
         this.formatter = formatter;
     }
 
-    public ITextComponent getPositive(T value){
-        if(formatter==null) return new TranslationTextComponent(keyPositive, value).mergeStyle(TextFormatting.GREEN);
-        else return new TranslationTextComponent(keyPositive,formatter.apply(value)).mergeStyle(TextFormatting.GREEN);
+    public String getKey() {
+        return key;
     }
-
-    public ITextComponent getNegative(T value){
-        if(formatter==null) return new TranslationTextComponent(keyNegative, value).mergeStyle(TextFormatting.RED);
-        else return new TranslationTextComponent(keyPositive,formatter.apply(value)).mergeStyle(TextFormatting.RED);
+    public String getKeyPositive() {
+        return keyPositive;
     }
-
+    public String getKeyNegative() {
+        return keyNegative;
+    }
+    @Nullable
+    public Function<T, String> getFormatter() {
+        return formatter;
+    }
     public abstract T getValue(CustomModifierData data);
+    public abstract void write(CompoundNBT tag, CustomModifierData data);
+    public abstract void read(CompoundNBT tag, CustomModifierData data);
 }
