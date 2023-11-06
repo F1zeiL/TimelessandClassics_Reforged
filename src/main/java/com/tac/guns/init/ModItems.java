@@ -288,10 +288,7 @@ public class ModItems {
 
     /* Skin */
     public static final RegistryObject<Item> SKIN_CUSTOM = REGISTER.register("skin_custom",
-            () -> new com.tac.guns.item.attachments.GunSkinItem(
-                    new Item.Properties().maxStackSize(1).group(GunMod.SKINS),
-                    new ResourceLocation("tac:test")
-            ));
+            () -> new GunSkinItem(GunSkin.create(),new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 
     /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",

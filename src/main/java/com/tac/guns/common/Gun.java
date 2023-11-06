@@ -7,7 +7,6 @@ import com.tac.guns.Reference;
 import com.tac.guns.annotation.Ignored;
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.client.handler.command.GunEditor;
-import com.tac.guns.common.attachments.AttachmentType;
 import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
@@ -2358,28 +2357,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         return false;
     }
 
-    public boolean canAttachType(@Nullable AttachmentType type) {
-        if (this.modules.attachments != null && type != null) {
-            switch (type) {
-                case SCOPE:
-                    return this.modules.attachments.scope != null;
-                case BARREL:
-                    return this.modules.attachments.barrel != null;
-                case STOCK:
-                    return this.modules.attachments.stock != null;
-                case UNDER_BARREL:
-                    return this.modules.attachments.underBarrel != null;
-                case GUN_SKIN:
-                    return this.modules.attachments.gunSkin != null;
-                case SIDE_RAIL:
-                    return this.modules.attachments.sideRail != null;
-                case EXTENDED_MAG:
-                    return this.modules.attachments.extendedMag != null;
-            }
-        }
-        return false;
-    }
-
     @Nullable
     public ScaledPositioned getAttachmentPosition(IAttachment.Type type) {
         if (this.modules.attachments != null) {
@@ -2478,17 +2455,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
     }
 
     public static ItemStack getAttachment(IAttachment.Type type, ItemStack gun) {
-        CompoundNBT compound = gun.getTag();
-        if (compound != null && compound.contains("Attachments", Constants.NBT.TAG_COMPOUND)) {
-            CompoundNBT attachment = compound.getCompound("Attachments");
-            if (attachment.contains(type.getTagKey(), Constants.NBT.TAG_COMPOUND)) {
-                return ItemStack.read(attachment.getCompound(type.getTagKey()));
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    public static ItemStack getAttachment(AttachmentType type, ItemStack gun) {
         CompoundNBT compound = gun.getTag();
         if (compound != null && compound.contains("Attachments", Constants.NBT.TAG_COMPOUND)) {
             CompoundNBT attachment = compound.getCompound("Attachments");

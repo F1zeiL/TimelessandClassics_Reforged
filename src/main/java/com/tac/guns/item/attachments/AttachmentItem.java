@@ -28,7 +28,7 @@ public abstract class AttachmentItem extends Item {
         this.defaultModifier = defaultModifier;
     }
 
-    public abstract AttachmentType getType();
+//    public abstract AttachmentType getType();
 
     public static boolean hasCustomModifier(ItemStack stack){
         return stack!=null && stack.getItem() instanceof AttachmentItem && stack.getTag()!=null &&

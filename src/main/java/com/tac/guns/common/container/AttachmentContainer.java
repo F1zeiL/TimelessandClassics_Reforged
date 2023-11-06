@@ -1,10 +1,10 @@
 package com.tac.guns.common.container;
 
 import com.tac.guns.common.Gun;
-import com.tac.guns.common.attachments.AttachmentType;
 import com.tac.guns.common.container.slot.AttachmentSlot;
 import com.tac.guns.init.ModContainers;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import com.tac.guns.item.attachments.AttachmentItem;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,7 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 public class AttachmentContainer extends Container {
     private ItemStack weapon;
     private IInventory playerInventory;
-    private IInventory weaponInventory = new Inventory(AttachmentType.values().length) {
+    private IInventory weaponInventory = new Inventory(IAttachment.Type.values().length) {
         @Override
         public void markDirty() {
             super.markDirty();
@@ -37,7 +37,7 @@ public class AttachmentContainer extends Container {
         this(windowId, playerInventory);
         if (this.weapon.getItem() instanceof TimelessGunItem) {
             for (int i = 0; i < 8; i++) {
-                ItemStack attachment = Gun.getAttachment(AttachmentType.values()[i], stack);
+                ItemStack attachment = Gun.getAttachment(IAttachment.Type.values()[i], stack);
                 this.weaponInventory.setInventorySlotContents(i, attachment);
             }
         }
@@ -53,12 +53,12 @@ public class AttachmentContainer extends Container {
             for (int i = 0; i < 8; i++) {
                  if (i > 3) {
                     this.addSlot(new AttachmentSlot(
-                            this, this.weaponInventory, this.weapon, AttachmentType.values()[i],
+                            this, this.weaponInventory, this.weapon, IAttachment.Type.values()[i],
                             playerInventory.player, i, 155, 17 + (i - 4) * 18
                     ));
                 } else{
                      this.addSlot(new AttachmentSlot(
-                             this, this.weaponInventory, this.weapon, AttachmentType.values()[i],
+                             this, this.weaponInventory, this.weapon, IAttachment.Type.values()[i],
                              playerInventory.player, i, 5, 17 + i * 18
                      ));
                  }
@@ -91,7 +91,7 @@ public class AttachmentContainer extends Container {
     }
 
     public boolean hasExMag() {
-        return Gun.getAttachment(AttachmentType.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
+        return Gun.getAttachment(IAttachment.Type.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
     }
 
     public boolean isLoaded() {
@@ -123,7 +123,7 @@ public class AttachmentContainer extends Container {
 
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
         if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
-            attachments.put(( (AttachmentItem) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
+            attachments.put(( (IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
         }
     }
 
