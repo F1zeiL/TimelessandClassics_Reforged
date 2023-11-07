@@ -23,7 +23,7 @@ public class ModContainers {
     });
 
     public static final RegistryObject<ContainerType<AttachmentContainer>> ATTACHMENTS = register("attachments", AttachmentContainer::new);
-
+    public static final RegistryObject<ContainerType<DyeContainer>> DYES = register("dye", DyeContainer::new);
     public static final RegistryObject<ContainerType<InspectionContainer>> INSPECTION = register("inspection", InspectionContainer::new);
 
     public static final RegistryObject<ContainerType<ColorBenchContainer>> COLOR_BENCH = register("color_bench", ColorBenchContainer::new);
