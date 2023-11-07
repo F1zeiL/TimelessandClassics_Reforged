@@ -30,7 +30,6 @@ import org.lwjgl.opengl.GL11;
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
 public class DyeScreen extends ContainerScreen<DyeContainer> {
-    private static final ResourceLocation GUN_GUI_TEXTURES = new ResourceLocation("tac:textures/gui/attachments.png");
     private static final ResourceLocation SCOPE_GUI_TEXTURES = new ResourceLocation("tac:textures/gui/scope_attachments.png");
 
     private final PlayerInventory playerInventory;
@@ -57,8 +56,7 @@ public class DyeScreen extends ContainerScreen<DyeContainer> {
         if (SyncedPlayerData.instance().get(Minecraft.getInstance().player, ModSyncedDataKeys.RELOADING))
             Minecraft.getInstance().displayGuiScreen(null);
         if (this.minecraft != null && this.minecraft.player != null) {
-            if (!(this.minecraft.player.getHeldItemMainhand().getItem() instanceof GunItem) &&
-                    !(this.minecraft.player.getHeldItemMainhand().getItem() instanceof ScopeItem) &&
+            if (!(this.minecraft.player.getHeldItemMainhand().getItem() instanceof ScopeItem) &&
                     !(this.minecraft.player.getHeldItemMainhand().getItem() instanceof SideRailItem) &&
                     !(this.minecraft.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem)) {
                 Minecraft.getInstance().displayGuiScreen(null);
@@ -140,10 +138,8 @@ public class DyeScreen extends ContainerScreen<DyeContainer> {
     protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         Minecraft minecraft = Minecraft.getInstance();
-        if (!(this.minecraft.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem) && !(this.minecraft.player.getHeldItemMainhand().getItem() instanceof SideRailItem) && !(this.minecraft.player.getHeldItemMainhand().getItem() instanceof ScopeItem))
-            minecraft.getTextureManager().bindTexture(GUN_GUI_TEXTURES);
-        else
-            minecraft.getTextureManager().bindTexture(SCOPE_GUI_TEXTURES);
+
+        minecraft.getTextureManager().bindTexture(SCOPE_GUI_TEXTURES);
 
         int left = (this.width - this.xSize) / 2;
         int top = (this.height - this.ySize) / 2;
@@ -151,7 +147,9 @@ public class DyeScreen extends ContainerScreen<DyeContainer> {
 
         if ((this.minecraft.player.getHeldItemMainhand().getItem() instanceof ScopeItem) ||
                 (this.minecraft.player.getHeldItemMainhand().getItem() instanceof SideRailItem) ||
-                (this.minecraft.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem))
+                (this.minecraft.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem)){
+
+        }
             for (int i = 0; i < 3; i++) {
                 if (i == 0 && !this.container.getSlot(i).isEnabled()) {
                     this.blit(matrixStack, left + 70, top + 50 + 18, 176, 16, 16, 16);

@@ -2,6 +2,8 @@
   "id": "tac:test",
   "skin": "tac:golden",
   "additionalDamage": 1.0,
+  "silencedFire": true,
+  "modifyFireSoundRadius": 2.5,
   "canApplyOn": [
     "tac:scar_l"
   ],

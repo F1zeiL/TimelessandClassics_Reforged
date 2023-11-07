@@ -47,40 +47,7 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
         }
     }
 
-    @Nullable
-    public static CustomModifierData getCustomModifier(ItemStack stack){
-        if(hasCustomModifier(stack)) {
-            assert stack.getTag() != null;
-            String raw = stack.getTag().getString(CUSTOM_MODIFIER);
-            ResourceLocation loc = ResourceLocation.tryCreate(raw);
-            if(loc!=null){
-                return NetworkModifierManager.getCustomModifier(loc);
-            }
-        }
-        return null;
-    }
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        CustomModifierData info = getCustomModifier(stack);
-        if(info!=null){
-            List<ITextComponent> perks = new PerkTipsBuilder(info)
-                    .add(Perks.additionalDamage)
-                    .build();
-
-            if(!perks.isEmpty()){
-                tooltip.add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
-                tooltip.addAll(perks);
-            }
-
-            List<ITextComponent> list = getSuitableGuns(info);
-            if(!list.isEmpty()){
-                tooltip.add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
-                tooltip.addAll(list);
-            }
-        }
-
-    }
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
@@ -123,17 +90,5 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
         return super.getTranslationKey(stack);
     }
 
-    private static List<ITextComponent> getSuitableGuns(CustomModifierData modifier){
-        List<ITextComponent> list = new ArrayList<>();
-        if (modifier.getSuitableGuns() != null) {
-            modifier.getSuitableGuns().forEach((rl)->{
-                Item item = ForgeRegistries.ITEMS.getValue(rl);
-                if(item instanceof TimelessGunItem){
-                    list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
-                }
-            });
-        }
-        return list;
-    }
 
 }

@@ -1,6 +1,7 @@
 package com.tac.guns.common.attachments;
 
 import com.tac.guns.annotation.Optional;
+import com.tac.guns.common.attachments.perk.Perk;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,12 +20,12 @@ import java.util.List;
  */
 public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     private ResourceLocation id;
-    @Optional
-    private ResourceLocation skin;
-    @Optional
-    private float additionalDamage = 0;
-    @Optional
-    private List<ResourceLocation> canApplyOn;
+    @Optional private ResourceLocation skin;
+    @Optional private List<ResourceLocation> canApplyOn;
+    @Optional private float additionalDamage = 0;
+    @Optional private boolean silencedFire = false;
+    @Optional private double modifyFireSoundRadius = 0;
+
     public ResourceLocation getId() {
         return id;
     }
@@ -34,6 +35,13 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     public float getAdditionalDamage() {
         return additionalDamage;
     }
+    public boolean isSilencedFire() {
+        return silencedFire;
+    }
+    public double getModifyFireSoundRadius() {
+        return modifyFireSoundRadius;
+    }
+
     @Nullable
     public List<ResourceLocation> getSuitableGuns() {
         return canApplyOn;
@@ -63,7 +71,9 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
             }
             nbt.put("canApplyOn",listNBT);
         }
-        Perks.additionalDamage.write(nbt,this);
+        for (Perk<?> perk : Perks.perkList){
+            perk.write(nbt,this);
+        }
         return nbt;
     }
 
@@ -90,7 +100,9 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                 });
             }
         }
-        Perks.additionalDamage.read(nbt,this);
+        for (Perk<?> perk : Perks.perkList){
+            perk.read(nbt,this);
+        }
     }
 
 }

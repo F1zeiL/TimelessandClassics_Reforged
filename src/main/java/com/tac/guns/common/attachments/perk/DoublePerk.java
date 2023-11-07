@@ -9,31 +9,31 @@ import java.util.function.Function;
 
 /** float type perk.
  */
-public class FloatPerk extends SignedPerk<Float>{
-    public FloatPerk(String key, String keyPositive, String keyNegative, Function<Float, String> formatter,
-                     Function<CustomModifierData, Float> getter) {
+public class DoublePerk extends SignedPerk<Double>{
+    public DoublePerk(String key, String keyPositive, String keyNegative, Function<Double, String> formatter,
+                      Function<CustomModifierData, Double> getter) {
         super(key, keyPositive, keyNegative,formatter,getter);
     }
 
     @Override
-    public Float getValue(CustomModifierData data) {
+    public Double getValue(CustomModifierData data) {
         if(getter!=null && data!=null)return getter.apply(data);
-        return 0.0f;
+        return 0.0;
     }
 
     @Override
     public void write(CompoundNBT tag, CustomModifierData data) {
-        tag.putFloat(getKey(),getValue(data));
+        tag.putDouble(getKey(),getValue(data));
     }
 
     @Override
     public void read(CompoundNBT tag, CustomModifierData data){
         try {
-            if(tag.contains(getKey(), Constants.NBT.TAG_FLOAT)){
+            if(tag.contains(getKey(), Constants.NBT.TAG_DOUBLE)){
                 Field field = data.getClass().getDeclaredField(getKey());
-                if(field.getType() == float.class){
+                if(field.getType() == double.class){
                     field.setAccessible(true);
-                    field.setFloat(data,tag.getFloat(getKey()));
+                    field.setDouble(data,tag.getFloat(getKey()));
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {

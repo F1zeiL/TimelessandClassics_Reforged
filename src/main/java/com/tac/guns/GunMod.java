@@ -8,6 +8,7 @@ import com.tac.guns.client.render.pose.*;
 import com.tac.guns.common.BoundingBoxManager;
 import com.tac.guns.common.GripType;
 import com.tac.guns.common.ProjectileManager;
+import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.common.tooling.CommandsHandler;
 import com.tac.guns.common.tooling.CommandsManager;
 import com.tac.guns.datagen.*;
@@ -218,6 +219,8 @@ public class GunMod {
         bus.addListener(this::dataSetup);
         controllableLoaded = ModList.get().isLoaded("controllable");
         modInfo = ModLoadingContext.get().getActiveContainer().getModInfo();
+
+        Perks.init();
     }
 
     public static IModInfo modInfo = null;

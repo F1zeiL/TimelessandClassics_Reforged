@@ -1,5 +1,7 @@
 package com.tac.guns.common.attachments;
 
+import com.tac.guns.common.attachments.perk.BooleanPerk;
+import com.tac.guns.common.attachments.perk.DoublePerk;
 import com.tac.guns.common.attachments.perk.FloatPerk;
 import net.minecraft.util.text.ITextComponent;
 
@@ -21,6 +23,23 @@ public class PerkTipsBuilder {
             positivePerks.add(perk.getPositive(data));
         } else if (value < 0.0F) {
             negativePerks.add(perk.getNegative(data));
+        }
+        return this;
+    }
+
+    public PerkTipsBuilder addPercentage(DoublePerk perk) {
+        double value = perk.getValue(data);
+        if (value < 1.0) {
+            positivePerks.add(perk.getPositive(data));
+        } else if (value > 1.0) {
+            negativePerks.add(perk.getNegative(data));
+        }
+        return this;
+    }
+
+    public PerkTipsBuilder add(BooleanPerk perk) {
+        if(perk.getValue(data)){
+            positivePerks.add(perk.getText());
         }
         return this;
     }
