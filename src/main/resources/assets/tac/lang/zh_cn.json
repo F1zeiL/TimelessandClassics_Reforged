@@ -316,6 +316,7 @@
   "tac.options.allowCraftingTable": "允许使用合成台",
   "tac.options.allowChests": "允许使用箱子",
   "tac.options.allowFenceGates": "允许使用栅栏门",
+  "tac.options.holdToAim": "按住以瞄准（而非切换）",
   "tac.options.crosshair.format": "准心: %s",
   "tac.crosshair.arrow": "三角",
   "tac.crosshair.better_default": "原版优化",

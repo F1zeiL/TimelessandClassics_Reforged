@@ -53,44 +53,7 @@ public class ShootingHandler {
     private boolean clickUp = false;
     public int burstTracker = 0;
     private int burstCooldown = 0;
-
-    private ShootingHandler()
-    {
-        Keys.PULL_TRIGGER.addPressCallback( () -> {
-            if (!this.isInGame())
-                return;
-            
-            final Minecraft mc = Minecraft.getInstance();
-            final PlayerEntity player = mc.player;
-            assert player != null;
-            
-            final ItemStack heldItem = player.getHeldItemMainhand();
-            final boolean is_gun_in_hand = heldItem.getItem() instanceof GunItem;
-            if (!is_gun_in_hand)
-                return;
-            
-            if (magError(player, heldItem))
-            {
-                player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle( TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-                return;
-            }
-            
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0)
-            {
-                this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
-                fire(player, heldItem);
-                this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
-            }
-            else if (this.burstCooldown == 0)
-                fire(player, heldItem);
-            
-            if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
-                player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-            }
-        } );
-    }
+    private ShootingHandler() {}
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
@@ -270,6 +233,26 @@ public class ShootingHandler {
         if (heldItem.getItem() instanceof TimelessGunItem && event.isAttack()) {
             event.setCanceled(true);
             event.setSwingHand(false);
+        }
+
+        if (magError(player, heldItem)) {
+            player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+            PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+            return;
+        }
+
+        if(heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0)
+        {
+            this.burstTracker = ((TimelessGunItem)heldItem.getItem()).getGun().getGeneral().getBurstCount();
+            fire(player, heldItem);
+            this.burstCooldown = ((TimelessGunItem)heldItem.getItem()).getGun().getGeneral().getBurstRate();
+        }
+        else if(this.burstCooldown == 0)
+            fire(player, heldItem);
+
+        if(!(heldItem.getTag().getInt("AmmoCount") > 0)) {
+            player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+            PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
         }
     }
 

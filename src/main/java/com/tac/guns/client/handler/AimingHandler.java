@@ -62,6 +62,7 @@ public class AimingHandler {
     private double normalisedAdsProgress;
     private boolean aiming = false;
     private boolean toggledAim = false;
+    private int toggledAimAwaiter = 0;
 
     public int getCurrentScopeZoomIndex() {
         return this.currentScopeZoomIndex;
@@ -82,16 +83,10 @@ public class AimingHandler {
                     Gun.getScope(mc.player.getHeldItemMainhand()) != null))
                 this.currentScopeZoomIndex++;
         });
-
-        Keys.AIM_TOGGLE.addPressCallback(() -> {
-            final Minecraft mc = Minecraft.getInstance();
-            if (mc.player != null && mc.player.getHeldItemMainhand().getItem() instanceof GunItem) {
-                this.forceToggleAim();
-            }
-        });
     }
 
     private boolean originalSprint = false;
+
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.START)
@@ -106,96 +101,80 @@ public class AimingHandler {
                 this.aimingMap.remove(player);
             }
         }
-        if (player == Minecraft.getInstance().player){
+        if (player == Minecraft.getInstance().player) {
             if (isAiming()) {
-                if (player.isSprinting()){
+                if (player.isSprinting()) {
                     originalSprint = true;
                     player.setSprinting(false);
                 }
-            }else if (originalSprint){
-                originalSprint=false;
+            } else if (originalSprint) {
+                originalSprint = false;
                 player.setSprinting(true);
             }
         }
     }
 
     @SubscribeEvent
-    public void onClickInput( InputEvent.ClickInputEvent event )
-    {
-        if ( !event.isUseItem() ) {
+    public void onClickInput(InputEvent.ClickInputEvent event) {
+        if (!event.isUseItem()) {
             return;
         }
-        
+
         final Minecraft mc = Minecraft.getInstance();
         final boolean hasMouseOverBlock = mc.objectMouseOver instanceof BlockRayTraceResult;
-        if ( !hasMouseOverBlock ) {
+        if (!hasMouseOverBlock) {
             return;
         }
-        
-        final PlayerEntity player = mc.player; assert player != null;
+
+        final PlayerEntity player = mc.player;
+        assert player != null;
         final ItemStack heldItem = player.getHeldItemMainhand();
         final boolean isGunInHand = heldItem.getItem() instanceof TimelessGunItem;
-        if ( !isGunInHand ) {
+        if (!isGunInHand) {
             return;
         }
-        
+
         assert mc.world != null;
-        final BlockRayTraceResult result = ( BlockRayTraceResult ) mc.objectMouseOver;
-        final BlockState state = mc.world.getBlockState( result.getPos() );
+        final BlockRayTraceResult result = (BlockRayTraceResult) mc.objectMouseOver;
+        final BlockState state = mc.world.getBlockState(result.getPos());
         final Block block = state.getBlock();
         final RightClickUse config = Config.CLIENT.rightClickUse;
-        if ( block instanceof ContainerBlock || block.hasTileEntity( state ) )
-        {
-            if ( config.allowChests.get() ) {
+        if (block instanceof ContainerBlock || block.hasTileEntity(state)) {
+            if (config.allowChests.get()) {
                 return;
             }
-        }
-        else if ( block == Blocks.CRAFTING_TABLE || block == ModBlocks.WORKBENCH.get() )
-        {
-            if ( config.allowCraftingTable.get() ) {
+        } else if (block == Blocks.CRAFTING_TABLE || block == ModBlocks.WORKBENCH.get()) {
+            if (config.allowCraftingTable.get()) {
                 return;
             }
-        }
-        else if ( BlockTags.DOORS.contains( block ) )
-        {
-            if ( config.allowDoors.get() ) {
+        } else if (BlockTags.DOORS.contains(block)) {
+            if (config.allowDoors.get()) {
                 return;
             }
-        }
-        else if ( BlockTags.TRAPDOORS.contains( block ) )
-        {
-            if ( config.allowTrapDoors.get() ) {
+        } else if (BlockTags.TRAPDOORS.contains(block)) {
+            if (config.allowTrapDoors.get()) {
                 return;
             }
-        }
-        else if ( Tags.Blocks.CHESTS.contains( block ) )
-        {
-            if ( config.allowChests.get() ) {
+        } else if (Tags.Blocks.CHESTS.contains(block)) {
+            if (config.allowChests.get()) {
                 return;
             }
-        }
-        else if ( Tags.Blocks.FENCE_GATES.contains( block ) )
-        {
-            if ( config.allowFenceGates.get() ) {
+        } else if (Tags.Blocks.FENCE_GATES.contains(block)) {
+            if (config.allowFenceGates.get()) {
                 return;
             }
-        }
-        else if ( BlockTags.BUTTONS.contains( block ) )
-        {
-            if ( config.allowButton.get() ) {
+        } else if (BlockTags.BUTTONS.contains(block)) {
+            if (config.allowButton.get()) {
                 return;
             }
-        }
-        else if ( block == Blocks.LEVER )
-        {
-            if ( config.allowLever.get() ) {
+        } else if (block == Blocks.LEVER) {
+            if (config.allowLever.get()) {
                 return;
             }
-        }
-        else if ( config.allowRestUse.get() ) {
+        } else if (config.allowRestUse.get()) {
             return;
         }
-        
+
         event.setCanceled(true);
         event.setSwingHand(false);
     }
@@ -228,6 +207,9 @@ public class AimingHandler {
         PlayerEntity player = Minecraft.getInstance().player;
         if (player == null)
             return;
+
+        if(this.toggledAimAwaiter > 0)
+            this.toggledAimAwaiter--;
 
         ItemStack heldItem = player.getHeldItemMainhand();
         if (heldItem.getItem() instanceof TimelessGunItem) {
@@ -335,14 +317,16 @@ public class AimingHandler {
 
         boolean zooming;
 
-        if (Keys.AIM_HOLD.getKey() != InputMappings.INPUT_INVALID) {
+        if (Config.CLIENT.controls.holdToAim.get()) {
             zooming = Keys.AIM_HOLD.isKeyDown();
-
-            if (GunMod.controllableLoaded) {
-                // zooming |= ControllerHandler.isAiming();
-            }
-        } else
+        } else {
+            if (Keys.AIM_TOGGLE.isKeyDown())
+                if (this.toggledAimAwaiter <= 0) {
+                    this.forceToggleAim();
+                    this.toggledAimAwaiter = Config.CLIENT.controls.toggleAimDelay.get();
+                }
             zooming = this.toggledAim;
+        }
 
         return zooming;
     }
@@ -367,7 +351,6 @@ public class AimingHandler {
         private double currentAim;
         private double previousAim;
         private double amplifier = 0.8;
-        private float prevDist = 0.0f;
 
         private void handleAiming(PlayerEntity player, ItemStack heldItem) {
             this.previousAim = this.currentAim;

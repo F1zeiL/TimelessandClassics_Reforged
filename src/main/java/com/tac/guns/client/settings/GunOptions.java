@@ -71,6 +71,12 @@ public class GunOptions
         }
         matrixStack.pop();
     });
+    public static final BooleanOption HOLD_TO_AIM = new BooleanOption("tac.options.holdToAim", (settings) -> {
+        return Config.CLIENT.controls.holdToAim.get();
+    }, (settings, value) -> {
+        Config.CLIENT.controls.holdToAim.set(value);
+        Config.saveClientConfig();
+    });
 
     public static final BooleanOption ALLOW_LEVER = new BooleanOption("tac.options.allowLever", (settings) -> {
         return Config.CLIENT.rightClickUse.allowLever.get();

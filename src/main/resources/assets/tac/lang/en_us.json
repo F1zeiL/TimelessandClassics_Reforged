@@ -365,6 +365,7 @@
   "tac.options.allowCraftingTable": "Allow crafting table use",
   "tac.options.allowChests": "Allow chest use",
   "tac.options.allowFenceGates": "Allow fence gate use",
+  "tac.options.holdToAim": "Hold to aim (instead of toggle)",
   "tac.options.crosshair.format": "Crosshair: %s",
   "tac.options.weaponsVolume.format": "Gun fire Volume: %s",
   "tac.options.toggleAim": "Toggle ADS",
