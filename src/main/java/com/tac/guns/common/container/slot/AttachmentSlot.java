@@ -5,11 +5,10 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.common.container.AttachmentContainer;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
-import com.tac.guns.item.*;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
-import com.tac.guns.item.attachments.AttachmentItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
@@ -23,11 +22,11 @@ import net.minecraft.util.SoundCategory;
 public class AttachmentSlot extends Slot {
     private AttachmentContainer container;
     private ItemStack weapon;
-    private IAttachment.Type type;
+    private SlotType type;
     private PlayerEntity player;
     private int index;
 
-    public AttachmentSlot(AttachmentContainer container, IInventory weaponInventory, ItemStack weapon, IAttachment.Type type, PlayerEntity player, int index, int x, int y) {
+    public AttachmentSlot(AttachmentContainer container, IInventory weaponInventory, ItemStack weapon, SlotType type, PlayerEntity player, int index, int x, int y) {
         super(weaponInventory, index, x, y);
         this.container = container;
         this.weapon = weapon;
@@ -39,14 +38,14 @@ public class AttachmentSlot extends Slot {
     @Override
     public boolean isEnabled() {
         this.weapon.inventoryTick(player.world, player, index, true);
-        if ((this.type == IAttachment.Type.EXTENDED_MAG && this.weapon.getOrCreateTag().getInt("AmmoCount") > ((TimelessGunItem) this.weapon.getItem()).getGun().getReloads().getMaxAmmo())
+        if ((this.type == SlotType.EXTENDED_MAG && this.weapon.getOrCreateTag().getInt("AmmoCount") > ((TimelessGunItem) this.weapon.getItem()).getGun().getReloads().getMaxAmmo())
                 || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
             return false;
         }
         if (this.weapon.getItem() instanceof GunItem) {
             GunItem item = (GunItem) this.weapon.getItem();
             Gun modifiedGun = item.getModifiedGun(this.weapon);
-            return modifiedGun.canAttachType(this.type);
+            return modifiedGun.hasSlot(this.type);
         }
         return false;
     }
@@ -56,11 +55,11 @@ public class AttachmentSlot extends Slot {
         //todo: logic of this part has been reorganized, need to confirm if there are any side effects or bugs.
         //gun attachments
         if(this.weapon.getItem() instanceof TimelessGunItem){
-            if(!(stack.getItem() instanceof AttachmentItem))return false;
+            if(!(stack.getItem() instanceof IAttachment<?>))return false;
 
             TimelessGunItem weapon = (TimelessGunItem) this.weapon.getItem();
             int maxAmmo = weapon.getGun().getReloads().getMaxAmmo();
-            if(this.type == IAttachment.Type.EXTENDED_MAG && Gun.getAmmo(this.weapon) > maxAmmo){
+            if(this.type == SlotType.EXTENDED_MAG && Gun.getAmmo(this.weapon) > maxAmmo){
                 return false;
             }
             if(SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)){
@@ -71,10 +70,11 @@ public class AttachmentSlot extends Slot {
             if(!Attachment.canApplyOn(stack,weapon)){
                 return false;
             }
-            IAttachment.Type stackType = ((IAttachment<?>) stack.getItem()).getType();
+            SlotType stackType = ((IAttachment<?>) stack.getItem()).getSlot();
+            IAttachment.Type attachmentType = ((IAttachment<?>) stack.getItem()).getType();
 
             if(this.type!=null){
-                return stackType == this.type && modifiedGun.canAttachType(this.type);
+                return stackType == this.type && modifiedGun.canAttachType(attachmentType);
             }
 
         }

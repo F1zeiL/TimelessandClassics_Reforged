@@ -1,5 +1,6 @@
 package com.tac.guns.item.attachment;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.impl.Attachment;
 
 import javax.annotation.Nullable;
@@ -19,6 +20,8 @@ public interface IAttachment<T extends Attachment> {
      * @return The additional properties about this attachment
      */
     T getProperties();
+
+    SlotType getSlot();
 
     enum Type {
         SCOPE("scope", "Scope"),            // 0

@@ -4,6 +4,7 @@ import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.common.attachments.CustomModifierData;
 import com.tac.guns.common.attachments.PerkTipsBuilder;
 import com.tac.guns.common.attachments.Perks;
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IgunSkin;
@@ -99,6 +100,11 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
     @Override
     public GunSkin getProperties() {
         return this.gunSkin;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.GUN_SKIN;
     }
 
     @Override

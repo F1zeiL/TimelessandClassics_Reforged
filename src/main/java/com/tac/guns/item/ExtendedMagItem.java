@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.IExtendedMag;
 import com.tac.guns.item.attachment.impl.ExtendedMag;
 import net.minecraft.enchantment.Enchantment;
@@ -35,6 +36,11 @@ public class ExtendedMagItem extends Item implements IExtendedMag, IColored
     public ExtendedMag getProperties()
     {
         return this.extendedMag;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.EXTENDED_MAG;
     }
 
     @Override
