@@ -34,6 +34,7 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -79,10 +80,12 @@ public class AimingHandler {
 
     private AimingHandler() {
         Keys.SIGHT_SWITCH.addPressCallback(() -> {
-            final Minecraft mc = Minecraft.getInstance();
-            if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() instanceof GunItem ||
-                    Gun.getScope(mc.player.getHeldItemMainhand()) != null))
-                this.currentScopeZoomIndex++;
+            if (Keys.SIGHT_SWITCH.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+                final Minecraft mc = Minecraft.getInstance();
+                if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() instanceof GunItem ||
+                        Gun.getScope(mc.player.getHeldItemMainhand()) != null))
+                    this.currentScopeZoomIndex++;
+            }
         });
     }
 

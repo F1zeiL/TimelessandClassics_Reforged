@@ -71,6 +71,7 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -246,20 +247,24 @@ public class ClientHandler {
 
     static {
         Keys.ATTACHMENTS.addPressCallback(() -> {
-            final Minecraft mc = Minecraft.getInstance();
-            if (mc.player != null && mc.currentScreen == null)
-                PacketHandler.getPlayChannel().sendToServer(new MessageAttachments());
+            if (Keys.ATTACHMENTS.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+                final Minecraft mc = Minecraft.getInstance();
+                if (mc.player != null && mc.currentScreen == null)
+                    PacketHandler.getPlayChannel().sendToServer(new MessageAttachments());
+            }
         });
 
         Keys.INSPECT.addPressCallback(() -> {
-            final Minecraft mc = Minecraft.getInstance();
-            if (
-                    mc.player != null
-                            && mc.currentScreen == null
-                            && GunAnimationController.fromItem(
-                            Minecraft.getInstance().player.inventory.getCurrentItem().getItem()
-                    ) == null
-            ) PacketHandler.getPlayChannel().sendToServer(new MessageInspection());
+            if (Keys.INSPECT.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+                final Minecraft mc = Minecraft.getInstance();
+                if (
+                        mc.player != null
+                                && mc.currentScreen == null
+                                && GunAnimationController.fromItem(
+                                Minecraft.getInstance().player.inventory.getCurrentItem().getItem()
+                        ) == null
+                ) PacketHandler.getPlayChannel().sendToServer(new MessageInspection());
+            }
         });
     }
 

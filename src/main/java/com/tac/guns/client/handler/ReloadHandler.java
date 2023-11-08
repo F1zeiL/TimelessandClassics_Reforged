@@ -19,6 +19,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.TickEvent;
@@ -205,31 +206,34 @@ public class ReloadHandler {
 
     private ReloadHandler() {
         Keys.RELOAD.addPressCallback(() -> {
-            final ClientPlayerEntity player = Minecraft.getInstance().player;
-            if (player == null) return;
+            if (Keys.RELOAD.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+                final ClientPlayerEntity player = Minecraft.getInstance().player;
+                if (player == null) return;
 
-            final ItemStack stack = player.getHeldItemMainhand();
-            if (stack.getItem() instanceof GunItem) {
-                PacketHandler.getPlayChannel().sendToServer(new MessageUpdateGunID());
-                if (!SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
-                    ShootingHandler.get().burstTracker = 0;
-                    this.setReloading(true);
-                } else if (
-                        GunAnimationController.fromItem(stack.getItem())
-                                instanceof PumpShotgunAnimationController
-                ) {
-                    this.setReloading(false);
+                final ItemStack stack = player.getHeldItemMainhand();
+                if (stack.getItem() instanceof GunItem) {
+                    PacketHandler.getPlayChannel().sendToServer(new MessageUpdateGunID());
+                    if (!SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
+                        ShootingHandler.get().burstTracker = 0;
+                        this.setReloading(true);
+                    } else if (
+                            GunAnimationController.fromItem(stack.getItem())
+                                    instanceof PumpShotgunAnimationController
+                    ) {
+                        this.setReloading(false);
+                    }
                 }
             }
         });
 
         Keys.UNLOAD.addPressCallback(() -> {
-            if (!this.isReloading()) {
-                final SimpleChannel channel = PacketHandler.getPlayChannel();
-                channel.sendToServer(new MessageUpdateGunID());
-                this.setReloading(false);
-                channel.sendToServer(new MessageUnload());
-            }
+            if (Keys.UNLOAD.getKeyModifier().isActive(KeyConflictContext.GUI))
+                if (!this.isReloading()) {
+                    final SimpleChannel channel = PacketHandler.getPlayChannel();
+                    channel.sendToServer(new MessageUpdateGunID());
+                    this.setReloading(false);
+                    channel.sendToServer(new MessageUnload());
+                }
         });
     }
 
