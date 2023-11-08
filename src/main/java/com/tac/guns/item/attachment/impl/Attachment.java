@@ -44,13 +44,6 @@ public abstract class Attachment {
     public Attachment(IGunModifier[] modifier) {
     }
 
-    void setPerks(List<ITextComponent> perks) {
-        if(this.perks == null)
-        {
-            this.perks = perks;
-        }
-    }
-
     public static boolean hasCustomModifier(ItemStack stack){
         return stack!=null && stack.getTag()!=null && stack.getTag().contains(CUSTOM_MODIFIER,Constants.NBT.TAG_STRING);
     }
@@ -66,9 +59,6 @@ public abstract class Attachment {
         return null;
     }
 
-    List<ITextComponent> getPerks() {
-        return this.perks;
-    }
     /** Extra check of an attachment, limited by the tag on it.
      * @param attachment the attachment about to apply
      * @param gun the gun item
@@ -81,36 +71,12 @@ public abstract class Attachment {
             ResourceLocation location = ResourceLocation.tryCreate(raw);
             if(location!=null){
                 CustomModifierData modifier = NetworkModifierManager.getCustomModifier(location);
-                if(modifier!=null){
-                    if (modifier.getSuitableGuns() != null) {
-                        return modifier.getSuitableGuns().contains(gun.getRegistryName());
-                    }
+                if (modifier != null) {
+                    return modifier.canApplyOn(gun);
                 }
             }
         }
         return true;
-    }
-
-    public static List<ITextComponent> getSuitableGuns(ItemStack attachment) {
-        List<ITextComponent> list = new ArrayList<>();
-        if (attachment.getTag() != null && attachment.getTag().contains(GunSkinItem.CUSTOM_MODIFIER, Constants.NBT.TAG_STRING)) {
-            String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
-            ResourceLocation location = ResourceLocation.tryCreate(raw);
-            if(location!=null){
-                CustomModifierData modifier = NetworkModifierManager.getCustomModifier(location);
-                if(modifier!=null){
-                    if (modifier.getSuitableGuns() != null) {
-                        modifier.getSuitableGuns().forEach((rl)->{
-                            Item item = ForgeRegistries.ITEMS.getValue(location);
-                            if(item instanceof TimelessGunItem){
-                                list.add(new TranslationTextComponent(item.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
-                            }
-                        });
-                    }
-                }
-            }
-        }
-        return list;
     }
     private static List<ITextComponent> getSuitableGuns(CustomModifierData modifier){
         List<ITextComponent> list = new ArrayList<>();
@@ -147,6 +113,10 @@ public abstract class Attachment {
             if(!list.isEmpty()){
                 tooltip.add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
                 tooltip.addAll(list);
+            }
+
+            if(info.getExtraTooltip()!=null){
+                info.getExtraTooltip().forEach((s)-> tooltip.add(new TranslationTextComponent(s)));
             }
         }
     }

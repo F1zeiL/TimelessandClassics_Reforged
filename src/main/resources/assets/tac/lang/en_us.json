@@ -298,8 +298,8 @@
   "perk.tac.silencedv2": "+Silenced",
   "perk.tac.sound_radius.positive": "-Sound Radius %s",
   "perk.tac.sound_radius.negative": "+Sound Radius %s",
-  "perk.tac.additional_damage.positivev2": "Additional Damage §r(§l+%s ♥§r)",
-  "perk.tac.additional_damage.negativev2": "Negative Damage §r(§l-%s ♥§r)",
+  "perk.tac.additional_damage.positivev2": "+Damage §r(§l%s ♥§r)",
+  "perk.tac.additional_damage.negativev2": "-Damage §r(§l%s ♥§r)",
   "perk.tac.additional_damage.positiveh": "+Headshot Damage §r(§l+%s ♥§r)",
   "perk.tac.additional_damage.negativeh": "-Headshot Damage §r(§l-%s ♥§r)",
   "perk.tac.modified_damage.positivev2": "+Damage §r(§l+%s ♥§r)",
@@ -439,5 +439,7 @@
   "tac.button.reload": "Reload / Unload",
   "tac.button.attachments": "Modify Attachments",
   "tac.button.steadyAim": "Steady Aim",
-  "curios.identifier.armor_rig": "Timeless Armor"
+  "curios.identifier.armor_rig": "Timeless Armor",
+
+  "tooltip.extra.test": "custom tooltip test"
 }

@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public class BooleanPerk extends Perk<Boolean>{
     private ITextComponent text;
-    public BooleanPerk(String key, String keyTranslation, Function<CustomModifierData, Boolean> getter) {
+    public BooleanPerk(String key, String keyTranslation, Function<CustomModifierData.General, Boolean> getter) {
         super(key, getter);
         this.text = new TranslationTextComponent(keyTranslation).mergeStyle(TextFormatting.GREEN);;
     }
@@ -22,18 +22,18 @@ public class BooleanPerk extends Perk<Boolean>{
     }
 
     @Override
-    public Boolean getValue(CustomModifierData data) {
+    public Boolean getValue(CustomModifierData.General data) {
         if(getter!=null && data!=null)return getter.apply(data);
         return false;
     }
 
     @Override
-    public void write(CompoundNBT tag, CustomModifierData data) {
+    public void write(CompoundNBT tag, CustomModifierData.General data) {
         tag.putBoolean(getKey(),getValue(data));
     }
 
     @Override
-    public void read(CompoundNBT tag, CustomModifierData data) {
+    public void read(CompoundNBT tag, CustomModifierData.General data) {
         try {
             if(tag.contains(getKey(), Constants.NBT.TAG_BYTE)){
                 Field field = data.getClass().getDeclaredField(getKey());

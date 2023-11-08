@@ -11,6 +11,7 @@ import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.Constants;
@@ -314,7 +315,10 @@ public class GunModifierHelper
         double output = input;
         for(int i = 0; i < SlotType.values().length; i++) {
             CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
-            double perk = p.getValue(modifier);
+            double perk = 0;
+            if (modifier != null) {
+                perk = p.getValue(modifier);
+            }
             if(perk>0){
                 output *= perk;
             }
@@ -326,7 +330,9 @@ public class GunModifierHelper
         float output = input;
         for(int i = 0; i < SlotType.values().length; i++) {
             CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
-            output += p.getValue(modifier);
+            if (modifier != null) {
+                output += p.getValue(modifier);
+            }
         }
         return output;
     }

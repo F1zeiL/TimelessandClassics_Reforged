@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 public class Perks {
     public static class Formatter{
-        public static Function<Float, String> TO_HEART = value -> ItemStack.DECIMALFORMAT.format(value/2.0);
+        public static Function<Float, String> TO_HEART = value -> ItemStack.DECIMALFORMAT.format(Math.abs(value/2.0));
         public static Function<Double, String> ROUND_PERCENTAGE =
                 value -> new DecimalFormat("#.#").format(Math.abs(1.0-value)*100) + "%";
     }
@@ -21,18 +21,18 @@ public class Perks {
 
     public static BooleanPerk silencedFire = registerPerk(
             new BooleanPerk("silencedFire",
-                    "perk.tac.silencedv2",  CustomModifierData::isSilencedFire)
+                    "perk.tac.silencedv2", CustomModifierData.General::isSilencedFire)
     );
     public static DoublePerk modifyFireSoundRadius = registerPerk(
             new DoublePerk("modifyFireSoundRadius",
                     "perk.tac.sound_radius.positive","perk.tac.sound_radius.negative",
-                    Formatter.ROUND_PERCENTAGE,CustomModifierData::getModifyFireSoundRadius)
+                    Formatter.ROUND_PERCENTAGE, CustomModifierData.General::getModifyFireSoundRadius,true)
     );
 
     public static FloatPerk additionalDamage = registerPerk(
             new FloatPerk("additionalDamage",
                     "perk.tac.additional_damage.positivev2", "perk.tac.additional_damage.negativev2",
-                    Formatter.TO_HEART, CustomModifierData::getAdditionalDamage)
+                    Formatter.TO_HEART, CustomModifierData.General::getAdditionalDamage)
     );
 
     public static <T extends Perk<?>> T registerPerk(T perk){

@@ -10,10 +10,10 @@ import java.util.function.Function;
  * Not storage actual data
  */
 public abstract class Perk<T> {
-    protected Function<CustomModifierData, T> getter;
+    protected Function<CustomModifierData.General, T> getter;
     private final String key;
 
-    public Perk(String key, Function<CustomModifierData, T> getter) {
+    public Perk(String key, Function<CustomModifierData.General, T> getter) {
         this.key = key;
         this.getter = getter;
     }
@@ -21,10 +21,10 @@ public abstract class Perk<T> {
     public String getKey() {
         return key;
     }
-
     public T getValue(CustomModifierData data){
-        return getter.apply(data);
+        return getValue(data.getGeneral());
     }
-    public abstract void write(CompoundNBT tag, CustomModifierData data);
-    public abstract void read(CompoundNBT tag, CustomModifierData data);
+    public abstract T getValue(CustomModifierData.General data);
+    public abstract void write(CompoundNBT tag, CustomModifierData.General data);
+    public abstract void read(CompoundNBT tag, CustomModifierData.General data);
 }

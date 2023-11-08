@@ -11,23 +11,26 @@ import java.util.function.Function;
  */
 public class FloatPerk extends SignedPerk<Float>{
     public FloatPerk(String key, String keyPositive, String keyNegative, Function<Float, String> formatter,
-                     Function<CustomModifierData, Float> getter) {
+                     Function<CustomModifierData.General, Float> getter) {
         super(key, keyPositive, keyNegative,formatter,getter);
     }
-
+    public FloatPerk(String key, String keyPositive, String keyNegative, Function<Float, String> formatter,
+                     Function<CustomModifierData.General, Float> getter,boolean harmful) {
+        super(key, keyPositive, keyNegative,formatter,getter,harmful);
+    }
     @Override
-    public Float getValue(CustomModifierData data) {
+    public Float getValue(CustomModifierData.General data) {
         if(getter!=null && data!=null)return getter.apply(data);
         return 0.0f;
     }
 
     @Override
-    public void write(CompoundNBT tag, CustomModifierData data) {
+    public void write(CompoundNBT tag, CustomModifierData.General data) {
         tag.putFloat(getKey(),getValue(data));
     }
 
     @Override
-    public void read(CompoundNBT tag, CustomModifierData data){
+    public void read(CompoundNBT tag, CustomModifierData.General data){
         try {
             if(tag.contains(getKey(), Constants.NBT.TAG_FLOAT)){
                 Field field = data.getClass().getDeclaredField(getKey());

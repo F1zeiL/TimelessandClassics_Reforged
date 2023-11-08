@@ -72,6 +72,7 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
                             {
                                 CustomModifierData skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifierData.class);
                                 if (skin != null && Validator.isValidObject(skin)) {
+                                    skin.init();
                                     map.put(skin.getId(),skin);
                                 }
                             } catch(InvalidObjectException e) {
