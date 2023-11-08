@@ -53,6 +53,7 @@ public class ShootingHandler {
     private boolean clickUp = false;
     public int burstTracker = 0;
     private int burstCooldown = 0;
+    private boolean isPressed = false;
 
     private ShootingHandler() {
     }
@@ -233,27 +234,32 @@ public class ShootingHandler {
         PlayerEntity player = mc.player;
         ItemStack heldItem = player.getHeldItemMainhand();
         if (heldItem.getItem() instanceof TimelessGunItem) {
-            if (event.isAttack()) {
-                event.setCanceled(true);
-                event.setSwingHand(false);
-            }
+            if (Keys.PULL_TRIGGER.isKeyDown()) {
+                if (event.isAttack()) {
+                    event.setCanceled(true);
+                    event.setSwingHand(false);
+                }
 
-            if (magError(player, heldItem)) {
-                player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-                return;
-            }
+                if (magError(player, heldItem)) {
+                    player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                    return;
+                }
 
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0) {
-                this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
-                fire(player, heldItem);
-                this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
-            } else if (this.burstCooldown == 0)
-                fire(player, heldItem);
+                if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0 && !this.isPressed) {
+                    this.isPressed = true;
+                    this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
+                    fire(player, heldItem);
+                    this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
+                } else if (this.burstCooldown == 0 && !this.isPressed) {
+                    this.isPressed = true;
+                    fire(player, heldItem);
+                }
 
-            if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
-                player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
+                    player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                }
             }
         }
     }
@@ -262,8 +268,13 @@ public class ShootingHandler {
     public void onPostClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END)
             return;
+
         if (!isInGame())
             return;
+
+        if (!Keys.PULL_TRIGGER.isKeyDown())
+            this.isPressed = false;
+
         Minecraft mc = Minecraft.getInstance();
         PlayerEntity player = mc.player;
         if (player != null) {

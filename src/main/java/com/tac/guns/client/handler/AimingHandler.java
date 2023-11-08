@@ -62,7 +62,6 @@ public class AimingHandler {
     private double normalisedAdsProgress;
     private boolean aiming = false;
     private boolean toggledAim = false;
-    private int toggledAimAwaiter = 0;
 
     public int getCurrentScopeZoomIndex() {
         return this.currentScopeZoomIndex;
@@ -73,6 +72,8 @@ public class AimingHandler {
     }
 
     private int currentScopeZoomIndex = 0;
+
+    private boolean isPressed = false;
 
     private boolean canceling = false;
 
@@ -208,8 +209,11 @@ public class AimingHandler {
         if (player == null)
             return;
 
-        if(this.toggledAimAwaiter > 0)
-            this.toggledAimAwaiter--;
+        if( !Config.CLIENT.controls.holdToAim.get() )
+        {
+            if ( !Keys.AIM_TOGGLE.isKeyDown() )
+                this.isPressed = false;
+        }
 
         ItemStack heldItem = player.getHeldItemMainhand();
         if (heldItem.getItem() instanceof TimelessGunItem) {
@@ -321,9 +325,9 @@ public class AimingHandler {
             zooming = Keys.AIM_HOLD.isKeyDown();
         } else {
             if (Keys.AIM_TOGGLE.isKeyDown())
-                if (this.toggledAimAwaiter <= 0) {
+                if (!this.isPressed) {
+                    this.isPressed = true;
                     this.forceToggleAim();
-                    this.toggledAimAwaiter = Config.CLIENT.controls.toggleAimDelay.get();
                 }
             zooming = this.toggledAim;
         }
