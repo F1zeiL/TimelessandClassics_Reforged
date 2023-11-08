@@ -116,21 +116,21 @@ public class AimingHandler {
 
     @SubscribeEvent
     public void onClickInput(InputEvent.ClickInputEvent event) {
-        if (!event.isUseItem()) {
-            return;
-        }
-
         final Minecraft mc = Minecraft.getInstance();
-        final boolean hasMouseOverBlock = mc.objectMouseOver instanceof BlockRayTraceResult;
-        if (!hasMouseOverBlock) {
-            return;
-        }
-
         final PlayerEntity player = mc.player;
         assert player != null;
         final ItemStack heldItem = player.getHeldItemMainhand();
         final boolean isGunInHand = heldItem.getItem() instanceof TimelessGunItem;
         if (!isGunInHand) {
+            return;
+        }
+
+        if (!event.isUseItem()) {
+            return;
+        }
+
+        final boolean hasMouseOverBlock = mc.objectMouseOver instanceof BlockRayTraceResult;
+        if (!hasMouseOverBlock) {
             return;
         }
 
@@ -327,7 +327,6 @@ public class AimingHandler {
                 }
             zooming = this.toggledAim;
         }
-
         return zooming;
     }
 
