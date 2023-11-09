@@ -57,7 +57,22 @@ public final class Keys
         INSPECT = new TacKeyBuilder( "key.tac.inspect" ).withKeyboardKey( GLFW.GLFW_KEY_H ).buildAndRegis(),
         SIGHT_SWITCH = new TacKeyBuilder( "key.tac.sight_switch" ).withKeyboardKey( GLFW.GLFW_KEY_V ).buildAndRegis(),
         ACTIVATE_SIDE_RAIL = new TacKeyBuilder( "key.tac.activeSideRail" ).withKeyboardKey( GLFW.GLFW_KEY_B ).buildAndRegis();
-    
+
+    public static final TacKeyMapping[] KEYS_VALUE = {RELOAD, UNLOAD, ATTACHMENTS, FIRE_SELECT, INSPECT, SIGHT_SWITCH, ACTIVATE_SIDE_RAIL};
+
+    public static boolean noConflict(TacKeyMapping key) {
+        for (TacKeyMapping k : KEYS_VALUE) {
+            if (k == key) {
+                if (!k.getKeyModifier().isActive(null))
+                    return false;
+            } else {
+                if (k.isKeyDown() && k.getKeyModifier().isActive(null))
+                    return false;
+            }
+        }
+        return true;
+    }
+
     public static final KeyBinding MORE_INFO_HOLD =
         new TacKeyBuilder( "key.tac.more_info_hold" )
             .withKeyboardKey( GLFW.GLFW_KEY_LEFT_SHIFT )

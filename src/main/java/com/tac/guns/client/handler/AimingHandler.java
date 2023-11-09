@@ -80,12 +80,13 @@ public class AimingHandler {
 
     private AimingHandler() {
         Keys.SIGHT_SWITCH.addPressCallback(() -> {
-            if (Keys.SIGHT_SWITCH.getKeyModifier().isActive(null)) {
-                final Minecraft mc = Minecraft.getInstance();
-                if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() instanceof GunItem ||
-                        Gun.getScope(mc.player.getHeldItemMainhand()) != null))
-                    this.currentScopeZoomIndex++;
-            }
+            if (!Keys.noConflict(Keys.SIGHT_SWITCH))
+                return;
+
+            final Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() instanceof GunItem ||
+                    Gun.getScope(mc.player.getHeldItemMainhand()) != null))
+                this.currentScopeZoomIndex++;
         });
     }
 
@@ -212,9 +213,8 @@ public class AimingHandler {
         if (player == null)
             return;
 
-        if( !Config.CLIENT.controls.holdToAim.get() )
-        {
-            if ( !Keys.AIM_TOGGLE.isKeyDown() )
+        if (!Config.CLIENT.controls.holdToAim.get()) {
+            if (!Keys.AIM_TOGGLE.isKeyDown())
                 this.isPressed = false;
         }
 

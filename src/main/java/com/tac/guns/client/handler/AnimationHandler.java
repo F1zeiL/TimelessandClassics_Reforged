@@ -197,20 +197,21 @@ public enum AnimationHandler {
 
     static {
         Keys.INSPECT.addPressCallback(() -> {
-            if (Keys.INSPECT.getKeyModifier().isActive(null)) {
-                final PlayerEntity player = Minecraft.getInstance().player;
-                if (player == null) return;
+            if (!Keys.noConflict(Keys.INSPECT))
+                return;
 
-                final ItemStack stack = player.inventory.getCurrentItem();
-                final GunAnimationController controller
-                        = GunAnimationController.fromItem(stack.getItem());
-                if (controller != null && !controller.isAnimationRunning()) {
-                    controller.stopAnimation();
-                    if (Gun.hasAmmo(stack)) {
-                        controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT);
-                    } else {
-                        controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT_EMPTY);
-                    }
+            final PlayerEntity player = Minecraft.getInstance().player;
+            if (player == null) return;
+
+            final ItemStack stack = player.inventory.getCurrentItem();
+            final GunAnimationController controller
+                    = GunAnimationController.fromItem(stack.getItem());
+            if (controller != null && !controller.isAnimationRunning()) {
+                controller.stopAnimation();
+                if (Gun.hasAmmo(stack)) {
+                    controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT);
+                } else {
+                    controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT_EMPTY);
                 }
             }
         });

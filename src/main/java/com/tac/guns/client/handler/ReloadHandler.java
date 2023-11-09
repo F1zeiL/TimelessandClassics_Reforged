@@ -206,34 +206,37 @@ public class ReloadHandler {
 
     private ReloadHandler() {
         Keys.RELOAD.addPressCallback(() -> {
-            if (!Keys.UNLOAD.getKeyModifier().isActive(null)) {
-                final ClientPlayerEntity player = Minecraft.getInstance().player;
-                if (player == null) return;
+            if (!Keys.noConflict(Keys.RELOAD))
+                return;
 
-                final ItemStack stack = player.getHeldItemMainhand();
-                if (stack.getItem() instanceof GunItem) {
-                    PacketHandler.getPlayChannel().sendToServer(new MessageUpdateGunID());
-                    if (!SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
-                        ShootingHandler.get().burstTracker = 0;
-                        this.setReloading(true);
-                    } else if (
-                            GunAnimationController.fromItem(stack.getItem())
-                                    instanceof PumpShotgunAnimationController
-                    ) {
-                        this.setReloading(false);
-                    }
+            final ClientPlayerEntity player = Minecraft.getInstance().player;
+            if (player == null) return;
+
+            final ItemStack stack = player.getHeldItemMainhand();
+            if (stack.getItem() instanceof GunItem) {
+                PacketHandler.getPlayChannel().sendToServer(new MessageUpdateGunID());
+                if (!SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)) {
+                    ShootingHandler.get().burstTracker = 0;
+                    this.setReloading(true);
+                } else if (
+                        GunAnimationController.fromItem(stack.getItem())
+                                instanceof PumpShotgunAnimationController
+                ) {
+                    this.setReloading(false);
                 }
             }
         });
 
         Keys.UNLOAD.addPressCallback(() -> {
-            if (Keys.UNLOAD.getKeyModifier().isActive(null))
-                if (!this.isReloading()) {
-                    final SimpleChannel channel = PacketHandler.getPlayChannel();
-                    channel.sendToServer(new MessageUpdateGunID());
-                    this.setReloading(false);
-                    channel.sendToServer(new MessageUnload());
-                }
+            if (!Keys.noConflict(Keys.UNLOAD))
+                return;
+
+            if (!this.isReloading()) {
+                final SimpleChannel channel = PacketHandler.getPlayChannel();
+                channel.sendToServer(new MessageUpdateGunID());
+                this.setReloading(false);
+                channel.sendToServer(new MessageUnload());
+            }
         });
     }
 
