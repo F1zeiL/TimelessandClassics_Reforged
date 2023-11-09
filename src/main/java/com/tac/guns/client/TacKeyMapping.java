@@ -7,7 +7,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.client.event.InputEvent.RawMouseEvent;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
 
@@ -18,6 +17,7 @@ public final class TacKeyMapping extends KeyBinding
 {
     private final LinkedList< Runnable > press_callbacks = new LinkedList<>();
     private boolean is_down;
+    private boolean isPressed = false;
 
     public TacKeyMapping(
             String description,
@@ -32,11 +32,17 @@ public final class TacKeyMapping extends KeyBinding
     }
 
     @Override
+    public boolean isKeyDown() {
+        return this.isPressed;
+    }
+
+    @Override
     public void setPressed( boolean is_down )
     {
         if ( is_down && !this.is_down ) {
             this.press_callbacks.forEach( Runnable::run );
         }
+        this.isPressed = is_down;
 
         super.setPressed( is_down );
     }

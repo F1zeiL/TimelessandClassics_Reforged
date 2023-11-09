@@ -73,7 +73,7 @@ public final class Keys
         return true;
     }
 
-    public static final KeyBinding MORE_INFO_HOLD =
+    public static final TacKeyMapping MORE_INFO_HOLD =
         new TacKeyBuilder( "key.tac.more_info_hold" )
             .withKeyboardKey( GLFW.GLFW_KEY_LEFT_SHIFT )
             .withConflictContext( KeyConflictContext.GUI )
