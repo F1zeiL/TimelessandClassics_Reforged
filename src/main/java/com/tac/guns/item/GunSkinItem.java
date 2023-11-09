@@ -32,16 +32,16 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
         }
     }
 
-
-
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         if (this.isInGroup(group)) {
             if (ModItems.SKIN_CUSTOM.get().equals(this) && NetworkModifierManager.getCustomModifiers() != null) {
                 NetworkModifierManager.getCustomModifiers().forEach((k, v)->{
-                    ItemStack stack = new ItemStack(this);
-                    setCustomModifier(stack,v.getId());
-                    items.add(stack);
+                    if(v.getSkin()!=null){
+                        ItemStack stack = new ItemStack(this);
+                        setCustomModifier(stack,v.getId());
+                        items.add(stack);
+                    }
                 });
             }else {
                 super.fillItemGroup(group,items);

@@ -2,15 +2,24 @@
   "id": "tac:test",
   "skin": "tac:golden",
   "general": {
-    "additionalDamage": -1.0,
+    "additionalWeaponWeight": 0.20,
     "silencedFire": true,
-    "modifyFireSoundRadius": 2.5
+    "modifyFireSoundRadius": 0.125,
+    "additionalDamage": -1.0,
+    "additionalHeadshotDamage": 10.0,
+    "modifyProjectileDamage": 2.0,
+    "modifyProjectileSpeed": 1.25,
+    "modifyProjectileSpread": 1.25,
+    "modifyFirstShotSpread": 0.75,
+    "modifyHipFireSpread": 0.25,
+    "recoilModifier": 1.15,
+    "horizontalRecoilModifier": 0.85,
+    "modifyAimDownSightSpeed": 1.25,
+    "additionalAmmunition": 10
   },
   "hideLimitInfo": true,
   "canApplyOn": [
-    "tac:scar_l"
-  ],
-  "canApplyTags": [
+    "tac:scar_l",
     "#tac:pistol"
   ],
   "extraTooltip": [

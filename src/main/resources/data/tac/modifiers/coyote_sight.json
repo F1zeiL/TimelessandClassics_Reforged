@@ -1,0 +1,8 @@
+{
+  "id": "tac:coyote_sight",
+  "general": {
+    "additionalWeaponWeight": 0.20,
+    "modifyAimDownSightSpeed": 0.97
+  },
+  "hideLimitInfo": true
+}

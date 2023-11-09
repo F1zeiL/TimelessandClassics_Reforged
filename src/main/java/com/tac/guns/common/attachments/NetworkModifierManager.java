@@ -103,7 +103,7 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
         });
     }
 
-    public static ImmutableMap<ResourceLocation, CustomModifierData> readAttachments(PacketBuffer buffer)
+    public static ImmutableMap<ResourceLocation, CustomModifierData> readModifiers(PacketBuffer buffer)
     {
         int size = buffer.readVarInt();
         if(size > 0)
@@ -124,14 +124,14 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
         return ImmutableMap.of();
     }
 
-    public interface IAttachmentsProvider{
-        ImmutableMap<ResourceLocation, CustomModifierData> getAttachments();
+    public interface ICustomModifiersProvider {
+        ImmutableMap<ResourceLocation, CustomModifierData> getCustomModifiers();
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static boolean updateCustomAttachments(IAttachmentsProvider message) {
+    public static boolean updateCustomAttachments(ICustomModifiersProvider message) {
         infoMap.clear();
-        message.getAttachments().forEach((k,v)->{
+        message.getCustomModifiers().forEach((k, v)->{
             //todo: maybe need to do some check here?
             infoMap.put(k,v);
         });

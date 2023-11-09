@@ -8,6 +8,7 @@ import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.GunSkinItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,15 +49,25 @@ public abstract class Attachment {
         return stack!=null && stack.getTag()!=null && stack.getTag().contains(CUSTOM_MODIFIER,Constants.NBT.TAG_STRING);
     }
     public static CustomModifierData getCustomModifier(ItemStack stack){
+        if(!(stack.getItem() instanceof IAttachment)){
+            return null;
+        }
+        ResourceLocation loc = ((IAttachment<?>) stack.getItem()).getProperties().getDefaultModifier();
         if(hasCustomModifier(stack)) {
-            assert stack.getTag() != null;
-            String raw = stack.getTag().getString(CUSTOM_MODIFIER);
-            ResourceLocation loc = ResourceLocation.tryCreate(raw);
-            if(loc!=null){
-                return NetworkModifierManager.getCustomModifier(loc);
+            if (stack.getTag() != null) {
+                String raw = stack.getTag().getString(CUSTOM_MODIFIER);
+                ResourceLocation tmp = ResourceLocation.tryCreate(raw);
+                if(tmp!=null) loc = tmp;
             }
         }
+        if(loc!=null){
+            return NetworkModifierManager.getCustomModifier(loc);
+        }
         return null;
+    }
+
+    public ResourceLocation getDefaultModifier() {
+        return defaultModifier;
     }
 
     /** Extra check of an attachment, limited by the tag on it.
@@ -99,13 +110,22 @@ public abstract class Attachment {
         CustomModifierData info = getCustomModifier(stack);
         if(info!=null){
             List<ITextComponent> perks = new PerkTipsBuilder(info)
-                    .add(Perks.additionalDamage)
                     .add(Perks.silencedFire)
                     .addPercentage(Perks.modifyFireSoundRadius)
+                    .add(Perks.additionalDamage)
+                    .add(Perks.additionalHeadshotDamage)
+                    .addPercentage(Perks.modifyProjectileDamage)
+                    .addPercentage(Perks.modifyProjectileSpeed)
+                    .addPercentage(Perks.modifyProjectileSpread)
+                    .addPercentage(Perks.modifyFirstShotSpread)
+                    .addPercentage(Perks.modifyHipFireSpread)
+                    .addPercentage(Perks.recoilModifier)
+                    .addPercentage(Perks.horizontalRecoilModifier)
+                    .addPercentage(Perks.modifyAimDownSightSpeed)
                     .build();
 
             if(!perks.isEmpty()){
-                tooltip.add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                tooltip.add(new TranslationTextComponent("perk.tac.title").mergeStyle(TextFormatting.GOLD, TextFormatting.BOLD));
                 tooltip.addAll(perks);
             }
 

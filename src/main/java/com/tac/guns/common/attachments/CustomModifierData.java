@@ -23,10 +23,10 @@ import java.util.List;
 public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     private ResourceLocation id;
     @Optional private ResourceLocation skin;
-    @Optional private List<ResourceLocation> canApplyOn;
+    @Optional private List<String> canApplyOn;
     @Optional private List<String> extraTooltip;
-    @Optional private List<String> canApplyTags;
-    private List<ITag<Item>> tags;
+    private final List<ITag<Item>> tags = new ArrayList<>();
+    private final List<ResourceLocation> items = new ArrayList<>();
     public ResourceLocation getId() {
         return id;
     }
@@ -38,14 +38,21 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     }
 
     public void init() {
-        if(canApplyTags!=null){
-            tags = new ArrayList<>();
-            for(String raw : canApplyTags){
+        if(canApplyOn!=null){
+            for(String raw : canApplyOn){
                 if(raw.startsWith("#")){
                     ResourceLocation location = ResourceLocation.tryCreate(raw.substring(1));
                     if(location!=null){
                         ITag<Item> tag = ItemTags.getCollection().get(location);
                         tags.add(tag);
+                    }
+                }else {
+                    ResourceLocation location = ResourceLocation.tryCreate(raw);
+                    if(location!=null) {
+                        Item item = ForgeRegistries.ITEMS.getValue(location);
+                        if (item instanceof TimelessGunItem) {
+                            items.add(location);
+                        }
                     }
                 }
             }
@@ -53,18 +60,64 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     }
 
     public static class General implements INBTSerializable<CompoundNBT>{
-        @Optional private float additionalDamage = 0;
-        @Optional private boolean silencedFire = false;
-        @Optional private double modifyFireSoundRadius = 0;
 
-        public float getAdditionalDamage() {
-            return additionalDamage;
-        }
+        @Optional private boolean silencedFire = false;
+        @Optional private double modifyFireSoundRadius = 1;
+        @Optional private float additionalDamage = 0;
+        @Optional private float additionalHeadshotDamage = 0;
+        @Optional private float modifyProjectileDamage = 1;
+        @Optional private double modifyProjectileSpeed = 1;
+        @Optional private float modifyProjectileSpread = 1;
+        @Optional private float modifyFirstShotSpread = 1;
+        @Optional private float modifyHipFireSpread = 1;
+        @Optional private float modifyProjectileLife = 1;
+        @Optional private float recoilModifier = 1;
+        @Optional private float horizontalRecoilModifier = 1;
+        @Optional private double modifyAimDownSightSpeed = 1;
+        @Optional private int additionalAmmunition = -1;
+
+
         public boolean isSilencedFire() {
             return silencedFire;
         }
         public double getModifyFireSoundRadius() {
             return modifyFireSoundRadius;
+        }
+        public float getAdditionalDamage() {
+            return additionalDamage;
+        }
+        public float getAdditionalHeadshotDamage() {
+            return additionalHeadshotDamage;
+        }
+        public float getModifyProjectileDamage() {
+            return modifyProjectileDamage;
+        }
+        public double getModifyProjectileSpeed() {
+            return modifyProjectileSpeed;
+        }
+        public float getModifyProjectileSpread() {
+            return modifyProjectileSpread;
+        }
+        public float getModifyFirstShotSpread() {
+            return modifyFirstShotSpread;
+        }
+        public float getModifyHipFireSpread() {
+            return modifyHipFireSpread;
+        }
+        public float getModifyProjectileLife() {
+            return modifyProjectileLife;
+        }
+        public float getRecoilModifier() {
+            return recoilModifier;
+        }
+        public float getHorizontalRecoilModifier() {
+            return horizontalRecoilModifier;
+        }
+        public double getModifyAimDownSightSpeed() {
+            return modifyAimDownSightSpeed;
+        }
+        public int getAdditionalAmmunition() {
+            return additionalAmmunition;
         }
 
         @Override
@@ -91,19 +144,17 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
     @Nullable
     public List<ResourceLocation> getSuitableGuns() {
-        return canApplyOn;
+        return items;
     }
 
     public boolean canApplyOn(TimelessGunItem item){
         if(item.getRegistryName()!=null){
-            if(canApplyOn==null && tags==null)return true;
+            if(items.isEmpty() && tags.isEmpty())return true;
             else {
-                if (canApplyOn != null && canApplyOn.contains(item.getRegistryName())) {
+                if (items.contains(item.getRegistryName())) {
                     return true;
                 }
-                if(tags !=null){
-                    return tags.stream().anyMatch(item::isIn);
-                }
+                return tags.stream().anyMatch(item::isIn);
             }
         }
         return false;
@@ -118,8 +169,8 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         }
         if(canApplyOn!=null){
             ListNBT listNBT = new ListNBT();
-            for(ResourceLocation rl : canApplyOn){
-                listNBT.add(StringNBT.valueOf(rl.toString()));
+            for(String s : canApplyOn){
+                listNBT.add(StringNBT.valueOf(s));
             }
             nbt.put("canApplyOn",listNBT);
         }
@@ -129,13 +180,6 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                 listNBT.add(StringNBT.valueOf(s));
             }
             nbt.put("extraTooltip",listNBT);
-        }
-        if(canApplyTags!=null){
-            ListNBT listNBT = new ListNBT();
-            for(String s : canApplyTags){
-                listNBT.add(StringNBT.valueOf(s));
-            }
-            nbt.put("canApplyTags",listNBT);
         }
         nbt.put("General", this.general.serializeNBT());
         return nbt;
@@ -154,13 +198,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
             if(!listNBT.isEmpty()){
                 this.canApplyOn = new ArrayList<>();
                 listNBT.forEach((s)->{
-                    ResourceLocation location = ResourceLocation.tryCreate(s.getString());
-                    if(location!=null){
-                        Item item = ForgeRegistries.ITEMS.getValue(location);
-                        if(item instanceof TimelessGunItem){
-                            canApplyOn.add(location);
-                        }
-                    }
+                    canApplyOn.add(s.getString());
                 });
             }
         }
@@ -173,25 +211,10 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                 });
             }
         }
-        if(nbt.contains("canApplyTags",Constants.NBT.TAG_LIST)){
-            ListNBT listNBT = nbt.getList("canApplyTags",Constants.NBT.TAG_STRING);
-            if(!listNBT.isEmpty()){
-                this.tags = new ArrayList<>();
-                listNBT.forEach((s)->{
-                    String raw = s.getString();
-                    if(raw.startsWith("#")){
-                        ResourceLocation location = ResourceLocation.tryCreate(raw.substring(1));
-                        if(location!=null){
-                            ITag<Item> tag = ItemTags.getCollection().get(location);
-                            tags.add(tag);
-                        }
-                    }
-                });
-            }
-        }
         if (nbt.contains("General", Constants.NBT.TAG_COMPOUND)) {
             this.general.deserializeNBT(nbt.getCompound("General"));
         }
+        this.init();
     }
 
 }

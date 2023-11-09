@@ -41,7 +41,7 @@ public class HandshakeMessages {
         }
     }
 
-    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider, NetworkModifierManager.IAttachmentsProvider {
+    public static class S2CUpdateGuns extends LoginIndexedMessage implements NetworkGunManager.IGunProvider, NetworkModifierManager.ICustomModifiersProvider {
         private ImmutableMap<ResourceLocation, Gun> registeredGuns;
         private ImmutableMap<ResourceLocation, CustomGun> customGuns;
         private ImmutableMap<ResourceLocation, CustomModifierData> customAttachments;
@@ -63,7 +63,7 @@ public class HandshakeMessages {
             S2CUpdateGuns message = new S2CUpdateGuns();
             message.registeredGuns = NetworkGunManager.readRegisteredGuns(buffer);
             message.customGuns = CustomGunLoader.readCustomGuns(buffer);
-            message.customAttachments = NetworkModifierManager.readAttachments(buffer);
+            message.customAttachments = NetworkModifierManager.readModifiers(buffer);
             return message;
         }
 
@@ -81,7 +81,7 @@ public class HandshakeMessages {
 
         @Override
         @Nullable
-        public ImmutableMap<ResourceLocation, CustomModifierData> getAttachments() {
+        public ImmutableMap<ResourceLocation, CustomModifierData> getCustomModifiers() {
             return this.customAttachments;
         }
     }
