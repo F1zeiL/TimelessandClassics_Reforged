@@ -2,7 +2,6 @@
   "id": "tac:test",
   "skin": "tac:golden",
   "general": {
-    "additionalWeaponWeight": 0.20,
     "silencedFire": true,
     "modifyFireSoundRadius": 0.125,
     "additionalDamage": -1.0,
@@ -15,7 +14,13 @@
     "recoilModifier": 1.15,
     "horizontalRecoilModifier": 0.85,
     "modifyAimDownSightSpeed": 1.25,
-    "additionalAmmunition": 10
+    "additionalAmmunition": 3,
+    "additionalWeaponWeight": 0.20,
+    "modifyFireSoundVolume": 0.8,
+    "modifyRecoilSmoothening": 1.25,
+    "modifyMuzzleFlashSize": 0,
+    "modifyWeaponWeight": 0.25,
+    "kickModifier": 0.9
   },
   "hideLimitInfo": true,
   "canApplyOn": [

@@ -87,7 +87,38 @@ public class Perks {
     );
 
     public static IntPerk additionalAmmunition = registerPerk(
-            new IntPerk("additionalAmmunition","","",null,CustomModifierData.General::getAdditionalAmmunition)
+            new IntPerk("additionalAmmunition","","",null,
+                    CustomModifierData.General::getAdditionalAmmunition)
+    );
+
+    public static FloatPerk additionalWeaponWeight = registerPerk(
+            new FloatPerk("additionalWeaponWeight","","",null,
+                    CustomModifierData.General::getAdditionalWeaponWeight)
+    );
+
+    public static FloatPerk modifyFireSoundVolume = registerPerk(
+            new FloatPerk("modifyFireSoundVolume","","",null,
+                    CustomModifierData.General::getModifyFireSoundVolume)
+    );
+
+    public static FloatPerk modifyRecoilSmoothening = registerPerk(
+            new FloatPerk("modifyRecoilSmoothening","","",null,
+                    CustomModifierData.General::getModifyRecoilSmoothening)
+    );
+
+    public static DoublePerk modifyMuzzleFlashSize = registerPerk(
+            new DoublePerk("modifyMuzzleFlashSize","","",null,
+                    CustomModifierData.General::getModifyMuzzleFlashSize)
+    );
+
+    public static FloatPerk modifyWeaponWeight = registerPerk(
+            new FloatPerk("modifyWeaponWeight","","",null,
+                    CustomModifierData.General::getModifyWeaponWeight)
+    );
+
+    public static FloatPerk kickModifier = registerPerk(
+            new FloatPerk("kickModifier","","",null,
+                    CustomModifierData.General::getKickModifier)
     );
 
     public static <T extends Perk<?>> T registerPerk(T perk){

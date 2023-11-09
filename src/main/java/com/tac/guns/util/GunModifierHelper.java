@@ -192,14 +192,9 @@ public class GunModifierHelper
     public static float getFireSoundVolume(ItemStack weapon)
     {
         float volume = 1.0F;
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                volume = modifier.modifyFireSoundVolume(volume);
-//            }
-//        }
+
+        volume = applyMultiplier(weapon,volume,Perks.modifyFireSoundVolume);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
@@ -210,14 +205,8 @@ public class GunModifierHelper
 
     public static double getMuzzleFlashSize(ItemStack weapon, double size)
     {
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                size = modifier.modifyMuzzleFlashSize(size);
-//            }
-//        }
+        size = applyMultiplier(weapon,size,Perks.modifyMuzzleFlashSize);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
@@ -229,14 +218,9 @@ public class GunModifierHelper
     public static float getKickReduction(ItemStack weapon)
     {
         float kickReduction = 1.0F;
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                kickReduction *= MathHelper.clamp(modifier.kickModifier(), 0.0F, 1.0F);
-//            }
-//        }
+
+        kickReduction = applyMultiplier(weapon,kickReduction,Perks.kickModifier);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
@@ -248,14 +232,9 @@ public class GunModifierHelper
     public static float getRecoilSmootheningTime(ItemStack weapon)
     {
         float recoilTime = 1;
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                recoilTime *= MathHelper.clamp(modifier.modifyRecoilSmoothening(), 1.0F, 2.0F);
-//            }
-//        }
+
+        recoilTime = applyMultiplier(weapon,recoilTime,Perks.modifyRecoilSmoothening);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
@@ -451,15 +430,8 @@ public class GunModifierHelper
 
     public static float getAdditionalWeaponWeight(ItemStack weapon)
     {
-        float additionalWeight = 0.0F;
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                additionalWeight += modifier.additionalWeaponWeight();
-//            }
-//        }
+        float additionalWeight = applyAdditional(weapon,0,Perks.additionalWeaponWeight);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
@@ -471,14 +443,9 @@ public class GunModifierHelper
     public static float getModifierOfWeaponWeight(ItemStack weapon)
     {
         float modifierWeight = 0.0F;
-//        for(int i = 0; i < IAttachment.Type.values().length; i++)
-//        {
-//            IGunModifier[] modifiers = getModifiers(weapon, IAttachment.Type.values()[i]);
-//            for(IGunModifier modifier : modifiers)
-//            {
-//                modifierWeight += modifier.modifyWeaponWeight();
-//            }
-//        }
+
+        modifierWeight = applyAdditional(weapon,modifierWeight,Perks.modifyWeaponWeight);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {

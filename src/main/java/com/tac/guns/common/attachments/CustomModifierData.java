@@ -75,6 +75,12 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         @Optional private float horizontalRecoilModifier = 1;
         @Optional private double modifyAimDownSightSpeed = 1;
         @Optional private int additionalAmmunition = -1;
+        @Optional private float additionalWeaponWeight = 0;
+        @Optional private float modifyFireSoundVolume = 1;
+        @Optional private float modifyRecoilSmoothening = 1;
+        @Optional private double modifyMuzzleFlashSize = 1;
+        @Optional private float modifyWeaponWeight = 0;
+        @Optional private float kickModifier = 1;
 
 
         public boolean isSilencedFire() {
@@ -118,6 +124,24 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         }
         public int getAdditionalAmmunition() {
             return additionalAmmunition;
+        }
+        public float getAdditionalWeaponWeight() {
+            return additionalWeaponWeight;
+        }
+        public float getModifyFireSoundVolume() {
+            return modifyFireSoundVolume;
+        }
+        public float getModifyRecoilSmoothening() {
+            return modifyRecoilSmoothening;
+        }
+        public double getModifyMuzzleFlashSize() {
+            return modifyMuzzleFlashSize;
+        }
+        public float getModifyWeaponWeight() {
+            return modifyWeaponWeight;
+        }
+        public float getKickModifier() {
+            return kickModifier;
         }
 
         @Override
