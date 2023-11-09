@@ -227,7 +227,7 @@ public class ReloadHandler {
         });
 
         Keys.UNLOAD.addPressCallback(() -> {
-            if (Keys.UNLOAD.getKeyModifier().isActive(KeyConflictContext.GUI))
+            if (Keys.UNLOAD.getKeyModifier().isActive(null))
                 if (!this.isReloading()) {
                     final SimpleChannel channel = PacketHandler.getPlayChannel();
                     channel.sendToServer(new MessageUpdateGunID());
