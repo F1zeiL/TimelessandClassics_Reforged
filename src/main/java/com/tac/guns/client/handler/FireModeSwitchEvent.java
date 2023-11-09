@@ -29,7 +29,7 @@ public class FireModeSwitchEvent
     private FireModeSwitchEvent()
     {
     	Keys.FIRE_SELECT.addPressCallback( () -> {
-            if (Keys.FIRE_SELECT.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (Keys.FIRE_SELECT.getKeyModifier().isActive(null)) {
                 if (Minecraft.getInstance().player != null) {
                     PacketHandler.getPlayChannel().sendToServer(new MessageFireMode());
                 }

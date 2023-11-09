@@ -247,7 +247,7 @@ public class ClientHandler {
 
     static {
         Keys.ATTACHMENTS.addPressCallback(() -> {
-            if (Keys.ATTACHMENTS.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (Keys.ATTACHMENTS.getKeyModifier().isActive(null)) {
                 final Minecraft mc = Minecraft.getInstance();
                 if (mc.player != null && mc.currentScreen == null)
                     PacketHandler.getPlayChannel().sendToServer(new MessageAttachments());
@@ -255,7 +255,7 @@ public class ClientHandler {
         });
 
         Keys.INSPECT.addPressCallback(() -> {
-            if (Keys.INSPECT.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (Keys.INSPECT.getKeyModifier().isActive(null)) {
                 final Minecraft mc = Minecraft.getInstance();
                 if (
                         mc.player != null

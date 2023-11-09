@@ -80,7 +80,7 @@ public class AimingHandler {
 
     private AimingHandler() {
         Keys.SIGHT_SWITCH.addPressCallback(() -> {
-            if (Keys.SIGHT_SWITCH.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (Keys.SIGHT_SWITCH.getKeyModifier().isActive(null)) {
                 final Minecraft mc = Minecraft.getInstance();
                 if (mc.player != null && (mc.player.getHeldItemMainhand().getItem() instanceof GunItem ||
                         Gun.getScope(mc.player.getHeldItemMainhand()) != null))

@@ -206,7 +206,7 @@ public class ReloadHandler {
 
     private ReloadHandler() {
         Keys.RELOAD.addPressCallback(() -> {
-            if (Keys.RELOAD.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (!Keys.UNLOAD.getKeyModifier().isActive(null)) {
                 final ClientPlayerEntity player = Minecraft.getInstance().player;
                 if (player == null) return;
 

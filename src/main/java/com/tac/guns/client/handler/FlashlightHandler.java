@@ -41,7 +41,7 @@ public class FlashlightHandler
     private FlashlightHandler()
     {
     	Keys.ACTIVATE_SIDE_RAIL.addPressCallback( () -> {
-            if (Keys.ACTIVATE_SIDE_RAIL.getKeyModifier().isActive(KeyConflictContext.GUI)) {
+            if (Keys.ACTIVATE_SIDE_RAIL.getKeyModifier().isActive(null)) {
                 final Minecraft mc = Minecraft.getInstance();
                 final PlayerEntity player = mc.player;
                 if (

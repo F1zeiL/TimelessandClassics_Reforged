@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -196,18 +197,20 @@ public enum AnimationHandler {
 
     static {
         Keys.INSPECT.addPressCallback(() -> {
-            final PlayerEntity player = Minecraft.getInstance().player;
-            if (player == null) return;
+            if (Keys.INSPECT.getKeyModifier().isActive(null)) {
+                final PlayerEntity player = Minecraft.getInstance().player;
+                if (player == null) return;
 
-            final ItemStack stack = player.inventory.getCurrentItem();
-            final GunAnimationController controller
-                    = GunAnimationController.fromItem(stack.getItem());
-            if (controller != null && !controller.isAnimationRunning()) {
-                controller.stopAnimation();
-                if (Gun.hasAmmo(stack)) {
-                    controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT);
-                } else {
-                    controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT_EMPTY);
+                final ItemStack stack = player.inventory.getCurrentItem();
+                final GunAnimationController controller
+                        = GunAnimationController.fromItem(stack.getItem());
+                if (controller != null && !controller.isAnimationRunning()) {
+                    controller.stopAnimation();
+                    if (Gun.hasAmmo(stack)) {
+                        controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT);
+                    } else {
+                        controller.runAnimation(GunAnimationController.AnimationLabel.INSPECT_EMPTY);
+                    }
                 }
             }
         });
