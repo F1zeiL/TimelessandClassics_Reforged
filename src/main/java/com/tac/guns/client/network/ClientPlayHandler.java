@@ -11,6 +11,7 @@ import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.AnimationSoundManager;
 import com.tac.guns.client.render.animation.module.AnimationSoundMeta;
 import com.tac.guns.common.NetworkGunManager;
+import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.init.ModParticleTypes;
 import com.tac.guns.network.message.*;
 import com.tac.guns.particles.BulletHoleData;
@@ -225,5 +226,6 @@ public class ClientPlayHandler {
     public static void handleUpdateGuns(MessageUpdateGuns message) {
         NetworkGunManager.updateRegisteredGuns(message);
         CustomGunManager.updateCustomGuns(message);
+        NetworkModifierManager.updateCustomAttachments(message);
     }
 }

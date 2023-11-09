@@ -1,5 +1,4 @@
 {
-  "id": "tac:test",
   "skin": "tac:golden",
   "general": {
     "silencedFire": true,

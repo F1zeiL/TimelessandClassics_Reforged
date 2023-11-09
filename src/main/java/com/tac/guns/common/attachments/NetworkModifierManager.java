@@ -70,10 +70,24 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
                             try(InputStream is = resource.getInputStream();
                                 Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)))
                             {
-                                CustomModifierData skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifierData.class);
-                                if (skin != null && Validator.isValidObject(skin)) {
-                                    skin.init();
-                                    map.put(skin.getId(),skin);
+                                ResourceLocation rl = resource.getLocation();
+                                String path = rl.getPath();
+                                int index = path.lastIndexOf('/');
+                                if(index>0){
+                                    path = path.substring(index).replace("/","").replace(".json","");
+                                    ResourceLocation id = ResourceLocation.tryCreate(rl.getNamespace()+":"+path);
+
+                                    if(id!=null){
+                                        CustomModifierData skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifierData.class);
+                                        if (skin != null) {
+                                            skin.setId(id);
+                                            if (Validator.isValidObject(skin)) {
+                                                skin.init();
+                                                map.put(id,skin);
+                                            }
+                                        }
+                                    }
+
                                 }
                             } catch(InvalidObjectException e) {
                                 GunMod.LOGGER.error("Missing required properties for {}", resourceLocation);

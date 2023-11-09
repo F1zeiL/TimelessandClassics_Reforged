@@ -1,7 +1,9 @@
 package com.tac.guns.common.attachments;
 
+import com.tac.guns.annotation.Ignored;
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.common.attachments.perk.Perk;
+import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
@@ -21,12 +23,21 @@ import java.util.List;
  * The data should be read from data pack rather than change or create directly.
  */
 public class CustomModifierData implements INBTSerializable<CompoundNBT> {
-    private ResourceLocation id;
+    @TGExclude
+    @Ignored private ResourceLocation id;
     @Optional private ResourceLocation skin;
     @Optional private List<String> canApplyOn;
     @Optional private List<String> extraTooltip;
-    private final List<ITag<Item>> tags = new ArrayList<>();
-    private final List<ResourceLocation> items = new ArrayList<>();
+    @TGExclude
+    @Ignored private final List<ITag<Item>> tags = new ArrayList<>();
+    @TGExclude
+    @Ignored private final List<ResourceLocation> items = new ArrayList<>();
+    @Optional private General general = new General();
+    protected void setId(ResourceLocation rl) {
+        if(id==null){
+            this.id=rl;
+        }
+    }
     public ResourceLocation getId() {
         return id;
     }
@@ -160,7 +171,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
             }
         }
     }
-    private General general = new General();
+
 
     public General getGeneral() {
         return general;
