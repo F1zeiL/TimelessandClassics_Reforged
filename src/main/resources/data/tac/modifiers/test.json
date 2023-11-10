@@ -26,6 +26,10 @@
     "tac:scar_l",
     "#tac:pistol"
   ],
+  "canNotApplyOn": [
+    "tac:deagle_357",
+    "#tac:assault_rifle"
+  ],
   "extraTooltip": [
     "tooltip.extra.test"
   ]
