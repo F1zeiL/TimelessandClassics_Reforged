@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "tac:hk_mp5a5",
+    "tac:m1a1_smg",
+    "tac:micro_uzi",
+    "tac:mp7",
+    "tac:mp9",
+    "tac:p90",
+    "tac:udp_9",
+    "tac:uzi",
+    "tac:vector45"
+  ]
+}

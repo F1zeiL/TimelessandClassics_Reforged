@@ -1,8 +1,18 @@
 {
   "replace": false,
   "values": [
-    "tac:m1911",
+    "tac:colt_python",
+    "tac:cz75",
+    "tac:cz75_auto",
+    "tac:deagle_357",
     "tac:glock_17",
-    "tac:sti2011"
+    "tac:glock_18",
+    "tac:m92fs",
+    "tac:m1911",
+    "tac:mk23",
+    "tac:sti2011",
+    "tac:tec_9",
+    "tac:timeless_50",
+    "tac:tti_g34"
   ]
 }

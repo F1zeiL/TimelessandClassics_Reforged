@@ -27,12 +27,17 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     @Ignored private ResourceLocation id;
     @Optional private ResourceLocation skin;
     @Optional private List<String> canApplyOn;
+    @Optional private List<String> canNotApplyOn;
     @Optional private List<String> extraTooltip;
     @Optional private boolean hideLimitInfo = false;
     @TGExclude
     @Ignored private final List<ITag<Item>> whiteListTags = new ArrayList<>();
     @TGExclude
     @Ignored private final List<ResourceLocation> whiteListItems = new ArrayList<>();
+    @TGExclude
+    @Ignored private final List<ITag<Item>> blackListTags = new ArrayList<>();
+    @TGExclude
+    @Ignored private final List<ResourceLocation> blackListItems = new ArrayList<>();
     @Optional private General general = new General();
     protected void setId(ResourceLocation rl) {
         if(id==null){
@@ -50,20 +55,25 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     }
 
     public void init() {
-        if(canApplyOn!=null){
-            for(String raw : canApplyOn){
+        getApplyOn(canApplyOn, whiteListTags, whiteListItems);
+        getApplyOn(canNotApplyOn, blackListTags, blackListItems);
+    }
+
+    private void getApplyOn(List<String> applyOn, List<ITag<Item>> ListTags, List<ResourceLocation> ListItems) {
+        if(applyOn !=null){
+            for(String raw : applyOn){
                 if(raw.startsWith("#")){
                     ResourceLocation location = ResourceLocation.tryCreate(raw.substring(1));
                     if(location!=null){
                         ITag<Item> tag = ItemTags.getCollection().get(location);
-                        whiteListTags.add(tag);
+                        ListTags.add(tag);
                     }
                 }else {
                     ResourceLocation location = ResourceLocation.tryCreate(raw);
                     if(location!=null) {
                         Item item = ForgeRegistries.ITEMS.getValue(location);
                         if (item instanceof TimelessGunItem) {
-                            whiteListItems.add(location);
+                            ListItems.add(location);
                         }
                     }
                 }
@@ -187,12 +197,17 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
     public boolean canApplyOn(TimelessGunItem item){
         if(item.getRegistryName()!=null){
-            if(whiteListItems.isEmpty() && whiteListTags.isEmpty())return true;
+            if (whiteListItems.isEmpty() && whiteListTags.isEmpty() &&
+                    blackListItems.isEmpty() && blackListTags.isEmpty())
+                    return true;
             else {
+                if (blackListItems.contains(item.getRegistryName())) {
+                    return false;
+                }
                 if (whiteListItems.contains(item.getRegistryName())) {
                     return true;
                 }
-                return whiteListTags.stream().anyMatch(item::isIn);
+                return whiteListTags.stream().anyMatch(item::isIn) && blackListTags.stream().noneMatch(item::isIn);
             }
         }
         return false;
@@ -211,6 +226,13 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                 listNBT.add(StringNBT.valueOf(s));
             }
             nbt.put("canApplyOn",listNBT);
+        }
+        if(canNotApplyOn!=null){
+            ListNBT listNBT = new ListNBT();
+            for(String s : canNotApplyOn){
+                listNBT.add(StringNBT.valueOf(s));
+            }
+            nbt.put("canNotApplyOn",listNBT);
         }
         if(extraTooltip!=null){
             ListNBT listNBT = new ListNBT();
@@ -238,6 +260,15 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                 this.canApplyOn = new ArrayList<>();
                 listNBT.forEach((s)->{
                     canApplyOn.add(s.getString());
+                });
+            }
+        }
+        if(nbt.contains("canNotApplyOn",Constants.NBT.TAG_LIST)){
+            ListNBT listNBT = nbt.getList("canNotApplyOn",Constants.NBT.TAG_STRING);
+            if(!listNBT.isEmpty()){
+                this.canNotApplyOn = new ArrayList<>();
+                listNBT.forEach((s)->{
+                    canNotApplyOn.add(s.getString());
                 });
             }
         }
