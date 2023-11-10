@@ -1,0 +1,9 @@
+{
+  "general": {
+    "recoilModifier": 0.85,
+    "modifyHipFireSpread": 0.85,
+    "modifyAimDownSightSpeed": 0.88,
+    "horizontalRecoilModifier": 0.90,
+    "modifyWeaponWeight": 0.25
+  }
+}

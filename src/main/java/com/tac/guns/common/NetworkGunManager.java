@@ -39,7 +39,7 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class NetworkGunManager extends ReloadListener<Map<GunItem, Gun>>
 {
-
+    public NetworkGunManager(){}
     private static final Gson GSON_INSTANCE = Util.make(() -> {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(ResourceLocation.class, JsonDeserializers.RESOURCE_LOCATION);

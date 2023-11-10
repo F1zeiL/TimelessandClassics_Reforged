@@ -1,13 +1,21 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.attachments.NetworkModifierManager;
+import com.tac.guns.common.container.slot.SlotType;
+import com.tac.guns.init.ModItems;
 import com.tac.guns.item.attachment.IgunSkin;
 import com.tac.guns.item.attachment.impl.GunSkin;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 
 public class GunSkinItem extends Item implements IgunSkin, IColored {
+    public static final String CUSTOM_MODIFIER = "CustomModifier";
     private final GunSkin gunSkin;
 
     public GunSkinItem(GunSkin gunSkin, Properties properties) {
@@ -15,9 +23,40 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
         this.gunSkin = gunSkin;
     }
 
+    public static boolean hasCustomModifier(ItemStack stack){
+        return stack!=null && stack.getTag()!=null && stack.getTag().contains(CUSTOM_MODIFIER,Constants.NBT.TAG_STRING);
+    }
+    public static void setCustomModifier(ItemStack stack, ResourceLocation location){
+        if(stack!=null && location!=null) {
+            stack.getOrCreateTag().putString(CUSTOM_MODIFIER, location.toString());
+        }
+    }
+
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.isInGroup(group)) {
+            if (ModItems.SKIN_CUSTOM.get().equals(this) && NetworkModifierManager.getCustomModifiers() != null) {
+                NetworkModifierManager.getCustomModifiers().forEach((k, v)->{
+                    if(v.getSkin()!=null){
+                        ItemStack stack = new ItemStack(this);
+                        setCustomModifier(stack,v.getId());
+                        items.add(stack);
+                    }
+                });
+            }else {
+                super.fillItemGroup(group,items);
+            }
+        }
+    }
+
     @Override
     public GunSkin getProperties() {
         return this.gunSkin;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.GUN_SKIN;
     }
 
     @Override
@@ -29,4 +68,12 @@ public class GunSkinItem extends Item implements IgunSkin, IColored {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment == Enchantments.BINDING_CURSE || super.canApplyAtEnchantingTable(stack, enchantment);
     }
+
+    //todo: custom item name?
+    @Override
+    public String getTranslationKey(ItemStack stack) {
+        return super.getTranslationKey(stack);
+    }
+
+
 }

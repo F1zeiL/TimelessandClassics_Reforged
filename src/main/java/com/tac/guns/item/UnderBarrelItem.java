@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.IUnderBarrel;
 import com.tac.guns.item.attachment.impl.UnderBarrel;
 import net.minecraft.enchantment.Enchantment;
@@ -35,6 +36,11 @@ public class UnderBarrelItem extends Item implements IUnderBarrel, IColored
     public UnderBarrel getProperties()
     {
         return this.underBarrel;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.UNDER_BARREL;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.client.handler.AimingHandler;
 import com.tac.guns.interfaces.IGunModifier;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,6 +31,15 @@ public class Scope extends Attachment
     public void setTagName(String tagName) {this.tagName = tagName;}
     private String tagName;
     private Scope(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, IGunModifier... modifier)
+    {
+        super(modifier);
+        this.zoomData = additionalZoom;
+        this.centerOffset = centerOffset;
+        this.stabilityOffset = stabilityOffset;
+        this.tagName = tagName;
+    }
+
+    private Scope(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, ResourceLocation modifier)
     {
         super(modifier);
         this.zoomData = additionalZoom;
@@ -173,5 +183,10 @@ public class Scope extends Attachment
     public static Scope create(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, IGunModifier... modifiers)
     {
         return new Scope(additionalZoom, centerOffset, stabilityOffset, tagName, modifiers);
+    }
+
+    public static Scope create(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, ResourceLocation modifier)
+    {
+        return new Scope(additionalZoom, centerOffset, stabilityOffset, tagName, modifier);
     }
 }

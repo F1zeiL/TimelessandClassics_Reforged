@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.ISideRail;
 import com.tac.guns.item.attachment.impl.SideRail;
 import net.minecraft.enchantment.Enchantment;
@@ -35,6 +36,11 @@ public class SideRailItem extends Item implements ISideRail, IColored
     public SideRail getProperties()
     {
         return this.sideRail;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.SIDE_RAIL;
     }
 
     @Override

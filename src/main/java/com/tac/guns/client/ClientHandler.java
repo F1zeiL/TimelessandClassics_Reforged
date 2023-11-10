@@ -42,11 +42,7 @@ import com.tac.guns.client.render.gun.model.scope.SrsRedDotSightModel;
 import com.tac.guns.client.render.gun.model.scope.VortexLPVO_1_4xScopeModel;
 import com.tac.guns.client.render.gun.model.scope.VortexUh1SightModel;
 import com.tac.guns.client.render.gun.model.scope.elcan_14x_ScopeModel;
-import com.tac.guns.client.screen.AttachmentScreen;
-import com.tac.guns.client.screen.InspectScreen;
-import com.tac.guns.client.screen.TaCSettingsScreen;
-import com.tac.guns.client.screen.UpgradeBenchScreen;
-import com.tac.guns.client.screen.WorkbenchScreen;
+import com.tac.guns.client.screen.*;
 import com.tac.guns.client.settings.GunOptions;
 import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModContainers;
@@ -203,6 +199,7 @@ public class ClientHandler {
         ScreenManager.registerFactory(ModContainers.WORKBENCH.get(), WorkbenchScreen::new);
         ScreenManager.registerFactory(ModContainers.UPGRADE_BENCH.get(), UpgradeBenchScreen::new);
         ScreenManager.registerFactory(ModContainers.ATTACHMENTS.get(), AttachmentScreen::new);
+        ScreenManager.registerFactory(ModContainers.DYES.get(), DyeScreen::new);
         ScreenManager.registerFactory(ModContainers.INSPECTION.get(), InspectScreen::new);
         //ScreenManager.registerFactory(ModContainers.COLOR_BENCH.get(), ColorBenchAttachmentScreen::new);
     }
