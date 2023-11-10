@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.IStock;
 import com.tac.guns.item.attachment.impl.Stock;
 import net.minecraft.enchantment.Enchantment;
@@ -35,6 +36,11 @@ public class StockItem extends Item implements IStock, IColored
     public Stock getProperties()
     {
         return this.stock;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.STOCK;
     }
 
     @Override

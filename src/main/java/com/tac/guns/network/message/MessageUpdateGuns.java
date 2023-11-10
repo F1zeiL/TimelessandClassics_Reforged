@@ -6,20 +6,24 @@ import com.tac.guns.common.CustomGun;
 import com.tac.guns.common.CustomGunLoader;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.NetworkGunManager;
+import com.tac.guns.common.attachments.CustomModifierData;
+import com.tac.guns.common.attachments.NetworkModifierManager;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 import org.apache.commons.lang3.Validate;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class MessageUpdateGuns implements IMessage, NetworkGunManager.IGunProvider
+public class MessageUpdateGuns implements IMessage, NetworkGunManager.IGunProvider, NetworkModifierManager.ICustomModifiersProvider
 {
     private ImmutableMap<ResourceLocation, Gun> registeredGuns;
     private ImmutableMap<ResourceLocation, CustomGun> customGuns;
+    private ImmutableMap<ResourceLocation, CustomModifierData> customAttachments;
 
     public MessageUpdateGuns() {}
 
@@ -30,6 +34,7 @@ public class MessageUpdateGuns implements IMessage, NetworkGunManager.IGunProvid
         Validate.notNull(CustomGunLoader.get());
         NetworkGunManager.get().writeRegisteredGuns(buffer);
         CustomGunLoader.get().writeCustomGuns(buffer);
+        NetworkModifierManager.getInstance().writeAttachments(buffer);
     }
 
     @Override
@@ -37,6 +42,7 @@ public class MessageUpdateGuns implements IMessage, NetworkGunManager.IGunProvid
     {
         this.registeredGuns = NetworkGunManager.readRegisteredGuns(buffer);
         this.customGuns = CustomGunLoader.readCustomGuns(buffer);
+        this.customAttachments = NetworkModifierManager.readModifiers(buffer);
     }
 
     @Override
@@ -55,5 +61,11 @@ public class MessageUpdateGuns implements IMessage, NetworkGunManager.IGunProvid
     public ImmutableMap<ResourceLocation, CustomGun> getCustomGuns()
     {
         return this.customGuns;
+    }
+
+    @Override
+    @Nullable
+    public ImmutableMap<ResourceLocation, CustomModifierData> getCustomModifiers() {
+        return this.customAttachments;
     }
 }

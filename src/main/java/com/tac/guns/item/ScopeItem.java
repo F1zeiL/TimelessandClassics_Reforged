@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
 import net.minecraft.enchantment.Enchantment;
@@ -35,6 +36,11 @@ public class ScopeItem extends Item implements IScope, IColored
     public Scope getProperties()
     {
         return this.scope;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.SCOPE;
     }
 
     @Override

@@ -1,0 +1,9 @@
+{
+  "general": {
+    "modifyAimDownSightSpeed": 0.85,
+    "modifyWeaponWeight": 0.175,
+    "modifyFirstShotSpread": 0.75,
+    "modifyHipFireSpread": 0.55,
+    "modifyProjectileSpread": 0.85
+  }
+}

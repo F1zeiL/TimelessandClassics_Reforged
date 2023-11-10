@@ -130,7 +130,7 @@ public class ServerPlayHandler {
                         IProjectileFactory factory = ProjectileManager.getInstance().getFactory(projectileProps.getItem());
                         ProjectileEntity projectileEntity = factory.create(world, player, heldItem, item, modifiedGun, randP, randY);
                         projectileEntity.setWeapon(heldItem);
-                        projectileEntity.setAdditionalDamage(Gun.getAdditionalDamage(heldItem));
+                        projectileEntity.setAdditionalDamage(GunModifierHelper.getAdditionalDamage(heldItem));
                         world.addEntity(projectileEntity);
                         spawnedProjectiles[i] = projectileEntity;
                         projectileEntity.tick();
@@ -315,8 +315,10 @@ public class ServerPlayHandler {
      */
     public static void handleAttachments(ServerPlayerEntity player) {
         ItemStack heldItem = player.getHeldItemMainhand();
-        if (heldItem.getItem() instanceof GunItem || heldItem.getItem() instanceof ScopeItem || heldItem.getItem() instanceof SideRailItem || heldItem.getItem() instanceof IrDeviceItem) {
+        if (heldItem.getItem() instanceof GunItem ) {
             NetworkHooks.openGui(player, new SimpleNamedContainerProvider((windowId, playerInventory, player1) -> new AttachmentContainer(windowId, playerInventory, heldItem), new TranslationTextComponent("container.tac.attachments")));
+        } else if (heldItem.getItem() instanceof ScopeItem || heldItem.getItem() instanceof SideRailItem || heldItem.getItem() instanceof IrDeviceItem) {
+            NetworkHooks.openGui(player, new SimpleNamedContainerProvider((windowId, playerInventory, player1) -> new DyeContainer(windowId, playerInventory, heldItem), new TranslationTextComponent("container.tac.attachments")));
         }
     }
 

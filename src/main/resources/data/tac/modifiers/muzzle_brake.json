@@ -1,0 +1,10 @@
+{
+  "general": {
+    "recoilModifier": 0.75,
+    "modifyFirstShotSpread": 0.92,
+    "modifyMuzzleFlashSize": 1.175,
+    "modifyFireSoundRadius": 1.3,
+    "additionalWeaponWeight": 0.125,
+    "modifyWeaponWeight": 0.15
+  }
+}

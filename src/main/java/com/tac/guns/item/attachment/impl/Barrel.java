@@ -1,6 +1,7 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.interfaces.IGunModifier;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * An attachment class related to barrels. Barrels need to specify the length in order to render
@@ -13,6 +14,12 @@ public class Barrel extends Attachment
     private float length;
 
     private Barrel(float length, IGunModifier... modifier)
+    {
+        super(modifier);
+        this.length = length;
+    }
+
+    private Barrel(float length, ResourceLocation modifier)
     {
         super(modifier);
         this.length = length;
@@ -35,5 +42,9 @@ public class Barrel extends Attachment
     public static Barrel create(float length, IGunModifier... modifiers)
     {
         return new Barrel(length, modifiers);
+    }
+
+    public static Barrel create(float length, ResourceLocation defaultModifier) {
+        return new Barrel(length, defaultModifier);
     }
 }

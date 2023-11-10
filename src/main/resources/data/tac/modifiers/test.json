@@ -1,0 +1,32 @@
+{
+  "skin": "tac:golden",
+  "general": {
+    "silencedFire": true,
+    "modifyFireSoundRadius": 0.125,
+    "additionalDamage": -1.0,
+    "additionalHeadshotDamage": 10.0,
+    "modifyProjectileDamage": 2.0,
+    "modifyProjectileSpeed": 1.25,
+    "modifyProjectileSpread": 1.25,
+    "modifyFirstShotSpread": 0.75,
+    "modifyHipFireSpread": 0.25,
+    "recoilModifier": 1.15,
+    "horizontalRecoilModifier": 0.85,
+    "modifyAimDownSightSpeed": 1.25,
+    "additionalAmmunition": 3,
+    "additionalWeaponWeight": 0.20,
+    "modifyFireSoundVolume": 0.8,
+    "modifyRecoilSmoothening": 1.25,
+    "modifyMuzzleFlashSize": 0,
+    "modifyWeaponWeight": 0.25,
+    "kickModifier": 0.9
+  },
+  "hideLimitInfo": true,
+  "canApplyOn": [
+    "tac:scar_l",
+    "#tac:pistol"
+  ],
+  "extraTooltip": [
+    "tooltip.extra.test"
+  ]
+}

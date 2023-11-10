@@ -1,5 +1,6 @@
 package com.tac.guns.item;
 
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.item.attachment.IBarrel;
 import com.tac.guns.item.attachment.impl.Barrel;
 import net.minecraft.client.util.ITooltipFlag;
@@ -43,6 +44,11 @@ public class PistolBarrelItem extends Item implements IBarrel, IColored
     public Barrel getProperties()
     {
         return this.barrel;
+    }
+
+    @Override
+    public SlotType getSlot() {
+        return SlotType.BARREL;
     }
 
     @Override

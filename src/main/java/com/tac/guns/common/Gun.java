@@ -7,10 +7,12 @@ import com.tac.guns.Reference;
 import com.tac.guns.annotation.Ignored;
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.client.handler.command.GunEditor;
+import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -397,7 +399,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         }
 
         /**
-         * @return If this weapon should always spread it's projectiles according to {@link #getSpread()}
+         * @return If this weapon should always spread its projectiles according to {@link #getSpread()}
          */
         public boolean isAlwaysSpread() {
             return this.alwaysSpread;
@@ -2326,6 +2328,30 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         return gun;
     }
 
+    public boolean hasSlot(@Nullable SlotType type) {
+        if (this.modules.attachments != null && type != null) {
+            switch (type) {
+                case SCOPE:
+                    return this.modules.attachments.scope != null || this.modules.attachments.oldScope != null ||
+                            this.modules.attachments.pistolScope != null;
+                case BARREL:
+                    return this.modules.attachments.barrel != null ||
+                            this.modules.attachments.pistolBarrel != null;
+                case STOCK:
+                    return this.modules.attachments.stock != null;
+                case UNDER_BARREL:
+                    return this.modules.attachments.underBarrel != null;
+                case GUN_SKIN:
+                    return this.modules.attachments.gunSkin != null;
+                case SIDE_RAIL:
+                    return this.modules.attachments.sideRail != null || this.modules.attachments.irDevice != null;
+                case EXTENDED_MAG:
+                    return this.modules.attachments.extendedMag != null;
+            }
+        }
+        return false;
+    }
+
     public boolean canAttachType(@Nullable IAttachment.Type type) {
         if (this.modules.attachments != null && type != null) {
             switch (type) {
@@ -2464,6 +2490,57 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         return ItemStack.EMPTY;
     }
 
+//    public static ItemStack getAttachment(SlotType type, ItemStack gun) {
+//        CompoundNBT compound = gun.getTag();
+//        if (compound != null && compound.contains("Attachments", Constants.NBT.TAG_COMPOUND)) {
+//            CompoundNBT attachment = compound.getCompound("Attachments");
+//            if (attachment.contains(type.getTagKey(), Constants.NBT.TAG_COMPOUND)) {
+//                return ItemStack.read(attachment.getCompound(type.getTagKey()));
+//            }
+//        }
+//        return ItemStack.EMPTY;
+//    }
+
+
+    public static ItemStack getAttachment(SlotType type, ItemStack gun) {
+        CompoundNBT compound = gun.getTag();
+        if (compound != null && compound.contains("Attachments", Constants.NBT.TAG_COMPOUND)) {
+            CompoundNBT attachment = compound.getCompound("Attachments");
+            String key = null;
+            switch (type){
+                case SCOPE:
+                    if(attachment.contains(IAttachment.Type.SCOPE.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.SCOPE.getTagKey();
+                    else if(attachment.contains(IAttachment.Type.PISTOL_SCOPE.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.PISTOL_SCOPE.getTagKey();
+                    else if(attachment.contains(IAttachment.Type.OLD_SCOPE.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.OLD_SCOPE.getTagKey();
+                    break;
+                case BARREL:
+                    if(attachment.contains(IAttachment.Type.BARREL.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.BARREL.getTagKey();
+                    else if(attachment.contains(IAttachment.Type.PISTOL_BARREL.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.PISTOL_BARREL.getTagKey();
+                    break;
+                case SIDE_RAIL:
+                    if(attachment.contains(IAttachment.Type.SIDE_RAIL.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.SIDE_RAIL.getTagKey();
+                    else if(attachment.contains(IAttachment.Type.IR_DEVICE.getTagKey(), Constants.NBT.TAG_COMPOUND))
+                        key = IAttachment.Type.IR_DEVICE.getTagKey();
+                    break;
+                default:
+                    key = type.getTagKey();
+            }
+            if (key != null && attachment.contains(key, Constants.NBT.TAG_COMPOUND)) {
+                return ItemStack.read(attachment.getCompound(type.getTagKey()));
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**This method will only get additional-damage directly attached to the nbt of the gun itself.
+     * To get the total additional-damage of the weapon, please use {@link GunModifierHelper#getAdditionalDamage(ItemStack weapon)}
+     * */
     public static float getAdditionalDamage(ItemStack gunStack) {
         CompoundNBT tag = gunStack.getOrCreateTag();
         return tag.getFloat("AdditionalDamage");
@@ -2486,6 +2563,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             }
         }
         return stacks.toArray(new ItemStack[]{});
+    }
+
+    public static int getAmmo(ItemStack stack) {
+        return stack.getOrCreateTag().getInt("AmmoCount");
     }
 
     public static boolean isAmmo(ItemStack stack, ResourceLocation id) {

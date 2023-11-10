@@ -62,15 +62,11 @@ public class TimelessGunItem extends GunItem {
 
         String additionalDamageText = "";
         CompoundNBT tagCompound = stack.getTag();
-        float additionalDamage;
-        if (tagCompound != null && tagCompound.contains("AdditionalDamage", 99)) {
-            additionalDamage = tagCompound.getFloat("AdditionalDamage");
-            additionalDamage += GunModifierHelper.getAdditionalDamage(stack);
-            if (additionalDamage > 0.0F) {
-                additionalDamageText = TextFormatting.GREEN + " +" + ItemStack.DECIMALFORMAT.format(additionalDamage);
-            } else if (additionalDamage < 0.0F) {
-                additionalDamageText = TextFormatting.RED + " " + ItemStack.DECIMALFORMAT.format(additionalDamage);
-            }
+        float additionalDamage = GunModifierHelper.getAdditionalDamage(stack);
+        if (additionalDamage > 0.0F) {
+            additionalDamageText = TextFormatting.GREEN + " +" + ItemStack.DECIMALFORMAT.format(additionalDamage);
+        } else if (additionalDamage < 0.0F) {
+            additionalDamageText = TextFormatting.RED + " " + ItemStack.DECIMALFORMAT.format(additionalDamage);
         }
         additionalDamage = modifiedGun.getProjectile().getDamage();
         additionalDamage = GunModifierHelper.getModifiedProjectileDamage(stack, additionalDamage);
