@@ -28,10 +28,11 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     @Optional private ResourceLocation skin;
     @Optional private List<String> canApplyOn;
     @Optional private List<String> extraTooltip;
+    @Optional private boolean hideLimitInfo = false;
     @TGExclude
-    @Ignored private final List<ITag<Item>> tags = new ArrayList<>();
+    @Ignored private final List<ITag<Item>> whiteListTags = new ArrayList<>();
     @TGExclude
-    @Ignored private final List<ResourceLocation> items = new ArrayList<>();
+    @Ignored private final List<ResourceLocation> whiteListItems = new ArrayList<>();
     @Optional private General general = new General();
     protected void setId(ResourceLocation rl) {
         if(id==null){
@@ -55,14 +56,14 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                     ResourceLocation location = ResourceLocation.tryCreate(raw.substring(1));
                     if(location!=null){
                         ITag<Item> tag = ItemTags.getCollection().get(location);
-                        tags.add(tag);
+                        whiteListTags.add(tag);
                     }
                 }else {
                     ResourceLocation location = ResourceLocation.tryCreate(raw);
                     if(location!=null) {
                         Item item = ForgeRegistries.ITEMS.getValue(location);
                         if (item instanceof TimelessGunItem) {
-                            items.add(location);
+                            whiteListItems.add(location);
                         }
                     }
                 }
@@ -176,20 +177,22 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     public General getGeneral() {
         return general;
     }
-
+    public boolean isHideLimitInfo() {
+        return hideLimitInfo;
+    }
     @Nullable
     public List<ResourceLocation> getSuitableGuns() {
-        return items;
+        return whiteListItems;
     }
 
     public boolean canApplyOn(TimelessGunItem item){
         if(item.getRegistryName()!=null){
-            if(items.isEmpty() && tags.isEmpty())return true;
+            if(whiteListItems.isEmpty() && whiteListTags.isEmpty())return true;
             else {
-                if (items.contains(item.getRegistryName())) {
+                if (whiteListItems.contains(item.getRegistryName())) {
                     return true;
                 }
-                return tags.stream().anyMatch(item::isIn);
+                return whiteListTags.stream().anyMatch(item::isIn);
             }
         }
         return false;
@@ -216,6 +219,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
             }
             nbt.put("extraTooltip",listNBT);
         }
+        nbt.putBoolean("hideLimitInfo",hideLimitInfo);
         nbt.put("General", this.general.serializeNBT());
         return nbt;
     }
@@ -245,6 +249,9 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                     extraTooltip.add(s.getString());
                 });
             }
+        }
+        if(nbt.contains("hideLimitInfo")){
+            this.hideLimitInfo = nbt.getBoolean("hideLimitInfo");
         }
         if (nbt.contains("General", Constants.NBT.TAG_COMPOUND)) {
             this.general.deserializeNBT(nbt.getCompound("General"));

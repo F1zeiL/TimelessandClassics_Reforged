@@ -47,7 +47,7 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
     private static Map<ResourceLocation, CustomModifierData> infoMap = new HashMap<>();
 
     public static CustomModifierData getCustomModifier(ResourceLocation location){
-        if(infoMap!=null){
+        if(infoMap!=null && location!=null){
             return infoMap.get(location);
         }
         return null;

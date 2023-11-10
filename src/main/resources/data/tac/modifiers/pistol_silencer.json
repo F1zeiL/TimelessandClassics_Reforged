@@ -1,0 +1,12 @@
+{
+  "general": {
+    "modifyAimDownSightSpeed": 0.84,
+    "modifyProjectileSpread": 0.9125,
+    "modifyRecoilSmoothening": 1.30,
+    "silencedFire": true,
+    "modifyFireSoundVolume": 0.35,
+    "modifyFireSoundRadius": 0.125,
+    "modifyMuzzleFlashSize": 0,
+    "additionalWeaponWeight": 0.375
+  }
+}

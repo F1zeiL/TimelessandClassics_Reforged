@@ -18,20 +18,37 @@ public class PerkTipsBuilder {
 
     public PerkTipsBuilder add(FloatPerk perk) {
         float value = perk.getValue(data);
-        if (value > 0.0f) {
-            positivePerks.add(perk.getPositive(data));
-        } else if (value < 0.0f) {
-            negativePerks.add(perk.getNegative(data));
+        if(perk.isHarmful()){
+            if (value < 0.0f) {
+                positivePerks.add(perk.getPositive(data));
+            } else if (value > 0.0f) {
+                negativePerks.add(perk.getNegative(data));
+            }
+        }else {
+            if (value > 0.0f) {
+                positivePerks.add(perk.getPositive(data));
+            } else if (value < 0.0f) {
+                negativePerks.add(perk.getNegative(data));
+            }
         }
+
         return this;
     }
 
     public PerkTipsBuilder add(DoublePerk perk) {
         double value = perk.getValue(data);
-        if (value > 0.0) {
-            positivePerks.add(perk.getPositive(data));
-        } else if (value < 0.0) {
-            negativePerks.add(perk.getNegative(data));
+        if(perk.isHarmful()){
+            if (value < 0.0f) {
+                positivePerks.add(perk.getPositive(data));
+            } else if (value > 0.0f) {
+                negativePerks.add(perk.getNegative(data));
+            }
+        }else {
+            if (value > 0.0f) {
+                positivePerks.add(perk.getPositive(data));
+            } else if (value < 0.0f) {
+                negativePerks.add(perk.getNegative(data));
+            }
         }
         return this;
     }

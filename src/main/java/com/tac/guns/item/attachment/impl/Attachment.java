@@ -122,6 +122,8 @@ public abstract class Attachment {
                     .addPercentage(Perks.recoilModifier)
                     .addPercentage(Perks.horizontalRecoilModifier)
                     .addPercentage(Perks.modifyAimDownSightSpeed)
+                    .add(Perks.additionalWeaponWeight)
+                    .add(Perks.modifyWeaponWeight)
                     .build();
 
             if(!perks.isEmpty()){
@@ -129,10 +131,12 @@ public abstract class Attachment {
                 tooltip.addAll(perks);
             }
 
-            List<ITextComponent> list = getSuitableGuns(info);
-            if(!list.isEmpty()){
-                tooltip.add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
-                tooltip.addAll(list);
+            if(!info.isHideLimitInfo()){
+                List<ITextComponent> list = getSuitableGuns(info);
+                if(!list.isEmpty()){
+                    tooltip.add(new TranslationTextComponent("limit.tac.title").mergeStyle(TextFormatting.GRAY, TextFormatting.BOLD));
+                    tooltip.addAll(list);
+                }
             }
 
             if(info.getExtraTooltip()!=null){

@@ -4,17 +4,26 @@ import com.tac.guns.interfaces.IGunModifier;
 import net.minecraft.util.ResourceLocation;
 
 public class GunSkin extends Attachment {
-    private GunSkin(IGunModifier... modifier) {
-        super(modifier);
+    public ResourceLocation getSkin() {
+        return skin;
     }
+
+    private ResourceLocation skin;
+
+
     private GunSkin(ResourceLocation modifier) {
         super(modifier);
     }
-
-    public static GunSkin create(IGunModifier... modifier) {
-        return new GunSkin(modifier);
+    private GunSkin(String skin) {
+        super((ResourceLocation) null);
+        this.skin = ResourceLocation.tryCreate("tac:"+skin);
     }
+
     public static GunSkin create(ResourceLocation modifier) {
         return new GunSkin(modifier);
+    }
+
+    public static GunSkin create(String skin) {
+        return new GunSkin(skin);
     }
 }

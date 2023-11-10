@@ -1,0 +1,13 @@
+{
+  "general": {
+    "recoilModifier": 0.55,
+    "kickModifier": 0.8,
+    "modifyProjectileSpread": 0.85,
+    "modifyFirstShotSpread": 0.65,
+    "modifyHipFireSpread": 1.25,
+    "modifyAimDownSightSpeed": 0.80,
+    "horizontalRecoilModifier": 0.45,
+    "additionalWeaponWeight": 0.425,
+    "modifyWeaponWeight": 0.5
+  }
+}

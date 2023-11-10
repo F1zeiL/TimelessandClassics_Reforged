@@ -7,6 +7,7 @@ import com.tac.guns.common.attachments.perk.DoublePerk;
 import com.tac.guns.common.attachments.perk.FloatPerk;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.interfaces.IGunModifier;
+import com.tac.guns.item.GunSkinItem;
 import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
@@ -493,6 +494,10 @@ public class GunModifierHelper
             return modifier.getSkin();
         }
 
+        ItemStack stack = Gun.getAttachment(SlotType.GUN_SKIN, weapon);
+        if(stack!=null && stack.getItem() instanceof GunSkinItem){
+            return ((GunSkinItem)stack.getItem()).getProperties().getSkin();
+        }
         return null;
     }
 }

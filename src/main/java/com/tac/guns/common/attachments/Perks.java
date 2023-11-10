@@ -16,6 +16,10 @@ public class Perks {
 
         public static Function<Float, String> ROUND_PERCENTAGE_F =
                 value -> new DecimalFormat("#.#").format(Math.abs(1.0-value)*100) + "%";
+        public static Function<Float, String> WEIGHT =
+                value -> new DecimalFormat("#.#").format(Math.abs(value)*10);
+        public static Function<Float, String> WEIGHT_M =
+                value -> new DecimalFormat("#.#").format(Math.abs(value*100))+ "%";
     }
     public static List<Perk<?>> perkList = new ArrayList<>();
 
@@ -92,8 +96,9 @@ public class Perks {
     );
 
     public static FloatPerk additionalWeaponWeight = registerPerk(
-            new FloatPerk("additionalWeaponWeight","","",null,
-                    CustomModifierData.General::getAdditionalWeaponWeight)
+            new FloatPerk("additionalWeaponWeight",
+                    "perk.tac.additional_weight.positive","perk.tac.additional_weight.negative",
+                    Formatter.WEIGHT, CustomModifierData.General::getAdditionalWeaponWeight,true)
     );
 
     public static FloatPerk modifyFireSoundVolume = registerPerk(
@@ -112,8 +117,9 @@ public class Perks {
     );
 
     public static FloatPerk modifyWeaponWeight = registerPerk(
-            new FloatPerk("modifyWeaponWeight","","",null,
-                    CustomModifierData.General::getModifyWeaponWeight)
+            new FloatPerk("modifyWeaponWeight",
+                    "perk.tac.modify_weight.positive","perk.tac.modify_weight.negative",
+                    Formatter.WEIGHT_M, CustomModifierData.General::getModifyWeaponWeight,true)
     );
 
     public static FloatPerk kickModifier = registerPerk(
