@@ -201,13 +201,12 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                     blackListItems.isEmpty() && blackListTags.isEmpty())
                     return true;
             else {
-                if (blackListItems.contains(item.getRegistryName())) {
+                if (blackListItems.contains(item.getRegistryName()) ||
+                        blackListTags.stream().anyMatch(item::isIn))
                     return false;
-                }
-                if (whiteListItems.contains(item.getRegistryName())) {
-                    return true;
-                }
-                return whiteListTags.stream().anyMatch(item::isIn) && blackListTags.stream().noneMatch(item::isIn);
+
+                return whiteListItems.contains(item.getRegistryName()) ||
+                        whiteListTags.stream().anyMatch(item::isIn);
             }
         }
         return false;
