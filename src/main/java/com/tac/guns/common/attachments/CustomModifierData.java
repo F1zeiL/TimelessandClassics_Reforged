@@ -212,12 +212,12 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
             if (noWhiteList)
                 if (blackListItems.contains(item.getRegistryName()) ||
-                        blackListTags.stream().anyMatch(item::isIn))
+                        blackListTags.stream().filter(Objects::nonNull).anyMatch(item::isIn))
                     return false;
 
             if (noBlackList)
                 if (whiteListItems.contains(item.getRegistryName()) ||
-                        whiteListTags.stream().anyMatch(item::isIn))
+                        whiteListTags.stream().filter(Objects::nonNull).anyMatch(item::isIn))
                     return true;
 
             if (!noWhiteList && !noBlackList) {
@@ -226,7 +226,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
                     return false;
 
                 if (whiteListItems.contains(item.getRegistryName()) ||
-                        whiteListTags.stream().anyMatch(item::isIn))
+                        whiteListTags.stream().filter(Objects::nonNull).anyMatch(item::isIn))
                     return true;
 
             }
