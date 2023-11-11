@@ -19,6 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 /**Data class used to serialize/deserialize and transfer from data pack.
  * The data should be read from data pack rather than change or create directly.
  */
@@ -220,12 +222,13 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
             if (!noWhiteList && !noBlackList) {
                 if (blackListItems.contains(item.getRegistryName()) ||
-                        blackListTags.stream().anyMatch(item::isIn))
+                        blackListTags.stream().filter(Objects::nonNull).anyMatch(item::isIn))
                     return false;
 
                 if (whiteListItems.contains(item.getRegistryName()) ||
                         whiteListTags.stream().anyMatch(item::isIn))
                     return true;
+
             }
         }
         return noWhiteList;
@@ -305,7 +308,6 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         if (nbt.contains("General", Constants.NBT.TAG_COMPOUND)) {
             this.general.deserializeNBT(nbt.getCompound("General"));
         }
-        this.init();
     }
 
 }

@@ -18,6 +18,7 @@ import net.minecraft.util.Util;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -155,5 +156,12 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
     public static void addReloadListenerEvent(AddReloadListenerEvent event) {
         instance = new NetworkModifierManager();
         event.addListener(instance);
+    }
+
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent.VanillaTagTypes event) {
+        infoMap.forEach((k,v)->{
+            v.init();
+        });
     }
 }
