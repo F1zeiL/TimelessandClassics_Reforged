@@ -36,11 +36,26 @@ public class AttachmentContainer extends Container {
     {
         this(windowId, playerInventory);
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            ItemStack[] attachments = new ItemStack[SlotType.values().length+1];
-            for (int i = 0; i < SlotType.values().length; i++) {
-                attachments[i] = Gun.getAttachment(SlotType.values()[i], stack);
+            ItemStack[] attachments = new ItemStack[SlotType.values().length - 3];
+            for (int i = 0; i < SlotType.values().length - 3; i++) {
+                if (Gun.getAttachment(IAttachment.Type.PISTOL_SCOPE, stack) != ItemStack.EMPTY && i == 0)
+                    attachments[0] = Gun.getAttachment(IAttachment.Type.PISTOL_SCOPE, stack);
+                else if (Gun.getAttachment(IAttachment.Type.OLD_SCOPE, stack) != ItemStack.EMPTY && i == 0)
+                    attachments[0] = Gun.getAttachment(IAttachment.Type.OLD_SCOPE, stack);
+                else if (Gun.getAttachment(IAttachment.Type.SCOPE, stack) != ItemStack.EMPTY && i == 0)
+                    attachments[0] = Gun.getAttachment(IAttachment.Type.SCOPE, stack);
+                else if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack) != ItemStack.EMPTY && i == 1)
+                    attachments[1] = Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack);
+                else if (Gun.getAttachment(IAttachment.Type.BARREL, stack) != ItemStack.EMPTY && i == 1)
+                    attachments[1] = Gun.getAttachment(IAttachment.Type.BARREL, stack);
+                else if (Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack) != ItemStack.EMPTY && i == 4)
+                    attachments[4] = Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack);
+                else if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack) != ItemStack.EMPTY && i == 4)
+                    attachments[4] = Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack);
+                else
+                    attachments[i] = Gun.getAttachment(IAttachment.Type.values()[i], stack);
             }
-            for (int i = 0; i < SlotType.values().length; i++) {
+            for (int i = 0; i < SlotType.values().length - 3; i++) {
                 this.weaponInventory.setInventorySlotContents(i, attachments[i]);
             }
         }
