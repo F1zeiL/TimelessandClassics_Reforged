@@ -196,20 +196,39 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     }
 
     public boolean canApplyOn(TimelessGunItem item){
-        if(item.getRegistryName()!=null){
-            if (whiteListItems.isEmpty() && whiteListTags.isEmpty() &&
-                    blackListItems.isEmpty() && blackListTags.isEmpty())
+        boolean noWhiteList = false;
+        boolean noBlackList = false;
+        if (whiteListItems.isEmpty() && whiteListTags.isEmpty())
+            noWhiteList = true;
+
+        if (blackListItems.isEmpty() && blackListTags.isEmpty())
+            noBlackList = true;
+
+        if(item.getRegistryName() != null){
+            if (noWhiteList && noBlackList)
                     return true;
-            else {
+
+            if (noWhiteList)
                 if (blackListItems.contains(item.getRegistryName()) ||
                         blackListTags.stream().anyMatch(item::isIn))
                     return false;
 
-                return whiteListItems.contains(item.getRegistryName()) ||
-                        whiteListTags.stream().anyMatch(item::isIn);
+            if (noBlackList)
+                if (whiteListItems.contains(item.getRegistryName()) ||
+                        whiteListTags.stream().anyMatch(item::isIn))
+                    return true;
+
+            if (!noWhiteList && !noBlackList) {
+                if (blackListItems.contains(item.getRegistryName()) ||
+                        blackListTags.stream().anyMatch(item::isIn))
+                    return false;
+
+                if (whiteListItems.contains(item.getRegistryName()) ||
+                        whiteListTags.stream().anyMatch(item::isIn))
+                    return true;
             }
         }
-        return false;
+        return noWhiteList;
     }
 
     @Override
