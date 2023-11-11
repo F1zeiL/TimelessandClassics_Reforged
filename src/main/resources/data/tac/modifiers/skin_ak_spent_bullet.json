@@ -1,0 +1,7 @@
+{
+  "skin": "tac:spent_bullet",
+  "hideLimitInfo": false,
+  "canApplyOn": [
+    "tac:ak47"
+  ]
+}

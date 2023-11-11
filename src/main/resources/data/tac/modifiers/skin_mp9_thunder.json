@@ -1,0 +1,7 @@
+{
+  "skin": "tac:thunder",
+  "hideLimitInfo": false,
+  "canApplyOn": [
+    "tac:mp9"
+  ]
+}
