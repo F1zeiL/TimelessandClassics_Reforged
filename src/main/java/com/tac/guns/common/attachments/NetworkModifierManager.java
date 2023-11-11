@@ -70,12 +70,11 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
                             try(InputStream is = resource.getInputStream();
                                 Reader reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)))
                             {
-                                ResourceLocation rl = resource.getLocation();
-                                String path = rl.getPath();
+                                String path = resourceLocation.getPath();
                                 int index = path.lastIndexOf('/');
                                 if(index>0){
                                     path = path.substring(index).replace("/","").replace(".json","");
-                                    ResourceLocation id = ResourceLocation.tryCreate(rl.getNamespace()+":"+path);
+                                    ResourceLocation id = ResourceLocation.tryCreate(resourceLocation.getNamespace()+":"+path);
 
                                     if(id!=null){
                                         CustomModifierData skin = JSONUtils.fromJson(GSON_INSTANCE,reader, CustomModifierData.class);
