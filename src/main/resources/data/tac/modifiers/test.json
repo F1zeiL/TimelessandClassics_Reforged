@@ -23,12 +23,10 @@
   },
   "hideLimitInfo": true,
   "canApplyOn": [
-    "tac:scar_l",
-    "#tac:pistol"
+    "#tac:assault_rifle"
   ],
   "canNotApplyOn": [
-    "tac:deagle_357",
-    "#tac:assault_rifle"
+    "tac:scar_l"
   ],
   "extraTooltip": [
     "tooltip.extra.test"
