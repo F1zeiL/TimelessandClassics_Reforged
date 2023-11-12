@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
@@ -70,7 +72,7 @@ public class GunModifierHelper
         if(weapon.getItem() instanceof TimelessGunItem){
             ItemStack stack = Gun.getAttachment(type,weapon);
             if(stack!=null){
-                return Attachment.getCustomModifier(stack);
+                return Attachment.getCustomModifier(stack,false);
             }
         }
         return null;
@@ -487,17 +489,25 @@ public class GunModifierHelper
         return modifierWeight;
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static ResourceLocation getAdditionalSkin(ItemStack weapon) {
-        CustomModifierData modifier = getCustomModifier(weapon,SlotType.GUN_SKIN);
+        if(weapon.getItem() instanceof TimelessGunItem){
+            ItemStack stack = Gun.getAttachment(SlotType.GUN_SKIN,weapon);
+            if(stack!=null){
+                CustomModifierData modifier = Attachment.getCustomModifier(stack,true);
 
-        if(modifier!=null){
-            return modifier.getSkin();
+                if(modifier!=null){
+                    return modifier.getSkin();
+                }
+
+            }
+
+            if(stack!=null && stack.getItem() instanceof GunSkinItem){
+                return ((GunSkinItem)stack.getItem()).getProperties().getSkin();
+            }
         }
 
-        ItemStack stack = Gun.getAttachment(SlotType.GUN_SKIN, weapon);
-        if(stack!=null && stack.getItem() instanceof GunSkinItem){
-            return ((GunSkinItem)stack.getItem()).getProperties().getSkin();
-        }
+
         return null;
     }
 }

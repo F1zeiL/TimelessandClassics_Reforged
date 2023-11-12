@@ -11,6 +11,7 @@ import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -65,9 +66,11 @@ public class AttachmentSlot extends Slot {
             if(SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)){
                 return false;
             }
+
             //check extra limit from nbt tags
             Gun modifiedGun = weapon.getModifiedGun(this.weapon);
-            if(!Attachment.canApplyOn(stack,weapon)){
+            boolean flag = ((PlayerInventory)this.container.getPlayerInventory()).player.world.isRemote();
+            if(!Attachment.canApplyOn(stack,weapon,flag)){
                 return false;
             }
             SlotType stackType = ((IAttachment<?>) stack.getItem()).getSlot();
