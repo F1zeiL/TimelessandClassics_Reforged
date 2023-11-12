@@ -2,5 +2,12 @@
   "general": {
     "additionalWeaponWeight": 1.5,
     "modifyAimDownSightSpeed": 0.70
-  }
+  },
+  "hideLimitInfo": true,
+  "canApplyOn": [
+    "#tac:old_rifle"
+  ],
+  "extraTooltip": [
+    "tooltip.extra.x8"
+  ]
 }

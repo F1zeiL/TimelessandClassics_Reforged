@@ -2,5 +2,8 @@
   "general": {
     "additionalWeaponWeight": 0.125,
     "modifyAimDownSightSpeed": 0.975
-  }
+  },
+  "extraTooltip": [
+    "tooltip.extra.x1"
+  ]
 }

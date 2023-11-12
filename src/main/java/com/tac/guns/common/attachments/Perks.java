@@ -17,7 +17,7 @@ public class Perks {
         public static Function<Float, String> ROUND_PERCENTAGE_F =
                 value -> new DecimalFormat("#.#").format(Math.abs(1.0-value)*100) + "%";
         public static Function<Float, String> WEIGHT =
-                value -> new DecimalFormat("#.#").format(Math.abs(value)*10);
+                value -> new DecimalFormat("#.##").format(Math.abs(value));
         public static Function<Float, String> WEIGHT_M =
                 value -> new DecimalFormat("#.#").format(Math.abs(value*100))+ "%";
     }
