@@ -473,7 +473,9 @@
   "tooltip.extra.x3-6": "§73-6倍放大",
   "tooltip.extra.x3": "§73倍放大",
   "tooltip.extra.x4": "§74倍放大",
+  "tooltip.extra.x6-10": "§76-10倍放大",
   "tooltip.extra.x8": "§78倍放大",
+
   "enchantment.tac.over_capacity": "扩容附魔（已停用）",
   "enchantment.tac.over_capacity.desc": "增加武器弹容量",
   "key.tac.aim_sights": "切换开镜",
