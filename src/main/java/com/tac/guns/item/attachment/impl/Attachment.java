@@ -48,7 +48,7 @@ public abstract class Attachment {
     public static boolean hasCustomModifier(ItemStack stack){
         return stack!=null && stack.getTag()!=null && stack.getTag().contains(CUSTOM_MODIFIER,Constants.NBT.TAG_STRING);
     }
-    public static CustomModifierData getCustomModifier(ItemStack stack){
+    public static CustomModifierData getCustomModifier(ItemStack stack, boolean isLocal){
         if(!(stack.getItem() instanceof IAttachment)){
             return null;
         }
@@ -61,7 +61,11 @@ public abstract class Attachment {
             }
         }
         if(loc!=null){
-            return NetworkModifierManager.getCustomModifier(loc);
+            if(isLocal){
+                return NetworkModifierManager.getLocalCustomModifier(loc);
+            }else {
+                return NetworkModifierManager.getCustomModifier(loc);
+            }
         }
         return null;
     }
@@ -74,19 +78,14 @@ public abstract class Attachment {
      * @param attachment the attachment about to apply
      * @param gun the gun item
      * */
-    public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun){
+    public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun,boolean isLocal){
         if(gun.getRegistryName()==null)return false;
-        if(!attachment.hasTag())return true;
-        if (attachment.getTag() != null && attachment.getTag().contains(GunSkinItem.CUSTOM_MODIFIER, Constants.NBT.TAG_STRING)) {
-            String raw = attachment.getTag().getString(GunSkinItem.CUSTOM_MODIFIER);
-            ResourceLocation location = ResourceLocation.tryCreate(raw);
-            if(location!=null){
-                CustomModifierData modifier = NetworkModifierManager.getCustomModifier(location);
-                if (modifier != null) {
-                    return modifier.canApplyOn(gun);
-                }
-            }
+
+        CustomModifierData data = getCustomModifier(attachment,isLocal);
+        if(data!=null){
+            return data.canApplyOn(gun);
         }
+
         return true;
     }
     private static List<ITextComponent> getSuitableGuns(CustomModifierData modifier){
@@ -107,7 +106,7 @@ public abstract class Attachment {
     public static void addInformationEvent(ItemTooltipEvent event) {
         ItemStack stack= event.getItemStack();
         List<ITextComponent> tooltip = event.getToolTip();
-        CustomModifierData info = getCustomModifier(stack);
+        CustomModifierData info = getCustomModifier(stack,true);
         if(info!=null){
             List<ITextComponent> perks = new PerkTipsBuilder(info)
                     .add(Perks.silencedFire)

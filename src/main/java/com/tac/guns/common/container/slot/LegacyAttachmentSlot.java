@@ -91,9 +91,9 @@ public class LegacyAttachmentSlot extends Slot {
             }
             //check extra limit from nbt tags
             Gun modifiedGun = weapon.getModifiedGun(this.weapon);
-            if(!Attachment.canApplyOn(stack,weapon)){
-                return false;
-            }
+//            if(!Attachment.canApplyOn(stack,weapon)){
+//                return false;
+//            }
             IAttachment.Type stackType = ((IAttachment<?>) stack.getItem()).getType();
 
             if(this.type!=null){

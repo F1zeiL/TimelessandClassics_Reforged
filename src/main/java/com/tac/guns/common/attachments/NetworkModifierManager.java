@@ -21,6 +21,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -45,11 +46,20 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
         return instance;
     }
 
-    private static Map<ResourceLocation, CustomModifierData> infoMap = new HashMap<>();
+    private static Map<ResourceLocation, CustomModifierData> infoMap;
+    private static Map<ResourceLocation, CustomModifierData> clientInfoMap;
 
     public static CustomModifierData getCustomModifier(ResourceLocation location){
         if(infoMap!=null && location!=null){
             return infoMap.get(location);
+        }
+        return null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static CustomModifierData getLocalCustomModifier(ResourceLocation location){
+        if(clientInfoMap!=null && location!=null){
+            return clientInfoMap.get(location);
         }
         return null;
     }
@@ -63,6 +73,10 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
 
     @Override
     protected Map<ResourceLocation, CustomModifierData> prepare(IResourceManager resourceManagerIn, IProfiler profilerIn) {
+        infoMap = null;
+        isTagLoaded = false;
+        clientInfoMap = null;
+        isModifiers = false;
         Map<ResourceLocation, CustomModifierData> map = new HashMap<>();
         resourceManagerIn.getAllResourceLocations("modifiers/",(s)-> s.endsWith(".json"))
                 .forEach((resourceLocation)->{
@@ -82,7 +96,6 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
                                         if (skin != null) {
                                             skin.setId(id);
                                             if (Validator.isValidObject(skin)) {
-                                                skin.init();
                                                 map.put(id,skin);
                                             }
                                         }
@@ -142,15 +155,7 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
         ImmutableMap<ResourceLocation, CustomModifierData> getCustomModifiers();
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public static boolean updateCustomAttachments(ICustomModifiersProvider message) {
-        infoMap.clear();
-        message.getCustomModifiers().forEach((k, v)->{
-            //todo: maybe need to do some check here?
-            infoMap.put(k,v);
-        });
-        return true;
-    }
+
 
     @SubscribeEvent
     public static void addReloadListenerEvent(AddReloadListenerEvent event) {
@@ -159,9 +164,37 @@ public class NetworkModifierManager extends ReloadListener<Map<ResourceLocation,
     }
 
     @SubscribeEvent
+    public static void onServerStopped(FMLServerStoppedEvent event) {
+        infoMap = null;
+        isTagLoaded = false;
+        clientInfoMap = null;
+        isModifiers = false;
+        instance = null;
+    }
+    public static boolean isTagLoaded = false;
+    public static boolean isModifiers = false;
+    @OnlyIn(Dist.CLIENT)
+    public static boolean updateCustomAttachments(ICustomModifiersProvider message) {
+        clientInfoMap = new HashMap<>();
+        //todo: maybe need to do some check here?
+        clientInfoMap.putAll(message.getCustomModifiers());
+        if(isTagLoaded && !isModifiers){
+            clientInfoMap.forEach((k,v)-> v.init());
+        }
+        isModifiers = true;
+        return true;
+    }
+
+    //fire after datapack tags updated
+    @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent.VanillaTagTypes event) {
-        infoMap.forEach((k,v)->{
-            v.init();
-        });
+        isTagLoaded = true;
+        if(infoMap!=null){
+            infoMap.forEach((k,v)-> v.init());
+        }
+        if(isModifiers){
+            clientInfoMap.forEach((k,v)-> v.init());
+            isModifiers = true;
+        }
     }
 }

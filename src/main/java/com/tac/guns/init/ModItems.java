@@ -315,9 +315,9 @@ public class ModItems {
 //            () -> new GunSkinItem(GunSkin.create((ResourceLocation) null),new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     /*** Skin ***/
     public static final RegistryObject<Item> SKIN_AK_SPENT_BULLET = REGISTER.register("skin_ak_spent_bullet",
-            () -> new GunSkinItem(GunSkin.create(new ResourceLocation("skin_ak_spent_bullet")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+            () -> new GunSkinItem(GunSkin.create(new ResourceLocation("tac:skin_ak_spent_bullet")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_MP9_THUNDER = REGISTER.register("skin_mp9_thunder",
-            () -> new GunSkinItem(GunSkin.create(new ResourceLocation("skin_mp9_thunder")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+            () -> new GunSkinItem(GunSkin.create(new ResourceLocation("tac:skin_mp9_thunder")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 
     /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",

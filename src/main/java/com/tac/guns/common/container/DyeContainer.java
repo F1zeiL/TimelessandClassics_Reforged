@@ -133,11 +133,13 @@ public class DyeContainer extends Container {
     }
 
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
-        if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
+        if(playerInventory instanceof PlayerInventory) {
+            boolean isLocal = ((PlayerInventory) playerInventory).player.world.isRemote();
+            if (Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem(),isLocal)) {
 //            attachments.put(( (IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
-            attachments.put(( (IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
+                attachments.put(((IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
+            }
         }
-
     }
 
     @Override
