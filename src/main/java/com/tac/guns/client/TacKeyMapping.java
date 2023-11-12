@@ -17,14 +17,13 @@ public final class TacKeyMapping extends KeyBinding
 {
     private final LinkedList< Runnable > press_callbacks = new LinkedList<>();
     private boolean is_down;
-    private boolean isPressed = false;
 
     public TacKeyMapping(
-            String description,
-            IKeyConflictContext keyConflictContext,
-            KeyModifier keyModifier,
-            Input keyCode,
-            String category
+        String description,
+        IKeyConflictContext keyConflictContext,
+        KeyModifier keyModifier,
+        Input keyCode,
+        String category
     ) { super( description, keyConflictContext, keyModifier, keyCode, category ); }
 
     public void addPressCallback( Runnable callback ) {
@@ -33,7 +32,7 @@ public final class TacKeyMapping extends KeyBinding
 
     @Override
     public boolean isKeyDown() {
-        return this.isPressed;
+        return this.is_down;
     }
 
     @Override
@@ -42,8 +41,8 @@ public final class TacKeyMapping extends KeyBinding
         if ( is_down && !this.is_down ) {
             this.press_callbacks.forEach( Runnable::run );
         }
-        this.isPressed = is_down;
-
+        
+        this.is_down = is_down;
         super.setPressed( is_down );
     }
 
@@ -79,11 +78,11 @@ public final class TacKeyMapping extends KeyBinding
         public TacKeyMapping buildAndRegis()
         {
             final TacKeyMapping kb = new TacKeyMapping(
-                    this.description,
-                    this.conflict_context,
-                    this.modifier,
-                    this.key,
-                    "key.categories.tac"
+                this.description,
+                this.conflict_context,
+                this.modifier,
+                this.key,
+                "key.categories.tac"
             );
             ClientRegistry.registerKeyBinding( kb );
             return kb;

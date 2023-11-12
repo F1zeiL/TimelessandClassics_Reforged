@@ -5,9 +5,7 @@ import com.tac.guns.client.TacKeyMapping.TacKeyBuilder;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
-import net.minecraft.client.util.InputMappings.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -44,10 +42,14 @@ public final class Keys
         }
     }
     
-    public static final KeyBinding
-            PULL_TRIGGER = Minecraft.getInstance().gameSettings.keyBindAttack,
-            AIM_HOLD = Minecraft.getInstance().gameSettings.keyBindUseItem,
-            AIM_TOGGLE = AIM_HOLD;
+    public static final KeyBinding PULL_TRIGGER;
+    public static final KeyBinding AIM_DOWN_SIGHT;
+    static
+    {
+        final GameSettings settings = Minecraft.getInstance().gameSettings;
+        PULL_TRIGGER = settings.keyBindAttack;
+        AIM_DOWN_SIGHT = settings.keyBindUseItem;
+    }
     
     public static final TacKeyMapping
         RELOAD = new TacKeyBuilder( "key.tac.reload" ).withKeyboardKey( GLFW.GLFW_KEY_R ).buildAndRegis(),

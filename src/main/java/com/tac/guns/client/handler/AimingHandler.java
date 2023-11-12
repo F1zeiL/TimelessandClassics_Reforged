@@ -3,7 +3,6 @@ package com.tac.guns.client.handler;
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
 import com.tac.guns.Config.RightClickUse;
-import com.tac.guns.GunMod;
 import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.crosshair.Crosshair;
 import com.tac.guns.common.Gun;
@@ -23,7 +22,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.PointOfView;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
@@ -34,7 +32,6 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -214,7 +211,7 @@ public class AimingHandler {
             return;
 
         if (!Config.CLIENT.controls.holdToAim.get()) {
-            if (!Keys.AIM_TOGGLE.isKeyDown())
+            if (!Keys.AIM_DOWN_SIGHT.isKeyDown())
                 this.isPressed = false;
         }
 
@@ -325,9 +322,9 @@ public class AimingHandler {
         boolean zooming;
 
         if (Config.CLIENT.controls.holdToAim.get()) {
-            zooming = Keys.AIM_HOLD.isKeyDown();
+            zooming = Keys.AIM_DOWN_SIGHT.isKeyDown();
         } else {
-            if (Keys.AIM_TOGGLE.isKeyDown())
+            if (Keys.AIM_DOWN_SIGHT.isKeyDown())
                 if (!this.isPressed) {
                     this.isPressed = true;
                     this.forceToggleAim();
