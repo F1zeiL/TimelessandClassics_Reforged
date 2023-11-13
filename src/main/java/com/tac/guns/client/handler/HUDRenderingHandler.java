@@ -29,9 +29,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class HUDRenderingHandler extends AbstractGui {
@@ -307,39 +309,55 @@ public class HUDRenderingHandler extends AbstractGui {
                 stack.translate(20, 5, 0);
                 int fireMode;
 
-                try {
-                    int[] gunItemFireModes = heldItem.getTag().getIntArray("supportedFireModes");
-                    if (player.getHeldItemMainhand().getTag() == null) {
-                        if (!Config.COMMON.gameplay.safetyExistence.get() && Objects.requireNonNull(player.getHeldItemMainhand().getTag()).getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1)
-                            fireMode = gunItemFireModes[1];
-                        else
-                            fireMode = gunItemFireModes[0];
-                    } else if (player.getHeldItemMainhand().getTag().getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1)
-                        if (!Config.COMMON.gameplay.safetyExistence.get())
-                            fireMode = gunItemFireModes[1];
-                        else
-                            fireMode = gunItemFireModes[0];
-                    else {
-                        fireMode = Objects.requireNonNull(player.getHeldItemMainhand().getTag()).getInt("CurrentFireMode");
-                        if (!Config.COMMON.gameplay.safetyExistence.get() && fireMode == 0) {
-                            fireMode = gunItemFireModes[0];
-                            if (fireMode == 0)
-                                fireMode = gunItemFireModes[1];
+                if (player.getHeldItemMainhand().getItem() instanceof GunItem) {
+                    try {
+                        if (heldItem.getTag() == null) {
+                            heldItem.getOrCreateTag();
                         }
+                        int[] gunItemFireModes = heldItem.getTag().getIntArray("supportedFireModes");
+                        if (ArrayUtils.isEmpty(gunItemFireModes)) {
+                            gunItemFireModes = gun.getGeneral().getRateSelector();
+                            heldItem.getTag().putIntArray("supportedFireModes", gunItemFireModes);
+                            heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
+                        } else if (!Arrays.equals(gunItemFireModes, gun.getGeneral().getRateSelector())) {
+                            heldItem.getTag().putIntArray("supportedFireModes", gun.getGeneral().getRateSelector());
+                            if (!heldItem.getTag().contains("CurrentFireMode"))
+                                heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
+                        }
+                        if (player.getHeldItemMainhand().getTag() == null) {
+                            if (!Config.COMMON.gameplay.safetyExistence.get() && Objects.requireNonNull(player.getHeldItemMainhand().getTag()).getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1)
+                                fireMode = gunItemFireModes[1];
+                            else
+                                fireMode = gunItemFireModes[0];
+                        } else if (player.getHeldItemMainhand().getTag().getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1)
+                            if (!Config.COMMON.gameplay.safetyExistence.get()) {
+                                fireMode = gunItemFireModes[0];
+                                if (fireMode == 0)
+                                    fireMode = gunItemFireModes[1];
+                            } else
+                                fireMode = gunItemFireModes[0];
+                        else {
+                            fireMode = Objects.requireNonNull(player.getHeldItemMainhand().getTag()).getInt("CurrentFireMode");
+                            if (!Config.COMMON.gameplay.safetyExistence.get() && fireMode == 0) {
+                                fireMode = gunItemFireModes[0];
+                                if (fireMode == 0)
+                                    fireMode = gunItemFireModes[1];
+                            }
+                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        fireMode = gun.getGeneral().getRateSelector()[0];
+                    } catch (Exception e) {
+                        fireMode = 0;
+                        GunMod.LOGGER.log(Level.ERROR, "TaC HUD_RENDERER has failed obtaining the fire mode");
                     }
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    fireMode = gun.getGeneral().getRateSelector()[0];
-                } catch (Exception e) {
-                    fireMode = 0;
-                    GunMod.LOGGER.log(Level.ERROR, "TaC HUD_RENDERER has failed obtaining the fire mode");
-                }
-                Minecraft.getInstance().getTextureManager().bindTexture(FIREMODE_ICONS[fireMode]); // Render true firemode
+                    Minecraft.getInstance().getTextureManager().bindTexture(FIREMODE_ICONS[fireMode]); // Render true firemode
 
-                Matrix4f matrix = stack.getLast().getMatrix();
-                buffer.pos(matrix, 0, fireModeSize / 2, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, fireModeSize / 2, fireModeSize / 2, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, fireModeSize / 2, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-                buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+                    Matrix4f matrix = stack.getLast().getMatrix();
+                    buffer.pos(matrix, 0, fireModeSize / 2, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+                    buffer.pos(matrix, fireModeSize / 2, fireModeSize / 2, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+                    buffer.pos(matrix, fireModeSize / 2, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+                    buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+                }
             }
             stack.pop();
             buffer.finishDrawing();

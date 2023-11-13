@@ -358,28 +358,19 @@ public class ServerPlayHandler {
                 if (ArrayUtils.isEmpty(gunItemFireModes)) {
                     gunItemFireModes = gun.getGeneral().getRateSelector();
                     heldItem.getTag().putIntArray("supportedFireModes", gunItemFireModes);
+                    heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
                 } else if (!Arrays.equals(gunItemFireModes, gun.getGeneral().getRateSelector())) {
                     heldItem.getTag().putIntArray("supportedFireModes", gun.getGeneral().getRateSelector());
+                    if (!heldItem.getTag().contains("CurrentFireMode"))
+                        heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
                 }
 
                 int toCheck = ArrayUtils.indexOf(gunItemFireModes, heldItem.getTag().getInt("CurrentFireMode")) + 1;
-                if (toCheck > (heldItem.getTag().getIntArray("supportedFireModes").length - 1)) {
-                    heldItem.getTag().remove("CurrentFireMode");
-                    heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
-                } else {
-                    heldItem.getTag().remove("CurrentFireMode");
-                    heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[toCheck]);
-                }
+                CurrentFireMode(heldItem, gunItemFireModes, toCheck);
 
                 if (!Config.COMMON.gameplay.safetyExistence.get() && heldItem.getTag().getInt("CurrentFireMode") == 0 && gunItemFireModes.length > 1) {
                     toCheck = ArrayUtils.indexOf(gunItemFireModes, heldItem.getTag().getInt("CurrentFireMode")) + 1;
-                    if (toCheck > (heldItem.getTag().getIntArray("supportedFireModes").length - 1)) {
-                        heldItem.getTag().remove("CurrentFireMode");
-                        heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
-                    } else {
-                        heldItem.getTag().remove("CurrentFireMode");
-                        heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[toCheck]);
-                    }
+                    CurrentFireMode(heldItem, gunItemFireModes, toCheck);
                 } else if (!Config.COMMON.gameplay.safetyExistence.get() && heldItem.getTag().getInt("CurrentFireMode") == 0) {
                     heldItem.getTag().remove("CurrentFireMode");
                     heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
@@ -393,6 +384,16 @@ public class ServerPlayHandler {
             }
         } catch (Exception e) {
             GunMod.LOGGER.log(Level.ERROR, "Fire Mode check did not function properly");//TODO: For now the issue seems to be minimal, this will be eventually reworked, while still having server capability
+        }
+    }
+
+    private static void CurrentFireMode(ItemStack heldItem, int[] gunItemFireModes, int toCheck) {
+        if (toCheck > (heldItem.getTag().getIntArray("supportedFireModes").length - 1)) {
+            heldItem.getTag().remove("CurrentFireMode");
+            heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[0]);
+        } else {
+            heldItem.getTag().remove("CurrentFireMode");
+            heldItem.getTag().putInt("CurrentFireMode", gunItemFireModes[toCheck]);
         }
     }
 

@@ -547,18 +547,20 @@ public class GunRenderingHandler {
                     }
 
 //                    if (!SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.AIMING)) {
-                    if (scope.getTagName() == "qmk152")
+                    if (Objects.equals(scope.getTagName(), "qmk152"))
                         this.fix = -0.05;
-                    else if (scope.getTagName() == "elcan14x")
+                    else if (Objects.equals(scope.getTagName(), "elcan14x"))
                         this.fix = -0.06;
-                    else if (scope.getTagName() == "acog4x")
+                    else if (Objects.equals(scope.getTagName(), "acog4x"))
                         this.fix = -0.03;
-                    else if (scope.getTagName() == "vlpvo6")
+                    else if (Objects.equals(scope.getTagName(), "vlpvo6"))
                         this.fix = -0.05;
-                    else if (scope.getTagName() == "gener8x")
+                    else if (Objects.equals(scope.getTagName(), "gener8x"))
                         this.fix = -0.06;
-                    else if (scope.getTagName() == "aimpoint2" || scope.getTagName() == "eotechn" ||
-                            scope.getTagName() == "vortex1" || scope.getTagName() == "eotechshort")
+                    else if (Objects.equals(scope.getTagName(), "aimpoint2") ||
+                            Objects.equals(scope.getTagName(), "eotechn") ||
+                            Objects.equals(scope.getTagName(), "vortex1") ||
+                            Objects.equals(scope.getTagName(), "eotechshort"))
                         this.fix = -0.02;
                     else
                         this.fix = 0;
