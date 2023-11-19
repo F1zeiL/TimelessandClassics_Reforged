@@ -60,7 +60,7 @@ public abstract class GunAnimationController {
         }
     }
 
-    private void runAnimation(AnimationMeta animationMeta, AnimationSoundMeta soundMeta, Runnable callback){
+    protected void runAnimation(AnimationMeta animationMeta, AnimationSoundMeta soundMeta, Runnable callback){
         if(animationMeta != null) {
             Animations.runAnimation(animationMeta, callback);
             previousAnimation = animationMeta;
