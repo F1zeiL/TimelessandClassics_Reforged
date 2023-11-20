@@ -3,13 +3,14 @@
     "additionalWeaponWeight": 0.75,
     "modifyAimDownSightSpeed": 0.80
   },
-  "hideLimitInfo": false,
+  "hideLimitInfo": true,
   "canApplyOn": [
     "tac:deagle_357",
     "#tac:battle_rifle",
     "#tac:sniper_rifle"
   ],
   "extraTooltip": [
-    "tooltip.extra.x6-10"
+    "tooltip.extra.x6-10",
+    "tooltip.extra.allow_8x_scope"
   ]
 }
