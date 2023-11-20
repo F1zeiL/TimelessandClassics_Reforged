@@ -173,9 +173,9 @@ public class ModItems {
     public static final RegistryObject<Item> RPG7_MISSILE = REGISTER.register("rpg7_missile",
             () -> new AmmoItem(new Item.Properties().maxStackSize(6).group(GunMod.AMMO)));
     public static final RegistryObject<Item> LIGHT_GRENADE = REGISTER.register("light_grenade",
-            () -> new LightGrenadeItem(new Item.Properties().maxStackSize(8).group(GunMod.EXPLOSIVES), 25 * 4, 0.95f, 1.35f));
+            () -> new LightGrenadeItem(new Item.Properties().maxStackSize(8).group(GunMod.EXPLOSIVES), 25 * 4, 30f, 1f, 1.35f));
     public static final RegistryObject<Item> BASEBALL_GRENADE = REGISTER.register("baseball_grenade",
-            () -> new BaseballGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20 * 7, 1.425f, 1.135f));
+            () -> new BaseballGrenadeItem(new Item.Properties().maxStackSize(4).group(GunMod.EXPLOSIVES), 20 * 7, 50f, 1.25f, 1.135f));
 
     /*** Utility throwables ***/
     public static final RegistryObject<Item> STANDARD_FLASH_GRENADE = REGISTER.register("flash_grenade",

@@ -16,7 +16,7 @@ public class FlashGrenadeItem extends GrenadeItem
 {
     public FlashGrenadeItem(Item.Properties properties, int maxCookTime, float speed)
     {
-        super(properties, maxCookTime, 1, speed);
+        super(properties, maxCookTime, 0, 1, speed);
     }
 
     @Override

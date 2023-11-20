@@ -530,7 +530,7 @@ public class Config {
         public Missiles(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to missiles").push("missiles");
             {
-                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 5.0, 0.0, Double.MAX_VALUE);
+                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 1.0, 0.0, Double.MAX_VALUE);
             }
             builder.pop();
         }
@@ -545,7 +545,7 @@ public class Config {
         public Grenades(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to grenades").push("grenades");
             {
-                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 5.0, 0.0, Double.MAX_VALUE);
+                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 2.0, 0.0, Double.MAX_VALUE);
             }
             builder.pop();
         }

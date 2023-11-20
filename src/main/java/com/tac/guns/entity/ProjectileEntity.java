@@ -468,7 +468,6 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
                 entity.hurtResistantTime = 0;
             }
-
         }
     }
 
@@ -495,6 +494,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             int hitType = critical ? MessageProjectileHitEntity.HitType.CRITICAL : headshot ? MessageProjectileHitEntity.HitType.HEADSHOT : MessageProjectileHitEntity.HitType.NORMAL;
             updateWeaponLevels(damage);
             PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) this.shooter), new MessageProjectileHitEntity(hitVec.x, hitVec.y, hitVec.z, hitType, entity instanceof PlayerEntity));
+        }
+
+        if (this.projectile.isHasBlastDamage()) {
+            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius());
+            this.remove();
         }
 
         /* Send blood particle to tracking clients. */
@@ -589,6 +593,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(x, y, z, pos, face));
         if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0)
             ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, x, y, z, 1, 0, 0, 0, 0);
+
+        if (this.projectile.isHasBlastDamage()) {
+            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius());
+            this.remove();
+        }
     }
 
     protected void teleportToHitPoint(RayTraceResult rayTraceResult) {
@@ -725,6 +734,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         damage = GunModifierHelper.getModifiedDamage(this.weapon, this.modifiedGun, damage);
         damage = GunEnchantmentHelper.getAcceleratorDamage(this.weapon, damage);
         return Math.max(0F, damage);
+    }
+    public float getRadius() {
+        return Math.max(0F, this.projectile.getBlastRadius());
     }
 
     private float getCriticalDamage(ItemStack weapon, Random rand, float damage) {
@@ -887,7 +899,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
      * @param radius The amount of radius the entity should deal
      *               //* @param forceNone If true, forces the explosion mode to be NONE instead of config value
      */
-    public static void createExplosion(Entity entity, float radius) {
+    public static void createExplosion(Entity entity, float power, float radius) {
         World world = entity.world;
         if (world.isRemote())
             return;
@@ -897,7 +909,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if(entity instanceof IExplosionProvider){
             source = ((IExplosionProvider) entity).createDamageSource();
         }
-        Explosion explosion = new ProjectileExplosion(world, entity, source, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), radius, mode);
+        ProjectileExplosion explosion = new ProjectileExplosion(world, entity, source, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), power, radius, mode);
 
         if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, explosion))
             return;

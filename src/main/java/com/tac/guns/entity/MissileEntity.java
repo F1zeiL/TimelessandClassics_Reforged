@@ -21,15 +21,17 @@ import net.minecraft.world.World;
 public class MissileEntity extends ProjectileEntity implements IExplosionProvider
 {
     private float power;
+    private float radius;
     public MissileEntity(EntityType<? extends ProjectileEntity> entityType, World worldIn)
     {
         super(entityType, worldIn);
     }
 
-    public MissileEntity(EntityType<? extends ProjectileEntity> entityType, World worldIn, LivingEntity shooter, ItemStack weapon, GunItem item, Gun modifiedGun, float power)
+    public MissileEntity(EntityType<? extends ProjectileEntity> entityType, World worldIn, LivingEntity shooter, ItemStack weapon, GunItem item, Gun modifiedGun)
     {
         super(entityType, worldIn, shooter, weapon, item, modifiedGun,0,0);
-        this.power = power;
+        this.power = modifiedGun.getProjectile().getBlastDamage();
+        this.radius = modifiedGun.getProjectile().getBlastRadius();
     }
 
     @Override
@@ -52,20 +54,20 @@ public class MissileEntity extends ProjectileEntity implements IExplosionProvide
     @Override
     protected void onHitEntity(Entity entity, Vector3d hitVec, Vector3d startVec, Vector3d endVec, boolean headshot)
     {
-        createExplosion(this, this.power*Config.COMMON.missiles.explosionRadius.get().floatValue());
+        createExplosion(this, this.power, this.radius * Config.COMMON.missiles.explosionRadius.get().floatValue());
     }
 
     @Override
     protected void onHitBlock(BlockState state, BlockPos pos, Direction face, double x, double y, double z)
     {
-        createExplosion(this, this.power*Config.COMMON.missiles.explosionRadius.get().floatValue());
+        createExplosion(this, this.power, this.radius * Config.COMMON.missiles.explosionRadius.get().floatValue());
         this.life = 0;
     }
 
     @Override
     public void onExpired()
     {
-        createExplosion(this, this.power*Config.COMMON.missiles.explosionRadius.get().floatValue());
+        createExplosion(this, this.power, this.radius * Config.COMMON.missiles.explosionRadius.get().floatValue());
     }
 
     @Override

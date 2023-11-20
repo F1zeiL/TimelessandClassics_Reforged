@@ -16,6 +16,7 @@ public class ThrowableGrenadeEntity extends ThrowableItemEntity
     public float rotation;
     public float prevRotation;
     public float power;
+    public float radius;
 
     public ThrowableGrenadeEntity(EntityType<? extends ThrowableItemEntity> entityType, World worldIn)
     {
@@ -31,10 +32,11 @@ public class ThrowableGrenadeEntity extends ThrowableItemEntity
         //this.setMaxLife(20 * 3);
     }
 
-    public ThrowableGrenadeEntity(World world, LivingEntity entity, int timeLeft, float power)
+    public ThrowableGrenadeEntity(World world, LivingEntity entity, int timeLeft, float power, float radius)
     {
         super(ModEntities.THROWABLE_GRENADE.get(), world, entity);
         this.power = power;
+        this.radius = radius;
         //this.setShouldBounce(true);
         //this.setGravityVelocity(0.045F);
         //this.setItem(new ItemStack(ModItems.LIGHT_GRENADE.get()));
@@ -65,6 +67,6 @@ public class ThrowableGrenadeEntity extends ThrowableItemEntity
     @Override
     public void onDeath()
     {
-        GrenadeEntity.createExplosion(this, this.power*Config.COMMON.grenades.explosionRadius.get().floatValue());
+        GrenadeEntity.createExplosion(this, this.power, this.radius * Config.COMMON.grenades.explosionRadius.get().floatValue());
     }
 }

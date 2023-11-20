@@ -642,6 +642,12 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private float damage;
         @Optional
+        private boolean hasBlastDamage = false;
+        @Optional
+        private float blastDamage = 0f;
+        @Optional
+        private float blastRadius = 0f;
+        @Optional
         private float armorIgnore = 1f;
         @Optional
         private float critical = 0f;
@@ -690,6 +696,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putString("Item", this.item.toString());
             tag.putBoolean("Visible", this.visible);
             tag.putFloat("Damage", this.damage);
+            tag.putBoolean("HasBlastDamage", this.hasBlastDamage);
+            tag.putFloat("BlastDamage", this.blastDamage);
+            tag.putFloat("BlastRadius", this.blastRadius);
             tag.putFloat("ArmorIgnore", this.armorIgnore);
             tag.putFloat("Critical", this.critical);
             tag.putFloat("CriticalDamage", this.criticalDamage);
@@ -722,6 +731,15 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             }
             if (tag.contains("Damage", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.damage = tag.getFloat("Damage");
+            }
+            if (tag.contains("HasBlastDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.hasBlastDamage = tag.getBoolean("HasBlastDamage");
+            }
+            if (tag.contains("BlastDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.blastDamage = tag.getFloat("BlastDamage");
+            }
+            if (tag.contains("BlastRadius", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.blastRadius = tag.getFloat("BlastRadius");
             }
             if (tag.contains("ArmorIgnore", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.armorIgnore = tag.getFloat("ArmorIgnore");
@@ -787,6 +805,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             projectile.item = this.item;
             projectile.visible = this.visible;
             projectile.damage = this.damage;
+            projectile.hasBlastDamage = this.hasBlastDamage;
+            projectile.blastDamage = this.blastDamage;
+            projectile.blastRadius = this.blastRadius;
             projectile.armorIgnore = this.armorIgnore;
             projectile.critical = this.critical;
             projectile.criticalDamage = this.criticalDamage;
@@ -828,6 +849,27 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          */
         public float getDamage() {
             return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.COMMON.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.projectile) ? (this.damage + GunEditor.get().getDamageMod()) : this.damage;
+        }
+
+        /**
+         * @return If this projectile should have blast damage
+         */
+        public boolean isHasBlastDamage() {
+            return this.hasBlastDamage;
+        }
+
+        /**
+         * @return The Blast damage caused by this projectile
+         */
+        public float getBlastDamage() {
+            return this.blastDamage;
+        }
+
+        /**
+         * @return The Blast radius of this projectile
+         */
+        public float getBlastRadius() {
+            return this.blastRadius;
         }
 
         /**
