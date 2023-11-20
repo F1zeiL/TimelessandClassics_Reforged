@@ -1,27 +1,27 @@
 {
   "general": {
-    "rate": 400,
+    "rate": 300,
     "rateSelector": [1],
     "gripType": "tac:one_handed_m1911",
-    "recoilAngle": 10.75,
-    "horizontalRecoilAngle": 6.35,
-    "recoilKick": 1,
-    "recoilAdsReduction": 0.25,
-    "weaponRecoilOffset": 0.85,
-    "cameraRecoilModifier": 4.275,
-    "recoilDuration": 0.1875,
+    "recoilAngle": 18,
+    "horizontalRecoilAngle": 4.5,
+    "recoilKick": 1.25,
+    "recoilAdsReduction": 0.265,
+    "weaponRecoilOffset": 0.7125,
+    "cameraRecoilModifier": 3.25,
+    "recoilDuration": 0.225,
     "weightKilo": 1.2,
 
-    "spread": 1.95,
+    "spread": 1.35,
     "firstShotSpread": 0.145,
-    "hipFireInaccuracy": 2.55,
+    "hipFireInaccuracy": 3.75,
     "projToMinAccuracy": 4,
     "msToAccuracyReset": 280,
     "movementInaccuracy": 0.185
   },
   "reloads": {
     "magFed": true,
-    "maxAmmo": 16,
+    "maxAmmo": 10,
     "reloadMagTimer": 22,
     "additionalReloadEmptyMagTimer": 10,
     "maxAdditionalAmmoPerOC": [3, 6, 10],
@@ -30,47 +30,47 @@
   "projectile": {
     "item": "tac:9mm_round",
     "visible": false,
-    "damage": 6,
-    "armorIgnore": 0.6,
+    "damage": 7,
+    "armorIgnore": 0.3,
     "critical": 0.0,
     "criticalDamage": 1.0,
-    "headDamage": 0.75,
-    "closeDamage": 1.2,
-    "decayStart": 0.13,
+    "headDamage": 0.675,
+    "closeDamage": 1.25,
+    "decayStart": 0.16,
     "minDecayMultiplier": 0.35,
-    "decayEnd": 0.95,
-    "size": 0.05,
-    "speed": 9.5,
+    "decayEnd": 0.75,
+    "size": 0.15,
+    "speed": 13.5,
     "trailLengthMultiplier": 2.75,
-    "life": 9
+    "life": 7
   },
   "sounds": {
-    "fire": "tac:item.cz75_fire",
-    "reloadNormal": "tac:animation.cz75_reload_norm",
-    "reloadEmpty": "tac:animation.cz75_reload_empty",
-    "draw": "tac:animation.cz75_draw",
-    "inspect": "tac:animation.cz75_inspect",
+    "fire": "tac:item.c96_fire",
+    "reloadNormal": "tac:animation.c96_reload_norm",
+    "reloadEmpty": "tac:animation.c96_reload_empty",
+    "draw": "tac:animation.c96_draw",
+    "inspect": "tac:animation.c96_inspect",
     "cock": "tac:item.pistol.cock",
-    "silencedFire": "tac:item.cz75_fire_s"
+    "silencedFire": "tac:item.c96_fire_s"
   },
   "display": {
     "flash": {
-      "yOffset": 9.475,
-      "zOffset": -8,
-      "size": 0.75,
+      "yOffset": 12,
+      "zOffset": -15,
+      "size": 1,
       "trailAdjust": 0.575
     },
     "shellCasing": {
       "tickLife":10,
-      "yOffset": 1.5,
-      "xOffset": -0.5,
-      "zOffset": 3.5,
+      "yOffset": 4.5,
+      "xOffset": 0,
+      "zOffset": 2,
       "scale": 1.5,
-      "velocityX": 12,
-      "velocityY": 9,
+      "velocityX": 9,
+      "velocityY": 12,
       "velocityZ": 4,
       "rVelocityX": 2,
-      "rVelocityY": 4,
+      "rVelocityY": 2,
       "rVelocityZ": 0.0,
       "aVelocityX": 60.0,
       "aVelocityY": -120.0,
@@ -85,9 +85,9 @@
   },
   "modules": {
     "zoom": {
-      "fovModifier": 0.8,
-      "yOffset": 11.4,
-      "zOffset": -5.85
+      "fovModifier": 0.67,
+      "yOffset": 14.125,
+      "zOffset": -5
     },
     "attachments": {
       "barrel": {
