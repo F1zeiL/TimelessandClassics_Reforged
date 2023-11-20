@@ -145,6 +145,8 @@ public class ModItems {
             () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.COLT_PYTHON_MOD));
     public static final RegistryObject<Item> P90 = REGISTER.register("p90",
             () -> new TimelessGunItem(properties -> properties.group(GunMod.SMG), GunModifiers.P90_MOD));
+    public static final RegistryObject<Item> C96 = REGISTER.register("c96",
+            () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.C96_MOD));
 
     /*** Ammunition ***/
     public static final RegistryObject<Item> BULLET_MAGNUM = REGISTER.register("b_magnum", TimelessAmmoItem::new);
