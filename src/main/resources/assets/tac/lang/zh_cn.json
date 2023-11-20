@@ -154,6 +154,8 @@
   "item.tac.light_grenade": "F1 手雷",
   "item.tac.baseball_grenade": "M67 延时引信手雷",
   "item.tac.grenade40mm": "40mm 榴弹",
+  "item.tac.flash_grenade": "闪光弹",
+  "item.tac.impact_flash_grenade": "触碰式闪光弹",
   "block.tac.box45": ".45 ACP 子弹盒(x16)",
   "block.tac.magnumbox": "马格南子弹盒 (x12)",
   "block.tac.win30-30box": ".30 步枪子弹盒 (x10)",

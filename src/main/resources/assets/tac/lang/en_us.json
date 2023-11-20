@@ -154,6 +154,8 @@
   "item.tac.light_grenade": "F1 Grenade",
   "item.tac.baseball_grenade": "M67 Grenade",
   "item.tac.grenade40mm": "40mm Grenade",
+  "item.tac.flash_grenade": "Flash Grenade",
+  "item.tac.impact_flash_grenade": "Impact Flash Grenade",
   "block.tac.box45": "Box of .45 ACP Bullets (x16)",
   "block.tac.magnumbox": "Box of .357 Magnum Bullets (x12)",
   "block.tac.win30-30box": "Box of .30-30 Winchester Bullets (x10)",
