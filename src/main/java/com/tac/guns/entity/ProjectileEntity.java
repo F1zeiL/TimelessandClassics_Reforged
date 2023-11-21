@@ -499,7 +499,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         Vector3d blastVec;
         if (this.projectile.isHasBlastDamage()) {
             blastVec = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius(), blastVec);
+            createExplosion(this, this.projectile.getBlastDamage() + this.projectile.getDamage(), this.projectile.getBlastRadius(), blastVec);
             this.remove();
         }
 
@@ -592,7 +592,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     }*/
 
     protected void onHitBlock(BlockState state, BlockPos pos, Direction face, Vector3d hitVec) {
-        PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face));
+        PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face, this.projectile.isHasBlastDamage()));
         if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0)
             ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, hitVec.getX(), hitVec.getY(), hitVec.getZ(), 1, 0, 0, 0, 0);
 

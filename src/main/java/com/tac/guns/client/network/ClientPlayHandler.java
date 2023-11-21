@@ -145,6 +145,9 @@ public class ClientPlayHandler {
         Minecraft mc = Minecraft.getInstance();
         World world = mc.world;
         if (world != null) {
+            if (message.isBlast())
+                return;
+
             BlockState state = world.getBlockState(message.getPos());
             double holeX = message.getX() + 0.005 * message.getFace().getXOffset();
             double holeY = message.getY() + 0.005 * message.getFace().getYOffset();

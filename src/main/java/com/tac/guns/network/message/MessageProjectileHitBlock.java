@@ -18,16 +18,18 @@ public class MessageProjectileHitBlock implements IMessage
     private double z;
     private BlockPos pos;
     private Direction face;
+    private boolean isBlast;
 
     public MessageProjectileHitBlock() {
     }
 
-    public MessageProjectileHitBlock(double x, double y, double z, BlockPos pos, Direction face) {
+    public MessageProjectileHitBlock(double x, double y, double z, BlockPos pos, Direction face, boolean isBlast) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.pos = pos;
         this.face = face;
+        this.isBlast = isBlast;
     }
 
     @Override
@@ -37,6 +39,7 @@ public class MessageProjectileHitBlock implements IMessage
         buffer.writeDouble(this.z);
         buffer.writeBlockPos(this.pos);
         buffer.writeEnumValue(this.face);
+        buffer.writeBoolean(this.isBlast);
     }
 
     @Override
@@ -46,6 +49,7 @@ public class MessageProjectileHitBlock implements IMessage
         this.z = buffer.readDouble();
         this.pos = buffer.readBlockPos();
         this.face = buffer.readEnumValue(Direction.class);
+        this.isBlast = buffer.readBoolean();
     }
 
     @Override
@@ -72,5 +76,9 @@ public class MessageProjectileHitBlock implements IMessage
 
     public Direction getFace() {
         return this.face;
+    }
+
+    public boolean isBlast() {
+        return this.isBlast;
     }
 }
