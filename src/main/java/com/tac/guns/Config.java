@@ -528,7 +528,7 @@ public class Config {
         public final ForgeConfigSpec.DoubleValue explosionRadius;
 
         public Missiles(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to missiles").push("missiles");
+            builder.comment("Properties relating to missiles (no use now)").push("missiles");
             {
                 this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 1.0, 0.0, Double.MAX_VALUE);
             }

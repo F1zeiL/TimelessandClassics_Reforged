@@ -31,6 +31,8 @@
     "item": "tac:rpg7_missile",
     "visible": true,
     "gravity": false,
+    "damage": 20,
+    "hasBlastDamage": true,
     "blastDamage": 100,
     "blastRadius": 3,
     "size": 1,
