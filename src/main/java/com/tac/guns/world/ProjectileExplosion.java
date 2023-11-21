@@ -117,7 +117,7 @@ public class ProjectileExplosion extends Explosion {
             double deltaZ = entity.getPosZ() - this.z;
             double distanceToExplosion = MathHelper.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 
-            if (distanceToExplosion >= 0.0D) {
+            if (distanceToExplosion != 0.0D) {
                 deltaX /= distanceToExplosion;
                 deltaY /= distanceToExplosion;
                 deltaZ /= distanceToExplosion;
