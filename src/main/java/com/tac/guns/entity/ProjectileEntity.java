@@ -346,6 +346,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
         boundingBox = boundingBox.expand(0, expandHeight, 0);
 
+        //When the entity is moving, the position of the bounding box will shift forward, so move the bounding box back.
+        //Also, is stretch the bounding box according to the movement speed.
+        Vector3d velocity = entity.getRidingEntity() != null ? entity.getRidingEntity().getMotion() : entity.getMotion();
+        boundingBox = boundingBox.offset(velocity.mul(-1, -1, -1));
+        boundingBox = boundingBox.expand(velocity.mul(-1, -1, -1));
+
         Vector3d hitPos = boundingBox.rayTrace(startVec, endVec).orElse(null);
         Vector3d grownHitPos = boundingBox.grow(Config.COMMON.gameplay.growBoundingBoxAmountV2.get(), 0, Config.COMMON.gameplay.growBoundingBoxAmountV2.get()).rayTrace(startVec, endVec).orElse(null);
         if (hitPos == null && grownHitPos != null) {
