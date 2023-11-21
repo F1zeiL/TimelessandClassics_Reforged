@@ -80,8 +80,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
     protected Vector3d startPos;
 
-    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
-    public static HashMap<PlayerEntity, Vector3d> cachePlayerVelocity = new HashMap<>();
+//    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
+//    public static HashMap<PlayerEntity, Vector3d> cachePlayerVelocity = new HashMap<>();
 
     public ProjectileEntity(EntityType<? extends Entity> entityType, World worldIn) {
         super(entityType, worldIn);
@@ -216,11 +216,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 startPos = startVec;
             }
             Vector3d endVec = startVec.add(this.getMotion());
-            if (this.shooter instanceof PlayerEntity) {
-                Vector3d v = cachePlayerVelocity.get((PlayerEntity) shooter);
-                startVec = startVec.subtract(v);
-                endVec = endVec.subtract(v);
-            }
+//            if (this.shooter instanceof PlayerEntity) {
+//                Vector3d v = cachePlayerVelocity.get((PlayerEntity) shooter);
+//                startVec = startVec.subtract(v);
+//                endVec = endVec.subtract(v);
+//            }
             RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
 
@@ -340,10 +340,10 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             int ping = (int) Math.floor((((ServerPlayerEntity) this.shooter).ping / 1000.0) * 20.0 + 0.5);
             boundingBox = BoundingBoxManager.getBoundingBox((PlayerEntity) entity, ping);
         }
-        if (entity instanceof PlayerEntity) {
-            Vector3d v = cachePlayerVelocity.get(entity);
-            boundingBox = boundingBox.offset(-v.x, -v.y, -v.z);
-        }
+//        if (entity instanceof PlayerEntity) {
+//            Vector3d v = cachePlayerVelocity.get(entity);
+//            boundingBox = boundingBox.offset(-v.x, -v.y, -v.z);
+//        }
         boundingBox = boundingBox.expand(0, expandHeight, 0);
 
         //When the entity is moving, the position of the bounding box will shift forward, so move the bounding box back.
