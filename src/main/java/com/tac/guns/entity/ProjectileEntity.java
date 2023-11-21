@@ -424,7 +424,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 this.onHitBlock(blockRayTraceResult);
             }*/
 
-            this.onHitBlock(state, pos, blockRayTraceResult.getFace(), hitVec.x, hitVec.y, hitVec.z);
+            this.onHitBlock(state, pos, blockRayTraceResult.getFace(), hitVec);
 
             if (block instanceof BellBlock) {
                 BellBlock bell = (BellBlock) block;
@@ -496,8 +496,10 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) this.shooter), new MessageProjectileHitEntity(hitVec.x, hitVec.y, hitVec.z, hitType, entity instanceof PlayerEntity));
         }
 
+        Vector3d blastVec;
         if (this.projectile.isHasBlastDamage()) {
-            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius());
+            blastVec = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius(), blastVec);
             this.remove();
         }
 
@@ -589,13 +591,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         this.life -= 1;
     }*/
 
-    protected void onHitBlock(BlockState state, BlockPos pos, Direction face, double x, double y, double z) {
-        PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(x, y, z, pos, face));
+    protected void onHitBlock(BlockState state, BlockPos pos, Direction face, Vector3d hitVec) {
+        PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face));
         if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0)
-            ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, x, y, z, 1, 0, 0, 0, 0);
+            ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, hitVec.getX(), hitVec.getY(), hitVec.getZ(), 1, 0, 0, 0, 0);
 
         if (this.projectile.isHasBlastDamage()) {
-            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius());
+            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius(), hitVec);
             this.remove();
         }
     }
@@ -896,10 +898,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
      * Creates a projectile explosion for the specified entity.
      *
      * @param entity The entity to explode
+     * @param power  The amount of damage the entity should deal
      * @param radius The amount of radius the entity should deal
      *               //* @param forceNone If true, forces the explosion mode to be NONE instead of config value
      */
-    public static void createExplosion(Entity entity, float power, float radius) {
+    public static void createExplosion(Entity entity, float power, float radius, @Nullable Vector3d hitVec) {
         World world = entity.world;
         if (world.isRemote())
             return;
@@ -909,7 +912,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if(entity instanceof IExplosionProvider){
             source = ((IExplosionProvider) entity).createDamageSource();
         }
-        ProjectileExplosion explosion = new ProjectileExplosion(world, entity, source, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), power, radius, mode);
+
+        ProjectileExplosion explosion;
+        if (hitVec == null)
+            explosion = new ProjectileExplosion(world, entity, source, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), power, radius, mode);
+        else
+            explosion = new ProjectileExplosion(world, entity, source, null, hitVec.getX(), hitVec.getY(), hitVec.getZ(), power, radius, mode);
 
         if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(world, explosion))
             return;

@@ -108,7 +108,7 @@ public class ProjectileExplosion extends Explosion {
             if (entity.isImmuneToExplosions())
                 continue;
 
-            double strength = MathHelper.sqrt(entity.getDistanceSq(explosionPos)) / radius;
+            double strength = MathHelper.sqrt(entity.getDistanceSq(explosionPos)) * 2 / radius;
             if (strength > 1.0D)
                 continue;
 
