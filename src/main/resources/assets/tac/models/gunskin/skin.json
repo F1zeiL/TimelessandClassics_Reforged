@@ -37,6 +37,16 @@
     }
   },
 
+  "colt_python": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "6": "tac:gunskin/colt_python/python"
+      },
+      "icon": "tac:gunskin/icon/colt_python"
+    }
+  },
+
   "cz75": {
     "common": {
       "type": "common_texture",
@@ -65,6 +75,83 @@
         "6": "tac:gunskin/deagle_357/attachments"
       },
       "icon": "tac:gunskin/icon/deagle_357"
+    }
+  },
+
+  "dp28": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "6": "tac:gunskin/dp28/dp28"
+      },
+      "icon": "tac:gunskin/icon/dp28"
+    }
+  },
+
+  "fn_fal": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "8": "tac:gunskin/fn_fal/fn_fal",
+        "7": "tac:gunskin/fn_fal/fal_default_hg"
+      },
+      "icon": "tac:gunskin/icon/fn_fal"
+    }
+  },
+
+  "glock_17": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/glock_17/bs_512_dark",
+        "3": "tac:gunskin/glock_17/blacksteel_512_dark",
+        "4": "tac:gunskin/glock_17/glock_17",
+        "5": "tac:gunskin/glock_17/sight_glow",
+        "6": "tac:gunskin/glock_17/9x19_3_dark"
+      },
+      "icon": "tac:gunskin/icon/glock_17"
+    }
+  },
+
+  "glock_18": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "2": "tac:gunskin/glock_18/g18"
+      },
+      "icon": "tac:gunskin/icon/glock_18"
+    }
+  },
+
+  "hk416_a5": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "4": "tac:gunskin/hk416/hk416",
+        "7": "tac:gunskin/hk416/hk416_hg"
+      },
+      "icon": "tac:gunskin/icon/hk416_a5"
+    }
+  },
+
+  "hk_g3": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "6": "tac:gunskin/hk_g3/hk_g3"
+      },
+      "icon": "tac:gunskin/icon/hk_g3"
+    }
+  },
+
+  "hk_mp5a5": {
+    "common": {
+      "type": "common_texture",
+      "textures": {
+        "4": "tac:gunskin/hk_mp5a5/hk_mp5a5",
+        "3": "tac:gunskin/hk_mp5a5/mp5a5_tac_hg"
+      },
+      "icon": "tac:gunskin/icon/hk_mp5a5"
     }
   },
 

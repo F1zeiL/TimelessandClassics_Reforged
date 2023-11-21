@@ -75,6 +75,13 @@
       "fovModifier": 0.67,
       "yOffset": 13.5,
       "zOffset": -2.5
+    },
+    "attachments": {
+      "gunSkin": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
+      }
     }
   }
 }
