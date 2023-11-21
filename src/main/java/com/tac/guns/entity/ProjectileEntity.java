@@ -496,10 +496,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) this.shooter), new MessageProjectileHitEntity(hitVec.x, hitVec.y, hitVec.z, hitType, entity instanceof PlayerEntity));
         }
 
-        Vector3d blastVec;
         if (this.projectile.isHasBlastDamage()) {
-            blastVec = new Vector3d(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            createExplosion(this, this.projectile.getBlastDamage() + this.projectile.getDamage(), this.projectile.getBlastRadius(), blastVec);
+            createExplosion(this, this.projectile.getBlastDamage() + this.projectile.getDamage(), this.projectile.getBlastRadius(), hitVec);
             this.remove();
         }
 

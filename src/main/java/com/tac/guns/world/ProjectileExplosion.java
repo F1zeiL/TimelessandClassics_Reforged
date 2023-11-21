@@ -2,6 +2,8 @@ package com.tac.guns.world;
 
 import com.google.common.collect.Sets;
 import com.tac.guns.Config;
+import com.tac.guns.init.ModTags;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
@@ -10,9 +12,9 @@ import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.*;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.ExplosionContext;
@@ -22,6 +24,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -93,14 +97,15 @@ public class ProjectileExplosion extends Explosion {
         }
 
         this.getAffectedBlockPositions().addAll(set);
-        float radius = this.radius * 2;
+        float radius = this.radius;
         int minX = MathHelper.floor(this.x - (double) radius - 1.0D);
         int maxX = MathHelper.floor(this.x + (double) radius + 1.0D);
         int minY = MathHelper.floor(this.y - (double) radius - 1.0D);
         int maxY = MathHelper.floor(this.y + (double) radius + 1.0D);
         int minZ = MathHelper.floor(this.z - (double) radius - 1.0D);
         int maxZ = MathHelper.floor(this.z + (double) radius + 1.0D);
-        List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB((double) minX, (double) minY, (double) minZ, (double) maxX, (double) maxY, (double) maxZ));
+        radius *= 2;
+        List<Entity> entities = this.world.getEntitiesWithinAABBExcludingEntity(this.exploder, new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ));
         net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(this.world, this, entities, radius);
         Vector3d explosionPos = new Vector3d(this.x, this.y, this.z);
 
@@ -108,13 +113,53 @@ public class ProjectileExplosion extends Explosion {
             if (entity.isImmuneToExplosions())
                 continue;
 
-            double strength = MathHelper.sqrt(entity.getDistanceSq(explosionPos)) * 2 / radius;
+            AxisAlignedBB boundingBox = entity.getBoundingBox();
+            RayTraceResult result;
+            double strength;
+            double deltaX;
+            double deltaY;
+            double deltaZ;
+            double minDistance = radius;
+
+            Vector3d[] d = new Vector3d[15];
+
+            if (!(entity instanceof LivingEntity)) {
+                strength = MathHelper.sqrt(entity.getDistanceSq(explosionPos)) * 2 / radius;
+                deltaX = entity.getPosX() - this.x;
+                deltaY = (entity instanceof TNTEntity ? entity.getPosY() : entity.getPosYEye()) - this.y;
+                deltaZ = entity.getPosZ() - this.z;
+            } else {
+                deltaX = (boundingBox.maxX + boundingBox.minX) / 2;
+                deltaY = (boundingBox.maxY + boundingBox.minY) / 2;
+                deltaZ = (boundingBox.maxZ + boundingBox.minZ) / 2;
+                d[0] = new Vector3d(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+                d[1] = new Vector3d(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+                d[2] = new Vector3d(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+                d[3] = new Vector3d(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+                d[4] = new Vector3d(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+                d[5] = new Vector3d(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+                d[6] = new Vector3d(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+                d[7] = new Vector3d(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+                d[8] = new Vector3d(boundingBox.minX, deltaY, deltaZ);
+                d[9] = new Vector3d(boundingBox.maxX, deltaY, deltaZ);
+                d[10] = new Vector3d(deltaX, boundingBox.minY, deltaZ);
+                d[11] = new Vector3d(deltaX, boundingBox.maxY, deltaZ);
+                d[12] = new Vector3d(deltaX, deltaY, boundingBox.minZ);
+                d[13] = new Vector3d(deltaX, deltaY, boundingBox.maxZ);
+                d[14] = new Vector3d(deltaX, deltaY, deltaZ);
+                for (int i = 0; i < 15; i++) {
+                    result = rayTraceBlocks(this.world, new RayTraceContext(explosionPos, d[i], RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, null));
+                    minDistance = (result.getType() != RayTraceResult.Type.BLOCK) ? Math.min(minDistance, explosionPos.distanceTo(d[i])) : minDistance;
+                }
+                strength = minDistance * 2 / radius;
+                deltaX -= this.x;
+                deltaY -= this.y;
+                deltaZ -= this.z;
+            }
+
             if (strength > 1.0D)
                 continue;
 
-            double deltaX = entity.getPosX() - this.x;
-            double deltaY = (entity instanceof TNTEntity ? entity.getPosY() : entity.getPosYEye()) - this.y;
-            double deltaZ = entity.getPosZ() - this.z;
             double distanceToExplosion = MathHelper.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
 
             if (distanceToExplosion != 0.0D) {
@@ -128,8 +173,7 @@ public class ProjectileExplosion extends Explosion {
                 deltaZ = 0.0;
             }
 
-            double blockDensity = getBlockDensity(explosionPos, entity);
-            double damage = (1.0D - strength) * blockDensity;
+            double damage = 1.0D - strength;
             entity.attackEntityFrom(this.getDamageSource(), (float) damage * this.power);
 
             if (entity instanceof LivingEntity) {
@@ -143,6 +187,95 @@ public class ProjectileExplosion extends Explosion {
                     this.getPlayerKnockbackMap().put(player, new Vector3d(deltaX * damage, deltaY * damage, deltaZ * damage));
                 }
             }
+        }
+    }
+
+    private static BlockRayTraceResult rayTraceBlocks(World world, RayTraceContext context) {
+        return performRayTrace(context, (rayTraceContext, blockPos) -> {
+            BlockState blockState = world.getBlockState(blockPos);
+            Block block = blockState.getBlock();
+            boolean pass = block.isIn(ModTags.bullet_ignore);
+            if(pass)return null;
+
+            return getBlockRayTraceResult(world, rayTraceContext, blockPos, blockState);
+        }, (rayTraceContext) -> {
+            Vector3d Vector3d = rayTraceContext.getStartVec().subtract(rayTraceContext.getEndVec());
+            return BlockRayTraceResult.createMiss(rayTraceContext.getEndVec(), Direction.getFacingFromVector(Vector3d.x, Vector3d.y, Vector3d.z), new BlockPos(rayTraceContext.getEndVec()));
+        });
+    }
+
+    @Nullable
+    private static BlockRayTraceResult getBlockRayTraceResult(World world, RayTraceContext rayTraceContext, BlockPos blockPos, BlockState blockState) {
+        FluidState fluidState = world.getFluidState(blockPos);
+        Vector3d startVec = rayTraceContext.getStartVec();
+        Vector3d endVec = rayTraceContext.getEndVec();
+        VoxelShape blockShape = rayTraceContext.getBlockShape(blockState, world, blockPos);
+        BlockRayTraceResult blockResult = world.rayTraceBlocks(startVec, endVec, blockPos, blockShape, blockState);
+        VoxelShape fluidShape = rayTraceContext.getFluidShape(fluidState, world, blockPos);
+        BlockRayTraceResult fluidResult = fluidShape.rayTrace(startVec, endVec, blockPos);
+        double blockDistance = blockResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(blockResult.getHitVec());
+        double fluidDistance = fluidResult == null ? Double.MAX_VALUE : rayTraceContext.getStartVec().squareDistanceTo(fluidResult.getHitVec());
+        return blockDistance <= fluidDistance ? blockResult : fluidResult;
+    }
+
+    private static <T> T performRayTrace(RayTraceContext context, BiFunction<RayTraceContext, BlockPos, T> hitFunction, Function<RayTraceContext, T> missFactory) {
+        Vector3d startVec = context.getStartVec();
+        Vector3d endVec = context.getEndVec();
+        if (startVec.equals(endVec)) {
+            return missFactory.apply(context);
+        } else {
+            double startX = MathHelper.lerp(-0.0000001, endVec.x, startVec.x);
+            double startY = MathHelper.lerp(-0.0000001, endVec.y, startVec.y);
+            double startZ = MathHelper.lerp(-0.0000001, endVec.z, startVec.z);
+            double endX = MathHelper.lerp(-0.0000001, startVec.x, endVec.x);
+            double endY = MathHelper.lerp(-0.0000001, startVec.y, endVec.y);
+            double endZ = MathHelper.lerp(-0.0000001, startVec.z, endVec.z);
+            int blockX = MathHelper.floor(endX);
+            int blockY = MathHelper.floor(endY);
+            int blockZ = MathHelper.floor(endZ);
+            BlockPos.Mutable mutablePos = new BlockPos.Mutable(blockX, blockY, blockZ);
+            T t = hitFunction.apply(context, mutablePos);
+            if (t != null) {
+                return t;
+            }
+
+            double deltaX = startX - endX;
+            double deltaY = startY - endY;
+            double deltaZ = startZ - endZ;
+            int signX = MathHelper.signum(deltaX);
+            int signY = MathHelper.signum(deltaY);
+            int signZ = MathHelper.signum(deltaZ);
+            double d9 = signX == 0 ? Double.MAX_VALUE : (double) signX / deltaX;
+            double d10 = signY == 0 ? Double.MAX_VALUE : (double) signY / deltaY;
+            double d11 = signZ == 0 ? Double.MAX_VALUE : (double) signZ / deltaZ;
+            double d12 = d9 * (signX > 0 ? 1.0D - MathHelper.frac(endX) : MathHelper.frac(endX));
+            double d13 = d10 * (signY > 0 ? 1.0D - MathHelper.frac(endY) : MathHelper.frac(endY));
+            double d14 = d11 * (signZ > 0 ? 1.0D - MathHelper.frac(endZ) : MathHelper.frac(endZ));
+
+            while (d12 <= 1.0D || d13 <= 1.0D || d14 <= 1.0D) {
+                if (d12 < d13) {
+                    if (d12 < d14) {
+                        blockX += signX;
+                        d12 += d9;
+                    } else {
+                        blockZ += signZ;
+                        d14 += d11;
+                    }
+                } else if (d13 < d14) {
+                    blockY += signY;
+                    d13 += d10;
+                } else {
+                    blockZ += signZ;
+                    d14 += d11;
+                }
+
+                T t1 = hitFunction.apply(context, mutablePos.setPos(blockX, blockY, blockZ));
+                if (t1 != null) {
+                    return t1;
+                }
+            }
+
+            return missFactory.apply(context);
         }
     }
 }
