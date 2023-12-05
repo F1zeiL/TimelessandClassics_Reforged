@@ -1,4 +1,4 @@
-package com.tac.guns.item.TransitionalTypes.grenades.utility;
+package com.tac.guns.item.transition.grenades.utility;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.specifics.utility.ImpactFlashGrenade;

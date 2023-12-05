@@ -6,7 +6,7 @@ import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.common.Gun;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.mixin.client.MinecraftStaticMixin;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageEmptyMag;

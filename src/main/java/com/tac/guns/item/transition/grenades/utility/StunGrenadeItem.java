@@ -1,12 +1,8 @@
-package com.tac.guns.item.TransitionalTypes.grenades.utility;
+package com.tac.guns.item.transition.grenades.utility;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
-import com.tac.guns.entity.specifics.utility.StandardFlashGrenade;
 import com.tac.guns.entity.specifics.utility.StandardStunGrenade;
-import com.tac.guns.init.ModSounds;
-import com.tac.guns.item.GrenadeItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 /**
