@@ -601,7 +601,7 @@ public class GunRenderingHandler {
                 float side = right ? 1.0F : -1.0F;
                 //double transition = 1.0 - Math.pow(1.0 - AimingHandler.get().getNormalisedRepairProgress(), 2);
 
-                double transition = (float) AimingHandler.get().getNormalisedAdsProgress();
+                double transition = (float) AimingHandler.get().getLerpAdsProgress(event.getPartialTicks());
 
                 float function = (float) (3f * Math.pow(transition - 0.33f, 2) - 0.33f);
                 if (function > 1f)
@@ -1232,6 +1232,8 @@ public class GunRenderingHandler {
         event.setCanceled(this.renderWeapon(mc.player, event.getItem(), event.getTransformType(), event.getMatrixStack(), event.getRenderTypeBuffer(), event.getLight(), event.getPartialTicks()));
     }
 
+    public float aimingHandLayerFov = 6.41236f;
+    public float originHandLayerFov = 70;
     public boolean renderWeapon(LivingEntity entity, ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, float partialTicks) {
         if (stack.getItem() instanceof GunItem) {
             matrixStack.push();
@@ -1244,6 +1246,31 @@ public class GunRenderingHandler {
             }
 
             RenderUtil.applyTransformType(model.isEmpty() ? stack : model, matrixStack, transformType, entity);
+
+            if(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND.equals(transformType)) {
+                Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
+                IAttachment.Type type = IAttachment.Type.SCOPE;
+                if (gun.canAttachType(type)) {
+                    ItemStack attachmentStack = Gun.getAttachment(type, stack);
+                    if (!attachmentStack.isEmpty()) {
+                        Gun.ScaledPositioned positioned = gun.getAttachmentPosition(type);
+                        if (positioned != null) {
+                            double transition = AimingHandler.get().getLerpAdsProgress(partialTicks);
+                            double displayX = positioned.getXOffset() * 0.0625;
+                            double displayY = positioned.getYOffset() * 0.0625;
+                            double displayZ = positioned.getZOffset() * 0.0625;
+                            float handLayerFov = MathHelper.lerp((float) transition, originHandLayerFov, aimingHandLayerFov);
+                            float zScale = (float) Math.tan(handLayerFov / 180 * Math.PI / 2) / (float) Math.tan(originHandLayerFov / 180 * Math.PI / 2);
+                            matrixStack.translate(displayX, displayY, displayZ);
+                            matrixStack.translate(0, -0.5, 0);
+                            matrixStack.scale(1f, 1f, zScale);
+                            matrixStack.translate(0, 0.5, 0);
+                            matrixStack.translate(-displayX, -displayY, -displayZ);
+                            matrixStack.translate(0, 0, (float) transition * 3.7 * 0.0625 / zScale);
+                        }
+                    }
+                }
+            }
 
             this.renderGun(entity, transformType, model.isEmpty() ? stack : model, matrixStack, renderTypeBuffer, light, partialTicks);
             this.renderAttachments(entity, transformType, stack, matrixStack, renderTypeBuffer, light, partialTicks);
@@ -1328,6 +1355,9 @@ public class GunRenderingHandler {
                     if (!attachmentStack.isEmpty()) {
                         Gun.ScaledPositioned positioned = gun.getAttachmentPosition(type);
                         if (positioned != null) {
+                            double displayX = positioned.getXOffset() * 0.0625;
+                            double displayY = positioned.getYOffset() * 0.0625;
+                            double displayZ = positioned.getZOffset() * 0.0625;
                             matrixStack.push();
                             GunAnimationController controller = GunAnimationController.fromItem(stack.getItem());
                             if (controller != null) {
@@ -1335,7 +1365,6 @@ public class GunRenderingHandler {
                                     if (controller instanceof PistalAnimationController
                                             && gun.getModules().getAttachments().getPistolScope() != null
                                             && gun.getModules().getAttachments().getPistolScope().getDoOnSlideMovement()) {
-                                        //Minecraft.getInstance().player.sendChatMessage("test");
                                         PistalAnimationController pcontroller = (PistalAnimationController) controller;
                                         controller.applyTransform(stack, pcontroller.getSlideNodeIndex(), transformType, entity, matrixStack);
                                     } else
@@ -1343,9 +1372,6 @@ public class GunRenderingHandler {
                                 } else
                                     controller.applyAttachmentsTransform(stack, transformType, entity, matrixStack);
                             }
-                            double displayX = positioned.getXOffset() * 0.0625;
-                            double displayY = positioned.getYOffset() * 0.0625;
-                            double displayZ = positioned.getZOffset() * 0.0625;
                             matrixStack.translate(displayX, displayY, displayZ);
                             matrixStack.translate(0, -0.5, 0);
                             matrixStack.scale((float) positioned.getScale(), (float) positioned.getScale(), (float) positioned.getScale());

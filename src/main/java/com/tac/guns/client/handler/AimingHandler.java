@@ -28,6 +28,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -58,6 +59,8 @@ public class AimingHandler {
     private final AimTracker localTracker = new AimTracker();
     private final Map<PlayerEntity, AimTracker> aimingMap = new WeakHashMap<>();
     private double normalisedAdsProgress;
+    private double oldProgress;
+    private double newProgress;
     private boolean aiming = false;
     private boolean toggledAim = false;
 
@@ -206,6 +209,8 @@ public class AimingHandler {
         if (event.phase != TickEvent.Phase.START)
             return;
 
+        tickLerpProgress();
+
         PlayerEntity player = Minecraft.getInstance().player;
         if (player == null)
             return;
@@ -243,16 +248,16 @@ public class AimingHandler {
             ItemStack heldItem = mc.player.getHeldItemMainhand();
             if (heldItem.getItem() instanceof TimelessGunItem) {
                 TimelessGunItem gunItem = (TimelessGunItem) heldItem.getItem();
-                if (AimingHandler.get().isAiming() && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
+                if (AimingHandler.get().normalisedAdsProgress != 0 && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
-                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
-                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
-                                    scope.getTagName() == "qmk152")
-                                newFov = 0.8F;
+//                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
+//                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
+//                                    scope.getTagName() == "qmk152")
+//                                newFov = 0.8F;
 
                             if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getFovZoom() > 0 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
                                 newFov -= scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 1F : 1.2F);
@@ -267,8 +272,13 @@ public class AimingHandler {
     }
 
     @SubscribeEvent
-    public void onClientTick(ClientPlayerNetworkEvent.LoggedOutEvent event) {
+    public void onLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event) {
         this.aimingMap.clear();
+    }
+
+    private void tickLerpProgress(){
+        oldProgress = newProgress;
+        newProgress += (normalisedAdsProgress - newProgress) * 0.5;
     }
 
     /**
@@ -348,6 +358,10 @@ public class AimingHandler {
 
     public double getNormalisedAdsProgress() {
         return this.normalisedAdsProgress;
+    }
+
+    public double getLerpAdsProgress(float partialTicks){
+        return MathHelper.lerp(partialTicks, oldProgress, newProgress);
     }
 
     public class AimTracker {
