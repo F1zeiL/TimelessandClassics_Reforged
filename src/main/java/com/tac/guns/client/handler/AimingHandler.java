@@ -7,6 +7,7 @@ import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.crosshair.Crosshair;
 import com.tac.guns.common.AimingManager;
 import com.tac.guns.common.Gun;
+import com.tac.guns.duck.MouseSensitivityModifier;
 import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
@@ -14,9 +15,6 @@ import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.impl.Scope;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageAim;
-import com.tac.guns.network.message.MessageAimingState;
-import com.tac.guns.util.GunEnchantmentHelper;
-import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -27,7 +25,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -39,9 +36,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.WeakHashMap;
 import com.tac.guns.util.math.MathUtil;
 
 /**
@@ -219,8 +213,10 @@ public class AimingHandler {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
+                        float zoomMultiple = 1;
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
+                            zoomMultiple = scope.getAdditionalZoom().getZoomMultiple();
 //                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
 //                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
 //                                    scope.getTagName() == "qmk152")
@@ -228,11 +224,14 @@ public class AimingHandler {
 
                             if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getZoomMultiple() > 1 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
                                 newFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
-                                if(newFov >= 1) newFov = modifiedGun.getModules().getZoom().getFovModifier();
+                                if (newFov >= 1) newFov = modifiedGun.getModules().getZoom().getFovModifier();
                                 event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
                             }
                         } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic())
                             event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
+
+                        double modifier = MathUtil.fovToSenMagnification(event.getNewfov(), mc.gameSettings.fov, zoomMultiple);
+                        ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity / modifier);
                     }
                 }
             }

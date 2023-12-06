@@ -2,6 +2,7 @@ package com.tac.guns.entity;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
+import com.tac.guns.common.AimingManager;
 import com.tac.guns.common.BoundingBoxManager;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.Gun.Projectile;
@@ -156,7 +157,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     gunSpread = GunModifierHelper.getModifiedFirstShotSpread(weapon, gunSpread);
                 }
             }
-            if (SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.AIMING_STATE) > 0.1f) {
+
+            AimingManager.AimTracker tracker = AimingManager.get().getAimTracker((PlayerEntity) shooter);
+            if (tracker == null || tracker.getLerpProgress() < 0.95f) {
                 if (gunSpread < 0.5)
                     gunSpread += 0.5f;
                 gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracy();
