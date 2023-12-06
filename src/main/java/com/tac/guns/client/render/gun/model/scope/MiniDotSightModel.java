@@ -34,6 +34,7 @@ public class MiniDotSightModel implements IOverrideModel
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, int overlay) {
         matrixStack.push();
+        /*
         if (Config.CLIENT.display.redDotSquishUpdate.get() && transformType.isFirstPerson() && entity.equals(Minecraft.getInstance().player)) {
 //            double prog = 0;
 //            if(AimingHandler.get().getNormalisedAdsProgress() > 0.725) {
@@ -43,7 +44,7 @@ public class MiniDotSightModel implements IOverrideModel
 //            double zScale = 0.05D + 0.95D * (1.0D - transition);
 //            matrixStack.scale(1.0F, 1.0F, (float) zScale);
 
-        }
+        }*/
         if(!parent.isEmpty()) {
             matrixStack.translate(0, 0, 0.0095F);
             GunItem gunItem = ((GunItem) parent.getItem());

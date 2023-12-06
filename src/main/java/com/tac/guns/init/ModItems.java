@@ -209,19 +209,19 @@ public class ModItems {
             () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(1.0F, 0.00F)}, 2.2675F, 0.325F, "srsdot",
                     new ResourceLocation("tac:srs_red_dot")).viewFinderOffset(0.355).viewFinderOffsetSpecial(0.355), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> ACOG_4 = REGISTER.register("acog_4x_scope",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(4f, 0.4F, 3.3f)}, 2.325F, 0.22F, "acog4x", true,
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(4f, 0.4F, 1.5f)}, 2.325F, 0.22F, "acog4x", true,
                     new ResourceLocation("tac:acog_4x_scope")).viewFinderOffset(0.5).viewFinderOffsetDR(0.4).viewFinderOffsetSpecial(0.425).viewFinderOffsetSpecialDR(0.35), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> QMK152 = REGISTER.register("qmk152",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(3F, 0.4F, 1.5f)}, 2.39F, 0.24F, "qmk152", true,
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(3F, 0.4F, -0.4f)}, 2.39F, 0.24F, "qmk152", true,
                     new ResourceLocation("tac:qmk152")).viewFinderOffset(0.5).viewFinderOffsetDR(0.4).viewFinderOffsetSpecial(0.45).viewFinderOffsetSpecialDR(0.375), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> ELCAN_DR_14X = REGISTER.register("elcan_14x",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(4f, 0.4225F, 3.0f), new ScopeZoomData(1.2f, 0.345F, 3.0f)}, 2.45F, 0.23, "elcan14x", true,
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(4f, 0.4225F, 2.0f), new ScopeZoomData(1.2f, 0.345F, 2.0f)}, 2.45F, 0.23, "elcan14x", true,
                     new ResourceLocation("tac:elcan_14x")).viewFinderOffset(0.515).viewFinderOffsetDR(0.45).viewFinderOffsetSpecial(0.435).viewFinderOffsetSpecialDR(0.38), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> VORTEX_LPVO_1_6 = REGISTER.register("lpvo_1_6",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(6f, 0.4175F, 3.0f), new ScopeZoomData(3f, 0.365F, 3.0f), new ScopeZoomData(1.2f, 0.350F, 3.0f)}, 2.2625F, 0.1925, "vlpvo6", true,
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(6f, 0.4175F, 2.6f), new ScopeZoomData(3f, 0.365F, 2.6f), new ScopeZoomData(1.2f, 0.350F, 2.6f)}, 2.2625F, 0.1925, "vlpvo6", true,
                     new ResourceLocation("tac:lpvo_1_6")).viewFinderOffset(0.475).viewFinderOffsetDR(0.375).viewFinderOffsetSpecial(0.505).viewFinderOffsetSpecialDR(0.355), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
-    public static final RegistryObject<Item> LONGRANGE_8x_SCOPE = REGISTER.register("8x_scope",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(8f,0.395F, 3.9f), new ScopeZoomData(4f, 0.4225F, 3.9f)}, 2.45F, 0.2125, "gener8x", true,
+    public static final RegistryObject<Item> STANDARD_6_10x_SCOPE = REGISTER.register("8x_scope",
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(10f,0.395F, 4.2f), new ScopeZoomData(6f, 0.4225F, 4.2f)}, 2.45F, 0.2125, "gener8x", true,
                     new ResourceLocation("tac:8x_scope")).viewFinderOffset(0.595).viewFinderOffsetDR(0.3925).viewFinderOffsetSpecial(0.465).viewFinderOffsetSpecialDR(0.415), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
 
     /* Old Scopes */

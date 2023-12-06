@@ -33,7 +33,7 @@ import static com.tac.guns.client.SpecialModels.Sx8_FRONT;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class LongRange8xScopeModel implements IOverrideModel
+public class STANDARD_6_10x_SCOPE implements IOverrideModel
 {
     private static final ResourceLocation RED_DOT_RETICLE = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/standard_8x_scope_reticle.png");
     private static final ResourceLocation HIT_MARKER = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/hit_marker/standard_8x_scope_reticle.png");

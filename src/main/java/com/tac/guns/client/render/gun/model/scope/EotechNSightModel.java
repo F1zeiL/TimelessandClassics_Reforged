@@ -33,6 +33,7 @@ public class EotechNSightModel implements IOverrideModel
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, int overlay) {
         matrixStack.push();
+        /*
         if (Config.CLIENT.display.redDotSquishUpdate.get() && transformType.isFirstPerson() && entity.equals(Minecraft.getInstance().player)) {
 //            double prog = 0;
 //            if(AimingHandler.get().getNormalisedAdsProgress() > 0.725) {
@@ -57,7 +58,7 @@ public class EotechNSightModel implements IOverrideModel
                 matrixStack.scale(1.0F, 1.0F, (float) zScale);
             }
 
-        }
+        }*/
         matrixStack.translate(0, 0.055, 0);
 
         RenderUtil.renderModel(stack, parent, matrixStack, renderTypeBuffer, light, overlay);
