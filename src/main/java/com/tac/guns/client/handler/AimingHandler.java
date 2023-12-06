@@ -191,12 +191,6 @@ public class AimingHandler {
                 this.isPressed = false;
         }
 
-        ItemStack heldItem = player.getHeldItemMainhand();
-        if (heldItem.getItem() instanceof TimelessGunItem) {
-            SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, 1F - (float) this.getNormalisedAdsProgress());
-            PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(1F - (float) this.getNormalisedAdsProgress()));
-        }
-
         if (this.isAiming()) {
             if (!canceling && !this.aiming) {
                 SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING, true);
