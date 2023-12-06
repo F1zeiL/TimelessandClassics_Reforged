@@ -55,6 +55,10 @@ public class ShootingHandler {
     private int burstCooldown = 0;
     private boolean isPressed = false;
 
+    private final int emptyCheckCoolDown = 40;
+
+    private int emptyCheckCountDown = 40;
+
     private ShootingHandler() {
     }
 
@@ -226,6 +230,8 @@ public class ShootingHandler {
         if (player != null)
             if (this.burstCooldown > 0)
                 this.burstCooldown -= 1;
+        if (emptyCheckCountDown <= emptyCheckCoolDown)
+            emptyCheckCountDown++;
     }
 
     @SubscribeEvent
@@ -240,10 +246,13 @@ public class ShootingHandler {
                     event.setSwingHand(false);
                 }
 
-                if (magError(player, heldItem)) {
-                    player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
-                    return;
+                if (emptyCheckCountDown > emptyCheckCoolDown) {
+                    if (magError(player, heldItem)) {
+                        emptyCheckCountDown = 0;
+                        player.sendStatusMessage(new TranslationTextComponent("info.tac.mag_error").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                        PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                        return;
+                    }
                 }
 
                 if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0 && !this.isPressed) {
@@ -256,9 +265,12 @@ public class ShootingHandler {
                     fire(player, heldItem);
                 }
 
-                if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
-                    player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
-                    PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                if (emptyCheckCountDown > emptyCheckCoolDown) {
+                    if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
+                        emptyCheckCountDown = 0;
+                        player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                        PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                    }
                 }
             }
         }
