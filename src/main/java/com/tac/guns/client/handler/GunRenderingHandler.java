@@ -532,7 +532,7 @@ public class GunRenderingHandler {
                 /* Creates the required offsets to position the scope into the middle of the screen. */
                 if (modifiedGun.canAttachType(IAttachment.Type.SCOPE) && scope != null) {
                     double viewFinderOffset = isScopeOffsetType || OptifineHelper.isShadersEnabled() ? scope.getViewFinderOffsetSpecial() : scope.getViewFinderOffset();
-                    if (scope.getAdditionalZoom().getFovZoom() > 0)
+                    if (scope.getAdditionalZoom().getZoomMultiple() > 1)
                         viewFinderOffset = isScopeRenderType ? (isScopeOffsetType || OptifineHelper.isShadersEnabled() ? scope.getViewFinderOffsetSpecial() : scope.getViewFinderOffset()) : (isScopeOffsetType || OptifineHelper.isShadersEnabled() ? scope.getViewFinderOffsetSpecialDR() : scope.getViewFinderOffsetDR()); // switches between either, but either must be populated
                     //if (OptifineHelper.isShadersEnabled()) viewFinderOffset *= 0.735;
                     //if (isScopeRenderType) viewFinderOffset *= 0.735;
@@ -540,7 +540,7 @@ public class GunRenderingHandler {
                         Gun.ScaledPositioned scaledPos = modifiedGun.getModules().getAttachments().getScope();
                         xOffset = -translateX + (modifiedGun.getModules().getZoom().getXOffset() * 0.0625) + -scaledPos.getXOffset() * 0.0625 * scaleX;
                         yOffset = -translateY + (8 - scaledPos.getYOffset()) * 0.0625 * scaleY - scope.getCenterOffset() * scaleY * 0.0625 * scaledPos.getScale();
-                        zOffset = Config.CLIENT.display.sight1xRealisticPosition.get() && scope.getAdditionalZoom().getFovZoom() == 0 ? -translateZ + modifiedGun.getModules().getZoom().getZOffset() * 0.0625 * scaleZ :
+                        zOffset = Config.CLIENT.display.sight1xRealisticPosition.get() && scope.getAdditionalZoom().getZoomMultiple() == 1 ? -translateZ + modifiedGun.getModules().getZoom().getZOffset() * 0.0625 * scaleZ :
                                 -translateZ - scaledPos.getZOffset() * 0.0625 * scaleZ + 0.72 - viewFinderOffset * scaleZ * scaledPos.getScale();
                     } catch (NullPointerException e) {
                         GunMod.LOGGER.info("GunRenderingHandler NPE @509");
@@ -583,7 +583,7 @@ public class GunRenderingHandler {
 
                     xOffset = -translateX + (modifiedGun.getModules().getZoom().getXOffset() * 0.0625) + -scaledPos.getXOffset() * 0.0625 * scaleX;
                     yOffset = -translateY + (8 - scaledPos.getYOffset()) * 0.0625 * scaleY - scope.getCenterOffset() * scaleY * 0.0625 * scaledPos.getScale();
-                    zOffset = Config.CLIENT.display.sight1xRealisticPosition.get() && scope.getAdditionalZoom().getFovZoom() == 0 ? -translateZ + modifiedGun.getModules().getZoom().getZOffset() * 0.0625 * scaleZ :
+                    zOffset = Config.CLIENT.display.sight1xRealisticPosition.get() && scope.getAdditionalZoom().getZoomMultiple() == 1 ? -translateZ + modifiedGun.getModules().getZoom().getZOffset() * 0.0625 * scaleZ :
                             -translateZ - scaledPos.getZOffset() * 0.0625 * scaleZ + 0.72 - viewFinderOffset * scaleZ * scaledPos.getScale();
 
 //                    if (!SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.AIMING)) {
@@ -714,6 +714,18 @@ public class GunRenderingHandler {
             }
     }
 
+    private boolean checkIsLongRangeScope(ItemStack itemStack){
+        Gun gun = ((GunItem) itemStack.getItem()).getModifiedGun(itemStack);
+        IAttachment.Type type = IAttachment.Type.SCOPE;
+        if (gun.canAttachType(type)) {
+            ItemStack attachmentStack = Gun.getAttachment(type, itemStack);
+            if (!attachmentStack.isEmpty()) {
+
+            }
+        }
+        return false;
+    }
+
     public void applyDelayedSwayTransforms(MatrixStack stack, ClientPlayerEntity player, float partialTicks, float percentage) {
         if (Config.CLIENT.display.weaponDelayedSway.get())
             if (player != null) {
@@ -721,6 +733,7 @@ public class GunRenderingHandler {
                 float degree = delaySwayDynamics.update(0, (player.getYaw(partialTicks) - f4) * delayedSwayMultiplier);
                 if (Math.abs(degree) > maxRotationDegree) degree = degree / Math.abs(degree) * maxRotationDegree;
                 degree *= percentage;
+
                 if ((Config.CLIENT.display.weaponDelayedSwayYNOptical.get() && Gun.getScope(player.getHeldItemMainhand()) != null) || YDIR.equals(Vector3f.YN)) {
                     stack.translate(this.translateX, this.translateY, this.translateZ);
                     stack.rotate(YDIR.rotationDegrees(degree));
@@ -1251,22 +1264,25 @@ public class GunRenderingHandler {
                 Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
                 IAttachment.Type type = IAttachment.Type.SCOPE;
                 if (gun.canAttachType(type)) {
-                    ItemStack attachmentStack = Gun.getAttachment(type, stack);
-                    if (!attachmentStack.isEmpty()) {
-                        Gun.ScaledPositioned positioned = gun.getAttachmentPosition(type);
-                        if (positioned != null) {
-                            double transition = AimingHandler.get().getLerpAdsProgress(partialTicks);
-                            double displayX = positioned.getXOffset() * 0.0625;
-                            double displayY = positioned.getYOffset() * 0.0625;
-                            double displayZ = positioned.getZOffset() * 0.0625;
-                            float handLayerFov = MathHelper.lerp((float) transition, originHandLayerFov, aimingHandLayerFov);
-                            float zScale = (float) Math.tan(handLayerFov / 180 * Math.PI / 2) / (float) Math.tan(originHandLayerFov / 180 * Math.PI / 2);
-                            matrixStack.translate(displayX, displayY, displayZ);
-                            matrixStack.translate(0, -0.5, 0);
-                            matrixStack.scale(1f, 1f, zScale);
-                            matrixStack.translate(0, 0.5, 0);
-                            matrixStack.translate(-displayX, -displayY, -displayZ);
-                            matrixStack.translate(0, 0, (float) transition * 3.7 * 0.0625 / zScale);
+                    Scope scope = Gun.getScope(stack);
+                    if (scope != null) {
+                        ItemStack attachmentStack = Gun.getAttachment(type, stack);
+                        if (!attachmentStack.isEmpty()) {
+                            Gun.ScaledPositioned positioned = gun.getAttachmentPosition(type);
+                            if (positioned != null) {
+                                double transition = AimingHandler.get().getLerpAdsProgress(partialTicks);
+                                double displayX = positioned.getXOffset() * 0.0625;
+                                double displayY = positioned.getYOffset() * 0.0625;
+                                double displayZ = positioned.getZOffset() * 0.0625;
+                                float handLayerFov = MathHelper.lerp((float) transition, originHandLayerFov, scope.isNeedSqueeze() ? aimingHandLayerFov : 55f);
+                                float zScale = (float) Math.tan(handLayerFov / 180 * Math.PI / 2) / (float) Math.tan(originHandLayerFov / 180 * Math.PI / 2);
+                                matrixStack.translate(displayX, displayY, displayZ);
+                                matrixStack.translate(0, -0.5, 0);
+                                matrixStack.scale(1f, 1f, zScale);
+                                matrixStack.translate(0, 0.5, 0);
+                                matrixStack.translate(-displayX, -displayY, -displayZ);
+                                matrixStack.translate(0, 0, (float) transition * scope.getAdditionalZoom().getZoomZTransition() * 0.0625 / zScale);
+                            }
                         }
                     }
                 }

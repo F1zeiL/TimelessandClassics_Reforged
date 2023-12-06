@@ -41,6 +41,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.WeakHashMap;
+import com.tac.guns.util.math.MathUtil;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -259,8 +260,9 @@ public class AimingHandler {
 //                                    scope.getTagName() == "qmk152")
 //                                newFov = 0.8F;
 
-                            if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getFovZoom() > 0 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
-                                newFov -= scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 1F : 1.2F);
+                            if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getZoomMultiple() > 1 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
+                                newFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
+                                if(newFov == 1) newFov = modifiedGun.getModules().getZoom().getFovModifier();
                                 event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
                             }
                         } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic())

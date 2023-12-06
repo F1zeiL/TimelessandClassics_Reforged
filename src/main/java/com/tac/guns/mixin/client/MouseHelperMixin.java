@@ -42,9 +42,9 @@ public class MouseHelperMixin
                             if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
                                     scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
                                     scope.getTagName() == "qmk152") {
-                                newFov = (0.8F - scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F));
+                                newFov = (0.8F - scope.getAdditionalZoom().getZoomMultiple() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F));
                             } else {
-                                newFov -= scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F);
+                                newFov -= scope.getAdditionalZoom().getZoomMultiple() * (Config.CLIENT.display.scopeDoubleRender.get() ? 0.833F : 1F);
                             }
                         }
                         additionalAdsSensitivity = MathHelper.clamp(1.0F - (1.0F / newFov) / 10F, 0.0F, 1.0F);
