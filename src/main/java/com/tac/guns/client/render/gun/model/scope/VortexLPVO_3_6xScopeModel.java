@@ -33,7 +33,7 @@ import static com.tac.guns.client.SpecialModels.LPVO_1_6_FRONT;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class VortexLPVO_1_4xScopeModel implements IOverrideModel
+public class VortexLPVO_3_6xScopeModel implements IOverrideModel
 {
     private static final ResourceLocation RED_DOT_RETICLE = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/razor_lpvo_reticle.png");
     private static final ResourceLocation HIT_MARKER = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/hit_marker/razor_lpvo_reticle.png");

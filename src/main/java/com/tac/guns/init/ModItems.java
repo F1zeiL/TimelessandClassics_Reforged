@@ -217,8 +217,8 @@ public class ModItems {
     public static final RegistryObject<Item> ELCAN_DR_14X = REGISTER.register("elcan_14x",
             () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(4f, 0.4225F, 2.0f), new ScopeZoomData(1.2f, 0.345F, 2.0f)}, 2.45F, 0.23, "elcan14x", true,
                     new ResourceLocation("tac:elcan_14x")).viewFinderOffset(0.515).viewFinderOffsetDR(0.45).viewFinderOffsetSpecial(0.435).viewFinderOffsetSpecialDR(0.38), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
-    public static final RegistryObject<Item> VORTEX_LPVO_1_6 = REGISTER.register("lpvo_1_6",
-            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(6f, 0.4175F, 2.6f), new ScopeZoomData(3f, 0.365F, 2.6f), new ScopeZoomData(1.2f, 0.350F, 2.6f)}, 2.2625F, 0.1925, "vlpvo6", true,
+    public static final RegistryObject<Item> VORTEX_LPVO_3_6 = REGISTER.register("lpvo_1_6",
+            () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(6f, 0.4175F, 2.6f), new ScopeZoomData(3f, 0.365F, 2.6f)}, 2.2625F, 0.1925, "vlpvo6", true,
                     new ResourceLocation("tac:lpvo_1_6")).viewFinderOffset(0.475).viewFinderOffsetDR(0.375).viewFinderOffsetSpecial(0.505).viewFinderOffsetSpecialDR(0.355), new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
     public static final RegistryObject<Item> STANDARD_6_10x_SCOPE = REGISTER.register("8x_scope",
             () -> new ScopeItem(Scope.create(new ScopeZoomData[]{new ScopeZoomData(10f,0.395F, 4.2f), new ScopeZoomData(6f, 0.4225F, 4.2f)}, 2.45F, 0.2125, "gener8x", true,

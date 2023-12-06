@@ -37,6 +37,7 @@ import com.tac.guns.network.message.MessagePlayerShake;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.util.IDLNBTUtil;
 import com.tac.guns.util.OptifineHelper;
+import com.tac.guns.util.math.MathUtil;
 import com.tac.guns.util.math.OneDimensionalPerlinNoise;
 import com.tac.guns.util.math.SecondOrderDynamics;
 import net.minecraft.client.MainWindow;
@@ -693,25 +694,9 @@ public class GunRenderingHandler {
     private static float delayedSwayMultiplier; // Lower = a more delayed sway
     private static Vector3f YDIR;
 
-    private void applyDelayedSwayTransforms(MatrixStack stack, ClientPlayerEntity player, float partialTicks) {
-        if (Config.CLIENT.display.weaponDelayedSway.get())
-            if (player != null) {
-                float f4 = MathHelper.lerp(partialTicks, player.prevRenderArmYaw, player.renderArmYaw);
-                float degree = delaySwayDynamics.update(0, (player.getYaw(partialTicks) - f4) * delayedSwayMultiplier);
-                if (Math.abs(degree) > maxRotationDegree) degree = degree / Math.abs(degree) * maxRotationDegree;
 
-                if ((Config.CLIENT.display.weaponDelayedSwayYNOptical.get() && Gun.getScope(player.getHeldItemMainhand()) != null) || YDIR.equals(Vector3f.YN)) {
-                    stack.translate(this.translateX, this.translateY, this.translateZ);
-                    stack.rotate(YDIR.rotationDegrees(degree));
-                    stack.rotate(Vector3f.ZP.rotationDegrees(degree * 1.5f * (float) (1f - AimingHandler.get().getNormalisedAdsProgress())));
-                    stack.translate(-this.translateX, -this.translateY, -this.translateZ);
-                } else {
-                    stack.translate(-this.translateX, -this.translateY, -this.translateZ);
-                    stack.rotate(YDIR.rotationDegrees(degree));
-                    stack.rotate(Vector3f.ZP.rotationDegrees(degree * 1.5f * (float) (1f - AimingHandler.get().getNormalisedAdsProgress())));
-                    stack.translate(this.translateX, this.translateY, this.translateZ);
-                }
-            }
+    private void applyDelayedSwayTransforms(MatrixStack stack, ClientPlayerEntity player, float partialTicks) {
+        applyDelayedSwayTransforms(stack, player, partialTicks, 1f);
     }
 
     private boolean checkIsLongRangeScope(ItemStack itemStack){
@@ -732,6 +717,7 @@ public class GunRenderingHandler {
                 float f4 = MathHelper.lerp(partialTicks, player.prevRenderArmYaw, player.renderArmYaw);
                 float degree = delaySwayDynamics.update(0, (player.getYaw(partialTicks) - f4) * delayedSwayMultiplier);
                 if (Math.abs(degree) > maxRotationDegree) degree = degree / Math.abs(degree) * maxRotationDegree;
+                degree *= 1 / Math.pow(MathUtil.fovToMagnification(currentHandLayerFov, originHandLayerFov), 2);
                 degree *= percentage;
 
                 if ((Config.CLIENT.display.weaponDelayedSwayYNOptical.get() && Gun.getScope(player.getHeldItemMainhand()) != null) || YDIR.equals(Vector3f.YN)) {
@@ -849,6 +835,10 @@ public class GunRenderingHandler {
         }
         this.weaponsHorizontalAngle = ((float) (RecoilHandler.get().getGunHorizontalRecoilAngle() * recoilNormal) * (float) RecoilHandler.get().getAdsRecoilReduction(gun));
         float newKick = recoilDynamics.update(kickTiming, (float) kick * kickReduction);
+
+        //reduce for scope sight
+        double magnification = MathUtil.fovToMagnification(currentHandLayerFov, originHandLayerFov);
+        newKick *= 1 / Math.pow(magnification, 0.3);
 
         matrixStack.translate(0, 0, newKick);
         matrixStack.translate(0, 0.05 * newKick, 0.35 * newKick);
@@ -1247,6 +1237,7 @@ public class GunRenderingHandler {
 
     public float aimingHandLayerFov = 6.41236f;
     public float originHandLayerFov = 70;
+    public float currentHandLayerFov = 70;
     public boolean renderWeapon(LivingEntity entity, ItemStack stack, ItemCameraTransforms.TransformType transformType, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, float partialTicks) {
         if (stack.getItem() instanceof GunItem) {
             matrixStack.push();
@@ -1274,8 +1265,8 @@ public class GunRenderingHandler {
                                 double displayX = positioned.getXOffset() * 0.0625;
                                 double displayY = positioned.getYOffset() * 0.0625;
                                 double displayZ = positioned.getZOffset() * 0.0625;
-                                float handLayerFov = MathHelper.lerp((float) transition, originHandLayerFov, scope.isNeedSqueeze() ? aimingHandLayerFov : 55f);
-                                float zScale = (float) Math.tan(handLayerFov / 180 * Math.PI / 2) / (float) Math.tan(originHandLayerFov / 180 * Math.PI / 2);
+                                currentHandLayerFov = MathHelper.lerp((float) transition, originHandLayerFov, scope.isNeedSqueeze() ? aimingHandLayerFov : 55f);
+                                float zScale = (float) Math.tan(currentHandLayerFov / 180 * Math.PI / 2) / (float) Math.tan(originHandLayerFov / 180 * Math.PI / 2);
                                 matrixStack.translate(displayX, displayY, displayZ);
                                 matrixStack.translate(0, -0.5, 0);
                                 matrixStack.scale(1f, 1f, zScale);
