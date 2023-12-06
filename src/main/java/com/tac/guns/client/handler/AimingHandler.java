@@ -205,15 +205,15 @@ public class AimingHandler {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFovUpdate(FOVUpdateEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && !mc.player.getHeldItemMainhand().isEmpty() && mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
+        if (mc.player != null && mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
             ItemStack heldItem = mc.player.getHeldItemMainhand();
+            float zoomMultiple = 1;
             if (heldItem.getItem() instanceof TimelessGunItem) {
                 TimelessGunItem gunItem = (TimelessGunItem) heldItem.getItem();
                 if (AimingHandler.get().normalisedAdsProgress != 0 && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
-                        float zoomMultiple = 1;
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
                             zoomMultiple = scope.getAdditionalZoom().getZoomMultiple();
@@ -229,12 +229,11 @@ public class AimingHandler {
                             }
                         } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic())
                             event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
-
-                        double modifier = MathUtil.fovToSenMagnification(event.getNewfov(), mc.gameSettings.fov, zoomMultiple);
-                        ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity / modifier);
                     }
                 }
             }
+            double modifier = MathUtil.fovToSenMagnification(event.getNewfov() * mc.gameSettings.fov, mc.gameSettings.fov);
+            ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity / modifier);
         }
     }
 

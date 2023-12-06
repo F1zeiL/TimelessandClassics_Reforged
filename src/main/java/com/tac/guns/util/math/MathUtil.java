@@ -12,12 +12,7 @@ public class MathUtil {
         return Math.tan(Math.toRadians(originFov / 2)) / Math.tan(Math.toRadians(currentFov / 2));
     }
 
-    public static double fovToSenMagnification(double currentFov, double originFov, double zoomMultiple){
-        double multiple;
-        if (zoomMultiple < 3.11) {
-            multiple = zoomMultiple - 2.99 >= 0 ? 1 : 0.11 * zoomMultiple;
-        } else
-            multiple = zoomMultiple - 2;
-        return (Math.tan(Math.toRadians(originFov / 2)) / Math.tan(Math.toRadians(currentFov / 2))) * Math.pow(multiple, 2);
+    public static double fovToSenMagnification(double currentFov, double originFov){
+        return Math.tan(Math.toRadians(originFov / 2)) / Math.tan(Math.toRadians(currentFov / 2));
     }
 }
