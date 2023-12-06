@@ -89,7 +89,7 @@
     {
       "fovModifier": 0.8,
       "yOffset": 11.015,
-      "zOffset": -0.5
+      "zOffset": 1
     },
     "attachments": {
       "scope": {
