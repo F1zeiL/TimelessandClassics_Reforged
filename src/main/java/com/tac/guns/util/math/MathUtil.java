@@ -13,6 +13,10 @@ public class MathUtil {
     }
 
     public static double fovToSenMagnification(double currentFov, double originFov){
-        return Math.tan(Math.toRadians(originFov / 2)) / Math.tan(Math.toRadians(currentFov / 2));
+        return Math.tan(Math.toRadians(vToH(currentFov) / 2)) / Math.tan(Math.toRadians(vToH(originFov) / 2));
+    }
+
+    private static double vToH(double v) {
+        return Math.atan(Math.tan(Math.toRadians(v / 2)) * 16 / 9) * 360 / Math.PI;
     }
 }

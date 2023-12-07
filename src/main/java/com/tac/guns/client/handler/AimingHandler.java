@@ -202,39 +202,41 @@ public class AimingHandler {
         }
     }
 
+    private float newFov;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFovUpdate(FOVUpdateEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null && mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
             ItemStack heldItem = mc.player.getHeldItemMainhand();
-            float zoomMultiple = 1;
             if (heldItem.getItem() instanceof TimelessGunItem) {
                 TimelessGunItem gunItem = (TimelessGunItem) heldItem.getItem();
                 if (AimingHandler.get().normalisedAdsProgress != 0 && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
+                        this.newFov = (float) (newFov * mc.gameSettings.fov);
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
-                            zoomMultiple = scope.getAdditionalZoom().getZoomMultiple();
-//                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
-//                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
-//                                    scope.getTagName() == "qmk152")
-//                                newFov = 0.8F;
-
                             if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getZoomMultiple() > 1 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
                                 newFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
                                 if (newFov >= 1) newFov = modifiedGun.getModules().getZoom().getFovModifier();
                                 event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
+                                this.newFov = (float) (newFov * mc.gameSettings.fov);
                             }
-                        } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic())
+                        } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic()) {
                             event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
+                            this.newFov = (float) (newFov * mc.gameSettings.fov);
+                        }
                     }
                 }
             }
-            double modifier = MathUtil.fovToSenMagnification(event.getNewfov() * mc.gameSettings.fov, mc.gameSettings.fov);
-            ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity / modifier);
+            double modifier = MathUtil.fovToSenMagnification(this.newFov, mc.gameSettings.fov);
+            ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity * modifier);
         }
+    }
+
+    public float getNewFov() {
+        return this.newFov;
     }
 
     private void tickLerpProgress(){
