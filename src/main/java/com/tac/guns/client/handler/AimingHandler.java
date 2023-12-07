@@ -27,10 +27,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -202,7 +199,6 @@ public class AimingHandler {
         }
     }
 
-    private float newFov;
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFovUpdate(FOVUpdateEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -214,30 +210,30 @@ public class AimingHandler {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
-                        this.newFov = (float) (newFov * mc.gameSettings.fov);
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
                             if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getZoomMultiple() > 1 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
-                                newFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
-                                if (newFov >= 1) newFov = modifiedGun.getModules().getZoom().getFovModifier();
+                                float zoomFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
+                                if (zoomFov >= 1) zoomFov = modifiedGun.getModules().getZoom().getFovModifier();
+                                float fovDelta = newFov - zoomFov;
+                                newFov -= fovDelta * (Config.CLIENT.display.scopeDoubleRender.get() ? 1F : 1.2F);
                                 event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
-                                this.newFov = (float) (newFov * mc.gameSettings.fov);
                             }
                         } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic()) {
                             event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
-                            this.newFov = (float) (newFov * mc.gameSettings.fov);
                         }
                     }
                 }
             }
-            double modifier = MathUtil.fovToSenMagnification(this.newFov, mc.gameSettings.fov);
-            ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(mc.gameSettings.mouseSensitivity * modifier);
         }
     }
 
-    public float getNewFov() {
-        return this.newFov;
-    }
+//    @SubscribeEvent
+//    public void captureFovAndModifyMouseSensitivity(EntityViewRenderEvent.FOVModifier event){
+//        Minecraft mc = Minecraft.getInstance();
+//        double modifier = MathUtil.fovToMagnification(event.getFOV(), mc.gameSettings.fov);
+//        ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(0.001);
+//    }
 
     private void tickLerpProgress(){
         oldProgress = newProgress;
