@@ -68,7 +68,9 @@ public abstract class MouseHelperMixin implements MouseSensitivityModifier
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
-                            float zoomFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
+                            float zoomFov = (float) (scope.getAdditionalZoom().getZoomMultiple() <= 6 ?
+                                    MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov) :
+                                    MathUtil.magnificationToFovMultiplier(6, mc.gameSettings.fov));
                             float fovDelta = newFov - zoomFov;
                             if (zoomFov >= 1) {
                                 newFov *= 1.75F;

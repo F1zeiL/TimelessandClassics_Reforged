@@ -16,7 +16,7 @@ public class ScopeZoomData
     }
     public ScopeZoomData(float zoomMultiple, float drCropZoom, float zoomZTransition)
     {
-        this.zoomMultiple = zoomMultiple;
+        this.zoomMultiple = zoomMultiple / 2 + 1;
         this.drCropZoom = drCropZoom;
         this.zoomZTransition = zoomZTransition;
     }

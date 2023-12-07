@@ -106,7 +106,7 @@ public class Config {
                 this.weaponAmmoBar = builder.comment("Show % of your ammo in your gun via a colored durability bar. Set to false to remove bar entirely for more realistic gameplay").define("weaponAmmoBar", false);
 
                 this.gameplayEnchancedScopeOffset = builder.comment("Scopes are brought closer to the shooter to help fill FOV with a scope view at all times").define("gameplayEnchancedScopeOffset", true);
-                this.scopeDoubleRender = builder.comment("Enable picture in picture rendering for scopes, saves on some performance and issues with Optifine").define("scopeDoubleRender", true);
+                this.scopeDoubleRender = builder.comment("Enable picture in picture rendering for scopes, saves on some performance and issues with Optifine (Close this now please)").define("scopeDoubleRender", false);
                 this.redDotSquishUpdate = builder.comment("Enable 0 fov multiplied sights (Dot/Holo sights) to render in 2d when aimed like the scopeDoubleRender(false) effect.").define("redDotSquishUpdate", false);
                 this.sight1xRealisticPosition = builder.comment("Enable 0 fov multiplied sights (Dot/Holo sights) to be viewed realisticly, with the players head static for iron sights, and 1x optics").define("sight1xRealisticPostion", false);
 
@@ -328,7 +328,6 @@ public class Config {
      */
     public static class Gameplay {
         public final ForgeConfigSpec.BooleanValue enableGunGriefing;
-        public final ForgeConfigSpec.BooleanValue glassDrop;
         public final ForgeConfigSpec.BooleanValue enableExplosionBreak;
         public final ForgeConfigSpec.DoubleValue growBoundingBoxAmountV2;
         public final ForgeConfigSpec.BooleanValue enableHeadShots;
@@ -359,13 +358,11 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
         public final ForgeConfigSpec.BooleanValue gunOfKindness;
         public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
-        public final ForgeConfigSpec.BooleanValue canPassFence;
 
         public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
             {
                 this.enableGunGriefing = builder.comment("If enable, allows guns to shoot out glass").define("enableGunGriefing", true);
-                this.glassDrop = builder.comment("True if you want glass drop while been broken by shoot").define("glassDrop", false);
                 this.enableExplosionBreak = builder.comment("If enable, allows guns to remove blocks on explosions").define("enableExplosionBreak", false);
                 this.growBoundingBoxAmountV2 = builder.comment("The extra amount to expand an entity's bounding box when checking for projectile collision. Setting this value higher will make it easier to hit entities").defineInRange(
                         "growBoundingBoxAmountV2", 0.0, 0.0, 1.0);
@@ -400,7 +397,6 @@ public class Config {
                 this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
                 this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
                 this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
-                this.canPassFence = builder.comment("True if you want to pass fence.").define("canPassFence", false);
             }
             builder.pop();
         }
