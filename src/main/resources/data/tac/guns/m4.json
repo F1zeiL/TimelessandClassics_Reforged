@@ -89,7 +89,7 @@
     "zoom": {
       "fovModifier": 0.8,
       "yOffset": 12.58,
-      "zOffset": 0
+      "zOffset": 1
     },
     "attachments": {
       "scope": {

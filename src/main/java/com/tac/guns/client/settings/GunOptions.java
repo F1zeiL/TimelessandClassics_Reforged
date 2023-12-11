@@ -124,7 +124,7 @@ public class GunOptions
     public static final BooleanOption DOUBLE_RENDER_EXIST = new BooleanOption("tac.options.doubleRender", (settings) -> {
         return Config.CLIENT.display.scopeDoubleRender.get();
     }, (settings, value) -> {
-        Config.CLIENT.display.scopeDoubleRender.set(value);
+        Config.CLIENT.display.scopeDoubleRender.set(false);
         Config.saveClientConfig();
     });
     public static final BooleanOption BANNED_DROP = new BooleanOption("tac.options.bannedDrop", (settings) -> {

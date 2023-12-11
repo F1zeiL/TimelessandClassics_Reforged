@@ -44,6 +44,10 @@ public class WorkbenchRecipeSerializer extends net.minecraftforge.registries.For
 
         JsonObject resultObject = JSONUtils.getJsonObject(json, "result");
         ItemStack resultItem = ShapedRecipe.deserializeItem(resultObject);
+        try {
+            resultItem.setCount(JSONUtils.getInt(resultObject, "count"));
+        }
+        catch (JsonSyntaxException ignore){ }
         return new WorkbenchRecipe(recipeId, resultItem, builder.build(), group);
     }
 

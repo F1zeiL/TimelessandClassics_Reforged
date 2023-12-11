@@ -54,7 +54,7 @@ public class MissileEntity extends ProjectileEntity implements IExplosionProvide
     @Override
     protected void onHitEntity(Entity entity, Vector3d hitVec, Vector3d startVec, Vector3d endVec, boolean headshot)
     {
-        createExplosion(this, this.power, this.radius * Config.COMMON.missiles.explosionRadius.get().floatValue(), null);
+        super.onHitEntity(entity, hitVec, startVec, endVec, false);
     }
 
     @Override

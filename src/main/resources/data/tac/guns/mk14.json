@@ -89,13 +89,13 @@
     "zoom":
     {
       "fovModifier": 0.67,
-      "yOffset": 8.715,
-      "zOffset": -2.75
+      "yOffset": 8.6875,
+      "zOffset": -1.5
     },
     "attachments": {
       "scope": {
-        "yOffset": 8.15,
-        "zOffset": 5.225,
+        "yOffset": 8.25,
+        "zOffset": 6.25,
         "scale": 1.00
       },
       "pistolScope": {

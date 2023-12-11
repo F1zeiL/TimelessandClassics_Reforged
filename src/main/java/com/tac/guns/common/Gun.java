@@ -2574,7 +2574,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                     key = type.getTagKey();
             }
             if (key != null && attachment.contains(key, Constants.NBT.TAG_COMPOUND)) {
-                return ItemStack.read(attachment.getCompound(type.getTagKey()));
+                return ItemStack.read(attachment.getCompound(key));
             }
         }
         return ItemStack.EMPTY;
