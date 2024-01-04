@@ -449,7 +449,7 @@
   "tac.options.reloadBarExist": "Show Reloading Bar",
   "tac.options.ammoCounterExist": "Show Ammo Counter",
   "tac.options.iconExist": "Show Weapon Icon",
-  "tac.options.doubleRender": "Enable DR for Scopes",
+  "tac.options.doubleRender": "Enable DR for Scopes (Close it now)",
   "tac.options.bannedDrop": "Hide the item while the main hand is holding the gun instead of packing them up",
   "tac.options.shooterBreak": "Allow bullets to break glass",
   "tac.options.explosionBreak": "Allow explosion to destroy blocks",
@@ -470,7 +470,7 @@
 
   "tooltip.extra.x1": "§71x Zoom",
   "tooltip.extra.x2": "§72x Zoom",
-  "tooltip.extra.x1-4": "§71x-4x Zoom",
+  "tooltip.extra.x2-4": "§72x-4x Zoom",
   "tooltip.extra.x3-6": "§73x-6x Zoom",
   "tooltip.extra.x3": "§73x Zoom",
   "tooltip.extra.x4": "§74x Zoom",

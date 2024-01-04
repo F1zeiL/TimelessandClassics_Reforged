@@ -33,7 +33,7 @@ import static com.tac.guns.client.SpecialModels.Sx8_FRONT;
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
  */
-public class LongRange8xScopeModel implements IOverrideModel
+public class STANDARD_6_10x_SCOPE implements IOverrideModel
 {
     private static final ResourceLocation RED_DOT_RETICLE = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/standard_8x_scope_reticle.png");
     private static final ResourceLocation HIT_MARKER = new ResourceLocation(Reference.MOD_ID, "textures/items/timeless_scopes/hit_marker/standard_8x_scope_reticle.png");
@@ -41,12 +41,6 @@ public class LongRange8xScopeModel implements IOverrideModel
     @Override
     public void render(float partialTicks, ItemCameraTransforms.TransformType transformType, ItemStack stack, ItemStack parent, LivingEntity entity, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, int overlay) {
         matrixStack.push();
-        if (!Config.CLIENT.display.scopeDoubleRender.get() && transformType.isFirstPerson() && entity.equals(Minecraft.getInstance().player)) {
-            double transition = 1.0D - Math.pow(1.0D - AimingHandler.get().getNormalisedAdsProgress(), 2.0D);
-            double zScale = 0.05D + 0.95D * (1.0D - transition);
-            matrixStack.translate(0,0,transition*0.18);
-            matrixStack.scale(1.0F, 1.0F, (float) zScale);
-        }
         matrixStack.translate(0, -0.15, -0.38);
         matrixStack.translate(0, 0, 0.0015);
         if(AimingHandler.get().getNormalisedAdsProgress() < 0.525 || Config.CLIENT.display.scopeDoubleRender.get())

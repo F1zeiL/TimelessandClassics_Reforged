@@ -15,7 +15,7 @@ import com.tac.guns.datagen.*;
 import com.tac.guns.enchantment.EnchantmentTypes;
 import com.tac.guns.entity.MissileEntity;
 import com.tac.guns.init.*;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;

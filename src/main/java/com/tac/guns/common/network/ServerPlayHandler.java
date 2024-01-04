@@ -17,7 +17,7 @@ import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModEnchantments;
 import com.tac.guns.interfaces.IProjectileFactory;
 import com.tac.guns.item.*;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.*;

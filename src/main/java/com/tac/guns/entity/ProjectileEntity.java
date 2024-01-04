@@ -2,6 +2,7 @@ package com.tac.guns.entity;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
+import com.tac.guns.common.AimingManager;
 import com.tac.guns.common.BoundingBoxManager;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.Gun.Projectile;
@@ -14,7 +15,7 @@ import com.tac.guns.init.ModTags;
 import com.tac.guns.interfaces.IExplosionDamageable;
 import com.tac.guns.interfaces.IHeadshotBox;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageBlood;
 import com.tac.guns.network.message.MessageProjectileHitBlock;
@@ -156,7 +157,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     gunSpread = GunModifierHelper.getModifiedFirstShotSpread(weapon, gunSpread);
                 }
             }
-            if (SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.AIMING_STATE) > 0.1f) {
+
+            AimingManager.AimTracker tracker = AimingManager.get().getAimTracker((PlayerEntity) shooter);
+            if (tracker == null || tracker.getLerpProgress() < 0.95f) {
                 if (gunSpread < 0.5)
                     gunSpread += 0.5f;
                 gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracy();
@@ -416,7 +419,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
             if (Config.COMMON.gameplay.enableGunGriefing.get() && (block instanceof BreakableBlock ||
                     block instanceof PaneBlock) && state.getMaterial() == Material.GLASS) {
-                this.world.destroyBlock(blockRayTraceResult.getPos(), Config.COMMON.gameplay.glassDrop.get(), this.shooter);
+                this.world.destroyBlock(blockRayTraceResult.getPos(), false, this.shooter);
             }
 
             /*if(modifiedGun.getProjectile().isRicochet() &&

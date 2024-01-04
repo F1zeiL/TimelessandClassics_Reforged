@@ -8,16 +8,14 @@ import com.tac.guns.common.attachments.perk.FloatPerk;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.GunSkinItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 
