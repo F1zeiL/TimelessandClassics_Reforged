@@ -23,7 +23,7 @@ public class PuncturingEnchantment extends GunEnchantment {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
-        return true;
+        return false;
     }
 
     @Override
