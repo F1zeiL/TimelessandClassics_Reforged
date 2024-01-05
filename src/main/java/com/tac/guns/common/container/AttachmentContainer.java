@@ -68,13 +68,13 @@ public class AttachmentContainer extends Container {
         this.playerInventory = playerInventory;
         // weapon
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                  if (i > 3) {
                     this.addSlot(new AttachmentSlot(
                             this, this.weaponInventory, this.weapon, SlotType.values()[i],
                             playerInventory.player, i, 155, 17 + (i - 4) * 18
                     ));
-                } else{
+                 } else {
                      this.addSlot(new AttachmentSlot(
                              this, this.weaponInventory, this.weapon, SlotType.values()[i],
                              playerInventory.player, i, 5, 17 + i * 18
@@ -108,10 +108,6 @@ public class AttachmentContainer extends Container {
         }
     }
 
-    public boolean hasExMag() {
-        return Gun.getAttachment(IAttachment.Type.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
-    }
-
     public boolean isLoaded() {
         return this.loaded;
     }
@@ -126,14 +122,13 @@ public class AttachmentContainer extends Container {
         CompoundNBT attachments = new CompoundNBT();
 
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                 ItemStack attachment = this.getSlot(i).getStack();
                 if (attachment.getItem() instanceof IAttachment<?>){
                     checkAndWrite(attachment, attachments);
                 }
             }
         }
-
         CompoundNBT tag = this.weapon.getOrCreateTag();
         tag.put("Attachments", attachments);
         super.detectAndSendChanges();
@@ -147,8 +142,6 @@ public class AttachmentContainer extends Container {
 //            attachments.put(( (IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
             }
         }
-
-
     }
 
     @Override
@@ -173,7 +166,6 @@ public class AttachmentContainer extends Container {
                 slot.onSlotChanged();
             }
         }
-
         return copyStack;
     }
 

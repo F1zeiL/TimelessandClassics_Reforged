@@ -33,6 +33,8 @@
     "visible": false,
     "gravity": true,
     "damage": 75,
+    "blastDamage": 15,
+    "blastRadius": 1,
     "armorIgnore": 2.0,
     "critical": 0.0,
     "criticalDamage": 1.0,
@@ -99,6 +101,11 @@
         "scale": 1.0
       },
       "extendedMag": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      },
+      "ammoPlug": {
         "yOffset": 1000.89,
         "zOffset": 5.35,
         "scale": 0.0

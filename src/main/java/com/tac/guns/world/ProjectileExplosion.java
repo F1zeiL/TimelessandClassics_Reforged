@@ -1,29 +1,40 @@
 package com.tac.guns.world;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.mojang.datafixers.util.Pair;
 import com.tac.guns.Config;
 import com.tac.guns.init.ModTags;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.block.AbstractFireBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.ExplosionContext;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -41,6 +52,9 @@ public class ProjectileExplosion extends Explosion {
     private final float radius;
     private final Entity exploder;
     private final ExplosionContext context;
+    private Mode mode;
+    private final Random random = new Random();
+    private final List<BlockPos> affectedBlockPositions = Lists.newArrayList();
 
     public ProjectileExplosion(World world, Entity exploder, @Nullable DamageSource source, @Nullable ExplosionContext context, double x, double y, double z, float power, float radius, Mode mode) {
         super(world, exploder, source, context, x, y, z, radius, Config.COMMON.gameplay.explosionCauseFire.get(), mode);
@@ -52,6 +66,7 @@ public class ProjectileExplosion extends Explosion {
         this.radius = radius;
         this.exploder = exploder;
         this.context = context == null ? DEFAULT_CONTEXT : context;
+        this.mode = mode;
     }
 
     @Override
@@ -189,6 +204,82 @@ public class ProjectileExplosion extends Explosion {
             }
         }
     }
+
+/*
+    @Override
+    public void doExplosionB(boolean spawnParticles) {
+        if (this.world.isRemote) {
+            this.world.playSound(this.x, this.y, this.z, SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F, false);
+        }
+
+        boolean flag = this.mode != Explosion.Mode.NONE;
+        if (spawnParticles) {
+            if (!(this.radius < 2.0F) && flag) {
+                this.world.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+            } else {
+                this.world.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 1.0D, 0.0D, 0.0D);
+            }
+        }
+
+        if (flag) {
+            ObjectArrayList<Pair<ItemStack, BlockPos>> objectarraylist = new ObjectArrayList<>();
+            Collections.shuffle(this.affectedBlockPositions, this.world.rand);
+
+            for(BlockPos blockpos : this.affectedBlockPositions) {
+                BlockState blockstate = this.world.getBlockState(blockpos);
+                Block block = blockstate.getBlock();
+                if (!blockstate.isAir(this.world, blockpos)) {
+                    BlockPos blockpos1 = blockpos.toImmutable();
+                    this.world.getProfiler().startSection("explosion_blocks");
+                    if (blockstate.canDropFromExplosion(this.world, blockpos, this) && this.world instanceof ServerWorld) {
+                        TileEntity tileentity = blockstate.hasTileEntity() ? this.world.getTileEntity(blockpos) : null;
+                        LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerWorld)this.world)).withRandom(this.world.rand).withParameter(LootParameters.field_237457_g_, Vector3d.copyCentered(blockpos)).withParameter(LootParameters.TOOL, ItemStack.EMPTY).withNullableParameter(LootParameters.BLOCK_ENTITY, tileentity).withNullableParameter(LootParameters.THIS_ENTITY, this.exploder);
+                        if (this.mode == Explosion.Mode.DESTROY) {
+                            lootcontext$builder.withParameter(LootParameters.EXPLOSION_RADIUS, this.radius);
+                        }
+
+                        blockstate.getDrops(lootcontext$builder).forEach((stack) -> {
+                            handleExplosionDrops(objectarraylist, stack, blockpos1);
+                        });
+                    }
+
+                    blockstate.onBlockExploded(this.world, blockpos, this);
+                    this.world.getProfiler().endSection();
+                }
+            }
+
+            for(Pair<ItemStack, BlockPos> pair : objectarraylist) {
+                Block.spawnAsEntity(this.world, pair.getSecond(), pair.getFirst());
+            }
+        }
+
+        if (Config.COMMON.gameplay.explosionCauseFire.get()) {
+            for(BlockPos blockpos2 : this.affectedBlockPositions) {
+                if (this.random.nextInt(3) == 0 && this.world.getBlockState(blockpos2).isAir() && this.world.getBlockState(blockpos2.down()).isOpaqueCube(this.world, blockpos2.down())) {
+                    this.world.setBlockState(blockpos2, AbstractFireBlock.getFireForPlacement(this.world, blockpos2));
+                }
+            }
+        }
+
+    }
+
+    private static void handleExplosionDrops(ObjectArrayList<Pair<ItemStack, BlockPos>> dropPositionArray, ItemStack stack, BlockPos pos) {
+        int i = dropPositionArray.size();
+
+        for(int j = 0; j < i; ++j) {
+            Pair<ItemStack, BlockPos> pair = dropPositionArray.get(j);
+            ItemStack itemstack = pair.getFirst();
+            if (ItemEntity.canMergeStacks(itemstack, stack)) {
+                ItemStack itemstack1 = ItemEntity.mergeStacks(itemstack, stack, 16);
+                dropPositionArray.set(j, Pair.of(itemstack1, pair.getSecond()));
+                if (stack.isEmpty()) {
+                    return;
+                }
+            }
+        }
+
+        dropPositionArray.add(Pair.of(stack, pos));
+    }*/
 
     private static BlockRayTraceResult rayTraceBlocks(World world, RayTraceContext context) {
         return performRayTrace(context, (rayTraceContext, blockPos) -> {

@@ -295,6 +295,20 @@ public class ModItems {
             () -> new ExtendedMagItem(ExtendedMag.create(new ResourceLocation("tac:large_extended_mag")),
                     new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
 
+    /*** AMMO_PLUG ***/
+    public static final RegistryObject<Item> AMMO_FMJ = REGISTER.register("ammo_fmj",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_fmj")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_HE = REGISTER.register("ammo_he",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_he")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_HP = REGISTER.register("ammo_hp",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_hp")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_I = REGISTER.register("ammo_i",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_i")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+
     /*** Misc ***/
     public static final RegistryObject<Item> BLANK_SKIN_MOD_LVL1 = REGISTER.register("blank_skin_mod_lvl1",
             () -> new Item(new Item.Properties().maxStackSize(64).group(GunMod.SKINS)));

@@ -86,6 +86,11 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     public static class General implements INBTSerializable<CompoundNBT>{
 
         @Optional private boolean silencedFire = false;
+        @Optional private boolean blastFire = false;
+        @Optional private boolean igniteFire = false;
+        @Optional private float modifyProjectileBlastDamage = 1;
+        @Optional private float modifyProjectileArmorIgnore = 1;
+        @Optional private float modifyProjectileHeadDamage = 1;
         @Optional private double modifyFireSoundRadius = 1;
         @Optional private float additionalDamage = 0;
         @Optional private float additionalHeadshotDamage = 0;
@@ -109,6 +114,21 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
         public boolean isSilencedFire() {
             return silencedFire;
+        }
+        public boolean isBlastFire() {
+            return blastFire;
+        }
+        public boolean isIgniteFire() {
+            return igniteFire;
+        }
+        public float getModifyProjectileBlastDamage() {
+            return modifyProjectileBlastDamage;
+        }
+        public float getModifyProjectileArmorIgnore() {
+            return modifyProjectileArmorIgnore;
+        }
+        public float getModifyProjectileHeadDamage() {
+            return modifyProjectileHeadDamage;
         }
         public double getModifyFireSoundRadius() {
             return modifyFireSoundRadius;

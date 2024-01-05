@@ -27,16 +27,47 @@ public class Perks {
             new BooleanPerk("silencedFire",
                     "perk.tac.silencedv2", CustomModifierData.General::isSilencedFire)
     );
+
+    public static BooleanPerk blastFire = registerPerk(
+            new BooleanPerk("blastFire",
+                    "perk.tac.blastv2", CustomModifierData.General::isBlastFire)
+    );
+
+    public static BooleanPerk igniteFire = registerPerk(
+            new BooleanPerk("igniteFire",
+                    "perk.tac.ignitev2", CustomModifierData.General::isIgniteFire)
+    );
+
+    public static FloatPerk modifyProjectileBlastDamage = registerPerk(
+            new FloatPerk("modifyProjectileBlastDamage",
+                    "perk.tac.modified_blast_damage.positivev2","perk.tac.modified_blast_damage.negativev2",
+                    Formatter.ROUND_PERCENTAGE_F, CustomModifierData.General::getModifyProjectileBlastDamage)
+    );
+
+    public static FloatPerk modifyProjectileArmorIgnore = registerPerk(
+            new FloatPerk("modifyProjectileArmorIgnore",
+                    "perk.tac.modified_armor_ignore.positivev2","perk.tac.modified_armor_ignore.negativev2",
+                    Formatter.ROUND_PERCENTAGE_F, CustomModifierData.General::getModifyProjectileArmorIgnore)
+    );
+
+    public static FloatPerk modifyProjectileHeadDamage = registerPerk(
+            new FloatPerk("modifyProjectileHeadDamage",
+                    "perk.tac.modified_head_damage.positivev2","perk.tac.modified_head_damage.negativev2",
+                    Formatter.ROUND_PERCENTAGE_F, CustomModifierData.General::getModifyProjectileHeadDamage)
+    );
+
     public static DoublePerk modifyFireSoundRadius = registerPerk(
             new DoublePerk("modifyFireSoundRadius",
                     "perk.tac.sound_radius.positive","perk.tac.sound_radius.negative",
                     Formatter.ROUND_PERCENTAGE, CustomModifierData.General::getModifyFireSoundRadius,true)
     );
+
     public static FloatPerk additionalDamage = registerPerk(
             new FloatPerk("additionalDamage",
                     "perk.tac.additional_damage.positivev2", "perk.tac.additional_damage.negativev2",
                     Formatter.TO_HEART, CustomModifierData.General::getAdditionalDamage)
     );
+
     public static FloatPerk additionalHeadshotDamage = registerPerk(
             new FloatPerk("additionalHeadshotDamage",
                     "perk.tac.additional_damage.positiveh", "perk.tac.additional_damage.negativeh",
@@ -60,6 +91,7 @@ public class Perks {
                     "perk.tac.projectile_spread.positivev2","perk.tac.projectile_spread.negativev2",
                     Formatter.ROUND_PERCENTAGE_F, CustomModifierData.General::getModifyProjectileSpread,true)
     );
+
     public static FloatPerk modifyFirstShotSpread = registerPerk(
             new FloatPerk("modifyFirstShotSpread",
                     "perk.tac.projectile_spread_first.positivev2","perk.tac.projectile_spread_first.negativev2",

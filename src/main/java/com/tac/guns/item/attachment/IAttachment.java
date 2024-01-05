@@ -31,15 +31,16 @@ public interface IAttachment<T extends Attachment> {
         SIDE_RAIL("side_rail", "Side_Rail"),            // 4
         EXTENDED_MAG("extended_mag", "Extended_Mag"), // 5
         GUN_SKIN("gun_skin", "Gun_Skin"),           // 6
+        AMMO("ammo", "Ammo"),           // 7
 
-        IR_DEVICE("ir_device", "Ir_Device"), //7
-        OLD_SCOPE("oldScope", "OldScope"),            // 8
-        PISTOL_SCOPE("pistolScope", "PistolScope"),            // 9
-        PISTOL_BARREL("pistolBarrel", "PistolBarrel"),            // 10
+        IR_DEVICE("ir_device", "Ir_Device"), // 8
+        OLD_SCOPE("oldScope", "OldScope"),            // 9
+        PISTOL_SCOPE("pistolScope", "PistolScope"),            // 10
+        PISTOL_BARREL("pistolBarrel", "PistolBarrel"),            // 11
 
-        SCOPE_RETICLE_COLOR("reticle_color", "Reticle_Color"), // Scope Attachment Type // 11
-        SCOPE_BODY_COLOR("body_color", "Body_Color"),          // Scope Attachment Type // 12
-        SCOPE_GLASS_COLOR("glass_color", "Glass_Color");       // Scope Attachment Type // 13
+        SCOPE_RETICLE_COLOR("reticle_color", "Reticle_Color"), // Scope Attachment Type // 12
+        SCOPE_BODY_COLOR("body_color", "Body_Color"),          // Scope Attachment Type // 13
+        SCOPE_GLASS_COLOR("glass_color", "Glass_Color");       // Scope Attachment Type // 14
 
         // 14
 

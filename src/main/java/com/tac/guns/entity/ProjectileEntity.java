@@ -441,7 +441,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             int fireStarterLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
-            if (fireStarterLevel > 0 && Config.COMMON.gameplay.fireStarterCauseFire.get()) {
+            if ((fireStarterLevel > 0 || GunModifierHelper.isIgniteFire(this.weapon)) && Config.COMMON.gameplay.fireStarterCauseFire.get()) {
                 BlockPos offsetPos = pos.offset(blockRayTraceResult.getFace());
                 if (AbstractFireBlock.canLightBlock(this.world, offsetPos, blockRayTraceResult.getFace())) {
                     BlockState fireState = AbstractFireBlock.getFireForPlacement(this.world, offsetPos);
@@ -462,7 +462,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             int fireStarterLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
-            if (fireStarterLevel > 0) {
+            if (fireStarterLevel > 0 || GunModifierHelper.isIgniteFire(this.weapon)) {
                 entity.setFire(2);
             }
             if (!entity.isAlive()) {
@@ -507,8 +507,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         AxisAlignedBB boundingBox = entity.getBoundingBox();
         Vector3d blastVec = new Vector3d((boundingBox.maxX + boundingBox.minX) / 2, (boundingBox.maxY + boundingBox.minY) / 2, (boundingBox.maxZ + boundingBox.minZ) / 2);
-        if (this.projectile.isHasBlastDamage()) {
-            createExplosion(this, this.projectile.getBlastDamage() + this.projectile.getDamage(), this.projectile.getBlastRadius(), blastVec);
+        if (this.projectile.isHasBlastDamage() || GunModifierHelper.isBlastFire(this.weapon)) {
+            createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon, this.projectile.getBlastDamage()) + this.projectile.getDamage(), this.projectile.getBlastRadius(), blastVec);
             this.remove();
         }
 
@@ -528,10 +528,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (Config.COMMON.gameplay.bulletsIgnoreStandardArmor.get()) {
             float damageToMcArmor = 0;
 
-            if (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * this.projectile.getGunArmorIgnore() <= 1.0)
-                damageToMcArmor = (float) (damage * (1 - Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * this.projectile.getGunArmorIgnore()));
+            float armorIgnore = GunModifierHelper.getModifiedProjectileArmorIgnore(this.weapon, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * this.projectile.getGunArmorIgnore()));
 
-            if (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * this.projectile.getGunArmorIgnore() <= 0.0)
+            if (armorIgnore <= 1.0)
+                damageToMcArmor = (float) (damage * (1 - armorIgnore));
+
+            if (armorIgnore <= 0.0)
                 damageToMcArmor = damage;
 
             entity.attackEntityFrom(source, damageToMcArmor); // Apply vanilla armor aware damage
@@ -602,11 +604,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
     protected void onHitBlock(BlockState state, BlockPos pos, Direction face, Vector3d hitVec) {
         PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face, this.projectile.isHasBlastDamage()));
-        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0)
+        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0 || GunModifierHelper.isIgniteFire(this.weapon))
             ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, hitVec.getX(), hitVec.getY(), hitVec.getZ(), 1, 0, 0, 0, 0);
 
-        if (this.projectile.isHasBlastDamage()) {
-            createExplosion(this, this.projectile.getBlastDamage(), this.projectile.getBlastRadius(), hitVec);
+        if (this.projectile.isHasBlastDamage() || GunModifierHelper.isBlastFire(this.weapon)) {
+            createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon, this.projectile.getBlastDamage()), this.projectile.getBlastRadius(), hitVec);
             this.remove();
         }
     }
@@ -949,8 +951,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         for (ServerPlayerEntity player : ((ServerWorld) world).getPlayers()) {
-            if (player.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ()) < 4096) {
-                player.connection.sendPacket(new SExplosionPacket(entity.getPosX(), entity.getPosY(), entity.getPosZ(), radius, explosion.getAffectedBlockPositions(), explosion.getPlayerKnockbackMap().get(player)));
+            if (hitVec == null) {
+                if (player.getDistanceSq(entity.getPosX(), entity.getPosY(), entity.getPosZ()) < 4096)
+                    player.connection.sendPacket(new SExplosionPacket(entity.getPosX(), entity.getPosY(), entity.getPosZ(), radius, explosion.getAffectedBlockPositions(), explosion.getPlayerKnockbackMap().get(player)));
+            } else {
+                if (player.getDistanceSq(hitVec.getX(), hitVec.getY(), hitVec.getZ()) < 4096)
+                    player.connection.sendPacket(new SExplosionPacket(hitVec.getX(), hitVec.getY(), hitVec.getZ(), radius, explosion.getAffectedBlockPositions(), explosion.getPlayerKnockbackMap().get(player)));
             }
         }
     }

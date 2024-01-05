@@ -8,10 +8,11 @@ public enum SlotType {
     SIDE_RAIL("side_rail", "Side_Rail"),            // 4
     EXTENDED_MAG("extended_mag", "Extended_Mag"), // 5
     GUN_SKIN("gun_skin", "Gun_Skin"),     // 6
+    AMMO("ammo", "Ammo"),     // 7
 
-    SCOPE_RETICLE_COLOR("reticle_color", "Reticle_Color"), // Scope Attachment Type // 7
-    SCOPE_BODY_COLOR("body_color", "Body_Color"),          // Scope Attachment Type // 8
-    SCOPE_GLASS_COLOR("glass_color", "Glass_Color");       // Scope Attachment Type // 9
+    SCOPE_RETICLE_COLOR("reticle_color", "Reticle_Color"), // Scope Attachment Type // 8
+    SCOPE_BODY_COLOR("body_color", "Body_Color"),          // Scope Attachment Type // 9
+    SCOPE_GLASS_COLOR("glass_color", "Glass_Color");       // Scope Attachment Type // 10
 
     private String translationKey;
     private String tagKey;
