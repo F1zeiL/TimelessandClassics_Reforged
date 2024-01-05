@@ -70,7 +70,7 @@ public class AttachmentSlot extends Slot {
             //check extra limit from nbt tags
             Gun modifiedGun = weapon.getModifiedGun(this.weapon);
             boolean flag = ((PlayerInventory)this.container.getPlayerInventory()).player.world.isRemote();
-            if(!Attachment.canApplyOn(stack,weapon,flag)){
+            if(!Attachment.canApplyOn(stack,weapon)){
                 return false;
             }
             SlotType stackType = ((IAttachment<?>) stack.getItem()).getSlot();

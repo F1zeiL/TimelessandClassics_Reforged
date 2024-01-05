@@ -142,7 +142,7 @@ public class AttachmentContainer extends Container {
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
         if(playerInventory instanceof PlayerInventory){
             boolean isLocal = ((PlayerInventory) playerInventory).player.world.isRemote();
-            if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem(),isLocal) ){
+            if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
                 attachments.put(( (IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
 //            attachments.put(( (IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
             }

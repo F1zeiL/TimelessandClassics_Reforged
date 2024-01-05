@@ -1,7 +1,6 @@
 package com.tac.guns.common.container;
 
 import com.tac.guns.common.Gun;
-import com.tac.guns.common.container.slot.AttachmentSlot;
 import com.tac.guns.common.container.slot.DyeSlot;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.init.ModContainers;
@@ -135,7 +134,7 @@ public class DyeContainer extends Container {
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
         if(playerInventory instanceof PlayerInventory) {
             boolean isLocal = ((PlayerInventory) playerInventory).player.world.isRemote();
-            if (Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem(),isLocal)) {
+            if (Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem())) {
 //            attachments.put(( (IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
                 attachments.put(((IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
             }
