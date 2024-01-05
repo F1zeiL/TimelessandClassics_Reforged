@@ -317,6 +317,8 @@
   "perk.tac.modified_armor_ignore.negativev2": "-护甲穿透 %s",
   "perk.tac.modified_head_damage.positivev2": "+爆头伤害 %s",
   "perk.tac.modified_head_damage.negativev2": "-爆头伤害 %s",
+  "perk.tac.additional_pierce.positive": "+穿透 %d",
+  "perk.tac.additional_pierce.negative": "-穿透 %d",
   "perk.tac.sound_radius.positive": "-枪声范围 %s",
   "perk.tac.sound_radius.negative": "+枪声范围 %s",
   "perk.tac.additional_damage.positivev2": "+伤害 §r(§l%s ♥§r)",

@@ -670,6 +670,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private int life;
         @Optional
+        private int pierce = 1;
+        @Optional
         private boolean gravity = true;
         @Optional
         private boolean damageReduceOverLife = true;
@@ -710,6 +712,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putFloat("Size", this.size);
             tag.putDouble("Speed", this.speed);
             tag.putInt("Life", this.life);
+            tag.putDouble("Pierce", this.pierce);
             tag.putBoolean("Gravity", this.gravity);
             tag.putBoolean("DamageReduceOverLife", this.damageReduceOverLife);
             tag.putInt("TrailColor", this.trailColor);
@@ -774,6 +777,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("Life", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.life = tag.getInt("Life");
             }
+            if (tag.contains("Pierce", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.pierce = tag.getInt("Pierce");
+            }
             if (tag.contains("Gravity", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.gravity = tag.getBoolean("Gravity");
             }
@@ -819,6 +825,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             projectile.size = this.size;
             projectile.speed = this.speed;
             projectile.life = this.life;
+            projectile.pierce = this.pierce;
             projectile.gravity = this.gravity;
             projectile.damageReduceOverLife = this.damageReduceOverLife;
             projectile.trailColor = this.trailColor;
@@ -944,11 +951,18 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         }
 
         /**
-         * @return The amount of ticks before tsis projectile is removed
+         * @return The amount of ticks before this projectile is removed
          */
         public int getLife() {
             return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.COMMON.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.projectile) ?
                     (int) (this.life + GunEditor.get().getLifeMod()) : this.life;
+        }
+
+        /**
+         * @return The amount of hits before this projectile is removed
+         */
+        public int getPierce() {
+            return this.pierce;
         }
 
         /**

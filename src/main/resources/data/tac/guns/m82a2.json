@@ -46,6 +46,7 @@
     "size": 0.35,
     "speed": 30.0,
     "life": 16,
+    "pierce": 3,
     "trailLengthMultiplier": 3.75
   },
   "sounds": {

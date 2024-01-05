@@ -116,6 +116,7 @@ public abstract class Attachment {
                     .addPercentage(Perks.modifyProjectileHeadDamage)
                     .addPercentage(Perks.modifyFireSoundRadius)
                     .add(Perks.additionalDamage)
+                    .add(Perks.additionalPierce)
                     .add(Perks.additionalHeadshotDamage)
                     .addPercentage(Perks.modifyProjectileDamage)
                     .addPercentage(Perks.modifyProjectileSpeed)

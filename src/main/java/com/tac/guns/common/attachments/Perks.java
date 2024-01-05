@@ -10,6 +10,7 @@ import java.util.function.Function;
 
 public class Perks {
     public static class Formatter{
+        public static Function<Integer, String> PIERCE = value -> ItemStack.DECIMALFORMAT.format(Math.abs(value));
         public static Function<Float, String> TO_HEART = value -> ItemStack.DECIMALFORMAT.format(Math.abs(value/2.0));
         public static Function<Double, String> ROUND_PERCENTAGE =
                 value -> new DecimalFormat("#.#").format(Math.abs(1.0-value)*100) + "%";
@@ -54,6 +55,12 @@ public class Perks {
             new FloatPerk("modifyProjectileHeadDamage",
                     "perk.tac.modified_head_damage.positivev2","perk.tac.modified_head_damage.negativev2",
                     Formatter.ROUND_PERCENTAGE_F, CustomModifierData.General::getModifyProjectileHeadDamage)
+    );
+
+    public static IntPerk additionalPierce = registerPerk(
+            new IntPerk("additionalPierce",
+                    "perk.tac.additional_pierce.positive","perk.tac.additional_pierce.negative",
+                    Formatter.PIERCE, CustomModifierData.General::getAdditionalPierce)
     );
 
     public static DoublePerk modifyFireSoundRadius = registerPerk(

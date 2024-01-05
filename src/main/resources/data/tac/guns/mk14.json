@@ -43,6 +43,7 @@
     "size": 0.15,
     "speed": 31.5,
     "life": 11,
+    "pierce": 2,
     "trailLengthMultiplier": 3.5,
     "ricochet": true
   },

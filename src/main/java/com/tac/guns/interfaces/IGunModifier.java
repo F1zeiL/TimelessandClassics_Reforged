@@ -91,6 +91,11 @@ public interface IGunModifier
         return 0.0F;
     }
 
+    default int additionalPierce()
+    {
+        return 0;
+    }
+
     /**
      * Modify the damage of the projectile. This is called before critical logic is
      *

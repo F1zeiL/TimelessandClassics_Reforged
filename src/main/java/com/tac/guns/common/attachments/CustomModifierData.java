@@ -104,6 +104,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         @Optional private float horizontalRecoilModifier = 1;
         @Optional private double modifyAimDownSightSpeed = 1;
         @Optional private int additionalAmmunition = -1;
+        @Optional private int additionalPierce = 0;
         @Optional private float additionalWeaponWeight = 0;
         @Optional private float modifyFireSoundVolume = 1;
         @Optional private float modifyRecoilSmoothening = 1;
@@ -168,6 +169,9 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         }
         public int getAdditionalAmmunition() {
             return additionalAmmunition;
+        }
+        public int getAdditionalPierce() {
+            return additionalPierce;
         }
         public float getAdditionalWeaponWeight() {
             return additionalWeaponWeight;

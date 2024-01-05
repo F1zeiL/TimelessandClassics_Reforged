@@ -78,7 +78,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     protected EntitySize entitySize;
     protected double modifiedGravity;
     public int life;
-
+    protected int pierce;
+    protected Entity prevEntity;
     protected Vector3d startPos;
 
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
@@ -98,6 +99,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         this.entitySize = new EntitySize(this.projectile.getSize(), this.projectile.getSize(), false);
         this.modifiedGravity = modifiedGun.getProjectile().isGravity() ? GunModifierHelper.getModifiedProjectileGravity(weapon, -0.0285) : 0.0; // -0.0285 Default upcoming new -0.0125
         this.life = GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife());
+        this.pierce = Math.max(modifiedGun.getProjectile().getPierce() + GunModifierHelper.getAdditionalPierce(weapon), 1);
 
         /* Get speed and set motion */
         Vector3d dir = this.getDirection(shooter, weapon, item, modifiedGun);
@@ -226,15 +228,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 //            }
             RayTraceResult result = rayTraceBlocks(this.world, new RayTraceContext(startVec, endVec, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
 
-
-
             if (result.getType() != RayTraceResult.Type.MISS) {
                 endVec = result.getHitVec();
             }
 
             List<EntityResult> hitEntities = null;
-            int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.COLLATERAL.get(), this.weapon);
-            if (level == 0) {
+            if (this.pierce <= 1 || this.projectile.isHasBlastDamage() || GunModifierHelper.isBlastFire(this.weapon)) {
                 EntityResult entityResult = this.findEntityOnPath(startVec, endVec);
                 if (entityResult != null) {
                     hitEntities = Collections.singletonList(entityResult);
@@ -244,7 +243,18 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             if (hitEntities != null && hitEntities.size() > 0) {
-                for (EntityResult entityResult : hitEntities) {
+                EntityResult[] hitEntityResult = hitEntities.toArray(new EntityResult[0]);
+                for (int i = 0; i < hitEntityResult.length - 1; i++) {
+                    int k = i;
+                    for (int j = i + 1; j < hitEntityResult.length; j++) {
+                        if (hitEntityResult[j].hitVec.distanceTo(startVec) < hitEntityResult[k].hitVec.distanceTo(startVec))
+                            k = j;
+                    }
+                    EntityResult t = hitEntityResult[i];
+                    hitEntityResult[i] = hitEntityResult[k];
+                    hitEntityResult[k] = t;
+                }
+                for (EntityResult entityResult : hitEntityResult) {
                     result = new ExtendedEntityRayTraceResult(entityResult);
                     if (((EntityRayTraceResult) result).getEntity() instanceof PlayerEntity) {
                         PlayerEntity player = (PlayerEntity) ((EntityRayTraceResult) result).getEntity();
@@ -394,6 +404,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     }
 
     private void onHit(RayTraceResult result, Vector3d startVec, Vector3d endVec) {
+        if (this.pierce <= 0) {
+            this.remove();
+            return;
+        }
+
         if (modifiedGun == null)
             return;
 
@@ -410,9 +425,6 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             BlockPos pos = blockRayTraceResult.getPos();
             BlockState state = this.world.getBlockState(pos);
             Block block = state.getBlock();
-
-            if (!state.getMaterial().isReplaceable())
-                this.remove();
 
             if (Objects.requireNonNull(block.getRegistryName()).getPath().contains("_button"))
                 return;
@@ -470,17 +482,17 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             } else if (entity.isAlive()) {
                 this.onHitEntity(entity, result.getHitVec(), startVec, endVec, entityRayTraceResult.isHeadshot());
 
-                int collateralLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.COLLATERAL.get(), weapon);
-                if (collateralLevel == 0) {
-                    this.remove();
-                }
-
                 entity.hurtResistantTime = 0;
             }
         }
     }
 
     protected void onHitEntity(Entity entity, Vector3d hitVec, Vector3d startVec, Vector3d endVec, boolean headshot) {
+        if (this.pierce <= 0) {
+            this.remove();
+            return;
+        }
+
         float damage = this.getDamage(hitVec);
         float newDamage = this.getCriticalDamage(this.weapon, this.rand, damage);
         boolean critical = damage != newDamage;
@@ -525,6 +537,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     // tac_ is simply a naming convention for "check tac stuff before you continue this standard mc call", I use it here to explain checking config before applying it's damage, along with armor calculations
     // Is also "bulletClass" aware, makes this a bit more complex than config checks.
     private void tac_attackEntity(DamageSource source, Entity entity, float damage) {
+        this.pierce--;
         if (Config.COMMON.gameplay.bulletsIgnoreStandardArmor.get()) {
             float damageToMcArmor = 0;
 
@@ -603,6 +616,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     }*/
 
     protected void onHitBlock(BlockState state, BlockPos pos, Direction face, Vector3d hitVec) {
+        if (this.pierce <= 0) {
+            this.remove();
+            return;
+        }
+
         PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face, this.projectile.isHasBlastDamage()));
         if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0 || GunModifierHelper.isIgniteFire(this.weapon))
             ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, hitVec.getX(), hitVec.getY(), hitVec.getZ(), 1, 0, 0, 0, 0);

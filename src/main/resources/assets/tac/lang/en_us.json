@@ -316,6 +316,8 @@
   "perk.tac.modified_armor_ignore.negativev2": "-Armor Ignore Modifier %s",
   "perk.tac.modified_head_damage.positivev2": "+Head Shot Damage Modifier %s",
   "perk.tac.modified_head_damage.negativev2": "-Head Shot Damage Modifier %s",
+  "perk.tac.additional_pierce.positive": "+Pierce %d",
+  "perk.tac.additional_pierce.negative": "-Pierce %d",
   "perk.tac.sound_radius.positive": "-Sound Radius %s",
   "perk.tac.sound_radius.negative": "+Sound Radius %s",
   "perk.tac.additional_damage.positivev2": "+Damage §r(§l%s ♥§r)",
