@@ -7,7 +7,7 @@ import com.tac.guns.init.ModContainers;
 import com.tac.guns.item.IrDeviceItem;
 import com.tac.guns.item.ScopeItem;
 import com.tac.guns.item.SideRailItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.entity.player.PlayerEntity;

@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.Objects;
@@ -47,13 +48,13 @@ public class mp9_animation extends SkinAnimationModel {
                     RenderUtil.renderLaserModuleModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
             }
             if (Gun.getScope(stack) != null) {
-                if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER"))
+                if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:thunder")))
                     RenderUtil.renderModel(getModelComponent(skin, LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
             } else {
                 RenderUtil.renderModel(getModelComponent(skin, STOCK_FOLDED), stack, matrices, renderBuffer, light, overlay);
             }
-            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER")) {
+            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:thunder"))) {
                 RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
                 if (stack.getTag().getInt("CurrentFireMode") == 1) {
                     matrices.push();

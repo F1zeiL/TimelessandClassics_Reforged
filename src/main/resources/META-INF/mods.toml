@@ -6,7 +6,6 @@ license="GPL3"
     modId="tac"
     version="${file.jarVersion}"
     displayName="Timeless and Classics Guns"
-    updateJSONURL="https://ClumsyAlien.github.io/TaC_Patch_notes/update.json"
     displayURL=""
     authors="TaC Squad"
     description='''

@@ -670,6 +670,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private int life;
         @Optional
+        private int pierce = 1;
+        @Optional
         private boolean gravity = true;
         @Optional
         private boolean damageReduceOverLife = true;
@@ -710,6 +712,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putFloat("Size", this.size);
             tag.putDouble("Speed", this.speed);
             tag.putInt("Life", this.life);
+            tag.putDouble("Pierce", this.pierce);
             tag.putBoolean("Gravity", this.gravity);
             tag.putBoolean("DamageReduceOverLife", this.damageReduceOverLife);
             tag.putInt("TrailColor", this.trailColor);
@@ -774,6 +777,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("Life", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.life = tag.getInt("Life");
             }
+            if (tag.contains("Pierce", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.pierce = tag.getInt("Pierce");
+            }
             if (tag.contains("Gravity", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.gravity = tag.getBoolean("Gravity");
             }
@@ -819,6 +825,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             projectile.size = this.size;
             projectile.speed = this.speed;
             projectile.life = this.life;
+            projectile.pierce = this.pierce;
             projectile.gravity = this.gravity;
             projectile.damageReduceOverLife = this.damageReduceOverLife;
             projectile.trailColor = this.trailColor;
@@ -944,11 +951,18 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         }
 
         /**
-         * @return The amount of ticks before tsis projectile is removed
+         * @return The amount of ticks before this projectile is removed
          */
         public int getLife() {
             return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.COMMON.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.projectile) ?
                     (int) (this.life + GunEditor.get().getLifeMod()) : this.life;
+        }
+
+        /**
+         * @return The amount of hits before this projectile is removed
+         */
+        public int getPierce() {
+            return this.pierce;
         }
 
         /**
@@ -1628,6 +1642,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             private ScaledPositioned gunSkin;
             @Optional
             @Nullable
+            private ScaledPositioned ammoPlug;
+            @Optional
+            @Nullable
             private ScaledPositioned sideRail;
             @Optional
             @Nullable
@@ -1668,6 +1685,11 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             @Nullable
             public ScaledPositioned getGunSkin() {
                 return this.gunSkin;
+            }
+
+            @Nullable
+            public ScaledPositioned getAmmoPlug() {
+                return this.ammoPlug;
             }
 
             @Nullable
@@ -1722,6 +1744,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                 if (this.gunSkin != null) {
                     tag.put("GunSkin", this.gunSkin.serializeNBT());
                 }
+                if (this.ammoPlug != null) {
+                    tag.put("AmmoPlug", this.ammoPlug.serializeNBT());
+                }
                 if (this.sideRail != null) {
                     tag.put("SideRail", this.sideRail.serializeNBT());
                 }
@@ -1760,6 +1785,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                 if (tag.contains("GunSkin", Constants.NBT.TAG_COMPOUND)) {
                     this.gunSkin = this.createScaledPositioned(tag, "GunSkin");
                 }
+                if (tag.contains("AmmoPlug", Constants.NBT.TAG_COMPOUND)) {
+                    this.ammoPlug = this.createScaledPositioned(tag, "AmmoPlug");
+                }
                 if (tag.contains("SideRail", Constants.NBT.TAG_COMPOUND)) {
                     this.sideRail = this.createScaledPositioned(tag, "SideRail");
                 }
@@ -1796,6 +1824,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                 }
                 if (this.gunSkin != null) {
                     attachments.gunSkin = this.gunSkin.copy();
+                }
+                if (this.ammoPlug != null) {
+                    attachments.ammoPlug = this.ammoPlug.copy();
                 }
                 if (this.sideRail != null) {
                     attachments.sideRail = this.sideRail.copy();
@@ -2385,6 +2416,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                     return this.modules.attachments.underBarrel != null;
                 case GUN_SKIN:
                     return this.modules.attachments.gunSkin != null;
+                case AMMO:
+                    return this.modules.attachments.ammoPlug != null;
                 case SIDE_RAIL:
                     return this.modules.attachments.sideRail != null || this.modules.attachments.irDevice != null;
                 case EXTENDED_MAG:
@@ -2407,6 +2440,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                     return this.modules.attachments.underBarrel != null;
                 case GUN_SKIN:
                     return this.modules.attachments.gunSkin != null;
+                case AMMO:
+                    return this.modules.attachments.ammoPlug != null;
                 case SIDE_RAIL:
                     return this.modules.attachments.sideRail != null;
                 case IR_DEVICE:
@@ -2438,6 +2473,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                     return this.modules.attachments.underBarrel;
                 case GUN_SKIN:
                     return this.modules.attachments.gunSkin;
+                case AMMO:
+                    return this.modules.attachments.ammoPlug;
                 case SIDE_RAIL:
                     return this.modules.attachments.sideRail;
                 case IR_DEVICE:
@@ -2574,7 +2611,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
                     key = type.getTagKey();
             }
             if (key != null && attachment.contains(key, Constants.NBT.TAG_COMPOUND)) {
-                return ItemStack.read(attachment.getCompound(type.getTagKey()));
+                return ItemStack.read(attachment.getCompound(key));
             }
         }
         return ItemStack.EMPTY;

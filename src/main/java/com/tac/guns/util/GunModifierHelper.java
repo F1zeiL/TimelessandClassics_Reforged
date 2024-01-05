@@ -5,10 +5,11 @@ import com.tac.guns.common.attachments.CustomModifierData;
 import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.common.attachments.perk.DoublePerk;
 import com.tac.guns.common.attachments.perk.FloatPerk;
+import com.tac.guns.common.attachments.perk.IntPerk;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.interfaces.IGunModifier;
 import com.tac.guns.item.GunSkinItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.item.ItemStack;
@@ -66,6 +67,18 @@ public class GunModifierHelper
         }
         return output;
     }
+
+    public static int applyAdditional(ItemStack weapon, int input, IntPerk p){
+        int output = input;
+        for(int i = 0; i < SlotType.values().length; i++) {
+            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
+            if (modifier != null) {
+                output += p.getValue(modifier);
+            }
+        }
+        return output;
+    }
+
     @Nullable
     public static CustomModifierData getCustomModifier(ItemStack weapon, SlotType type){
         if(weapon.getItem() instanceof TimelessGunItem){
@@ -294,7 +307,89 @@ public class GunModifierHelper
         return false;
     }
 
+    public static boolean isBlastFire(ItemStack weapon)
+    {
+        for(int i = 0; i < SlotType.values().length; i++) {
+            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
+            if (modifier != null) {
+                if(modifier.getGeneral().isBlastFire()){
+                    return true;
+                }
+            }
+        }
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            if(modifier.blastFire())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public static boolean isIgniteFire(ItemStack weapon)
+    {
+        for(int i = 0; i < SlotType.values().length; i++) {
+            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
+            if (modifier != null) {
+                if(modifier.getGeneral().isIgniteFire()){
+                    return true;
+                }
+            }
+        }
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            if(modifier.igniteFire())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static float getModifiedProjectileBlastDamage(ItemStack weapon, float damage)
+    {
+        float finalDamage = damage;
+
+        finalDamage = applyMultiplier(weapon,finalDamage,Perks.modifyProjectileBlastDamage);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            finalDamage = modifier.modifyProjectileBlastDamage(finalDamage);
+        }
+        return finalDamage;
+    }
+
+    public static float getModifiedProjectileArmorIgnore(ItemStack weapon, float ignore)
+    {
+        float finalIgnore = ignore;
+
+        finalIgnore = applyMultiplier(weapon,finalIgnore,Perks.modifyProjectileArmorIgnore);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            finalIgnore = modifier.modifyProjectileArmorIgnore(finalIgnore);
+        }
+        return finalIgnore;
+    }
+
+    public static float getModifiedProjectileHeadDamage(ItemStack weapon, float damage)
+    {
+        float finalDamage = damage;
+
+        finalDamage = applyMultiplier(weapon,finalDamage,Perks.modifyProjectileHeadDamage);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            finalDamage = modifier.modifyProjectileHeadDamage(finalDamage);
+        }
+        return finalDamage;
+    }
 
     public static double getModifiedFireSoundRadius(ItemStack weapon, double radius)
     {
@@ -349,6 +444,20 @@ public class GunModifierHelper
             additionalDamage += modifier.additionalHeadshotDamage();
         }
         return additionalDamage;
+    }
+
+    public static int getAdditionalPierce(ItemStack weapon)
+    {
+        int additionalPierce = 0;
+
+        additionalPierce = applyAdditional(weapon,additionalPierce,Perks.additionalPierce);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            additionalPierce += modifier.additionalPierce();
+        }
+        return additionalPierce;
     }
 
     public static float getModifiedProjectileDamage(ItemStack weapon, float damage)

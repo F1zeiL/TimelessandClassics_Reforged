@@ -151,20 +151,20 @@ public class AttachmentScreen extends ContainerScreen<AttachmentContainer> {
         if ((this.minecraft.player.getHeldItemMainhand().getItem() instanceof ScopeItem) ||
                 (this.minecraft.player.getHeldItemMainhand().getItem() instanceof SideRailItem) ||
                 (this.minecraft.player.getHeldItemMainhand().getItem() instanceof IrDeviceItem))
-            for (int i = 11; i < IAttachment.Type.values().length; i++) {
-                if (i == 11 && !this.container.getSlot(i).isEnabled()) {
-                    this.blit(matrixStack, left + 70, top + 50 + 18, 176, 16, 16, 16);
-                } else if (i == 11 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
-                    this.blit(matrixStack, left + 70, top + 50 + 18, 176, 16, 16, 16);
-                }
+            for (int i = 12; i < IAttachment.Type.values().length; i++) {
                 if (i == 12 && !this.container.getSlot(i).isEnabled()) {
-                    this.blit(matrixStack, left + 40, top + -1 + 18, 176, 0, 16, 16);
+                    this.blit(matrixStack, left + 70, top + 50 + 18, 176, 16, 16, 16);
                 } else if (i == 12 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
-                    this.blit(matrixStack, left + 40, top + -1 + 18, 176, 0, 16, 16);
+                    this.blit(matrixStack, left + 70, top + 50 + 18, 176, 16, 16, 16);
                 }
                 if (i == 13 && !this.container.getSlot(i).isEnabled()) {
-                    this.blit(matrixStack, left + 10, top + 50 + 18, 176, 32, 16, 16);
+                    this.blit(matrixStack, left + 40, top + -1 + 18, 176, 0, 16, 16);
                 } else if (i == 13 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
+                    this.blit(matrixStack, left + 40, top + -1 + 18, 176, 0, 16, 16);
+                }
+                if (i == 14 && !this.container.getSlot(i).isEnabled()) {
+                    this.blit(matrixStack, left + 10, top + 50 + 18, 176, 32, 16, 16);
+                } else if (i == 14 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
                     this.blit(matrixStack, left + 10, top + 50 + 18, 176, 32, 16, 16);
                 }
             }
@@ -172,12 +172,16 @@ public class AttachmentScreen extends ContainerScreen<AttachmentContainer> {
             for (int i = 0; i < IAttachment.Type.values().length - 7; i++) {
                 if (!this.container.getSlot(i).isEnabled()) {
                     if (i > 3)
-                        if (i == 5 && this.container.hasExMag())
+                        if (i == 5)
                             this.blit(matrixStack, left + 155, top + 17 + 18, 176 + 16, 0, 16, 16);
+                        else if (i == 7)
+                            this.blit(matrixStack, left + 155, top + 17 + 3 * 18, 176 + 16, 0, 16, 16);
                         else
                             this.blit(matrixStack, left + 155, top + 17 + (i - 4) * 18, 176, 0, 16, 16);
                     else
                         this.blit(matrixStack, left + 5, top + 17 + i * 18, 176, 0, 16, 16);
+                } else if (i == 7 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
+                    this.blit(matrixStack, left + 155, top + 17 + 3 * 18, 176, 16 + 9 * 16, 16, 16);
                 } else if (i == 6 && this.weaponInventory.getStackInSlot(i).isEmpty()) {
                     this.blit(matrixStack, left + 155, top + 17 + 2 * 18, 176, 16 + 8 * 16, 16, 16);
                 } else if (i > 3 && this.weaponInventory.getStackInSlot(i).isEmpty()) {

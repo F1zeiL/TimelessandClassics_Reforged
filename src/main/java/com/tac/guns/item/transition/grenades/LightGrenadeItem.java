@@ -1,4 +1,4 @@
-package com.tac.guns.item.TransitionalTypes.grenades;
+package com.tac.guns.item.transition.grenades;
 
 import com.tac.guns.entity.ThrowableGrenadeEntity;
 import com.tac.guns.entity.specifics.explosives.LightGrenadeEntity;

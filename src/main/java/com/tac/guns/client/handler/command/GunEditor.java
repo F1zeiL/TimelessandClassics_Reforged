@@ -5,7 +5,7 @@ import com.tac.guns.Config;
 import com.tac.guns.client.Keys;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.tooling.CommandsHandler;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -365,6 +365,7 @@ public class GunEditor
     public float getSizePrjMod() {return this.sizePrjMod;}
     public double getSpeedMod() {return this.speedMod;}
     public double getLifeMod() {return this.lifeMod;}
+    public double getPierceMod() {return this.pierceMod;}
     private float damageMod = 0;
     private float armorIgnoreMod = 0;
     private float criticalMod = 0;
@@ -377,6 +378,7 @@ public class GunEditor
     private float sizePrjMod = 0;
     private double speedMod = 0;
     private double lifeMod = 0;
+    private double pierceMod = 0;
     private void handleProjectileMod(InputEvent.KeyInputEvent event, TimelessGunItem gunItem) {
         double stepModifier = 1;
         boolean isUp = event.getKey() == GLFW.GLFW_KEY_UP;
@@ -485,6 +487,7 @@ public class GunEditor
         gun.getCompound("Projectile").remove("Size");
         gun.getCompound("Projectile").remove("Speed");
         gun.getCompound("Projectile").remove("Life");
+        gun.getCompound("Projectile").remove("Pierce");
         gun.getCompound("Projectile").putDouble("Damage", gunItem.getGun().getProjectile().getDamage());
         gun.getCompound("Projectile").putDouble("ArmorIgnore", gunItem.getGun().getProjectile().getGunArmorIgnore());
         gun.getCompound("Projectile").putDouble("Critical", gunItem.getGun().getProjectile().getGunCritical());
@@ -493,6 +496,7 @@ public class GunEditor
         gun.getCompound("Projectile").putDouble("Size", gunItem.getGun().getProjectile().getSize());
         gun.getCompound("Projectile").putDouble("Speed", gunItem.getGun().getProjectile().getSpeed());
         gun.getCompound("Projectile").putDouble("Life", gunItem.getGun().getProjectile().getLife());
+        gun.getCompound("Projectile").putDouble("Pierce", gunItem.getGun().getProjectile().getPierce());
         /*gunItem.getGun().getGeneral().deserializeNBT(gun);
         this.map.put(gunItem.getTranslationKey(), gunItem.getGun());*/
         this.getMapItem(gunItem.getTranslationKey(), gunItem.getGun()).deserializeNBT(gun);
@@ -853,6 +857,7 @@ public class GunEditor
                 this.sizePrjMod = 0;
                 this.speedMod = 0;
                 this.lifeMod = 0;
+                this.pierceMod = 0;
                 break;
 
             case display:

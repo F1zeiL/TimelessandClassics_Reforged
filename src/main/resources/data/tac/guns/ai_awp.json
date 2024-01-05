@@ -44,7 +44,8 @@
     "size": 0.175,
     "speed": 42,
     "trailLengthMultiplier": 3.75,
-    "life": 11
+    "life": 11,
+    "pierce": 3
   },
   "sounds": {
     "fire": "tac:item.aiawp_fire",
@@ -71,12 +72,12 @@
     "zoom": {
       "fovModifier": 0.67,
       "yOffset": 8.515,
-      "zOffset": -4.5
+      "zOffset": -3
     },
     "attachments": {
       "scope": {
-        "yOffset": 7.545,
-        "zOffset": 6.425,
+        "yOffset": 7.4,
+        "zOffset": 7.5,
         "scale": 1.0
       },
       "extendedMag": {
@@ -86,7 +87,7 @@
       },
       "pistolScope": {
         "yOffset": 7.6,
-        "zOffset": 5.025,
+        "zOffset": 8,
         "scale": 1.0,
         "doRenderMount": true,
         "doOnSlideMovement": false

@@ -32,14 +32,14 @@ import com.tac.guns.client.render.gun.model.scope.AimpointT2SightModel;
 import com.tac.guns.client.render.gun.model.scope.CoyoteSightModel;
 import com.tac.guns.client.render.gun.model.scope.EotechNSightModel;
 import com.tac.guns.client.render.gun.model.scope.EotechShortSightModel;
-import com.tac.guns.client.render.gun.model.scope.LongRange8xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.STANDARD_6_10x_SCOPE;
 import com.tac.guns.client.render.gun.model.scope.MiniDotSightModel;
 import com.tac.guns.client.render.gun.model.scope.OldLongRange4xScopeModel;
 import com.tac.guns.client.render.gun.model.scope.OldLongRange8xScopeModel;
 import com.tac.guns.client.render.gun.model.scope.Qmk152ScopeModel;
 import com.tac.guns.client.render.gun.model.scope.SroDotSightModel;
 import com.tac.guns.client.render.gun.model.scope.SrsRedDotSightModel;
-import com.tac.guns.client.render.gun.model.scope.VortexLPVO_1_4xScopeModel;
+import com.tac.guns.client.render.gun.model.scope.VortexLPVO_3_6xScopeModel;
 import com.tac.guns.client.render.gun.model.scope.VortexUh1SightModel;
 import com.tac.guns.client.render.gun.model.scope.elcan_14x_ScopeModel;
 import com.tac.guns.client.screen.*;
@@ -67,7 +67,6 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
@@ -168,8 +167,8 @@ public class ClientHandler {
 
     private static void registerModelOverrides() {
         ModelOverrides.register(ModItems.COYOTE_SIGHT.get(), new CoyoteSightModel());
-        ModelOverrides.register(ModItems.LONGRANGE_8x_SCOPE.get(), new LongRange8xScopeModel());
-        ModelOverrides.register(ModItems.VORTEX_LPVO_1_6.get(), new VortexLPVO_1_4xScopeModel());
+        ModelOverrides.register(ModItems.STANDARD_6_10x_SCOPE.get(), new STANDARD_6_10x_SCOPE());
+        ModelOverrides.register(ModItems.VORTEX_LPVO_3_6.get(), new VortexLPVO_3_6xScopeModel());
         //TODO: Fix up the SLX 2x, give a new reticle, new scope data, new mount and eye pos, pretty much remake the code end.
         //ModelOverrides.register(ModItems.SLX_2X.get(), new SLX_2X_ScopeModel());
         ModelOverrides.register(ModItems.ACOG_4.get(), new ACOG_4x_ScopeModel());

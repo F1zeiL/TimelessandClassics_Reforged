@@ -1,16 +1,7 @@
 package com.tac.guns.common.container.slot;
 
-import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
-import com.tac.guns.common.Gun;
-import com.tac.guns.common.container.AttachmentContainer;
 import com.tac.guns.common.container.DyeContainer;
 import com.tac.guns.init.ModSounds;
-import com.tac.guns.init.ModSyncedDataKeys;
-import com.tac.guns.item.GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
-import com.tac.guns.item.attachment.IAttachment;
-import com.tac.guns.item.attachment.impl.Attachment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;

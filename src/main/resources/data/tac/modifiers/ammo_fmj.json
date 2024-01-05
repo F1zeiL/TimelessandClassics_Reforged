@@ -1,0 +1,6 @@
+{
+  "general": {
+    "modifyProjectileArmorIgnore": 1.2,
+    "modifyProjectileDamage": 0.95
+  }
+}

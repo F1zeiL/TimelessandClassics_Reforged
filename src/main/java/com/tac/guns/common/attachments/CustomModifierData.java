@@ -4,7 +4,7 @@ import com.tac.guns.annotation.Ignored;
 import com.tac.guns.annotation.Optional;
 import com.tac.guns.common.attachments.perk.Perk;
 import com.tac.guns.interfaces.TGExclude;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -86,6 +86,11 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     public static class General implements INBTSerializable<CompoundNBT>{
 
         @Optional private boolean silencedFire = false;
+        @Optional private boolean blastFire = false;
+        @Optional private boolean igniteFire = false;
+        @Optional private float modifyProjectileBlastDamage = 1;
+        @Optional private float modifyProjectileArmorIgnore = 1;
+        @Optional private float modifyProjectileHeadDamage = 1;
         @Optional private double modifyFireSoundRadius = 1;
         @Optional private float additionalDamage = 0;
         @Optional private float additionalHeadshotDamage = 0;
@@ -99,6 +104,7 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         @Optional private float horizontalRecoilModifier = 1;
         @Optional private double modifyAimDownSightSpeed = 1;
         @Optional private int additionalAmmunition = -1;
+        @Optional private int additionalPierce = 0;
         @Optional private float additionalWeaponWeight = 0;
         @Optional private float modifyFireSoundVolume = 1;
         @Optional private float modifyRecoilSmoothening = 1;
@@ -109,6 +115,21 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
 
         public boolean isSilencedFire() {
             return silencedFire;
+        }
+        public boolean isBlastFire() {
+            return blastFire;
+        }
+        public boolean isIgniteFire() {
+            return igniteFire;
+        }
+        public float getModifyProjectileBlastDamage() {
+            return modifyProjectileBlastDamage;
+        }
+        public float getModifyProjectileArmorIgnore() {
+            return modifyProjectileArmorIgnore;
+        }
+        public float getModifyProjectileHeadDamage() {
+            return modifyProjectileHeadDamage;
         }
         public double getModifyFireSoundRadius() {
             return modifyFireSoundRadius;
@@ -148,6 +169,9 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         }
         public int getAdditionalAmmunition() {
             return additionalAmmunition;
+        }
+        public int getAdditionalPierce() {
+            return additionalPierce;
         }
         public float getAdditionalWeaponWeight() {
             return additionalWeaponWeight;

@@ -2,7 +2,7 @@ package com.tac.guns.client.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.handler.GunRenderingHandler;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.tileentity.UpgradeBenchTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

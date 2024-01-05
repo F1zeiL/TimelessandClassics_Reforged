@@ -6,8 +6,8 @@ import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.common.attachments.PerkTipsBuilder;
 import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.interfaces.IGunModifier;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -112,8 +112,14 @@ public abstract class Attachment {
         if(info!=null){
             List<ITextComponent> perks = new PerkTipsBuilder(info)
                     .add(Perks.silencedFire)
+                    .add(Perks.blastFire)
+                    .add(Perks.igniteFire)
+                    .addPercentage(Perks.modifyProjectileBlastDamage)
+                    .addPercentage(Perks.modifyProjectileArmorIgnore)
+                    .addPercentage(Perks.modifyProjectileHeadDamage)
                     .addPercentage(Perks.modifyFireSoundRadius)
                     .add(Perks.additionalDamage)
+                    .add(Perks.additionalPierce)
                     .add(Perks.additionalHeadshotDamage)
                     .addPercentage(Perks.modifyProjectileDamage)
                     .addPercentage(Perks.modifyProjectileSpeed)

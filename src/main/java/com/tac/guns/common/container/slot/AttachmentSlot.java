@@ -6,7 +6,7 @@ import com.tac.guns.common.container.AttachmentContainer;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -43,6 +43,10 @@ public class AttachmentSlot extends Slot {
                 || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
             return false;
         }
+        if ((this.type == SlotType.AMMO && this.weapon.getOrCreateTag().getInt("AmmoCount") > 0)
+                || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
+            return false;
+        }
         if (this.weapon.getItem() instanceof GunItem) {
             GunItem item = (GunItem) this.weapon.getItem();
             Gun modifiedGun = item.getModifiedGun(this.weapon);
@@ -61,6 +65,9 @@ public class AttachmentSlot extends Slot {
             TimelessGunItem weapon = (TimelessGunItem) this.weapon.getItem();
             int maxAmmo = weapon.getGun().getReloads().getMaxAmmo();
             if(this.type == SlotType.EXTENDED_MAG && Gun.getAmmo(this.weapon) > maxAmmo){
+                return false;
+            }
+            if(this.type == SlotType.AMMO && Gun.getAmmo(this.weapon) > 0){
                 return false;
             }
             if(SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)){

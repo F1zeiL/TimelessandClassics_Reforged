@@ -97,12 +97,12 @@
         "scale": 1.00
       },
       "scope": {
-        "yOffset": 10.025,
+        "yOffset": 9.9375,
         "zOffset": 1.175,
         "scale": 1.00
       },
       "pistolScope": {
-        "yOffset": 10.05,
+        "yOffset": 9.9375,
         "zOffset": 1.5,
         "scale": 1.0,
         "doRenderMount": true,

@@ -7,7 +7,7 @@ import com.tac.guns.client.Keys;
 import com.tac.guns.client.handler.command.data.ScopeData;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.tooling.CommandsHandler;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.impl.Scope;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

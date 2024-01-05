@@ -43,6 +43,7 @@
     "size": 0.125,
     "speed": 35.5,
     "life": 12,
+    "pierce": 3,
     "trailLengthMultiplier": 3
   },
   "sounds": {
@@ -74,7 +75,7 @@
     "attachments": {
       "scope": {
         "yOffset": 6.65,
-        "zOffset": 6.0,
+        "zOffset": 7,
         "scale": 1.0
       },
       "extendedMag": {
@@ -88,6 +89,11 @@
         "scale": 1.0,
         "doRenderMount": true,
         "doOnSlideMovement": false
+      },
+      "gunSkin": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
       }
     }
   }

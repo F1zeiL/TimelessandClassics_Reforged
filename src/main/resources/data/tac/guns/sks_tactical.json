@@ -45,6 +45,7 @@
     "size": 0.15,
     "speed": 27.5,
     "life": 11,
+    "pierce": 2,
     "trailLengthMultiplier": 3.25,
     "ricochet": true
   },
@@ -97,7 +98,7 @@
     {
       "scope": {
         "yOffset": 7.75,
-        "zOffset": 5,
+        "zOffset": 6,
         "scale": 1.00
       },
       "extendedMag": {

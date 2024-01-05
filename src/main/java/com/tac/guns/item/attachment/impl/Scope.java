@@ -18,6 +18,7 @@ public class Scope extends Attachment
     //private float additionalZoom;
     private double centerOffset;
     private boolean stable = false;
+    private boolean needSqueeze = false;
     private double stabilityOffset = 0d;
     private double viewFinderOffset;
     private double viewFinderOffsetSpecial;
@@ -74,6 +75,10 @@ public class Scope extends Attachment
         return this;
     }
 
+    public boolean isNeedSqueeze() {
+        return needSqueeze;
+    }
+
     /**
      * Sets the offset distance from the camera to the view finder when Double Render is enabled
      *
@@ -100,7 +105,7 @@ public class Scope extends Attachment
     public ScopeZoomData getAdditionalZoom()
     {
         if(this.zoomData == null || AimingHandler.get() == null)
-            return new ScopeZoomData(0,0); // Null, loader might attempt to hit scope data when aimed is detected before init
+            return new ScopeZoomData(1f, 0); // Null, loader might attempt to hit scope data when aimed is detected before init
         if(this.zoomData.length <= AimingHandler.get().getCurrentScopeZoomIndex())
         {
             AimingHandler.get().resetCurrentScopeZoomIndex();
@@ -188,5 +193,19 @@ public class Scope extends Attachment
     public static Scope create(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, ResourceLocation modifier)
     {
         return new Scope(additionalZoom, centerOffset, stabilityOffset, tagName, modifier);
+    }
+
+    public static Scope create(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, boolean needSqueeze, IGunModifier... modifiers)
+    {
+        Scope scope = new Scope(additionalZoom, centerOffset, stabilityOffset, tagName, modifiers);
+        scope.needSqueeze = needSqueeze;
+        return scope;
+    }
+
+    public static Scope create(ScopeZoomData[] additionalZoom, double centerOffset, double stabilityOffset, String tagName, boolean needSqueeze, ResourceLocation modifier)
+    {
+        Scope scope = new Scope(additionalZoom, centerOffset, stabilityOffset, tagName, modifier);
+        scope.needSqueeze = needSqueeze;
+        return scope;
     }
 }

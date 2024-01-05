@@ -5,17 +5,16 @@ import com.tac.guns.Config;
 import com.tac.guns.Config.RightClickUse;
 import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.crosshair.Crosshair;
+import com.tac.guns.common.AimingManager;
 import com.tac.guns.common.Gun;
+import com.tac.guns.duck.MouseSensitivityModifier;
 import com.tac.guns.init.ModBlocks;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
-import com.tac.guns.item.TransitionalTypes.TimelessGunItem;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.impl.Scope;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.MessageAim;
-import com.tac.guns.network.message.MessageAimingState;
-import com.tac.guns.util.GunEnchantmentHelper;
-import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,20 +25,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.CooldownTracker;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.FOVUpdateEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.WeakHashMap;
+import com.tac.guns.util.math.MathUtil;
 
 /**
  * Author: Forked from MrCrayfish, continued by Timeless devs
@@ -54,10 +48,10 @@ public class AimingHandler {
         return instance;
     }
 
-    private static final double MAX_AIM_PROGRESS = 4;
-    private final AimTracker localTracker = new AimTracker();
-    private final Map<PlayerEntity, AimTracker> aimingMap = new WeakHashMap<>();
+    private final AimingManager.AimTracker localTracker = new AimingManager.AimTracker();
     private double normalisedAdsProgress;
+    private double oldProgress;
+    private double newProgress;
     private boolean aiming = false;
     private boolean toggledAim = false;
 
@@ -87,33 +81,9 @@ public class AimingHandler {
         });
     }
 
-    private boolean originalSprint = false;
-
     @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.START)
-            return;
-        /*if(!this.aiming)
-            ScopeJitterHandler.getInstance().resetBreathingTickBuffer();*/
-        PlayerEntity player = event.player;
-        AimTracker tracker = getAimTracker(player);
-        if (tracker != null) {
-            tracker.handleAiming(player, player.getHeldItem(Hand.MAIN_HAND));
-            if (!tracker.isAiming()) {
-                this.aimingMap.remove(player);
-            }
-        }
-        if (player == Minecraft.getInstance().player) {
-            if (isAiming()) {
-                if (player.isSprinting()) {
-                    originalSprint = true;
-                    player.setSprinting(false);
-                }
-            } else if (originalSprint) {
-                originalSprint = false;
-                player.setSprinting(true);
-            }
-        }
+    public void onLocalPlayerLoggedOut(ClientPlayerNetworkEvent.LoggedOutEvent event){
+        AimingManager.get().getAimingMap().clear();
     }
 
     @SubscribeEvent
@@ -181,20 +151,12 @@ public class AimingHandler {
         event.setSwingHand(false);
     }
 
-    @Nullable
-    private AimTracker getAimTracker(PlayerEntity player) {
-        if (SyncedPlayerData.instance().get(player, ModSyncedDataKeys.AIMING) && !this.aimingMap.containsKey(player)) {
-            this.aimingMap.put(player, new AimTracker());
-        }
-        return this.aimingMap.get(player);
-    }
-
     public float getAimProgress(PlayerEntity player, float partialTicks) {
         if (player.isUser()) {
             return (float) this.localTracker.getNormalProgress(partialTicks);
         }
 
-        AimTracker tracker = this.getAimTracker(player);
+        AimingManager.AimTracker tracker = AimingManager.get().getAimTracker(player);
         if (tracker != null) {
             return (float) tracker.getNormalProgress(partialTicks);
         }
@@ -206,19 +168,18 @@ public class AimingHandler {
         if (event.phase != TickEvent.Phase.START)
             return;
 
+        tickLerpProgress();
+
         PlayerEntity player = Minecraft.getInstance().player;
         if (player == null)
             return;
 
+        if (this.aiming)
+            player.setSprinting(false);
+
         if (!Config.CLIENT.controls.holdToAim.get()) {
             if (!Keys.AIM_DOWN_SIGHT.isKeyDown())
                 this.isPressed = false;
-        }
-
-        ItemStack heldItem = player.getHeldItemMainhand();
-        if (heldItem.getItem() instanceof TimelessGunItem) {
-            SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, 1F - (float) this.getNormalisedAdsProgress());
-            PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(1F - (float) this.getNormalisedAdsProgress()));
         }
 
         if (this.isAiming()) {
@@ -227,48 +188,56 @@ public class AimingHandler {
                 PacketHandler.getPlayChannel().sendToServer(new MessageAim(true));
                 this.aiming = true;
             }
-        } else if (this.aiming) {
-            SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING, false);
-            PacketHandler.getPlayChannel().sendToServer(new MessageAim(false));
-            this.aiming = false;
+            this.localTracker.handleAiming(player.getHeldItemMainhand(), true);
+        } else {
+            if (this.aiming) {
+                SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING, false);
+                PacketHandler.getPlayChannel().sendToServer(new MessageAim(false));
+                this.aiming = false;
+            }
+            this.localTracker.handleAiming(player.getHeldItemMainhand(), false);
         }
-
-        this.localTracker.handleAiming(player, player.getHeldItem(Hand.MAIN_HAND));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onFovUpdate(FOVUpdateEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player != null && !mc.player.getHeldItemMainhand().isEmpty() && mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
+        if (mc.player != null && mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
             ItemStack heldItem = mc.player.getHeldItemMainhand();
             if (heldItem.getItem() instanceof TimelessGunItem) {
                 TimelessGunItem gunItem = (TimelessGunItem) heldItem.getItem();
-                if (AimingHandler.get().isAiming() && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
+                if (AimingHandler.get().normalisedAdsProgress != 0 && !SyncedPlayerData.instance().get(mc.player, ModSyncedDataKeys.RELOADING)) {
                     Gun modifiedGun = gunItem.getModifiedGun(heldItem);
                     if (modifiedGun.getModules().getZoom() != null) {
                         float newFov = modifiedGun.getModules().getZoom().getFovModifier();
                         Scope scope = Gun.getScope(heldItem);
                         if (scope != null) {
-                            if (scope.getTagName() == "gener8x" || scope.getTagName() == "vlpvo6" ||
-                                    scope.getTagName() == "acog4x" || scope.getTagName() == "elcan14x" ||
-                                    scope.getTagName() == "qmk152")
-                                newFov = 0.8F;
-
-                            if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getFovZoom() > 0 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
-                                newFov -= scope.getAdditionalZoom().getFovZoom() * (Config.CLIENT.display.scopeDoubleRender.get() ? 1F : 1.2F);
+                            if (!Config.COMMON.gameplay.realisticLowPowerFovHandling.get() || (scope.getAdditionalZoom().getZoomMultiple() > 1 && Config.COMMON.gameplay.realisticLowPowerFovHandling.get()) || gunItem.isIntegratedOptic()) {
+                                float zoomFov = (float) MathUtil.magnificationToFovMultiplier(scope.getAdditionalZoom().getZoomMultiple(), mc.gameSettings.fov);
+                                if (zoomFov >= 1) zoomFov = modifiedGun.getModules().getZoom().getFovModifier();
+                                float fovDelta = newFov - zoomFov;
+                                newFov -= fovDelta * (Config.CLIENT.display.scopeDoubleRender.get() ? 1F : 1.2F);
                                 event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
                             }
-                        } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic())
+                        } else if (!Config.COMMON.gameplay.realisticIronSightFovHandling.get() || gunItem.isIntegratedOptic()) {
                             event.setNewfov(newFov + (1.0F - newFov) * (1.0F - (float) this.normalisedAdsProgress));
+                        }
                     }
                 }
             }
         }
     }
 
-    @SubscribeEvent
-    public void onClientTick(ClientPlayerNetworkEvent.LoggedOutEvent event) {
-        this.aimingMap.clear();
+//    @SubscribeEvent
+//    public void captureFovAndModifyMouseSensitivity(EntityViewRenderEvent.FOVModifier event){
+//        Minecraft mc = Minecraft.getInstance();
+//        double modifier = MathUtil.fovToMagnification(event.getFOV(), mc.gameSettings.fov);
+//        ((MouseSensitivityModifier) mc.mouseHelper).setSensitivity(0.001);
+//    }
+
+    private void tickLerpProgress(){
+        oldProgress = newProgress;
+        newProgress += (normalisedAdsProgress - newProgress) * 0.5;
     }
 
     /**
@@ -350,57 +319,8 @@ public class AimingHandler {
         return this.normalisedAdsProgress;
     }
 
-    public class AimTracker {
-        private double currentAim;
-        private double previousAim;
-        private double amplifier = 0.8;
-
-        private void handleAiming(PlayerEntity player, ItemStack heldItem) {
-            this.previousAim = this.currentAim;
-            double vAmplifier = 0.1;
-            if (SyncedPlayerData.instance().get(player, ModSyncedDataKeys.AIMING) || (player.isUser() && (AimingHandler.this.isAiming()))) {
-                if (this.amplifier < 1.3) {
-                    amplifier += vAmplifier;
-                }
-                if (this.currentAim < MAX_AIM_PROGRESS) {
-                    double speed = GunEnchantmentHelper.getAimDownSightSpeed(heldItem);
-                    speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
-                    this.currentAim += speed * amplifier;
-                    if (this.currentAim > MAX_AIM_PROGRESS) {
-                        amplifier = 0.5;
-                        this.currentAim = (int) MAX_AIM_PROGRESS;
-                    }
-                }
-            } else {
-                if (this.currentAim > 0) {
-                    if (this.amplifier < 1.3) {
-                        amplifier += vAmplifier;
-                    }
-                    double speed = GunEnchantmentHelper.getAimDownSightSpeed(heldItem);
-                    speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
-                    this.currentAim -= speed * amplifier;
-                    if (this.currentAim < 0) {
-                        amplifier = 0.5;
-                        this.currentAim = 0;
-                    }
-                } else amplifier = 0.8;
-            }
-//            float t = (float) (1F - currentAim / 4);
-//            float dist = (t >= 0 || t <= 1 ? t : 0);
-//            if(prevDist != dist) {
-//                SyncedPlayerData.instance().set(player, ModSyncedDataKeys.AIMING_STATE, dist);
-//                PacketHandler.getPlayChannel().sendToServer(new MessageAimingState(dist));
-//            }
-//            prevDist = dist;
-        }
-
-        public boolean isAiming() {
-            return this.currentAim != 0 || this.previousAim != 0;
-        }
-
-        public double getNormalProgress(float partialTicks) {
-            return (this.previousAim + (this.currentAim - this.previousAim) * (this.previousAim == 0 || this.previousAim == MAX_AIM_PROGRESS ? 0 : partialTicks)) / (float) MAX_AIM_PROGRESS;
-        }
+    public double getLerpAdsProgress(float partialTicks){
+        return MathHelper.lerp(partialTicks, oldProgress, newProgress);
     }
 
     public void cancelAim() {
@@ -417,7 +337,7 @@ public class AimingHandler {
             this.toggledAim = false;
         }
 
-        this.localTracker.handleAiming(player, player.getHeldItem(Hand.MAIN_HAND));
+        this.localTracker.handleAiming(player.getHeldItemMainhand(), false);
     }
 
     public void setCanceling() {
