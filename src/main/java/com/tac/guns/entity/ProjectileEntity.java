@@ -426,6 +426,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             BlockState state = this.world.getBlockState(pos);
             Block block = state.getBlock();
 
+            if (!state.getMaterial().isReplaceable())
+                this.remove();
+
             if (Objects.requireNonNull(block.getRegistryName()).getPath().contains("_button"))
                 return;
 
