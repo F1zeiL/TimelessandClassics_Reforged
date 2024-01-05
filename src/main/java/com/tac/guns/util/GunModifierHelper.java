@@ -17,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 
 import javax.annotation.Nullable;
 
@@ -83,7 +84,7 @@ public class GunModifierHelper
         if(weapon.getItem() instanceof TimelessGunItem){
             ItemStack stack = Gun.getAttachment(type,weapon);
             if(stack!=null){
-                return Attachment.getCustomModifier(stack,false);
+                return Attachment.getCustomModifier(stack);
             }
         }
         return null;
@@ -601,7 +602,7 @@ public class GunModifierHelper
         if(weapon.getItem() instanceof TimelessGunItem){
             ItemStack stack = Gun.getAttachment(SlotType.GUN_SKIN,weapon);
             if(stack!=null){
-                CustomModifierData modifier = Attachment.getCustomModifier(stack,true);
+                CustomModifierData modifier = Attachment.getCustomModifier(stack);
 
                 if(modifier!=null){
                     return modifier.getSkin();
