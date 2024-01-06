@@ -172,9 +172,9 @@ public class AttachmentScreen extends ContainerScreen<AttachmentContainer> {
             for (int i = 0; i < IAttachment.Type.values().length - 7; i++) {
                 if (!this.container.getSlot(i).isEnabled()) {
                     if (i > 3)
-                        if (i == 5)
+                        if (i == 5 && this.container.hasExMag())
                             this.blit(matrixStack, left + 155, top + 17 + 18, 176 + 16, 0, 16, 16);
-                        else if (i == 7)
+                        else if (i == 7 && this.container.hasAmmoPlug())
                             this.blit(matrixStack, left + 155, top + 17 + 3 * 18, 176 + 16, 0, 16, 16);
                         else
                             this.blit(matrixStack, left + 155, top + 17 + (i - 4) * 18, 176, 0, 16, 16);

@@ -108,6 +108,14 @@ public class AttachmentContainer extends Container {
         }
     }
 
+    public boolean hasExMag() {
+        return Gun.getAttachment(IAttachment.Type.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
+    }
+
+    public boolean hasAmmoPlug() {
+        return Gun.getAttachment(IAttachment.Type.AMMO, this.weapon) != ItemStack.EMPTY;
+    }
+
     public boolean isLoaded() {
         return this.loaded;
     }
