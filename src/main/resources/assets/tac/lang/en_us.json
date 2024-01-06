@@ -490,5 +490,7 @@
   "tooltip.extra.x4": "§74x Zoom",
   "tooltip.extra.x6-10": "§76x-10x Zoom",
   "tooltip.extra.x8": "§78x Zoom",
-  "tooltip.extra.allow_8x_scope": "§6Allow to use on deagle, DMRs and Sniper Rifles"
+  "tooltip.extra.allow_8x_scope": "§6Allow to use on deagle, DMRs and Sniper Rifles",
+  "tooltip.extra.ammo_plug": "§eOnly can use while current ammo < default ammo",
+  "tooltip.extra.mag": "§eOnly can use while current mag is empty"
 }

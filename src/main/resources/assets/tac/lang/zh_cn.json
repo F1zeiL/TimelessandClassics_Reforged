@@ -492,6 +492,8 @@
   "tooltip.extra.x6-10": "§76-10倍放大",
   "tooltip.extra.x8": "§78倍放大",
   "tooltip.extra.allow_8x_scope": "§6允许在「沙漠之鹰」、「精确射手步枪」和「狙击步枪」上使用",
+  "tooltip.extra.ammo_plug": "§e仅允许在当前弹药 < 默认弹容时使用",
+  "tooltip.extra.mag": "§e仅允许在空仓时使用",
 
   "enchantment.tac.over_capacity": "扩容附魔（已停用）",
   "enchantment.tac.over_capacity.desc": "增加武器弹容量",

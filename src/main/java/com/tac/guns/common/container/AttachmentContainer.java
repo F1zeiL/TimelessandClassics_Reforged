@@ -1,9 +1,12 @@
 package com.tac.guns.common.container;
 
+import com.tac.guns.GunMod;
 import com.tac.guns.common.Gun;
+import com.tac.guns.common.GunModifiers;
 import com.tac.guns.common.container.slot.AttachmentSlot;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.init.ModContainers;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
@@ -109,11 +112,19 @@ public class AttachmentContainer extends Container {
     }
 
     public boolean hasExMag() {
-        return Gun.getAttachment(IAttachment.Type.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
+        if (this.weapon.getItem() instanceof TimelessGunItem) {
+            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
+            return modifiedGun.canAttachType(IAttachment.Type.EXTENDED_MAG);
+        }
+        return false;
     }
 
     public boolean hasAmmoPlug() {
-        return Gun.getAttachment(IAttachment.Type.AMMO, this.weapon) != ItemStack.EMPTY;
+        if (this.weapon.getItem() instanceof TimelessGunItem) {
+            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
+            return modifiedGun.canAttachType(IAttachment.Type.AMMO);
+        }
+        return false;
     }
 
     public boolean isLoaded() {

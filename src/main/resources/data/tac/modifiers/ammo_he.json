@@ -8,5 +8,8 @@
   "canApplyOn": [
     "tac:rpg7",
     "tac:m82a2"
+  ],
+  "extraTooltip": [
+    "tooltip.extra.ammo_plug"
   ]
 }
