@@ -79,7 +79,6 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     protected double modifiedGravity;
     public int life;
     protected int pierce;
-    protected Entity prevEntity;
     protected Vector3d startPos;
 
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
