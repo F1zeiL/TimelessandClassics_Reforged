@@ -1,6 +1,6 @@
 {
   "general": {
-    "getModifiedProjectileSpeed": 0.85,
+    "modifyProjectileSpeed": 0.85,
     "modifyProjectileArmorIgnore": 0.6,
     "modifyProjectileDamage": 1.1
   },
