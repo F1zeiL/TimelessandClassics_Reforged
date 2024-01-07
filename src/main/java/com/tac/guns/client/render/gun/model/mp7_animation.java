@@ -47,7 +47,7 @@ public class mp7_animation extends SkinAnimationModel {
                 RenderUtil.renderModel(getModelComponent(skin, SIGHT), stack, matrices, renderBuffer, light, overlay);
             }
 
-            renderBarrel(stack, matrices, renderBuffer, light, overlay, skin);
+            renderBarrelWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
             RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
         }
