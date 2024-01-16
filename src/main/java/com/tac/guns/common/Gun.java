@@ -116,6 +116,14 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private float hipFireInaccuracy = 3.25F;
         @Optional
+        private float spreadHE = 1.0f;
+        @Optional
+        private float firstShotSpreadHE = 0.0f;
+        @Optional
+        private float movementInaccuracyHE = 1F;
+        @Optional
+        private float hipFireInaccuracyHE = 3.25F;
+        @Optional
         private float levelReq = 300.0F;
         @Optional
         private int upgradeBenchMaxUses = 3;
@@ -150,6 +158,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putInt("UpgradeBenchMaxUses", this.upgradeBenchMaxUses);
             tag.putFloat("MovementInaccuracy", this.movementInaccuracy); // Movement inaccuracy modifier
             tag.putFloat("HipFireInaccuracy", this.hipFireInaccuracy); // Movement inaccuracy modifier
+            tag.putFloat("SpreadHE", this.spreadHE);
+            tag.putFloat("FirstShotSpreadHE", this.firstShotSpreadHE);
+            tag.putFloat("MovementInaccuracyHE", this.movementInaccuracyHE); // Movement inaccuracy modifier
+            tag.putFloat("HipFireInaccuracyHE", this.hipFireInaccuracyHE); // Movement inaccuracy modifier
             return tag;
         }
 
@@ -236,6 +248,18 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("HipFireInaccuracy", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.hipFireInaccuracy = tag.getFloat("HipFireInaccuracy");
             }
+            if (tag.contains("SpreadHE", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.spreadHE = tag.getFloat("SpreadHE");
+            }
+            if (tag.contains("FirstShotSpreadHE", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.firstShotSpreadHE = tag.getFloat("FirstShotSpreadHE");
+            }
+            if (tag.contains("MovementInaccuracyHE", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.movementInaccuracyHE = tag.getFloat("MovementInaccuracyHE");
+            }
+            if (tag.contains("HipFireInaccuracyHE", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.hipFireInaccuracyHE = tag.getFloat("HipFireInaccuracyHE");
+            }
         }
 
         /**
@@ -270,6 +294,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             general.upgradeBenchMaxUses = this.upgradeBenchMaxUses;
             general.movementInaccuracy = this.movementInaccuracy;
             general.hipFireInaccuracy = this.hipFireInaccuracy;
+            general.spreadHE = this.spreadHE;
+            general.firstShotSpreadHE = this.firstShotSpreadHE;
+            general.movementInaccuracyHE = this.movementInaccuracyHE;
+            general.hipFireInaccuracyHE = this.hipFireInaccuracyHE;
             return general;
         }
 
@@ -463,6 +491,22 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          */
         public int getMsToAccuracyReset() {
             return this.msToAccuracyReset;
+        }
+
+        public float getSpreadHE() {
+            return this.spreadHE * 0.5f;
+        }
+
+        public float getFirstShotSpreadHE() {
+            return this.firstShotSpreadHE;
+        }
+
+        public float getHipFireInaccuracyHE() {
+            return this.hipFireInaccuracyHE * 1.75f;//*1.25f;
+        }
+
+        public float getMovementInaccuracyHE() {
+            return this.movementInaccuracyHE;//*1.25f;
         }
     }
 

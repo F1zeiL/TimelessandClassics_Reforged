@@ -2,11 +2,8 @@ package com.tac.guns.entity;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
-import com.tac.guns.common.AimingManager;
-import com.tac.guns.common.BoundingBoxManager;
-import com.tac.guns.common.Gun;
+import com.tac.guns.common.*;
 import com.tac.guns.common.Gun.Projectile;
-import com.tac.guns.common.SpreadTracker;
 import com.tac.guns.event.GunProjectileHitEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModEnchantments;
@@ -65,7 +62,6 @@ import java.util.function.Predicate;
 //TODO: Blast this whole damned file and redo.
 public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnData {
     private static final Predicate<Entity> PROJECTILE_TARGETS = input -> input != null && input.canBeCollidedWith() && !input.isSpectator();
-    private static final Predicate<BlockState> IGNORE_LEAVES = input -> input != null && Config.COMMON.gameplay.ignoreLeaves.get() && input.getBlock() instanceof LeavesBlock;
 
     protected int shooterId;
     protected LivingEntity shooter;
@@ -80,6 +76,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     public int life;
     protected int pierce;
     protected Vector3d startPos;
+    protected boolean sgHE = false;
 
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerVelocity = new HashMap<>();
@@ -97,8 +94,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         this.projectile = modifiedGun.getProjectile();
         this.entitySize = new EntitySize(this.projectile.getSize(), this.projectile.getSize(), false);
         this.modifiedGravity = modifiedGun.getProjectile().isGravity() ? GunModifierHelper.getModifiedProjectileGravity(weapon, -0.0285) : 0.0; // -0.0285 Default upcoming new -0.0125
-        this.life = GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife());
         this.pierce = Math.max(modifiedGun.getProjectile().getPierce() + GunModifierHelper.getAdditionalPierce(weapon), 1);
+        this.sgHE = modifiedGun.getDisplay().getWeaponType() == WeaponType.SG && (this.projectile.isHasBlastDamage() || GunModifierHelper.isBlastFire(weapon));
+        this.life = this.sgHE ? GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife() * 2) : GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife());
 
         /* Get speed and set motion */
         Vector3d dir = this.getDirection(shooter, weapon, item, modifiedGun);
@@ -142,7 +140,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     }
 
     private Vector3d getDirection(LivingEntity shooter, ItemStack weapon, GunItem item, Gun modifiedGun) {
-        float gunSpread = GunModifierHelper.getModifiedSpread(weapon, modifiedGun.getGeneral().getSpread()) * GunEnchantmentHelper.getSpreadModifier(weapon);
+        float gunSpread;
+        if (this.sgHE)
+            gunSpread = GunModifierHelper.getModifiedSpread(weapon, modifiedGun.getGeneral().getSpreadHE()) * GunEnchantmentHelper.getSpreadModifier(weapon);
+        else
+            gunSpread = GunModifierHelper.getModifiedSpread(weapon, modifiedGun.getGeneral().getSpread()) * GunEnchantmentHelper.getSpreadModifier(weapon);
 
         if (gunSpread == 0F) {
             return this.getVectorFromRotation(shooter.rotationPitch, shooter.rotationYaw);
@@ -154,7 +156,10 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 if (modSpread != 0)
                     gunSpread *= SpreadTracker.get((PlayerEntity) shooter).getSpread(item);
                 else {
-                    gunSpread = modifiedGun.getGeneral().getFirstShotSpread();
+                    if (this.sgHE)
+                        gunSpread = modifiedGun.getGeneral().getFirstShotSpreadHE();
+                    else
+                        gunSpread = modifiedGun.getGeneral().getFirstShotSpread();
                     gunSpread = GunModifierHelper.getModifiedFirstShotSpread(weapon, gunSpread);
                 }
             }
@@ -163,13 +168,21 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             if (tracker == null || tracker.getLerpProgress() < 0.95f) {
                 if (gunSpread < 0.5)
                     gunSpread += 0.5f;
-                gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracy();
+
+                if (this.sgHE)
+                    gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracyHE();
+                else
+                    gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracy();
+
                 gunSpread = GunModifierHelper.getModifiedHipFireSpread(weapon, gunSpread);
                 if (SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING) != 0) {
-                    gunSpread *= Math.max(1, (2F * (1 + SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING))) * modifiedGun.getGeneral().getMovementInaccuracy());
+                    if (this.sgHE)
+                        gunSpread *= Math.max(1, (2F * (1 + SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING))) * modifiedGun.getGeneral().getMovementInaccuracyHE());
+                    else
+                        gunSpread *= Math.max(1, (2F * (1 + SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING))) * modifiedGun.getGeneral().getMovementInaccuracy());
                 }
             }
-            if (((PlayerEntity) shooter).isCrouching() && modifiedGun.getGeneral().getProjectileAmount() == 1) {
+            if (((PlayerEntity) shooter).isCrouching() && (modifiedGun.getGeneral().getProjectileAmount() == 1 || this.sgHE)) {
                 gunSpread *= 0.75F;
             }
         }
@@ -750,7 +763,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
             initialDamage *= modifier;
         }
-        float damage = initialDamage / this.general.getProjectileAmount();
+
+        float damage;
+        if (this.sgHE)
+            damage = initialDamage;
+        else
+            damage = initialDamage / this.general.getProjectileAmount();
+
         damage = GunModifierHelper.getModifiedDamage(this.weapon, this.modifiedGun, damage);
         damage = GunEnchantmentHelper.getAcceleratorDamage(this.weapon, damage);
         return Math.max(0F, damage);
@@ -763,7 +782,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             float modifier = ((float) this.projectile.getLife() - (float) (this.ticksExisted - 1)) / (float) this.projectile.getLife();
             initialDamage *= modifier;
         }
-        float damage = initialDamage / this.general.getProjectileAmount();
+
+        float damage;
+        if (this.sgHE)
+            damage = initialDamage;
+        else
+            damage = initialDamage / this.general.getProjectileAmount();
+
         damage = GunModifierHelper.getModifiedDamage(this.weapon, this.modifiedGun, damage);
         damage = GunEnchantmentHelper.getAcceleratorDamage(this.weapon, damage);
         return Math.max(0F, damage);

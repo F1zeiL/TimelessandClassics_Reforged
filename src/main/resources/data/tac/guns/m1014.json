@@ -17,6 +17,10 @@
     "firstShotSpread": 3.95,
     "hipFireInaccuracy": 1.15,
     "projToMinAccuracy": 3,
+    "spreadHE": 2.15,
+    "firstShotSpreadHE": 0.265,
+    "hipFireInaccuracyHE": 5.45,
+    "movementInaccuracyHE": 0.25,
     "msToAccuracyReset": 625,
     "movementInaccuracy": 0.1
   },
@@ -32,6 +36,7 @@
     "item": "tac:10_gauge_round",
     "visible": false,
     "damage": 30,
+    "blastDamage": 5,
     "armorIgnore": 0.5,
     "critical": 0.0,
     "criticalDamage": 0.75,
