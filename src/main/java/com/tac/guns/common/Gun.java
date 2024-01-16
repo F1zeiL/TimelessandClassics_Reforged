@@ -644,9 +644,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private boolean hasBlastDamage = false;
         @Optional
-        private float blastDamage = 0f;
+        private float blastDamage = 2f;
         @Optional
-        private float blastRadius = 0f;
+        private float blastRadius = 0.5f;
         @Optional
         private float armorIgnore = 1f;
         @Optional

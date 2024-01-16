@@ -52,9 +52,6 @@ public class ProjectileExplosion extends Explosion {
     private final float radius;
     private final Entity exploder;
     private final ExplosionContext context;
-    private Mode mode;
-    private final Random random = new Random();
-    private final List<BlockPos> affectedBlockPositions = Lists.newArrayList();
 
     public ProjectileExplosion(World world, Entity exploder, @Nullable DamageSource source, @Nullable ExplosionContext context, double x, double y, double z, float power, float radius, Mode mode) {
         super(world, exploder, source, context, x, y, z, radius, Config.COMMON.gameplay.explosionCauseFire.get(), mode);
@@ -66,7 +63,6 @@ public class ProjectileExplosion extends Explosion {
         this.radius = radius;
         this.exploder = exploder;
         this.context = context == null ? DEFAULT_CONTEXT : context;
-        this.mode = mode;
     }
 
     @Override
@@ -195,11 +191,11 @@ public class ProjectileExplosion extends Explosion {
                 damage = (float) ProtectionEnchantment.getBlastDamageReduction((LivingEntity) entity, damage);
             }
 
-            entity.setMotion(entity.getMotion().add(deltaX * damage, deltaY * damage, deltaZ * damage));
+            entity.setMotion(entity.getMotion().add(deltaX * damage * radius / 5, deltaY * damage * radius / 5, deltaZ * damage * radius / 5));
             if (entity instanceof PlayerEntity) {
                 PlayerEntity player = (PlayerEntity) entity;
                 if (!player.isSpectator() && (!player.isCreative() || !player.abilities.isFlying)) {
-                    this.getPlayerKnockbackMap().put(player, new Vector3d(deltaX * damage, deltaY * damage, deltaZ * damage));
+                    this.getPlayerKnockbackMap().put(player, new Vector3d(deltaX * damage * radius / 5, deltaY * damage * radius / 5, deltaZ * damage * radius / 5));
                 }
             }
         }
