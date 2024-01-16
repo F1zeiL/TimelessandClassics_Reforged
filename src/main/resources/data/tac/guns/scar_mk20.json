@@ -127,6 +127,11 @@
         "yOffset": -100829.84,
         "zOffset": -24.80,
         "scale": 1.00
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
       }
     }
   }

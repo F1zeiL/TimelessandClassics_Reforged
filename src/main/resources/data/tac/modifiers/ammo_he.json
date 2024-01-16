@@ -7,7 +7,9 @@
   "hideLimitInfo": false,
   "canApplyOn": [
     "tac:rpg7",
-    "tac:m82a2"
+    "tac:m82a2",
+    "tac:m60",
+    "tac:m249"
   ],
   "extraTooltip": [
     "tooltip.extra.ammo_plug"

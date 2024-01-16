@@ -107,6 +107,11 @@
         "scale": 2.00,
         "doRenderMount": true,
         "doOnSlideMovement": true
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
       }
     }
   }
