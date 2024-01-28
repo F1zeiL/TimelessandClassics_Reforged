@@ -330,12 +330,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     continue;
                 Vector3d hitPos = result.getHitPos();
                 double distanceToHit = startVec.distanceTo(hitPos);
-                if (distanceToHit < closestDistance) {
-                    hitVec = hitPos;
-                    hitEntity = entity;
-                    closestDistance = distanceToHit;
-                    headshot = result.isHeadshot();
-                }
+                if (entity.isAlive())
+                    if (distanceToHit < closestDistance) {
+                        hitVec = hitPos;
+                        hitEntity = entity;
+                        closestDistance = distanceToHit;
+                        headshot = result.isHeadshot();
+                    }
             }
         }
         return hitEntity != null ? new EntityResult(hitEntity, hitVec, headshot) : null;
@@ -350,7 +351,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 EntityResult result = this.getHitResult(entity, startVec, endVec);
                 if (result == null)
                     continue;
-                hitEntities.add(result);
+                if (entity.isAlive())
+                    hitEntities.add(result);
             }
         }
         return hitEntities;
