@@ -22,12 +22,13 @@ import java.util.Map;
 
 public class SkinLoader {
     public final static Map<ResourceLocation, SkinLoader> skinLoaders = new HashMap<>();
-    private DefaultSkin defaultSkin;
     public static IUnbakedModel missingModel;
     public static Map<ResourceLocation, IUnbakedModel> unbakedModels;
     public static Map<ResourceLocation, IUnbakedModel> topUnbakedModels;
     private final List<IModelComponent> components;
     private final ResourceLocation name;
+    private DefaultSkin defaultSkin;
+    private BasicSkin dyeBase;
     public SkinLoader(ResourceLocation name, IModelComponent... components) {
         this.components = Arrays.asList(components);
         this.name = name;
@@ -45,7 +46,7 @@ public class SkinLoader {
         return components;
     }
     public static SkinLoader getSkinLoader(String name) {
-        ResourceLocation rl = null;
+        ResourceLocation rl;
         if(name.indexOf(':')>=0){
                         rl = ResourceLocation.tryCreate(name);
         }else{
@@ -81,6 +82,29 @@ public class SkinLoader {
             skin.setMiniIcon(miniIconLoc);
         }
 
+        return skin;
+    }
+
+    public BasicSkin loadBasicSkin() {
+        BasicSkin skin = new BasicSkin(this.name);
+        String mainLoc = this.name.getNamespace()+ ":gunskin/" + getGun().getPath() + "/base/" + getGun().getPath();
+        for (IModelComponent key : this.components) {
+            tryLoadComponent(skin, mainLoc, key);
+        }
+        skin.setDefaultSkin(this.defaultSkin);
+        this.dyeBase = skin;
+        return skin;
+    }
+
+    public DyeSkin loadDyeSkin(DyeSkin.PresetType type, int[] colors){
+        if(dyeBase==null){
+            loadBasicSkin();
+        }
+
+        DyeSkin skin = new DyeSkin(type.getSkinLocation(), this.getGun(), type);
+        skin.setColors(colors);
+        skin.setDefaultSkin(this.defaultSkin);
+        skin.setBase(dyeBase);
         return skin;
     }
 
