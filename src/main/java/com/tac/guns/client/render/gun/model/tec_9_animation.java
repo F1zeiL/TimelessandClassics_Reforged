@@ -35,7 +35,7 @@ public class tec_9_animation extends SkinAnimationModel {
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), TEC9AnimationController.INDEX_BODY, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         matrices.pop();
 
         matrices.push();
@@ -57,13 +57,13 @@ public class tec_9_animation extends SkinAnimationModel {
                 matrices.translate(0, 0, -0.375 + Math.pow(cooldownOg - 0.5, 2));
             }
         }
-        RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         //Always pop
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), TEC9AnimationController.INDEX_BULLET, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         matrices.pop();
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);

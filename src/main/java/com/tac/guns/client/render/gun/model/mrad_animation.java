@@ -37,9 +37,9 @@ public class mrad_animation extends SkinAnimationModel {
             renderGrip(stack, matrices, renderBuffer, light, overlay, skin);
 
             matrices.translate(0, 0, -0.55);
-            RenderUtil.renderModel(getModelComponent(skin, BARREL), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BARREL);
             matrices.translate(0, 0, 0.3);
-            RenderUtil.renderModel(getModelComponent(skin, BIPOD), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BIPOD);
             matrices.translate(0, 0, 0.25);
 
             renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
@@ -47,21 +47,21 @@ public class mrad_animation extends SkinAnimationModel {
             if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
                 renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MRADAnimationController.INDEX_HANDLE, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BOLT_EXTRA), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT_EXTRA);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MRADAnimationController.INDEX_BOLT, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         }
         matrices.pop();
 
@@ -77,9 +77,9 @@ public class mrad_animation extends SkinAnimationModel {
             if (controller.isAnimationRunning()) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), MRADAnimationController.INDEX_BULLET, transformType, matrices);
                 if (controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.PULL_BOLT).equals(controller.getPreviousAnimation())) {
-                    RenderUtil.renderModel(getModelComponent(skin, BULLET_SHELL), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET_SHELL);
                 } else {
-                    RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
                 }
             }
         }

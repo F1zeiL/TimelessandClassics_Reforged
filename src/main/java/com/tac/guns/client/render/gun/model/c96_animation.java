@@ -35,7 +35,7 @@ public class c96_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), C96AnimationController.INDEX_BODY, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -68,7 +68,7 @@ public class c96_animation extends SkinAnimationModel {
             matrices.translate(0, 0, 0.165f * (-4.5 * Math.pow(0 - 0.5, 2) + 1.0));
         }
         matrices.translate(0, 0, 0.025F);
-        RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
 
         //Always pop
         matrices.pop();

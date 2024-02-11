@@ -41,7 +41,7 @@ public class cz75_auto_animation extends SkinAnimationModel {
 
             renderBarrel(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -73,7 +73,7 @@ public class cz75_auto_animation extends SkinAnimationModel {
             }
             matrices.translate(0.00, 0.0, 0.025F);
         }
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SLIDE);
 
         //Always pop
         matrices.pop();

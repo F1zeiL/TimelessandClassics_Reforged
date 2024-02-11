@@ -35,7 +35,7 @@ public class dp28_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Dp28AnimationController.INDEX_BODY, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
             //Always push
             matrices.push();
             if (transformType.isFirstPerson()) {
@@ -50,7 +50,7 @@ public class dp28_animation extends SkinAnimationModel {
                     matrices.translate(0, 0, 0.198f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
                 }
             }
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
 
             //Always pop
             matrices.pop();
@@ -60,7 +60,7 @@ public class dp28_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Dp28AnimationController.INDEX_MAGAZINE, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, MAG), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MAG);
         }
         matrices.pop();
 

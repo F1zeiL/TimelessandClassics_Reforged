@@ -42,10 +42,10 @@ public class m1911_animation extends SkinAnimationModel {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1911AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
                 matrices.translate(0, 0, -0.0475);
-                RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MUZZLE_SILENCER);
                 matrices.translate(0, 0, 0.0475);
             }
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
         matrices.push();
@@ -76,7 +76,7 @@ public class m1911_animation extends SkinAnimationModel {
                 }
                 matrices.translate(0, 0, 0.025F);
             }
-            RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SLIDE);
         }
         matrices.pop();
 

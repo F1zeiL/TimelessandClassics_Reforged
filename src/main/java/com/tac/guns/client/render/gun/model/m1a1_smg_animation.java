@@ -45,10 +45,10 @@ public class m1a1_smg_animation extends SkinAnimationModel {
 
                 matrices.translate(0, 0, -0.085f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
             }
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             matrices.pop();
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -63,7 +63,7 @@ public class m1a1_smg_animation extends SkinAnimationModel {
             matrices.push();
             {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1A1AnimationController.INDEX_MAGAZINE, transformType, matrices);
-                RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
             }
             matrices.pop();
         }

@@ -1,36 +1,80 @@
 {
-  "scar_l": {
+  "aa_12": {
     "dye": {
       "type": "dye",
       "colors": {
-        "black": [1,1],
-        "blue": [54233,12466],
-        "brown": [1,3],
-        "dark_blue": [1,4],
-        "dark_green": [1,5],
-        "gray": [1,6],
-        "green": [1,7],
-        "jade": [1,8],
-        "light_gray": [1,9],
-        "magenta": [1,10],
-        "orange": [1,11],
-        "pink": [1,12],
-        "purple": [1,13],
-        "red": [1,14],
-        "sand": [1,15],
-        "white": [1,16]
+        "black": [3092274],
+        "blue": [4764338],
+        "brown": [13215381],
+        "dark_blue": [5343410],
+        "dark_green": [4017205],
+        "gray": [10132132],
+        "green": [11059528],
+        "jade": [10141634],
+        "light_gray": [12237506],
+        "magenta": [12218034],
+        "orange": [13397813],
+        "pink": [14523062],
+        "purple": [8941234],
+        "red": [11942435],
+        "sand": [13679769],
+        "white": [16777215]
       }
     }
   },
 
+  "ai_awp": {
+    "dye": {
+      "type": "dye",
+      "colors": {
+        "black": [3092274],
+        "blue": [4764338],
+        "brown": [13215381],
+        "dark_blue": [5343410],
+        "dark_green": [4166231],
+        "gray": [10132132],
+        "green": [11059528],
+        "jade": [10141634],
+        "light_gray": [12237506],
+        "magenta": [12218034],
+        "orange": [13397813],
+        "pink": [14523062],
+        "purple": [8941234],
+        "red": [11942435],
+        "sand": [13679769],
+        "white": [16777215]
+      }
+    }
+  },
 
   "ak47": {
     "spent_bullet": {
       "type": "custom",
       "models": {
-        "auto": "tac:gunskin/ak47/ak47_spent_bullet"
+        "auto": "tac:gunskin/ak47/spent_bullet/ak47_spent_bullet"
       },
       "icon": "tac:gunskin/icon/ak47_spent_bullet"
+    },
+    "dye": {
+      "type": "dye",
+      "colors": {
+        "black": [3092274],
+        "blue": [4764338],
+        "brown": [13215381],
+        "dark_blue": [5343410],
+        "dark_green": [4017205],
+        "gray": [10132132],
+        "green": [11059528],
+        "jade": [10141634],
+        "light_gray": [12237506],
+        "magenta": [12218034],
+        "orange": [13397813],
+        "pink": [14523062],
+        "purple": [8941234],
+        "red": [11942435],
+        "sand": [13679769],
+        "white": [16777215]
+      }
     }
   },
 
@@ -38,9 +82,54 @@
     "thunder": {
       "type": "custom",
       "models": {
-        "auto": "tac:gunskin/mp9/mp9_thunder"
+        "auto": "tac:gunskin/mp9/thunder/mp9_thunder"
       },
       "icon": "tac:gunskin/icon/mp9_thunder"
+    },
+    "dye": {
+      "type": "dye",
+      "colors": {
+        "black": [3092274],
+        "blue": [4764338],
+        "brown": [13215381],
+        "dark_blue": [5343410],
+        "dark_green": [4017205],
+        "gray": [10132132],
+        "green": [11059528],
+        "jade": [10141634],
+        "light_gray": [12237506],
+        "magenta": [12218034],
+        "orange": [13397813],
+        "pink": [14523062],
+        "purple": [8941234],
+        "red": [11942435],
+        "sand": [10715648],
+        "white": [16777215]
+      }
+    }
+  },
+
+  "scar_l": {
+    "dye": {
+      "type": "dye",
+      "colors": {
+        "black": [3092274],
+        "blue": [4764338],
+        "brown": [13215381],
+        "dark_blue": [5343410],
+        "dark_green": [4017205],
+        "gray": [10132132],
+        "green": [11059528],
+        "jade": [10141634],
+        "light_gray": [12237506],
+        "magenta": [12218034],
+        "orange": [13397813],
+        "pink": [14523062],
+        "purple": [8941234],
+        "red": [11942435],
+        "sand": [10715648],
+        "white": [16777215]
+      }
     }
   }
 }

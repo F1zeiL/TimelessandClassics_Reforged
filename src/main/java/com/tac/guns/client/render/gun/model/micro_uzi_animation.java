@@ -40,11 +40,11 @@ public class micro_uzi_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MAC10AnimationController.INDEX_BODY, transformType, matrices);
             if (GunModifierHelper.getAmmoCapacityWeight(stack) > 0) {
-                RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, STOCK_DEFAULT);
             } else {
-                RenderUtil.renderModel(getModelComponent(skin, STOCK_FOLDED), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, STOCK_FOLDED);
             }
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -71,7 +71,7 @@ public class micro_uzi_animation extends SkinAnimationModel {
                     matrices.translate(0, 0, -0.25 + Math.pow(cooldownOg - 0.5, 2));
                 }
             }
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         }
         matrices.pop();
 

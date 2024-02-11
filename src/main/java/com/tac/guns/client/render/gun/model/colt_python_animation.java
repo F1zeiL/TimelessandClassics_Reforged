@@ -37,13 +37,13 @@ public class colt_python_animation extends SkinAnimationModel {
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), COLTPYTHONAnimationController.INDEX_BODY, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
-        RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+        renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), COLTPYTHONAnimationController.INDEX_MAG, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, MAG), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MAG);
         matrices.pop();
 
         matrices.push();
@@ -61,7 +61,7 @@ public class colt_python_animation extends SkinAnimationModel {
                 matrices.translate(0, -(cooldownOg * 1.74F) * 0.135, 0.0625F * (cooldownOg * 1.74F));
             }
         }
-        RenderUtil.renderModel(getModelComponent(skin, HAMMER), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HAMMER);
         matrices.pop();
 
         matrices.push();
@@ -70,7 +70,7 @@ public class colt_python_animation extends SkinAnimationModel {
             matrices.rotate(Vector3f.ZN.rotationDegrees(-45F * (cooldownOg * 1.74F)));
             matrices.translate(1.45 * (cooldownOg * 1.74F) * 0.0625, -0.625 * (cooldownOg * 1.74F) * 0.0625, 0);
         }
-        RenderUtil.renderModel(getModelComponent(skin, ROTATE), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, ROTATE);
         matrices.pop();
 
         matrices.push();
@@ -78,7 +78,7 @@ public class colt_python_animation extends SkinAnimationModel {
                 controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY).equals(controller.getPreviousAnimation())) &&
                 transformType.isFirstPerson() && controller.isAnimationRunning()) {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), COLTPYTHONAnimationController.INDEX_LOADER, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, LOADER), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, LOADER);
         }
         matrices.pop();
 
@@ -88,7 +88,7 @@ public class colt_python_animation extends SkinAnimationModel {
             matrices.rotate(Vector3f.ZN.rotationDegrees(-45F * (cooldownOg * 1.74F)));
             matrices.translate(1.45 * (cooldownOg * 1.74F) * 0.0625, -0.625 * (cooldownOg * 1.74F) * 0.0625, 0);
         }
-        RenderUtil.renderModel(getModelComponent(skin, BULLET1), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET1);
         matrices.pop();
 
         matrices.push();
@@ -96,7 +96,7 @@ public class colt_python_animation extends SkinAnimationModel {
                 controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY).equals(controller.getPreviousAnimation())) &&
                 transformType.isFirstPerson() && controller.isAnimationRunning()) {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), COLTPYTHONAnimationController.INDEX_BULLET2, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET2), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET2);
         }
         matrices.pop();
 

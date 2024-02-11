@@ -62,8 +62,8 @@ public class deagle_357_animation extends SkinAnimationModel {
 
             renderBarrel(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
-            RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+            renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
         }
         matrices.pop();
         //Always push
@@ -84,8 +84,8 @@ public class deagle_357_animation extends SkinAnimationModel {
             }
             matrices.translate(0.00, 0.0, 0.035);
         }
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SLIDE_LIGHT);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SLIDE);
 
         //Always pop
         matrices.pop();
