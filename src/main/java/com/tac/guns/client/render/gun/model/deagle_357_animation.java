@@ -3,6 +3,7 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.Deagle50AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
@@ -40,6 +41,11 @@ public class deagle_357_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Deagle50AnimationController.INDEX_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
+                    !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                            transformType.isFirstPerson()) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -51,8 +57,14 @@ public class deagle_357_animation extends SkinAnimationModel {
                     isEmp = true;
                 else if (!controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC))
                     isEmp = false;
-            if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp)))
+            if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp))) {
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+                if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
+                        !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                        transformType.isFirstPerson()) {
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                }
+            }
         }
         matrices.pop();
 

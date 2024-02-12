@@ -255,44 +255,12 @@
 			"name": "extdm+b_extra",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"nbt": "{}",
-			"armAnimationEnabled": false,
 			"children": [
 				{
 					"name": "ex-Magazine",
 					"origin": [8, 8, 8],
 					"color": 0,
-					"nbt": "{}",
-					"armAnimationEnabled": false,
-					"children": [
-						0,
-						1,
-						2,
-						3,
-						4,
-						5,
-						6,
-						7,
-						8,
-						9,
-						10,
-						11,
-						12,
-						13,
-						14,
-						15,
-						16,
-						17,
-						18,
-						{
-							"name": "bullet",
-							"origin": [13, 9.8125, 11.125],
-							"color": 0,
-							"nbt": "{}",
-							"armAnimationEnabled": false,
-							"children": []
-						}
-					]
+					"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 				}
 			]
 		}
