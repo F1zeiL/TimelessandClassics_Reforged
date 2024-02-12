@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.Config;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.HK416A5AnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
@@ -89,6 +90,11 @@ public class hk416_a5_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK416A5AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
+                    !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                    transformType.isFirstPerson()) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -98,18 +104,11 @@ public class hk416_a5_animation extends SkinAnimationModel {
             if (transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK416A5AnimationController.INDEX_EXTRA_MAGAZINE, transformType, matrices);
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
-            }
-        }
-        matrices.pop();
-
-        matrices.push();
-        {
-            if (transformType.isFirstPerson() && controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY).equals(controller.getPreviousAnimation())) {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK416A5AnimationController.INDEX_MAGAZINE, transformType, matrices);
-                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
-            } else if (transformType.isFirstPerson() && controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_NORMAL).equals(controller.getPreviousAnimation())) {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK416A5AnimationController.INDEX_EXTRA_MAGAZINE, transformType, matrices);
-                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
+                        !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                        transformType.isFirstPerson()) {
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                }
             }
         }
         matrices.pop();

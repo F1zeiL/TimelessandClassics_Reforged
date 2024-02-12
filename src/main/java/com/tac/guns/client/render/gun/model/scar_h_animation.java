@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.Config;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.SCAR_HAnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
@@ -66,6 +67,11 @@ public class scar_h_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SCAR_HAnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(partialTicks, stack) < 0.5) &&
+                    !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                    transformType.isFirstPerson()) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -74,6 +80,11 @@ public class scar_h_animation extends SkinAnimationModel {
             if(transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), SCAR_HAnimationController.INDEX_MAGAZINE2, transformType, matrices);
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+                if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(partialTicks, stack) < 0.5) &&
+                        !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
+                        transformType.isFirstPerson()) {
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                }
             }
         }
         matrices.pop();
