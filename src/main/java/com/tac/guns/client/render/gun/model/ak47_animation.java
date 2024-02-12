@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.GunRenderingHandler;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.Ak47AnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
@@ -82,6 +83,11 @@ public class ak47_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Ak47AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if (!controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) ||
+                    controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT) &&
+                            transformType.isFirstPerson()) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -90,6 +96,9 @@ public class ak47_animation extends SkinAnimationModel {
             {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), Ak47AnimationController.INDEX_EXTRA_MAG, transformType, matrices);
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+                if (controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY)) {
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                }
             }
             matrices.pop();
         }
