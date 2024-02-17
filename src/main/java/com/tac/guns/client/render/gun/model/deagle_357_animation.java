@@ -41,9 +41,9 @@ public class deagle_357_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Deagle50AnimationController.INDEX_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
-            if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
-                    !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
-                            transformType.isFirstPerson()) {
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
                 renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
             }
         }
@@ -59,11 +59,11 @@ public class deagle_357_animation extends SkinAnimationModel {
                     isEmp = false;
             if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp))) {
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
-                if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) &&
-                        !controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT_EMPTY) &&
-                        transformType.isFirstPerson()) {
-                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
-                }
+                if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
             }
         }
         matrices.pop();

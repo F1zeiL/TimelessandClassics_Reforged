@@ -79,9 +79,9 @@ public class hk_mp5a5_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HkMp5a5AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
-            if (!(controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) && ReloadHandler.get().getReloadProgress(v, stack) < 0.5) ||
-                    controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT) &&
-                            transformType.isFirstPerson()) {
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
                 renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
             }
         }

@@ -3,6 +3,7 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.HkMp5a5AnimationController;
 import com.tac.guns.client.render.animation.M1A1AnimationController;
@@ -56,17 +57,13 @@ public class m1a1_smg_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HkMp5a5AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderDrumMag(stack, matrices, renderBuffer, light, overlay, skin);
-        }
-        matrices.pop();
-
-        if (!controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.INSPECT_EMPTY).equals(controller.getPreviousAnimation())) {
-            matrices.push();
-            {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1A1AnimationController.INDEX_MAGAZINE, transformType, matrices);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
                 renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
             }
-            matrices.pop();
         }
+        matrices.pop();
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
     }
