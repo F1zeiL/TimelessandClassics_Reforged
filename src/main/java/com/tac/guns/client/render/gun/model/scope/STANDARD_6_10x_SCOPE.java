@@ -130,7 +130,7 @@ public class STANDARD_6_10x_SCOPE implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -0.0225f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 0.035f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.06f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.06f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.06f);
 
                 float recoilReversedMod = 0.15f;

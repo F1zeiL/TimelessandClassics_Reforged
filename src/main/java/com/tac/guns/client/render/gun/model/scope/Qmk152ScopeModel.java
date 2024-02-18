@@ -135,7 +135,7 @@ public class Qmk152ScopeModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -0.0325f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 0.035f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.04f);
 
                 float recoilReversedMod = 0.15f;

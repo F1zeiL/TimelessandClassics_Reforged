@@ -143,7 +143,7 @@ public class elcan_14x_ScopeModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -0.0525f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 0.085f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.0625f);
 
                 float recoilReversedMod = 0.075f;

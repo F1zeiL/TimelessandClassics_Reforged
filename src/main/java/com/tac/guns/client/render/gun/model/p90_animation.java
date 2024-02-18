@@ -116,7 +116,7 @@ public class p90_animation extends SkinAnimationModel {
 
                         GunRenderingHandler.get().applyDelayedSwayTransforms(matrices, Minecraft.getInstance().player, v, -0.075f);
                         GunRenderingHandler.get().applyBobbingTransforms(matrices,true, 0.1f);
-                        GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
+                        //GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
                         GunRenderingHandler.get().applyJumpingTransforms(matrices, v,-0.05f);
 
                         matrices.translate(0, 0, -0.35);

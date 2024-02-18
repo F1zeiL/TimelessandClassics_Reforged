@@ -106,7 +106,7 @@ public class EotechNSightModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -1f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 1.0f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -1.5f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -1.5f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.8f);
 
                 matrixStack.translate(0, 0, -0.35);

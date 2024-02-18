@@ -147,7 +147,7 @@ public class ACOG_4x_ScopeModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -0.045f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 0.085f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.11f);
 
                 float recoilReversedMod = 0.15f;
