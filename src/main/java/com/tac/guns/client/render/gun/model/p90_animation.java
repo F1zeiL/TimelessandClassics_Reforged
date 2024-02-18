@@ -4,24 +4,19 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.tac.guns.Config;
 import com.tac.guns.Reference;
-import com.tac.guns.client.GunRenderType;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.AimingHandler;
 import com.tac.guns.client.handler.GunRenderingHandler;
-import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.handler.command.ScopeEditor;
 import com.tac.guns.client.handler.command.data.ScopeData;
 import com.tac.guns.client.render.animation.P90AnimationController;
-import com.tac.guns.client.render.animation.UDP9AnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
-import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
-import com.tac.guns.util.OptifineHelper;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -35,7 +30,6 @@ import net.minecraft.util.math.vector.Matrix3f;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 
-import static com.tac.guns.client.SpecialModels.MINI_DOT_BASE;
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
 public class p90_animation extends SkinAnimationModel {
@@ -115,9 +109,9 @@ public class p90_animation extends SkinAnimationModel {
                             aimed = true;
 
                         GunRenderingHandler.get().applyDelayedSwayTransforms(matrices, Minecraft.getInstance().player, v, -0.075f);
-                        GunRenderingHandler.get().applyBobbingTransforms(matrices,true, 0.1f);
+                        GunRenderingHandler.get().applyBobbingTransforms(matrices, true, 0.1f);
                         //GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
-                        GunRenderingHandler.get().applyJumpingTransforms(matrices, v,-0.05f);
+                        GunRenderingHandler.get().applyJumpingTransforms(matrices, v, -0.05f);
 
                         matrices.translate(0, 0, -0.35);
                         matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.15f));
