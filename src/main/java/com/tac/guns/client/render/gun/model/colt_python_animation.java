@@ -29,7 +29,7 @@ public class colt_python_animation extends SkinAnimationModel {
         COLTPYTHONAnimationController controller = COLTPYTHONAnimationController.getInstance();
         GunSkin skin = SkinManager.getSkin(stack);
         Gun gun = ((GunItem) stack.getItem()).getGun();
-        int gunRate = gun.getGeneral().getRate();
+        int gunRate = (int) ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
         float cooldownOg = ShootingHandler.get().getshootMsGap() / gunRate < 0 ? 1 : MathHelper.clamp(ShootingHandler.get().getshootMsGap() / gunRate, 0, 1);
 
         matrices.push();
