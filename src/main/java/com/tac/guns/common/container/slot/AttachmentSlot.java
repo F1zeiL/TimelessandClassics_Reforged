@@ -43,10 +43,10 @@ public class AttachmentSlot extends Slot {
                 || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
             return false;
         }
-        if ((this.type == SlotType.AMMO && this.weapon.getOrCreateTag().getInt("AmmoCount") > 0)
-                || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
-            return false;
-        }
+//        if ((this.type == SlotType.AMMO && this.weapon.getOrCreateTag().getInt("AmmoCount") > 0)
+//                || SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING) || EnchantmentHelper.hasBindingCurse(this.container.getWeaponInventory().getStackInSlot(this.index))) {
+//            return false;
+//        }
         if (this.weapon.getItem() instanceof GunItem) {
             GunItem item = (GunItem) this.weapon.getItem();
             Gun modifiedGun = item.getModifiedGun(this.weapon);
@@ -67,9 +67,9 @@ public class AttachmentSlot extends Slot {
             if(this.type == SlotType.EXTENDED_MAG && Gun.getAmmo(this.weapon) > maxAmmo){
                 return false;
             }
-            if(this.type == SlotType.AMMO && Gun.getAmmo(this.weapon) > 0){
-                return false;
-            }
+//            if(this.type == SlotType.AMMO && Gun.getAmmo(this.weapon) > 0){
+//                return false;
+//            }
             if(SyncedPlayerData.instance().get(player, ModSyncedDataKeys.RELOADING)){
                 return false;
             }

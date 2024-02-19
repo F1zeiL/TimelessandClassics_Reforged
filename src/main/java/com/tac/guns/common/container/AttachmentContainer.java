@@ -119,13 +119,13 @@ public class AttachmentContainer extends Container {
         return false;
     }
 
-    public boolean hasAmmoPlug() {
-        if (this.weapon.getItem() instanceof TimelessGunItem) {
-            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
-            return modifiedGun.canAttachType(IAttachment.Type.AMMO);
-        }
-        return false;
-    }
+//    public boolean hasAmmoPlug() {
+//        if (this.weapon.getItem() instanceof TimelessGunItem) {
+//            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
+//            return modifiedGun.canAttachType(IAttachment.Type.AMMO);
+//        }
+//        return false;
+//    }
 
     public boolean isLoaded() {
         return this.loaded;
