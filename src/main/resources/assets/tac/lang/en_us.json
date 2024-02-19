@@ -1,8 +1,9 @@
 {
   "block.tac.workbench": "Workbench",
   "item.tac.blank_skin_mod_lvl1": "blank skin mod lvl1",
-  "item.tac.skin_ak_spent_bullet": "spent bullet-ak47",
-  "item.tac.skin_mp9_thunder": "spirit of thunder-mp9",
+  "item.tac.skin_ak_spent_bullet": "Spent Bullet | AK-47",
+  "item.tac.skin_glock_17_block": "BLOCK | Glock 17",
+  "item.tac.skin_mp9_thunder": "Spirit of Thunder | B&T Mp9",
   "item.tac.skin_black": "§9Midnight",
   "item.tac.skin_blue": "§9Miku",
   "item.tac.skin_brown": "§9Soil",

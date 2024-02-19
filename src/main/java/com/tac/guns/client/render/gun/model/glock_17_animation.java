@@ -17,11 +17,15 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.Objects;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -55,6 +59,8 @@ public class glock_17_animation extends SkinAnimationModel {
                 renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MUZZLE_SILENCER);
             }
             renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:block")))
+                renderNegativeComponent(stack, matrices, renderBuffer, light, overlay, skin, BLOCK);
         }
         matrices.pop();
 

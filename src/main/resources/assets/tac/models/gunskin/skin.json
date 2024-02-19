@@ -247,6 +247,13 @@
   },
 
   "glock_17": {
+    "block": {
+      "type": "custom",
+      "models": {
+        "auto": "tac:gunskin/glock_17/block/glock_17_block"
+      },
+      "icon": "tac:gunskin/icon/skin_glock_17_block"
+    },
     "dye": {
       "type": "dye",
       "colors": {

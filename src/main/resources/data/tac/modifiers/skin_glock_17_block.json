@@ -1,0 +1,7 @@
+{
+  "skin": "tac:block",
+  "hideLimitInfo": false,
+  "canApplyOn": [
+    "tac:glock_17"
+  ]
+}

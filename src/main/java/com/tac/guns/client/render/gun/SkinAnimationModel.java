@@ -38,8 +38,6 @@ public abstract class SkinAnimationModel implements IOverrideModel {
                 skin.getModel(key).getModel());
     }
 
-
-
     protected void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
         if (extraOffset.containsKey(modelComponent)) {
             Vector3d x = extraOffset.get(modelComponent);
@@ -51,6 +49,22 @@ public abstract class SkinAnimationModel implements IOverrideModel {
             matrices.pop();
         } else{
             ModelRenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+        }
+
+    }
+
+    protected void renderNegativeComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
+        if (extraOffset.containsKey(modelComponent)) {
+            Vector3d x = extraOffset.get(modelComponent);
+            matrices.push();
+            matrices.translate(x.getX(), x.getY(), x.getZ());
+            ModelRenderUtil.renderNegativeModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+            matrices.translate(-x.getX(), -x.getY(), -x.getZ());
+            matrices.pop();
+        } else{
+            ModelRenderUtil.renderNegativeModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
 //            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
         }
 

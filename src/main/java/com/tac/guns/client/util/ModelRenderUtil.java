@@ -8,9 +8,12 @@ import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
@@ -100,6 +103,59 @@ public class ModelRenderUtil {
         }
     }
 
+    private static final RenderType SOLID_L = RenderType.makeType("solid_light",
+            DefaultVertexFormats.BLOCK, 7, 131072, true, false, RenderType.State.getBuilder()
+                    .shadeModel(new RenderState.ShadeModelState(false))
+                    .lightmap(new RenderState.LightmapState(true))
+                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_BLOCKS_TEXTURE, false, false))
+                    .alpha(new RenderState.AlphaState(0.5F))
+                    .build(true));
 
+    public static void renderNegativeModel(IBakedModel model, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay, int[] color) {
+        stack.push();
+        {
+            stack.translate(-0.5D, -0.5D, -0.5D);
 
+            IVertexBuilder builder = ItemRenderer.getEntityGlintVertexBuilder(buffer, SOLID_L, true, false);
+
+            Random random = new Random();
+            for(Direction direction : Direction.values()) {
+                random.setSeed(42L);
+                renderQuads(stack, builder, model.getQuads(null, direction, random), light, overlay, color);
+            }
+            random.setSeed(42L);
+            renderQuads(stack, builder, model.getQuads(null, null, random), light, overlay, color);
+        }
+        stack.pop();
+    }
+
+    private static void renderNegativeModel(IBakedModel model, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
+        stack.push();
+        {
+            stack.translate(-0.5D, -0.5D, -0.5D);
+
+            IVertexBuilder builder = ItemRenderer.getEntityGlintVertexBuilder(buffer, SOLID_L, true, false);
+
+            Random random = new Random();
+            for(Direction direction : Direction.values()) {
+                random.setSeed(42L);
+                renderQuads(stack, builder, model.getQuads(null, direction, random), light, overlay);
+            }
+            random.setSeed(42L);
+            renderQuads(stack, builder, model.getQuads(null, null, random), light, overlay);
+        }
+        stack.pop();
+    }
+
+    public static void renderNegativeModel(IBakedModel model, @Nonnull ItemStack item, MatrixStack stack, IRenderTypeBuffer buffer, int light, int overlay) {
+        if(item.getItem() instanceof TimelessGunItem){
+            GunSkin skin = SkinManager.getSkin(item);
+            if(skin instanceof DyeSkin){
+                int[] colors = ((DyeSkin) skin).getColors();
+                renderNegativeModel(model, stack, buffer, light, overlay, colors);
+            }else {
+                renderNegativeModel(model, stack, buffer, light, overlay);
+            }
+        }
+    }
 }
