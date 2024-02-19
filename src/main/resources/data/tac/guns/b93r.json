@@ -56,16 +56,16 @@
   },
   "display": {
     "flash": {
-      "yOffset": 14.625,
-      "zOffset": -16,
+      "yOffset": 10.75,
+      "zOffset": -18.5,
       "size": 0.75,
       "trailAdjust": 0.575
     },
     "shellCasing": {
-      "tickLife":10,
+      "tickLife": 10,
       "yOffset": 1.5,
       "xOffset": -0.5,
-      "zOffset": 3.5,
+      "zOffset": -1.5,
       "scale": 1.5,
       "velocityX": 14,
       "velocityY": 12,
@@ -87,8 +87,8 @@
   "modules": {
     "zoom": {
       "fovModifier": 0.8,
-      "yOffset": 16.8,
-      "zOffset": -5.85
+      "yOffset": 12.9,
+      "zOffset": -4.85
     },
     "attachments": {
       "extendedMag": {
