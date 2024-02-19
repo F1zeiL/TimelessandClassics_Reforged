@@ -370,10 +370,6 @@ public class RenderUtil
                 return getItemStackColor(parent, ItemStack.EMPTY, tintIndex);
             }
         }
-        if(stack != null && !Gun.getAttachment(IAttachment.Type.SCOPE_BODY_COLOR, stack).isEmpty())
-        {
-            color = ((DyeItem)Gun.getAttachment(IAttachment.Type.SCOPE_BODY_COLOR, stack).getItem()).getDyeColor().getColorValue();
-        }
         return color;
     }
     public static int getItemStackColor(ItemStack stack, ItemStack parent, IAttachment.Type attachmentType, int tintIndex)
