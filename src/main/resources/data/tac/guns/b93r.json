@@ -1,50 +1,50 @@
 {
   "general": {
     "auto": true,
-    "rate": 400,
+    "rate": 1200,
     "burstRate": 24,
-    "rateSelector": [1, 3],
+    "rateSelector": [3],
     "gripType": "tac:one_handed_m1911",
     "recoilAngle": 10.75,
     "horizontalRecoilAngle": 6.35,
-    "recoilKick": 1,
+    "recoilKick": 2,
     "recoilAdsReduction": 0.25,
     "weaponRecoilOffset": 0.85,
-    "cameraRecoilModifier": 4.275,
+    "cameraRecoilModifier": 2.275,
     "recoilDuration": 0.1875,
     "weightKilo": 1.2,
 
-    "spread": 1.95,
-    "firstShotSpread": 0.145,
-    "hipFireInaccuracy": 2.55,
-    "projToMinAccuracy": 4,
-    "msToAccuracyReset": 280,
-    "movementInaccuracy": 0.185
+    "spread": 2.05,
+    "firstShotSpread": 0.175,
+    "hipFireInaccuracy": 2.75,
+    "projToMinAccuracy": 5,
+    "msToAccuracyReset": 320,
+    "movementInaccuracy": 0.195
   },
   "reloads": {
     "magFed": true,
-    "maxAmmo": 15,
-    "reloadMagTimer": 21,
-    "additionalReloadEmptyMagTimer": 14,
-    "maxAdditionalAmmoPerOC": [3, 6, 10],
+    "maxAmmo": 18,
+    "reloadMagTimer": 18,
+    "additionalReloadEmptyMagTimer": 12,
+    "maxAdditionalAmmoPerOC": [3, 6, 12],
     "preReloadPauseTicks": 7
   },
   "projectile": {
     "item": "tac:9mm_round",
     "visible": false,
-    "damage": 4.5,
-    "armorIgnore": 0.6,
+    "damage": 7,
+    "armorIgnore": 0.25,
     "critical": 0.0,
     "criticalDamage": 1.0,
-    "headDamage": 0.75,
+    "headDamage": 0.625,
     "closeDamage": 1.2,
     "decayStart": 0.16,
-    "minDecayMultiplier": 0.2,
-    "decayEnd": 0.95,
-    "size": 0.05,
-    "speed": 10.5,
+    "minDecayMultiplier": 0.3,
+    "decayEnd": 0.75,
+    "size": 0.1,
+    "speed": 11.5,
     "trailLengthMultiplier": 2.5,
-    "life": 9
+    "life": 8
   },
   "sounds": {
     "fire": "tac:item.b93r_fire",
@@ -56,8 +56,8 @@
   },
   "display": {
     "flash": {
-      "yOffset": 9.625,
-      "zOffset": -10,
+      "yOffset": 14.625,
+      "zOffset": -16,
       "size": 0.75,
       "trailAdjust": 0.575
     },
