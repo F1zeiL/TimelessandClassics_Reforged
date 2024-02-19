@@ -6,7 +6,6 @@
     "silencedFire": true,
     "modifyFireSoundVolume": 0.35,
     "modifyFireSoundRadius": 0.125,
-    "modifyMuzzleFlashSize": 0,
     "additionalWeaponWeight": 0.375
   }
 }

@@ -5,7 +5,6 @@
     "modifyFireSoundRadius": 0.275,
     "modifyFirstShotSpread": 0.875,
     "modifyRecoilSmoothening": 1.25,
-    "modifyMuzzleFlashSize": 0,
     "additionalWeaponWeight": 0.325,
     "modifyWeaponWeight": 0.25,
     "modifyAimDownSightSpeed": 0.80
