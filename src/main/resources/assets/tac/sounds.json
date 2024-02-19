@@ -799,6 +799,12 @@
          { "name": "tac:item/p90_fire_s" }
       ]
    },
+   "item.b93r_fire": {
+      "subtitle": "subtitle.tac.b93r_fire",
+      "sounds": [
+         { "name": "tac:item/b93r_fire" }
+      ]
+   },
 
 
 
@@ -2431,6 +2437,37 @@
       "subtitle": "animation.c96_reload_empty",
       "sounds": [
          { "name": "tac:animation/c96_reload_empty"}
+      ]
+   },
+
+   "animation.b93r_draw": {
+      "subtitle": "animation.b93r_draw",
+      "sounds": [
+         { "name": "tac:animation/b93r_draw"}
+      ]
+   },
+   "animation.b93r_reload_norm": {
+      "subtitle": "animation.b93r_reload_norm",
+      "sounds": [
+         { "name": "tac:animation/b93r_reload_norm"}
+      ]
+   },
+   "animation.b93r_inspect": {
+      "subtitle": "animation.b93r_inspect",
+      "sounds": [
+         { "name": "tac:animation/b93r_inspect"}
+      ]
+   },
+   "animation.b93r_inspect_empty": {
+      "subtitle": "animation.b93r_inspect_empty",
+      "sounds": [
+         { "name": "tac:animation/b93r_inspect_empty"}
+      ]
+   },
+   "animation.b93r_reload_empty": {
+      "subtitle": "animation.b93r_reload_empty",
+      "sounds": [
+         { "name": "tac:animation/b93r_reload_empty"}
       ]
    },
 
