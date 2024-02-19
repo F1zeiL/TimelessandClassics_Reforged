@@ -43,14 +43,14 @@ public class b93r_animation extends SkinAnimationModel {
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_MAG, transformType, matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_EXTRA_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
         }
         matrices.pop();
 
         matrices.push();
         {
-            controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_BULLET, transformType, matrices);
+            controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_EXTRA_BULLET, transformType, matrices);
             renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         }
         matrices.pop();
@@ -59,14 +59,14 @@ public class b93r_animation extends SkinAnimationModel {
         if (transformType.isFirstPerson() && (controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) || controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_NORMAL))) {
             matrices.push();
             {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_EXTRA_MAG, transformType, matrices);
+                controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_MAG, transformType, matrices);
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
             }
             matrices.pop();
 
             matrices.push();
             {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_EXTRA_BULLET, transformType, matrices);
+                controller.applySpecialModelTransform(getModelComponent(skin, BODY), B93RAnimationController.INDEX_BULLET, transformType, matrices);
                 renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
             }
             matrices.pop();
