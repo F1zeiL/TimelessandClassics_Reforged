@@ -1,9 +1,12 @@
 package com.tac.guns.common.container;
 
+import com.tac.guns.GunMod;
 import com.tac.guns.common.Gun;
+import com.tac.guns.common.GunModifiers;
 import com.tac.guns.common.container.slot.AttachmentSlot;
 import com.tac.guns.common.container.slot.SlotType;
 import com.tac.guns.init.ModContainers;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.impl.Attachment;
@@ -68,13 +71,13 @@ public class AttachmentContainer extends Container {
         this.playerInventory = playerInventory;
         // weapon
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                  if (i > 3) {
                     this.addSlot(new AttachmentSlot(
                             this, this.weaponInventory, this.weapon, SlotType.values()[i],
                             playerInventory.player, i, 155, 17 + (i - 4) * 18
                     ));
-                } else{
+                 } else {
                      this.addSlot(new AttachmentSlot(
                              this, this.weaponInventory, this.weapon, SlotType.values()[i],
                              playerInventory.player, i, 5, 17 + i * 18
@@ -109,8 +112,20 @@ public class AttachmentContainer extends Container {
     }
 
     public boolean hasExMag() {
-        return Gun.getAttachment(IAttachment.Type.EXTENDED_MAG, this.weapon) != ItemStack.EMPTY;
+        if (this.weapon.getItem() instanceof TimelessGunItem) {
+            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
+            return modifiedGun.canAttachType(IAttachment.Type.EXTENDED_MAG);
+        }
+        return false;
     }
+
+//    public boolean hasAmmoPlug() {
+//        if (this.weapon.getItem() instanceof TimelessGunItem) {
+//            Gun modifiedGun = ((TimelessGunItem) this.weapon.getItem()).getModifiedGun(this.weapon);
+//            return modifiedGun.canAttachType(IAttachment.Type.AMMO);
+//        }
+//        return false;
+//    }
 
     public boolean isLoaded() {
         return this.loaded;
@@ -126,14 +141,13 @@ public class AttachmentContainer extends Container {
         CompoundNBT attachments = new CompoundNBT();
 
         if (this.weapon.getItem() instanceof TimelessGunItem) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 8; i++) {
                 ItemStack attachment = this.getSlot(i).getStack();
                 if (attachment.getItem() instanceof IAttachment<?>){
                     checkAndWrite(attachment, attachments);
                 }
             }
         }
-
         CompoundNBT tag = this.weapon.getOrCreateTag();
         tag.put("Attachments", attachments);
         super.detectAndSendChanges();
@@ -142,13 +156,11 @@ public class AttachmentContainer extends Container {
     private void checkAndWrite(ItemStack attachment, CompoundNBT attachments) {
         if(playerInventory instanceof PlayerInventory){
             boolean isLocal = ((PlayerInventory) playerInventory).player.world.isRemote();
-            if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem(),isLocal) ){
+            if( Attachment.canApplyOn(attachment, (TimelessGunItem) this.weapon.getItem()) ){
                 attachments.put(( (IAttachment<?>) attachment.getItem()).getType().getTagKey(), attachment.write(new CompoundNBT()));
 //            attachments.put(( (IAttachment<?>) attachment.getItem()).getSlot().getTagKey(), attachment.write(new CompoundNBT()));
             }
         }
-
-
     }
 
     @Override
@@ -173,7 +185,6 @@ public class AttachmentContainer extends Container {
                 slot.onSlotChanged();
             }
         }
-
         return copyStack;
     }
 

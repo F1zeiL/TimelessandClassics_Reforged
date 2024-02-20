@@ -3,8 +3,8 @@ package com.tac.guns.client.render.gun;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.IModelComponent;
-import com.tac.guns.client.gunskin.ModelComponent;
 import com.tac.guns.client.util.RenderUtil;
+import com.tac.guns.client.util.ModelRenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.attachment.IAttachment;
@@ -38,29 +38,39 @@ public abstract class SkinAnimationModel implements IOverrideModel {
                 skin.getModel(key).getModel());
     }
 
-//    public void cleanCache(){
-//        defaultModels = null;
-//    }
-
-//    public static void cleanAllCache(){
-//        for (SkinAnimationModel model : models) {
-//            model.cleanCache();
-//        }
-//    }
-
-    private void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
+    protected void renderComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
         if (extraOffset.containsKey(modelComponent)) {
             Vector3d x = extraOffset.get(modelComponent);
             matrices.push();
             matrices.translate(x.getX(), x.getY(), x.getZ());
-            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+            ModelRenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
             matrices.translate(-x.getX(), -x.getY(), -x.getZ());
             matrices.pop();
-        } else
-            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+        } else{
+            ModelRenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+        }
+
     }
 
-    private void renderLaserModuleComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
+    protected void renderNegativeComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
+        if (extraOffset.containsKey(modelComponent)) {
+            Vector3d x = extraOffset.get(modelComponent);
+            matrices.push();
+            matrices.translate(x.getX(), x.getY(), x.getZ());
+            ModelRenderUtil.renderNegativeModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+            matrices.translate(-x.getX(), -x.getY(), -x.getZ());
+            matrices.pop();
+        } else{
+            ModelRenderUtil.renderNegativeModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+//            RenderUtil.renderModel(getModelComponent(skin, modelComponent), stack, matrices, renderBuffer, light, overlay);
+        }
+
+    }
+
+    protected void renderLaserModuleComponent(ItemStack stack, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light, int overlay, GunSkin skin, IModelComponent modelComponent) {
         if (extraOffset.containsKey(modelComponent)) {
             Vector3d x = extraOffset.get(modelComponent);
             matrices.push();

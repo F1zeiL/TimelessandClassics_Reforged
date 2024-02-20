@@ -1,0 +1,106 @@
+{
+  "general": {
+    "auto": true,
+    "rate": 1200,
+    "burstRate": 24,
+    "rateSelector": [3],
+    "gripType": "tac:one_handed_m1911",
+    "recoilAngle": 10.75,
+    "horizontalRecoilAngle": 6.35,
+    "recoilKick": 2,
+    "recoilAdsReduction": 0.25,
+    "weaponRecoilOffset": 0.85,
+    "cameraRecoilModifier": 2.275,
+    "recoilDuration": 0.1875,
+    "weightKilo": 1.2,
+
+    "spread": 2.05,
+    "firstShotSpread": 0.175,
+    "hipFireInaccuracy": 2.75,
+    "projToMinAccuracy": 5,
+    "msToAccuracyReset": 320,
+    "movementInaccuracy": 0.195
+  },
+  "reloads": {
+    "magFed": true,
+    "maxAmmo": 18,
+    "reloadMagTimer": 18,
+    "additionalReloadEmptyMagTimer": 12,
+    "maxAdditionalAmmoPerOC": [3, 6, 12],
+    "preReloadPauseTicks": 7
+  },
+  "projectile": {
+    "item": "tac:9mm_round",
+    "visible": false,
+    "damage": 7,
+    "armorIgnore": 0.5,
+    "critical": 0.0,
+    "criticalDamage": 1.0,
+    "headDamage": 0.625,
+    "closeDamage": 1.2,
+    "decayStart": 0.16,
+    "minDecayMultiplier": 0.3,
+    "decayEnd": 0.75,
+    "size": 0.1,
+    "speed": 11.5,
+    "trailLengthMultiplier": 2.5,
+    "life": 8
+  },
+  "sounds": {
+    "fire": "tac:item.b93r_fire",
+    "reloadNormal": "tac:animation.b93r_reload_norm",
+    "reloadEmpty": "tac:animation.b93r_reload_empty",
+    "draw": "tac:animation.b93r_draw",
+    "inspect": "tac:animation.b93r_inspect",
+    "cock": "tac:item.pistol.cock"
+  },
+  "display": {
+    "flash": {
+      "yOffset": 10.75,
+      "zOffset": -18.5,
+      "size": 0.75,
+      "trailAdjust": 0.575
+    },
+    "shellCasing": {
+      "tickLife": 10,
+      "yOffset": 1.5,
+      "xOffset": -0.5,
+      "zOffset": -1.5,
+      "scale": 1.5,
+      "velocityX": 14,
+      "velocityY": 12,
+      "velocityZ": 4,
+      "rVelocityX": 2,
+      "rVelocityY": 4,
+      "rVelocityZ": 0.0,
+      "aVelocityX": 60.0,
+      "aVelocityY": -120.0,
+      "aVelocityZ": 0.0,
+      "casingModel": "tac:special/shell_small"
+    },
+    "hipfireScale": 1.25,
+    "hipfireMoveScale": 0.5,
+    "hipfireRecoilScale": 1.0,
+    "showDynamicHipfire":true,
+    "weaponType": 2
+  },
+  "modules": {
+    "zoom": {
+      "fovModifier": 0.8,
+      "yOffset": 12.9,
+      "zOffset": -4.85
+    },
+    "attachments": {
+      "extendedMag": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      }
+    }
+  }
+}

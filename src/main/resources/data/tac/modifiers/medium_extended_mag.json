@@ -3,5 +3,8 @@
     "modifyAimDownSightSpeed": 0.95,
     "modifyWeaponWeight": 0.13,
     "additionalAmmunition": 1
-  }
+  },
+  "extraTooltip": [
+    "tooltip.extra.mag"
+  ]
 }

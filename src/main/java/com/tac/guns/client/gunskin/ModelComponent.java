@@ -14,6 +14,7 @@ public enum ModelComponent implements IModelComponent {
     SCOPE_DEFAULT("scope_default"),
     LIGHT("light"),
     SAFETY("safety"),
+    BLOCK("block"),
 
     //crossbow
     BEND_L("bend_l"),

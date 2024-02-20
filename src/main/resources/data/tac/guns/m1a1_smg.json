@@ -23,8 +23,8 @@
   "reloads": {
     "magFed": true,
     "maxAmmo": 30,
-    "reloadMagTimer": 33,
-    "additionalReloadEmptyMagTimer": 10,
+    "reloadMagTimer": 32,
+    "additionalReloadEmptyMagTimer": 8,
     "maxAdditionalAmmoPerOC": [5, 12, 20],
     "preReloadPauseTicks": 9,
     "openBolt": true
@@ -95,6 +95,16 @@
         "yOffset": 1000.89,
         "zOffset": 5.35,
         "scale": 0.0
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      },
+      "gunSkin": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
       }
     }
   }

@@ -123,7 +123,11 @@ public class ServerPlayHandler {
                     //TODO: Change the function of the spread tracker so it trackers accuracy per specificlly held weapon, so first shot accuracy and
                     //  total bullets before hitting max accuracy is tracked per weapon.
                     //m4 og spread 2.925
-                    int count = modifiedGun.getGeneral().getProjectileAmount();
+                    int count;
+                    if (modifiedGun.getDisplay().getWeaponType() == WeaponType.SG && (modifiedGun.getProjectile().isHasBlastDamage() || GunModifierHelper.isBlastFire(heldItem)))
+                        count = 1;
+                    else
+                        count = modifiedGun.getGeneral().getProjectileAmount();
                     Gun.Projectile projectileProps = modifiedGun.getProjectile();
                     ProjectileEntity[] spawnedProjectiles = new ProjectileEntity[count];
                     for (int i = 0; i < count; i++) {

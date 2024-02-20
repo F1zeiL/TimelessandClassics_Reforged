@@ -135,14 +135,14 @@ public class Qmk152ScopeModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -0.0325f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 0.035f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -0.11f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.04f);
 
                 float recoilReversedMod = 0.15f;
                 matrixStack.translate(0, 0, -0.35);
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw*recoilReversedMod*0.4f));
-                matrixStack.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch*recoilReversedMod*0.5f));
-                matrixStack.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift*0.02f * GunRenderingHandler.get().recoilReduction) * 0.65F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw*recoilReversedMod * 0.4f));
+                matrixStack.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch*recoilReversedMod * 0.4f));
+                matrixStack.rotate(Vector3f.XN.rotationDegrees((GunRenderingHandler.get().recoilLift*0.02f * GunRenderingHandler.get().recoilReduction) * 0.45F));
                 matrixStack.translate(0, 0, 0.35);
 
                 int lightmapValue = 15728880;

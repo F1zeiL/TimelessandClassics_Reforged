@@ -9,13 +9,13 @@ import com.tac.guns.client.render.animation.SIGMCXAnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -38,8 +38,8 @@ public class sig_mcx_spear_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) == null) {
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SIGHT);
             }
 
             renderGrip(stack, matrices, renderBuffer, light, overlay, skin);
@@ -49,13 +49,15 @@ public class sig_mcx_spear_animation extends SkinAnimationModel {
             if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
                 renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
 
             matrices.push();
             {
                 if (transformType.isFirstPerson()) {
                     Gun gun = ((GunItem) stack.getItem()).getGun();
-                    float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+                    int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+                    int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+                    float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
                     if (Gun.hasAmmo(stack)) {
                         // Math provided by Bomb787 on GitHub and Curseforge!!!
                         matrices.translate(0, 0, 0.225f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
@@ -63,7 +65,7 @@ public class sig_mcx_spear_animation extends SkinAnimationModel {
                         matrices.translate(0, 0, 0.225f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
                     }
                 }
-                RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             }
             matrices.pop();
         }
@@ -72,28 +74,28 @@ public class sig_mcx_spear_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_HANDLE1, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, HANDLE), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HANDLE);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_HANDLE2, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, HANDLE_EXTRA), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HANDLE_EXTRA);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_MAG, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_MAG, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, MAG), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MAG);
         }
         matrices.pop();
 
@@ -101,7 +103,7 @@ public class sig_mcx_spear_animation extends SkinAnimationModel {
             matrices.push();
             {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), SIGMCXAnimationController.INDEX_BOTL, transformType, matrices);
-                RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             }
             matrices.pop();
         }

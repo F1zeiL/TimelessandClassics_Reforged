@@ -90,11 +90,6 @@
       "zOffset": -5
     },
     "attachments": {
-      "barrel": {
-        "yOffset": -100829.84,
-        "zOffset": -11.8,
-        "scale": 1.00
-      },
       "extendedMag": {
         "yOffset": 1000.89,
         "zOffset": 5.35,
@@ -104,6 +99,11 @@
         "yOffset": 7.799,
         "zOffset": -2.35,
         "scale": 0.00
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
       }
     }
   }

@@ -5,6 +5,7 @@ import com.tac.guns.Config;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.GunRenderingHandler;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.Glock17AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
@@ -16,11 +17,15 @@ import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.Objects;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -51,9 +56,11 @@ public class glock_17_animation extends SkinAnimationModel {
                 }
             }
             if (Gun.getAttachment(IAttachment.Type.PISTOL_BARREL, stack).getItem() == ModItems.PISTOL_SILENCER.get()) {
-                RenderUtil.renderModel(getModelComponent(skin, MUZZLE_SILENCER), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MUZZLE_SILENCER);
             }
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:block")))
+                renderNegativeComponent(stack, matrices, renderBuffer, light, overlay, skin, BLOCK);
         }
         matrices.pop();
 
@@ -61,9 +68,11 @@ public class glock_17_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Glock17AnimationController.INDEX_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
-
-            if (!controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.INSPECT_EMPTY).equals(controller.getPreviousAnimation()))
-                RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(partialTicks, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
         //Always push
@@ -71,8 +80,9 @@ public class glock_17_animation extends SkinAnimationModel {
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), Glock17AnimationController.INDEX_SLIDE, transformType, matrices);
         if (transformType.isFirstPerson()) {
             Gun gun = ((GunItem) stack.getItem()).getGun();
-            float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ?
-                    1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+            int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+            int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+            float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
             AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
             boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
@@ -89,8 +99,8 @@ public class glock_17_animation extends SkinAnimationModel {
             matrices.translate(0, 0, 0.185f * (-4.5 * Math.pow(0 - 0.5, 2) + 1.0));
         }
         matrices.translate(0, 0, 0.025F);
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SLIDE);
+        renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SLIDE_LIGHT);
 
         //Always pop
         matrices.pop();

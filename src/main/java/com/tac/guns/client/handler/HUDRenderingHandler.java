@@ -281,8 +281,8 @@ public class HUDRenderingHandler extends AbstractGui {
                     stack.push();
                     {
                         float scale = Config.CLIENT.weaponGUI.weaponTypeIcon.weaponIconSize.get().floatValue() * 0.7f;
-                        stack.translate(anchorPointX - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
-                                anchorPointY - 22 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
+                        stack.translate(anchorPointX - 8 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
+                                anchorPointY - 25 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
                         stack.scale(scale, scale, scale);
                         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
                         Minecraft.getInstance().getTextureManager().bindTexture(skin.getIcon());
@@ -304,7 +304,7 @@ public class HUDRenderingHandler extends AbstractGui {
             stack.push();
             {
                 stack.translate(anchorPointX - (fireModeSize * 2) / 4F, anchorPointY - (fireModeSize * 2) / 5F * 3F, 0);
-                stack.translate(-fireModeSize + (-62.7) + (-Config.CLIENT.weaponGUI.weaponFireMode.x.get().floatValue()), -fireModeSize + 52.98 + (-Config.CLIENT.weaponGUI.weaponFireMode.y.get().floatValue()), 0);
+                stack.translate(-fireModeSize + (-0.7) + (-Config.CLIENT.weaponGUI.weaponFireMode.x.get().floatValue()), -fireModeSize + 53.2 + (-Config.CLIENT.weaponGUI.weaponFireMode.y.get().floatValue()), 0);
 
                 stack.translate(20, 5, 0);
                 int fireMode;
@@ -401,10 +401,10 @@ public class HUDRenderingHandler extends AbstractGui {
 
                     stack.push();
                     {
-                        stack.scale(0.7f, 0.7f, 0.7f);
+                        stack.scale(0.56f, 0.56f, 0.56f);
                         stack.translate(
-                                (3.7),
-                                (3.4),
+                                (3.7 - 1.0),
+                                (3.4 - 4.5),
                                 0);
                         drawString(stack, Minecraft.getInstance().fontRenderer, reserveAmmo, 0, 0, 0xffffff); // Reserve ammo
                     }
@@ -428,10 +428,10 @@ public class HUDRenderingHandler extends AbstractGui {
             Minecraft.getInstance().getTextureManager().bindTexture(RELOAD_ICONS[0]); // Future options to render bar types
 
             Matrix4f matrix = stack.getLast().getMatrix();
-            buffer.pos(matrix, 0, ReloadBarSize, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, ReloadBarSize, ReloadBarSize, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, ReloadBarSize, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, 0, ReloadBarSize, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, ReloadBarSize, ReloadBarSize, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, ReloadBarSize, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
 
             stack.translate(19.25, (1.5 + (-63.4)) * 10, 0);
             // stack.translate(0, 0, );

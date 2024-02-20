@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.HandSide;
 
 public class PlayerHandAnimation {
-    public static void render(GunAnimationController controller, ItemCameraTransforms.TransformType transformType, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light){
-        if(!transformType.isFirstPerson()) return;
+    public static void render(GunAnimationController controller, ItemCameraTransforms.TransformType transformType, MatrixStack matrices, IRenderTypeBuffer renderBuffer, int light) {
+        if (!transformType.isFirstPerson()) return;
         matrices.push();
         {
             controller.applyRightHandTransform(matrices);

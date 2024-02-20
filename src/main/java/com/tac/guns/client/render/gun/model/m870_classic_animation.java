@@ -7,7 +7,6 @@ import com.tac.guns.client.render.animation.M870AnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -34,14 +33,14 @@ public class m870_classic_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M870AnimationController.INDEX_BODY, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M870AnimationController.INDEX_PUMP, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, PUMP), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, PUMP);
         }
         matrices.pop();
 
@@ -49,7 +48,7 @@ public class m870_classic_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M870AnimationController.INDEX_BULLET, transformType, matrices);
             if (controller.isAnimationRunning(GunAnimationController.AnimationLabel.PUMP) || controller.isAnimationRunning(GunAnimationController.AnimationLabel.INSPECT) || controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_LOOP))
-                RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         }
         matrices.pop();
 
@@ -57,7 +56,7 @@ public class m870_classic_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M870AnimationController.INDEX_BODY, transformType, matrices);
             if (GunModifierHelper.getAmmoCapacityWeight(stack) > -1) {
-                RenderUtil.renderModel(getModelComponent(skin, MAG_EXTENDED), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MAG_EXTENDED);
             }
         }
         matrices.pop();

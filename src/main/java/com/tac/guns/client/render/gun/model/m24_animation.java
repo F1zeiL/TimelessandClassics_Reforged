@@ -8,7 +8,6 @@ import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -36,17 +35,17 @@ public class m24_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M24AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) == null) {
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SIGHT);
             }
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M24AnimationController.INDEX_BOLT, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         }
         matrices.pop();
 
@@ -60,11 +59,11 @@ public class m24_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M24AnimationController.INDEX_BULLET, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET_SHELL), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET_SHELL);
             AnimationMeta bolt = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.PULL_BOLT);
             boolean onlyShell = bolt != null && bolt.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
             if (!onlyShell)
-                RenderUtil.renderModel(getModelComponent(skin, BULLET_HEAD), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET_HEAD);
         }
         matrices.pop();
 

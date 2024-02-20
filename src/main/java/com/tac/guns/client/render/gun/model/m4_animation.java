@@ -4,11 +4,12 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.Config;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.M4AnimationController;
+import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
 import com.tac.guns.item.GunItem;
@@ -17,6 +18,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -39,7 +41,7 @@ public class m4_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M4AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) == null) {
-                RenderUtil.renderModel(getModelComponent(skin, CARRY), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, CARRY);
             }
 
             renderStock(stack, matrices, renderBuffer, light, overlay, skin);
@@ -51,35 +53,37 @@ public class m4_animation extends SkinAnimationModel {
 
             // If niether trips, render the cover for the side or top, since only one is accessible at once currently, TODO: Have a more streamlined system to handle multi-accesible attachments
             if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack).getItem() == ModItems.BASIC_LASER.get()) {
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_EXTENDED_SIDE), stack, matrices, renderBuffer, light, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_COVER_TOP), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_EXTENDED_SIDE);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_COVER_TOP);
             } else if (Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack) != ItemStack.EMPTY && Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack).getItem() == ModItems.IR_LASER.get()) {
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_EXTENDED_TOP), stack, matrices, renderBuffer, light, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_COVER_SIDE), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_EXTENDED_TOP);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_COVER_SIDE);
             }
 
             if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack) == ItemStack.EMPTY && Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack) == ItemStack.EMPTY && Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack) == ItemStack.EMPTY) {
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_DEFAULT);
             } else {
                 if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack) == ItemStack.EMPTY && Gun.getAttachment(IAttachment.Type.IR_DEVICE, stack) == ItemStack.EMPTY) {
-                    RenderUtil.renderModel(getModelComponent(skin, RAIL_COVER_TOP), stack, matrices, renderBuffer, light, overlay);
-                    RenderUtil.renderModel(getModelComponent(skin, RAIL_COVER_SIDE), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_COVER_TOP);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_COVER_SIDE);
                 }
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_EXTENDED), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_EXTENDED);
             }
 
             renderGrip(stack, matrices, renderBuffer, light, overlay, skin);
 
             renderBarrelWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
 
             matrices.push();
             {
                 if (transformType.isFirstPerson()) {
                     Gun gun = ((GunItem) stack.getItem()).getGun();
-                    float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+                    int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+                    int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+                    float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
                     if (Gun.hasAmmo(stack)) {
                         // Math provided by Bomb787 on GitHub and Curseforge!!!
@@ -90,7 +94,7 @@ public class m4_animation extends SkinAnimationModel {
                         }
                     }
                 }
-                RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             }
             matrices.pop();
         }
@@ -100,6 +104,11 @@ public class m4_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), M4AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);

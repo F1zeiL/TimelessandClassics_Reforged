@@ -9,13 +9,13 @@ import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -35,7 +35,7 @@ public class tec_9_animation extends SkinAnimationModel {
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), TEC9AnimationController.INDEX_BODY, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         matrices.pop();
 
         matrices.push();
@@ -47,7 +47,9 @@ public class tec_9_animation extends SkinAnimationModel {
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), TEC9AnimationController.INDEX_BOLT, transformType, matrices);
         Gun gun = ((GunItem) stack.getItem()).getGun();
-        float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+        int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+        int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+        float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
         if (transformType.isFirstPerson()) {
             AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
             boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
@@ -57,13 +59,13 @@ public class tec_9_animation extends SkinAnimationModel {
                 matrices.translate(0, 0, -0.375 + Math.pow(cooldownOg - 0.5, 2));
             }
         }
-        RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         //Always pop
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), TEC9AnimationController.INDEX_BULLET, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         matrices.pop();
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);

@@ -24,6 +24,7 @@ public class M249AnimationController extends MachineGunAnimationController {
     public static final AnimationMeta DRAW = new AnimationMeta(new ResourceLocation("tac","animations/m249_draw.gltf"));
     public static final AnimationMeta INSPECT = new AnimationMeta(new ResourceLocation("tac","animations/m249_inspect.gltf"));
     public static final AnimationMeta INSPECT_EMPTY = new AnimationMeta(new ResourceLocation("tac","animations/m249_inspect.gltf"));
+    public static final AnimationMeta BULLET_CHAIN = new AnimationMeta(new ResourceLocation("tac", "animations/m249_bullet_chain.gltf"));
     private static final M249AnimationController instance = new M249AnimationController();
 
     private M249AnimationController(){
@@ -34,6 +35,7 @@ public class M249AnimationController extends MachineGunAnimationController {
             Animations.load(INSPECT);
             Animations.load(INSPECT_EMPTY);
             Animations.load(STATIC);
+            Animations.load(BULLET_CHAIN);
         } catch (IOException e) {
             GunMod.LOGGER.fatal(e.getStackTrace());
         }
@@ -54,8 +56,19 @@ public class M249AnimationController extends MachineGunAnimationController {
             case DRAW: return DRAW;
             case STATIC: return STATIC;
             case RELOAD_EMPTY: return RELOAD_EMPTY;
+            case BULLET_CHAIN: return BULLET_CHAIN;
             default: return null;
         }
+    }
+
+    @Override
+    protected void enableStaticState(){
+        try {
+            Animations.specifyInitialModel(BULLET_CHAIN, STATIC);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        super.enableStaticState();
     }
 
     @Override

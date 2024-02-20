@@ -7,7 +7,6 @@ import com.tac.guns.client.render.animation.RPG7AnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -35,7 +34,7 @@ public class rpg7_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), RPG7AnimationController.INDEX_BODY, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -43,7 +42,7 @@ public class rpg7_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), RPG7AnimationController.INDEX_MAGAZINE, transformType, matrices);
             if (controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY)) {
-                RenderUtil.renderModel(getModelComponent(skin, ROCKET), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, ROCKET);
             }
         }
         matrices.pop();
@@ -52,7 +51,7 @@ public class rpg7_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), RPG7AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.hasAmmo(stack)) {
-                RenderUtil.renderModel(getModelComponent(skin, ROCKET), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, ROCKET);
             }
         }
         matrices.pop();

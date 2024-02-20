@@ -1,0 +1,15 @@
+{
+  "general": {
+    "modifyProjectileBlastDamage": 1.4,
+    "modifyProjectileDamage": 0.95,
+    "blastFire": true
+  },
+  "hideLimitInfo": false,
+  "canApplyOn": [
+    "tac:rpg7",
+    "tac:m82a2",
+    "tac:m60",
+    "tac:m249",
+    "tac:m1014"
+  ]
+}

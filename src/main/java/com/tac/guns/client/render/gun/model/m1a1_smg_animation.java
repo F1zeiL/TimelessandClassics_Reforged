@@ -3,19 +3,20 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.HkMp5a5AnimationController;
 import com.tac.guns.client.render.animation.M1A1AnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -41,14 +42,16 @@ public class m1a1_smg_animation extends SkinAnimationModel {
             matrices.push();
             if (transformType.isFirstPerson()) {
                 Gun gun = ((GunItem) stack.getItem()).getGun();
-                float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+                int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+                int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+                float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
                 matrices.translate(0, 0, -0.085f * (-4.5 * Math.pow(cooldownOg - 0.5, 2) + 1.0));
             }
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             matrices.pop();
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -56,17 +59,13 @@ public class m1a1_smg_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HkMp5a5AnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderDrumMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
-
-        if (!controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.INSPECT_EMPTY).equals(controller.getPreviousAnimation())) {
-            matrices.push();
-            {
-                controller.applySpecialModelTransform(getModelComponent(skin, BODY), M1A1AnimationController.INDEX_MAGAZINE, transformType, matrices);
-                RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
-            }
-            matrices.pop();
-        }
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
     }

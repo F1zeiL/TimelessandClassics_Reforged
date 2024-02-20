@@ -7,7 +7,6 @@ import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.render.animation.MK18MOD1AnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -51,7 +50,7 @@ public class mk18_mod1_animation extends SkinAnimationModel {
 
             renderBarrelWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
 
             matrices.push();
             {
@@ -66,7 +65,7 @@ public class mk18_mod1_animation extends SkinAnimationModel {
                         matrices.translate(0, 0, 0.185f * (-4.5 * Math.pow(0.5 - 0.5, 2) + 1.0));
                     }
                 }
-                RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
             }
             matrices.pop();
         }

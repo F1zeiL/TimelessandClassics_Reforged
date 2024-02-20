@@ -33,6 +33,8 @@
     "visible": false,
     "gravity": true,
     "damage": 75,
+    "blastDamage": 15,
+    "blastRadius": 1,
     "armorIgnore": 2.0,
     "critical": 0.0,
     "criticalDamage": 1.0,
@@ -44,6 +46,7 @@
     "size": 0.35,
     "speed": 30.0,
     "life": 16,
+    "pierce": 3,
     "trailLengthMultiplier": 3.75
   },
   "sounds": {
@@ -102,6 +105,16 @@
         "yOffset": 1000.89,
         "zOffset": 5.35,
         "scale": 0.0
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      },
+      "gunSkin": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
       }
     }
   }

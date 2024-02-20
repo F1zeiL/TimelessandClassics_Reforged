@@ -1450,6 +1450,23 @@ public class GunModifiers {
         }
     };
 
+    public static final IGunModifier B93R_MOD = new IGunModifier() {
+        @Override
+        public double modifyFireSoundRadius(double radius) {
+            return radius * 0.92;
+        }
+
+        @Override
+        public double modifyAimDownSightSpeed(double speed) {
+            return speed * 1.05;
+        }
+
+        @Override
+        public double additionalProjectileGravity() {
+            return -0.005;
+        }
+    };
+
     public static final IGunModifier TTI34_MOD = new IGunModifier() {
         @Override
         public double modifyAimDownSightSpeed(double speed) {

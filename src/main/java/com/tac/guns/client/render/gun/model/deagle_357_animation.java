@@ -3,19 +3,20 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.render.animation.Deagle50AnimationController;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.item.GunItem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
@@ -40,6 +41,11 @@ public class deagle_357_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), Deagle50AnimationController.INDEX_MAG, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -51,8 +57,14 @@ public class deagle_357_animation extends SkinAnimationModel {
                     isEmp = true;
                 else if (!controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC))
                     isEmp = false;
-            if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp)))
+            if (transformType.isFirstPerson() && (!isEmp || (controller.isAnimationRunning(GunAnimationController.AnimationLabel.STATIC) && !isEmp))) {
                 renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+                if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                        ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                        Gun.hasAmmo(stack)) {
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+                }
+            }
         }
         matrices.pop();
 
@@ -62,8 +74,8 @@ public class deagle_357_animation extends SkinAnimationModel {
 
             renderBarrel(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
-            RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+            renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
         }
         matrices.pop();
         //Always push
@@ -72,7 +84,9 @@ public class deagle_357_animation extends SkinAnimationModel {
 
         if (transformType.isFirstPerson()) {
             Gun gun = ((GunItem) stack.getItem()).getGun();
-            float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+            int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+            int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+            float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
             AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
             boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
@@ -84,8 +98,8 @@ public class deagle_357_animation extends SkinAnimationModel {
             }
             matrices.translate(0.00, 0.0, 0.035);
         }
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-        RenderUtil.renderModel(getModelComponent(skin, SLIDE), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SLIDE_LIGHT);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SLIDE);
 
         //Always pop
         matrices.pop();

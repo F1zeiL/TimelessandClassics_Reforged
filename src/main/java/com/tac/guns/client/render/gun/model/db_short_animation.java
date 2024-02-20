@@ -6,7 +6,6 @@ import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.render.animation.DBShotgunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
@@ -23,35 +22,35 @@ public class db_short_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), DBShotgunAnimationController.INDEX_REAR, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), DBShotgunAnimationController.INDEX_FRONT, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BARREL), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BARREL);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), DBShotgunAnimationController.INDEX_LEVER, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, HAMMER), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HAMMER);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), DBShotgunAnimationController.INDEX_BULLET1, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET1), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET1);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), DBShotgunAnimationController.INDEX_BULLET2, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET2), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET2);
         }
         matrices.pop();
 

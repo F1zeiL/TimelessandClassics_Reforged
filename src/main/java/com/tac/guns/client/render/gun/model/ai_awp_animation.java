@@ -3,11 +3,11 @@ package com.tac.guns.client.render.gun.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
+import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.client.render.animation.AWPAnimationController;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
-import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -40,27 +40,27 @@ public class ai_awp_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), AWPAnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) == null) {
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT), stack, matrices, renderBuffer, light, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SIGHT);
+                renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
             }
 
             renderBarrel(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), AWPAnimationController.INDEX_BOLT, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), AWPAnimationController.INDEX_BOLT_EXTRA, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BOLT_EXTRA), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT_EXTRA);
         }
         matrices.pop();
 
@@ -68,6 +68,11 @@ public class ai_awp_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), AWPAnimationController.INDEX_MAGAZINE, transformType, matrices);
             renderMag(stack, matrices, renderBuffer, light, overlay, skin);
+            if ((controller.isAnimationRunning(GunAnimationController.AnimationLabel.RELOAD_EMPTY) &&
+                    ReloadHandler.get().getReloadProgress(v, stack) > 0.5) ||
+                    Gun.hasAmmo(stack)) {
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
+            }
         }
         matrices.pop();
 
@@ -75,7 +80,7 @@ public class ai_awp_animation extends SkinAnimationModel {
         {
             if (controller.isAnimationRunning() && controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.PULL_BOLT).equals(controller.getPreviousAnimation())) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), AWPAnimationController.INDEX_BULLET, transformType, matrices);
-                RenderUtil.renderModel(getModelComponent(skin, BULLET_SHELL), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET_SHELL);
             }
         }
         matrices.pop();

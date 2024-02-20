@@ -113,13 +113,13 @@ public class CoyoteSightModel implements IOverrideModel
 
                 GunRenderingHandler.get().applyDelayedSwayTransforms(matrixStack, Minecraft.getInstance().player, partialTicks, -1f);
                 GunRenderingHandler.get().applyBobbingTransforms(matrixStack,true, 1.25f);
-                GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -1.5f);
+                //GunRenderingHandler.get().applyNoiseMovementTransform(matrixStack, -1.5f);
                 GunRenderingHandler.get().applyJumpingTransforms(matrixStack, partialTicks,-0.8f);
 
                 matrixStack.translate(0, 0, -0.35);
-                matrixStack.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw));
-                matrixStack.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch));
-                matrixStack.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 1.15F));
+                matrixStack.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.25f));
+                matrixStack.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.25f));
+                matrixStack.rotate(Vector3f.XN.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.25F));
                 matrixStack.translate(0, 0, 0.35);
 
                 builder.pos(matrix, 0, (float) (size / scale), 0).color(red, green, blue, alpha).tex(0.0F, 0.9375F).overlay(overlay).lightmap(15728880).normal(normal, 0.0F, 1.0F, 0.0F).endVertex();

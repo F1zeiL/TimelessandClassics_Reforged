@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3f;
 
 import java.util.Objects;
@@ -47,26 +49,26 @@ public class mp9_animation extends SkinAnimationModel {
                     RenderUtil.renderLaserModuleModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
             }
             if (Gun.getScope(stack) != null) {
-                if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER"))
-                    RenderUtil.renderModel(getModelComponent(skin, LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-                RenderUtil.renderModel(getModelComponent(skin, STOCK_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+                if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:thunder")))
+                    renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, LIGHT);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, STOCK_DEFAULT);
             } else {
-                RenderUtil.renderModel(getModelComponent(skin, STOCK_FOLDED), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, STOCK_FOLDED);
             }
-            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), "THUNDER")) {
-                RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
+            if (Objects.equals(GunModifierHelper.getAdditionalSkin(stack), new ResourceLocation("tac:thunder"))) {
+                renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
                 if (stack.getTag().getInt("CurrentFireMode") == 1) {
                     matrices.push();
                     matrices.rotate(Vector3f.XN.rotationDegrees(20F));
                     matrices.translate(0, 0.004, -0.02);
-                    RenderUtil.renderModel(getModelComponent(skin, SAFETY), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SAFETY);
                     matrices.rotate(Vector3f.XP.rotationDegrees(20F));
                     matrices.translate(0, -0.004, 0.02);
                     matrices.pop();
                 } else
-                    RenderUtil.renderModel(getModelComponent(skin, SAFETY), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SAFETY);
             }
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -80,14 +82,14 @@ public class mp9_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MP9AnimationController.INDEX_HANDLE, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, HANDLE), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HANDLE);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MP9AnimationController.INDEX_BULLET, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         }
         matrices.pop();
 
@@ -95,7 +97,9 @@ public class mp9_animation extends SkinAnimationModel {
         if (transformType.isFirstPerson()) {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MP9AnimationController.INDEX_BODY, transformType, matrices);
             Gun gun = ((GunItem) stack.getItem()).getGun();
-            float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+            int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+            int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+            float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
             if (Gun.hasAmmo(stack)) {
                 // Math provided by Bomb787 on GitHub and Curseforge!!!
@@ -105,7 +109,7 @@ public class mp9_animation extends SkinAnimationModel {
             }
             matrices.translate(0, 0, 0.025F);
         }
-        RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         matrices.pop();
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);

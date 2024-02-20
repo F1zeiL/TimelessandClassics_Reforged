@@ -43,6 +43,7 @@
     "size": 0.125,
     "speed": 35.5,
     "life": 12,
+    "pierce": 3,
     "trailLengthMultiplier": 3
   },
   "sounds": {
@@ -88,6 +89,16 @@
         "scale": 1.0,
         "doRenderMount": true,
         "doOnSlideMovement": false
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
+      },
+      "gunSkin": {
+        "yOffset": 7.799,
+        "zOffset": -2.35,
+        "scale": 0.00
       }
     }
   }

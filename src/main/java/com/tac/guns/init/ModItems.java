@@ -146,6 +146,8 @@ public class ModItems {
             () -> new TimelessGunItem(properties -> properties.group(GunMod.SMG), GunModifiers.P90_MOD));
     public static final RegistryObject<Item> C96 = REGISTER.register("c96",
             () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.C96_MOD));
+    public static final RegistryObject<Item> B93R = REGISTER.register("b93r",
+            () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.B93R_MOD));
 
     /*** Ammunition ***/
     public static final RegistryObject<Item> BULLET_MAGNUM = REGISTER.register("b_magnum", TimelessAmmoItem::new);
@@ -295,6 +297,20 @@ public class ModItems {
             () -> new ExtendedMagItem(ExtendedMag.create(new ResourceLocation("tac:large_extended_mag")),
                     new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
 
+    /*** AMMO_PLUG ***/
+    public static final RegistryObject<Item> AMMO_FMJ = REGISTER.register("ammo_fmj",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_fmj")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_HE = REGISTER.register("ammo_he",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_he")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_HP = REGISTER.register("ammo_hp",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_hp")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+    public static final RegistryObject<Item> AMMO_I = REGISTER.register("ammo_i",
+            () -> new AmmoPlugItem(AmmoPlug.create(new ResourceLocation("tac:ammo_i")),
+                    new Item.Properties().maxStackSize(1).group(GunMod.GROUP)));
+
     /*** Misc ***/
     public static final RegistryObject<Item> BLANK_SKIN_MOD_LVL1 = REGISTER.register("blank_skin_mod_lvl1",
             () -> new Item(new Item.Properties().maxStackSize(64).group(GunMod.SKINS)));
@@ -319,6 +335,8 @@ public class ModItems {
             () -> new GunSkinItem(GunSkin.create(new ResourceLocation("tac:skin_ak_spent_bullet")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
     public static final RegistryObject<Item> SKIN_MP9_THUNDER = REGISTER.register("skin_mp9_thunder",
             () -> new GunSkinItem(GunSkin.create(new ResourceLocation("tac:skin_mp9_thunder")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
+    public static final RegistryObject<Item> SKIN_GLOCK_17_BLOCK = REGISTER.register("skin_glock_17_block",
+            () -> new GunSkinItem(GunSkin.create(new ResourceLocation("tac:skin_glock_17_block")), new Item.Properties().maxStackSize(1).group(GunMod.SKINS)));
 
     /* Common Skin */
     public static final RegistryObject<Item> SKIN_BLACK = REGISTER.register("skin_black",

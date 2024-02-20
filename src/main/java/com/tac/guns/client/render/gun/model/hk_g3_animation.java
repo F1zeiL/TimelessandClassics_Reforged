@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 
 import static com.tac.guns.client.gunskin.ModelComponent.*;
@@ -40,19 +41,19 @@ public class hk_g3_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK_G3AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) != null) {
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_SCOPE), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_SCOPE);
             }
 
             if (Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack).getItem() == ModItems.BASIC_LASER.orElse(ItemStack.EMPTY.getItem())) {
                 RenderUtil.renderLaserModuleModel(getModelComponent(skin, LASER_BASIC_DEVICE), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, light, overlay);
                 RenderUtil.renderLaserModuleModel(getModelComponent(skin, LASER_BASIC), Gun.getAttachment(IAttachment.Type.SIDE_RAIL, stack), matrices, renderBuffer, 15728880, overlay); // 15728880 For fixed max light
-                RenderUtil.renderModel(getModelComponent(skin, RAIL_EXTENDED), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_EXTENDED);
             } else {
                 if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.orElse(ItemStack.EMPTY.getItem()) ||
                         Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.SPECIALISED_GRIP.orElse(ItemStack.EMPTY.getItem())) {
-                    RenderUtil.renderModel(getModelComponent(skin, RAIL_EXTENDED), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_EXTENDED);
                 } else {
-                    RenderUtil.renderModel(getModelComponent(skin, RAIL_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+                    renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RAIL_DEFAULT);
                 }
             }
 
@@ -62,8 +63,8 @@ public class hk_g3_animation extends SkinAnimationModel {
 
             renderStockWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, SIGHT_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, 15728880, overlay, skin, SIGHT_LIGHT);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
         }
         matrices.pop();
 
@@ -79,7 +80,9 @@ public class hk_g3_animation extends SkinAnimationModel {
             if (transformType.isFirstPerson()) {
                 controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK_G3AnimationController.INDEX_BOLT, transformType, matrices);
                 Gun gun = ((GunItem) stack.getItem()).getGun();
-                float cooldownOg = ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) < 0 ? 1 : ShootingHandler.get().getshootMsGap() / ShootingHandler.calcShootTickGap(gun.getGeneral().getRate());
+                int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+                int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+                float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
                 AnimationMeta reloadEmpty = controller.getAnimationFromLabel(GunAnimationController.AnimationLabel.RELOAD_EMPTY);
                 boolean shouldOffset = reloadEmpty != null && reloadEmpty.equals(controller.getPreviousAnimation()) && controller.isAnimationRunning();
@@ -92,23 +95,23 @@ public class hk_g3_animation extends SkinAnimationModel {
                     }
                 }
             }
-            RenderUtil.renderModel(getModelComponent(skin, BOLT), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT);
         }
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK_G3AnimationController.INDEX_PULL, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, PULL), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, PULL);
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK_G3AnimationController.INDEX_HANDLE, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, HANDLE), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, HANDLE);
         matrices.pop();
 
         matrices.push();
         controller.applySpecialModelTransform(getModelComponent(skin, BODY), HK_G3AnimationController.INDEX_BULLET, transformType, matrices);
-        RenderUtil.renderModel(getModelComponent(skin, BULLET), stack, matrices, renderBuffer, light, overlay);
+        renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BULLET);
         matrices.pop();
 
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);

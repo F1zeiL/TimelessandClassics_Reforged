@@ -44,7 +44,8 @@
     "size": 0.175,
     "speed": 42,
     "trailLengthMultiplier": 3.75,
-    "life": 11
+    "life": 11,
+    "pierce": 3
   },
   "sounds": {
     "fire": "tac:item.mrad_fire",
@@ -104,6 +105,11 @@
         "yOffset": 7.799,
         "zOffset": -2.35,
         "scale": 0.00
+      },
+      "ammoPlug": {
+        "yOffset": 1000.89,
+        "zOffset": 5.35,
+        "scale": 0.0
       }
     }
   }

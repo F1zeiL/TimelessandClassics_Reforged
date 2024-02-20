@@ -35,6 +35,28 @@ public interface IGunModifier
         return false;
     }
 
+    default boolean blastFire()
+    {
+        return false;
+    }
+
+    default boolean igniteFire()
+    {
+        return false;
+    }
+    default float modifyProjectileBlastDamage(float damage)
+    {
+        return damage;
+    }
+    default float modifyProjectileArmorIgnore(float ignore)
+    {
+        return ignore;
+    }
+    default float modifyProjectileHeadDamage(float damage)
+    {
+        return damage;
+    }
+
     /**
      * Modifies the sound radius of the fired sound. It should be noted that if multiple attachments
      * modify the sound radius, the radius given in the arguments may not be exactly the same as the
@@ -67,6 +89,11 @@ public interface IGunModifier
     default float additionalHeadshotDamage()
     {
         return 0.0F;
+    }
+
+    default int additionalPierce()
+    {
+        return 0;
     }
 
     /**

@@ -4,24 +4,19 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.tac.guns.Config;
 import com.tac.guns.Reference;
-import com.tac.guns.client.GunRenderType;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.handler.AimingHandler;
 import com.tac.guns.client.handler.GunRenderingHandler;
-import com.tac.guns.client.handler.ShootingHandler;
 import com.tac.guns.client.handler.command.ScopeEditor;
 import com.tac.guns.client.handler.command.data.ScopeData;
 import com.tac.guns.client.render.animation.P90AnimationController;
-import com.tac.guns.client.render.animation.UDP9AnimationController;
 import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModItems;
-import com.tac.guns.item.GunItem;
 import com.tac.guns.item.attachment.IAttachment;
-import com.tac.guns.util.OptifineHelper;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -35,7 +30,6 @@ import net.minecraft.util.math.vector.Matrix3f;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 
-import static com.tac.guns.client.SpecialModels.MINI_DOT_BASE;
 import static com.tac.guns.client.gunskin.ModelComponent.*;
 
 public class p90_animation extends SkinAnimationModel {
@@ -51,7 +45,7 @@ public class p90_animation extends SkinAnimationModel {
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), P90AnimationController.INDEX_BODY, transformType, matrices);
             if (Gun.getScope(stack) == null) {
-                RenderUtil.renderModel(getModelComponent(skin, SCOPE_DEFAULT), stack, matrices, renderBuffer, light, overlay);
+                renderComponent(stack, matrices, renderBuffer, light, overlay, skin, SCOPE_DEFAULT);
 
                 //scope dot render
                 matrices.translate(0, 0.017, 0);
@@ -115,14 +109,14 @@ public class p90_animation extends SkinAnimationModel {
                             aimed = true;
 
                         GunRenderingHandler.get().applyDelayedSwayTransforms(matrices, Minecraft.getInstance().player, v, -0.075f);
-                        GunRenderingHandler.get().applyBobbingTransforms(matrices,true, 0.1f);
-                        GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
-                        GunRenderingHandler.get().applyJumpingTransforms(matrices, v,-0.05f);
+                        GunRenderingHandler.get().applyBobbingTransforms(matrices, true, 0.1f);
+                        //GunRenderingHandler.get().applyNoiseMovementTransform(matrices, -0.1f);
+                        GunRenderingHandler.get().applyJumpingTransforms(matrices, v, -0.05f);
 
                         matrices.translate(0, 0, -0.35);
-                        matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.15f));
-                        matrices.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.15f));
-                        matrices.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.25F));
+                        matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.2f));
+                        matrices.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.2f));
+                        matrices.rotate(Vector3f.XN.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.05F));
                         matrices.translate(0, 0, 0.35);
 
                         int lightmapValue = 15728880;
@@ -149,22 +143,22 @@ public class p90_animation extends SkinAnimationModel {
 
             renderBarrelWithDefault(stack, matrices, renderBuffer, light, overlay, skin);
 
-            RenderUtil.renderModel(getModelComponent(skin, BODY), stack, matrices, renderBuffer, light, overlay);
-            RenderUtil.renderModel(getModelComponent(skin, RELEASE), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BODY);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, RELEASE);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), P90AnimationController.INDEX_MAG, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, MAG), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, MAG);
         }
         matrices.pop();
 
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), P90AnimationController.INDEX_PULL, transformType, matrices);
-            RenderUtil.renderModel(getModelComponent(skin, PULL), stack, matrices, renderBuffer, light, overlay);
+            renderComponent(stack, matrices, renderBuffer, light, overlay, skin, PULL);
         }
         matrices.pop();
 

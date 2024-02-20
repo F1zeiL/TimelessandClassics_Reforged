@@ -1,13 +1,13 @@
 package com.tac.guns.item.attachment.impl;
 
 import com.tac.guns.Reference;
-import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.common.attachments.CustomModifierData;
+import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.common.attachments.PerkTipsBuilder;
 import com.tac.guns.common.attachments.Perks;
 import com.tac.guns.interfaces.IGunModifier;
-import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.item.attachment.IAttachment;
+import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +20,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public abstract class Attachment {
     public static boolean hasCustomModifier(ItemStack stack){
         return stack!=null && stack.getTag()!=null && stack.getTag().contains(CUSTOM_MODIFIER,Constants.NBT.TAG_STRING);
     }
-    public static CustomModifierData getCustomModifier(ItemStack stack, boolean isLocal){
+    public static CustomModifierData getCustomModifier(ItemStack stack){
         if(!(stack.getItem() instanceof IAttachment)){
             return null;
         }
@@ -59,8 +60,10 @@ public abstract class Attachment {
                 if(tmp!=null) loc = tmp;
             }
         }
+
         if(loc!=null){
-            if(isLocal){
+            boolean side = Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER;
+            if(side){
                 return NetworkModifierManager.getLocalCustomModifier(loc);
             }else {
                 return NetworkModifierManager.getCustomModifier(loc);
@@ -77,10 +80,10 @@ public abstract class Attachment {
      * @param attachment the attachment about to apply
      * @param gun the gun item
      * */
-    public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun,boolean isLocal){
+    public static boolean canApplyOn(ItemStack attachment, TimelessGunItem gun){
         if(gun.getRegistryName()==null)return false;
 
-        CustomModifierData data = getCustomModifier(attachment,isLocal);
+        CustomModifierData data = getCustomModifier(attachment);
         if(data!=null){
             return data.canApplyOn(gun);
         }
@@ -105,12 +108,18 @@ public abstract class Attachment {
     public static void addInformationEvent(ItemTooltipEvent event) {
         ItemStack stack= event.getItemStack();
         List<ITextComponent> tooltip = event.getToolTip();
-        CustomModifierData info = getCustomModifier(stack,true);
+        CustomModifierData info = getCustomModifier(stack);
         if(info!=null){
             List<ITextComponent> perks = new PerkTipsBuilder(info)
                     .add(Perks.silencedFire)
+                    .add(Perks.blastFire)
+                    .add(Perks.igniteFire)
+                    .addPercentage(Perks.modifyProjectileBlastDamage)
+                    .addPercentage(Perks.modifyProjectileArmorIgnore)
+                    .addPercentage(Perks.modifyProjectileHeadDamage)
                     .addPercentage(Perks.modifyFireSoundRadius)
                     .add(Perks.additionalDamage)
+                    .add(Perks.additionalPierce)
                     .add(Perks.additionalHeadshotDamage)
                     .addPercentage(Perks.modifyProjectileDamage)
                     .addPercentage(Perks.modifyProjectileSpeed)

@@ -4,9 +4,6 @@ import com.tac.guns.client.SpecialModel;
 import net.minecraft.util.ResourceLocation;
 
 public class DefaultSkin extends GunSkin{
-    public DefaultSkin(String gun) {
-        super("default",gun,null);
-    }
 
     public DefaultSkin(ResourceLocation gun) {
         super(new ResourceLocation(gun.getNamespace()+":default"),gun,null);
