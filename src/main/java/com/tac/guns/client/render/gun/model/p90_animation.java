@@ -114,9 +114,9 @@ public class p90_animation extends SkinAnimationModel {
                         GunRenderingHandler.get().applyJumpingTransforms(matrices, v, -0.05f);
 
                         matrices.translate(0, 0, -0.35);
-                        matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.15f));
-                        matrices.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.15f));
-                        matrices.rotate(Vector3f.XP.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.25F));
+                        matrices.rotate(Vector3f.YP.rotationDegrees(GunRenderingHandler.get().newSwayYaw * 0.2f));
+                        matrices.rotate(Vector3f.ZN.rotationDegrees(GunRenderingHandler.get().newSwayPitch * 0.2f));
+                        matrices.rotate(Vector3f.XN.rotationDegrees((GunRenderingHandler.get().recoilLift * GunRenderingHandler.get().recoilReduction) * 0.05F));
                         matrices.translate(0, 0, 0.35);
 
                         int lightmapValue = 15728880;
