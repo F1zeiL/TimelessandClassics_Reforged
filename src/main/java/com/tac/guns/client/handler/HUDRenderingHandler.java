@@ -281,8 +281,8 @@ public class HUDRenderingHandler extends AbstractGui {
                     stack.push();
                     {
                         float scale = Config.CLIENT.weaponGUI.weaponTypeIcon.weaponIconSize.get().floatValue() * 0.7f;
-                        stack.translate(anchorPointX - 8 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get(),
-                                anchorPointY - 25 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.y.get(), 0);
+                        stack.translate(anchorPointX - 8 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.x.get() - 31.46,
+                                anchorPointY - 25 - 90 * scale + Config.CLIENT.weaponGUI.weaponTypeIcon.y.get() + 18.21, 0);
                         stack.scale(scale, scale, scale);
                         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
                         Minecraft.getInstance().getTextureManager().bindTexture(skin.getIcon());
@@ -304,7 +304,7 @@ public class HUDRenderingHandler extends AbstractGui {
             stack.push();
             {
                 stack.translate(anchorPointX - (fireModeSize * 2) / 4F, anchorPointY - (fireModeSize * 2) / 5F * 3F, 0);
-                stack.translate(-fireModeSize + (-0.7) + (-Config.CLIENT.weaponGUI.weaponFireMode.x.get().floatValue()), -fireModeSize + 53.2 + (-Config.CLIENT.weaponGUI.weaponFireMode.y.get().floatValue()), 0);
+                stack.translate(-fireModeSize + (-0.7) + (-Config.CLIENT.weaponGUI.weaponFireMode.x.get().floatValue() + 34.74), -fireModeSize + 53.2 + (-Config.CLIENT.weaponGUI.weaponFireMode.y.get().floatValue()), 0);
 
                 stack.translate(20, 5, 0);
                 int fireMode;
@@ -368,7 +368,7 @@ public class HUDRenderingHandler extends AbstractGui {
             stack.push();
             {
                 stack.translate(
-                        (anchorPointX - (counterSize * 32) / 2) + (-Config.CLIENT.weaponGUI.weaponAmmoCounter.x.get().floatValue()),
+                        (anchorPointX - (counterSize * 32) / 2) + (-Config.CLIENT.weaponGUI.weaponAmmoCounter.x.get().floatValue() + 39.74),
                         (anchorPointY - (counterSize * 32) / 4) + (-Config.CLIENT.weaponGUI.weaponAmmoCounter.y.get().floatValue()),
                         0
                 );
@@ -403,7 +403,7 @@ public class HUDRenderingHandler extends AbstractGui {
                     {
                         stack.scale(0.56f, 0.56f, 0.56f);
                         stack.translate(
-                                (3.7 - 1.0),
+                                (3.7 - 6.0),
                                 (3.4 - 4.5),
                                 0);
                         drawString(stack, Minecraft.getInstance().fontRenderer, reserveAmmo, 0, 0, 0xffffff); // Reserve ammo
