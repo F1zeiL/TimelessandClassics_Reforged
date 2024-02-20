@@ -11,8 +11,5 @@
     "tac:m60",
     "tac:m249",
     "tac:m1014"
-  ],
-  "extraTooltip": [
-    "tooltip.extra.ammo_plug"
   ]
 }

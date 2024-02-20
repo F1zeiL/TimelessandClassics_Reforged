@@ -3,8 +3,5 @@
     "modifyProjectileSpeed": 0.85,
     "modifyProjectileArmorIgnore": 0.6,
     "modifyProjectileDamage": 1.1
-  },
-  "extraTooltip": [
-    "tooltip.extra.ammo_plug"
-  ]
+  }
 }

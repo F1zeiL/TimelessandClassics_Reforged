@@ -2,8 +2,5 @@
   "general": {
     "modifyProjectileArmorIgnore": 0.8,
     "igniteFire": true
-  },
-  "extraTooltip": [
-    "tooltip.extra.ammo_plug"
-  ]
+  }
 }
