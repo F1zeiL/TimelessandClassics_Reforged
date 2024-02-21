@@ -35,6 +35,7 @@
     "size": 0.15,
     "speed": 19.5,
     "life": 13,
+    "pierce": 2,
     "trailLengthMultiplier": 2.75
   },
   "reloads": {

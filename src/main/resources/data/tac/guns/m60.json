@@ -44,7 +44,8 @@
     "size": 0.15,
     "speed": 24.5,
     "trailLengthMultiplier": 3,
-    "life": 11
+    "life": 11,
+    "pierce": 2
   },
   "sounds": {
     "fire": "tac:item.m60_fire",
