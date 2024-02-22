@@ -124,7 +124,7 @@ public class ServerPlayHandler {
                     //  total bullets before hitting max accuracy is tracked per weapon.
                     //m4 og spread 2.925
                     int count;
-                    if (modifiedGun.getDisplay().getWeaponType() == WeaponType.SG && (modifiedGun.getProjectile().isHasBlastDamage() || GunModifierHelper.isBlastFire(heldItem)))
+                    if (modifiedGun.getDisplay().getWeaponType() == WeaponType.SG && (modifiedGun.getProjectile().isHasBlastDamage() || GunModifierHelper.getHeWeight(heldItem) > -1))
                         count = 1;
                     else
                         count = modifiedGun.getGeneral().getProjectileAmount();

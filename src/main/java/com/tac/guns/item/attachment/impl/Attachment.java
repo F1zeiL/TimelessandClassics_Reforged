@@ -112,8 +112,6 @@ public abstract class Attachment {
         if(info!=null){
             List<ITextComponent> perks = new PerkTipsBuilder(info)
                     .add(Perks.silencedFire)
-                    .add(Perks.blastFire)
-                    .add(Perks.igniteFire)
                     .addPercentage(Perks.modifyProjectileBlastDamage)
                     .addPercentage(Perks.modifyProjectileArmorIgnore)
                     .addPercentage(Perks.modifyProjectileHeadDamage)

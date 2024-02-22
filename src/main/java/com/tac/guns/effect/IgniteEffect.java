@@ -1,5 +1,6 @@
 package com.tac.guns.effect;
 
+import com.tac.guns.Config;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -18,7 +19,7 @@ public class IgniteEffect extends Effect {
     public IgniteEffect(EffectType typeIn, int liquidColorIn)
     {
         super(typeIn, liquidColorIn);
-        addAttributesModifier(Attributes.MOVEMENT_SPEED, IgniteEffect.IGNITE_UUID.toString(), -0.1F, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        addAttributesModifier(Attributes.MOVEMENT_SPEED, IgniteEffect.IGNITE_UUID.toString(), -Config.COMMON.gameplay.decelerationFromTacIgnite.get(), AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
     @Override

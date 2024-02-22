@@ -49,6 +49,24 @@
     "pierce": 4,
     "trailLengthMultiplier": 3.75
   },
+  "ammoPlugEffect": {
+    "fmjModifyArmorIgnore": [120, 120, 120],
+    "fmjModifyDamage": [95, 95, 95],
+    "fmjModifySpeed": [100, 100, 100],
+    "heModifyArmorIgnore": [100, 100, 100],
+    "heModifyDamage": [95, 95, 95],
+    "heModifySpeed": [100, 100, 100],
+    "heModifyBlastDamage": [140, 140, 140],
+    "heModifyBlastRange": [100, 100, 100],
+    "hpModifyArmorIgnore": [60, 60, 60],
+    "hpModifyDamage": [120, 120, 120],
+    "hpModifySpeed": [85, 85, 85],
+    "iModifyArmorIgnore": [80, 80, 80],
+    "iModifyDamage": [100, 100, 100],
+    "iModifySpeed": [100, 100, 100],
+    "igniteTick": [20, 20, 20],
+    "igniteDamage": [1, 1, 1]
+  },
   "sounds": {
     "fire": "tac:item.m82a2_fire",
     "reloadNormal": "tac:animation.m82a2_reload_norm",

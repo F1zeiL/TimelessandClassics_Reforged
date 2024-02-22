@@ -1,6 +1,10 @@
 {
   "general": {
-    "modifyProjectileArmorIgnore": 1.2,
-    "modifyProjectileDamage": 0.95
-  }
+    "fmjAmmo": 0
+  },
+  "extraTooltip": [
+    "tooltip.extra.fmjAmmo",
+    "tooltip.extra.modifyArmorIgnore",
+    "tooltip.extra.modifyDamageDown"
+  ]
 }

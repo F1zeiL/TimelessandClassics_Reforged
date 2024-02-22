@@ -310,6 +310,46 @@ public interface IGunModifier
     /**
      * Return's the index value to obtain
      *
+     * @return fmj ammo available to the weapon when loaded
+     */
+    default int fmjAmmo()
+    {
+        return -1;
+    }
+
+    /**
+     * Return's the index value to obtain
+     *
+     * @return he ammo available to the weapon when loaded
+     */
+    default int heAmmo()
+    {
+        return -1;
+    }
+
+    /**
+     * Return's the index value to obtain
+     *
+     * @return hp ammo available to the weapon when loaded
+     */
+    default int hpAmmo()
+    {
+        return -1;
+    }
+
+    /**
+     * Return's the index value to obtain
+     *
+     * @return i ammo available to the weapon when loaded
+     */
+    default int iAmmo()
+    {
+        return -1;
+    }
+
+    /**
+     * Return's the index value to obtain
+     *
      * @return additional skin code to render the skin
      */
     default String additionalSkin()

@@ -359,6 +359,8 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue gunOfKindness;
         public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
 
+        public final ForgeConfigSpec.DoubleValue decelerationFromTacIgnite;
+
         public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
             {
@@ -397,6 +399,7 @@ public class Config {
                 this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
                 this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
                 this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
+                this.decelerationFromTacIgnite = builder.comment("True if you want to decelerate the player when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
             }
             builder.pop();
         }

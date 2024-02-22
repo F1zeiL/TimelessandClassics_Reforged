@@ -1,12 +1,14 @@
 {
   "general": {
-    "modifyProjectileBlastDamage": 1.4,
-    "modifyProjectileDamage": 0.95,
-    "blastFire": true
+    "heAmmo": 0
   },
+  "extraTooltip": [
+    "tooltip.extra.heAmmo",
+    "tooltip.extra.modifyBlastDamage",
+    "tooltip.extra.modifyDamageDown"
+  ],
   "hideLimitInfo": false,
   "canApplyOn": [
-    "tac:rpg7",
     "tac:m82a2",
     "tac:m60",
     "tac:m249",

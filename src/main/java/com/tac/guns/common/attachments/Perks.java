@@ -29,16 +29,6 @@ public class Perks {
                     "perk.tac.silencedv2", CustomModifierData.General::isSilencedFire)
     );
 
-    public static BooleanPerk blastFire = registerPerk(
-            new BooleanPerk("blastFire",
-                    "perk.tac.blastv2", CustomModifierData.General::isBlastFire)
-    );
-
-    public static BooleanPerk igniteFire = registerPerk(
-            new BooleanPerk("igniteFire",
-                    "perk.tac.ignitev2", CustomModifierData.General::isIgniteFire)
-    );
-
     public static FloatPerk modifyProjectileBlastDamage = registerPerk(
             new FloatPerk("modifyProjectileBlastDamage",
                     "perk.tac.modified_blast_damage.positivev2","perk.tac.modified_blast_damage.negativev2",
@@ -132,6 +122,26 @@ public class Perks {
     public static IntPerk additionalAmmunition = registerPerk(
             new IntPerk("additionalAmmunition","","",null,
                     CustomModifierData.General::getAdditionalAmmunition)
+    );
+
+    public static IntPerk fmjAmmo = registerPerk(
+            new IntPerk("fmjAmmo","","",null,
+                    CustomModifierData.General::getFmjAmmo)
+    );
+
+    public static IntPerk heAmmo = registerPerk(
+            new IntPerk("heAmmo","","",null,
+                    CustomModifierData.General::getHeAmmo)
+    );
+
+    public static IntPerk hpAmmo = registerPerk(
+            new IntPerk("hpAmmo","","",null,
+                    CustomModifierData.General::getHpAmmo)
+    );
+
+    public static IntPerk iAmmo = registerPerk(
+            new IntPerk("iAmmo","","",null,
+                    CustomModifierData.General::getIAmmo)
     );
 
     public static FloatPerk additionalWeaponWeight = registerPerk(

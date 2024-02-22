@@ -86,8 +86,6 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
     public static class General implements INBTSerializable<CompoundNBT>{
 
         @Optional private boolean silencedFire = false;
-        @Optional private boolean blastFire = false;
-        @Optional private boolean igniteFire = false;
         @Optional private float modifyProjectileBlastDamage = 1;
         @Optional private float modifyProjectileArmorIgnore = 1;
         @Optional private float modifyProjectileHeadDamage = 1;
@@ -111,16 +109,14 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         @Optional private double modifyMuzzleFlashSize = 1;
         @Optional private float modifyWeaponWeight = 0;
         @Optional private float kickModifier = 1;
+        @Optional private int fmjAmmo = -1;
+        @Optional private int heAmmo = -1;
+        @Optional private int hpAmmo = -1;
+        @Optional private int iAmmo = -1;
 
 
         public boolean isSilencedFire() {
             return silencedFire;
-        }
-        public boolean isBlastFire() {
-            return blastFire;
-        }
-        public boolean isIgniteFire() {
-            return igniteFire;
         }
         public float getModifyProjectileBlastDamage() {
             return modifyProjectileBlastDamage;
@@ -190,6 +186,18 @@ public class CustomModifierData implements INBTSerializable<CompoundNBT> {
         }
         public float getKickModifier() {
             return kickModifier;
+        }
+        public int getFmjAmmo() {
+            return fmjAmmo;
+        }
+        public int getHeAmmo() {
+            return heAmmo;
+        }
+        public int getHpAmmo() {
+            return hpAmmo;
+        }
+        public int getIAmmo() {
+            return iAmmo;
         }
 
         @Override

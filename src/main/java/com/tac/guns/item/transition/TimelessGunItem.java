@@ -71,6 +71,7 @@ public class TimelessGunItem extends GunItem {
         additionalDamage = modifiedGun.getProjectile().getDamage();
         additionalDamage = GunModifierHelper.getModifiedProjectileDamage(stack, additionalDamage);
         additionalDamage = GunEnchantmentHelper.getAcceleratorDamage(stack, additionalDamage);
+        additionalDamage = GunModifierHelper.getAmmoModifyDamage(stack, modifiedGun, additionalDamage);
         tooltip.add((new TranslationTextComponent("info.tac.damage", TextFormatting.GOLD + ItemStack.DECIMALFORMAT.format(additionalDamage) + additionalDamageText)).mergeStyle(TextFormatting.DARK_GRAY));
 
         if (tagCompound != null) {
@@ -92,8 +93,8 @@ public class TimelessGunItem extends GunItem {
         if (isShift) {
             GunItem gun = (GunItem) stack.getItem();
             if (tagCompound != null) {
-                float armorPen = GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * gun.getGun().getProjectile().getGunArmorIgnore())) >= 0 ?
-                        Math.min(GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * gun.getGun().getProjectile().getGunArmorIgnore() * 100)), 100F) : 0F;
+                float armorPen = GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()))) >= 0 ?
+                        Math.min(GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()) * 100)), 100F) : 0F;
                 tooltip.add((new TranslationTextComponent("info.tac.armorPen", new TranslationTextComponent(String.format("%.1f", armorPen) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_AQUA)));
 
                 float headDamgeModifier = GunModifierHelper.getModifiedProjectileHeadDamage(stack, (float) (Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())) >= 0 ?

@@ -494,5 +494,20 @@
   "tooltip.extra.x8": "§78x Zoom",
   "tooltip.extra.allow_8x_scope": "§6Allow to use on deagle, DMRs and Sniper Rifles",
   "tooltip.extra.ammo_plug": "§eOnly can use while current ammo < default ammo",
-  "tooltip.extra.mag": "§eOnly can use while current mag is empty"
+  "tooltip.extra.mag": "§eOnly can use while current mag is empty",
+
+  "tooltip.extra.fmjAmmo" : "§ePierce",
+  "tooltip.extra.heAmmo" : "§eBlast",
+  "tooltip.extra.hpAmmo" : "§eBlunt",
+  "tooltip.extra.iAmmo" : "§eIgnite",
+  "tooltip.extra.modifyArmorIgnore" : "§a+Ignore Armor",
+  "tooltip.extra.modifyDamage" : "§a+Damage",
+  "tooltip.extra.modifySpeed" : "§a+Projectile Speed",
+  "tooltip.extra.modifyBlastDamage" : "§a+Blast Damage",
+  "tooltip.extra.modifyBlastRange" : "§a+Blast Range",
+  "tooltip.extra.modifyArmorIgnoreDown" : "§c-Ignore Armor",
+  "tooltip.extra.modifyDamageDown" : "§c-Damage",
+  "tooltip.extra.modifySpeedDown" : "§c-Projectile Speed",
+  "tooltip.extra.modifyBlastDamageDown" : "§c-Blast Damage",
+  "tooltip.extra.modifyBlastRangeDown" : "§c-Blast Range"
 }

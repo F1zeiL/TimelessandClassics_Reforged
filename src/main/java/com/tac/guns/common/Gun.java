@@ -32,6 +32,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
     private General general = new General();
     private Reloads reloads = new Reloads();
     private Projectile projectile = new Projectile();
+    private AmmoPlugEffect ammoPlugEffect = new AmmoPlugEffect();
     private Sounds sounds = new Sounds();
     private Display display = new Display();
     private Modules modules = new Modules();
@@ -46,6 +47,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
 
     public Projectile getProjectile() {
         return this.projectile;
+    }
+
+    public AmmoPlugEffect getAmmoPlugEffect() {
+        return this.ammoPlugEffect;
     }
 
     public Sounds getSounds() {
@@ -716,10 +721,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private int pierce = 1;
         @Optional
-        private int igniteTick = 20;
-        @Optional
-        private int igniteDamage = 1;
-        @Optional
         private boolean gravity = true;
         @Optional
         private boolean damageReduceOverLife = true;
@@ -761,8 +762,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putDouble("Speed", this.speed);
             tag.putInt("Life", this.life);
             tag.putInt("Pierce", this.pierce);
-            tag.putInt("IgniteTick", this.igniteTick);
-            tag.putInt("IgniteDamage", this.igniteDamage);
             tag.putBoolean("Gravity", this.gravity);
             tag.putBoolean("DamageReduceOverLife", this.damageReduceOverLife);
             tag.putInt("TrailColor", this.trailColor);
@@ -830,12 +829,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("Pierce", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.pierce = tag.getInt("Pierce");
             }
-            if (tag.contains("IgniteTick", Constants.NBT.TAG_ANY_NUMERIC)) {
-                this.igniteTick = tag.getInt("IgniteTick");
-            }
-            if (tag.contains("IgniteDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
-                this.igniteDamage = tag.getInt("IgniteDamage");
-            }
             if (tag.contains("Gravity", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.gravity = tag.getBoolean("Gravity");
             }
@@ -882,8 +875,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             projectile.speed = this.speed;
             projectile.life = this.life;
             projectile.pierce = this.pierce;
-            projectile.igniteTick = this.igniteTick;
-            projectile.igniteDamage = this.igniteDamage;
             projectile.gravity = this.gravity;
             projectile.damageReduceOverLife = this.damageReduceOverLife;
             projectile.trailColor = this.trailColor;
@@ -1024,20 +1015,6 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         }
 
         /**
-         * @return The total ignite time a projectile cause
-         */
-        public int getIgniteTick() {
-            return this.igniteTick;
-        }
-
-        /**
-         * @return The ignite damage per time (10 ticks) a projectile cause
-         */
-        public int getIgniteDamage() {
-            return this.igniteDamage;
-        }
-
-        /**
          * @return If gravity should be applied to the projectile
          */
         public boolean isGravity() {
@@ -1092,6 +1069,206 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          */
         public float getBluntDamagePercentage() {
             return this.bluntDamagePercentage;
+        }
+    }
+
+    public static class AmmoPlugEffect implements INBTSerializable<CompoundNBT> {
+        @Optional
+        private int[] fmjModifyArmorIgnore = new int[]{120, 120, 120};
+        @Optional
+        private int[] fmjModifyDamage = new int[]{95, 95, 95};
+        @Optional
+        private int[] fmjModifySpeed = new int[]{100, 100, 100};
+        @Optional
+        private int[] heModifyArmorIgnore = new int[]{100, 100, 100};
+        @Optional
+        private int[] heModifyDamage = new int[]{95, 95, 95};
+        @Optional
+        private int[] heModifySpeed = new int[]{100, 100, 100};
+        @Optional
+        private int[] heModifyBlastDamage = new int[]{140, 140, 140};
+        @Optional
+        private int[] heModifyBlastRange = new int[]{100, 100, 100};
+        @Optional
+        private int[] hpModifyArmorIgnore = new int[]{60, 60, 60};
+        @Optional
+        private int[] hpModifyDamage = new int[]{120, 120, 120};
+        @Optional
+        private int[] hpModifySpeed = new int[]{85, 85, 85};
+        @Optional
+        private int[] iModifyArmorIgnore = new int[]{80, 80, 80};
+        @Optional
+        private int[] iModifyDamage = new int[]{100, 100, 100};
+        @Optional
+        private int[] iModifySpeed = new int[]{100, 100, 100};
+        @Optional
+        private int[] igniteTick = new int[]{20, 20, 20};
+        @Optional
+        private int[] igniteDamage = new int[]{1, 1, 1};
+
+        @Override
+        public CompoundNBT serializeNBT() {
+            CompoundNBT tag = new CompoundNBT();
+            tag.putIntArray("FmjModifyArmorIgnore", this.fmjModifyArmorIgnore);
+            tag.putIntArray("FmjModifyDamage", this.fmjModifyDamage);
+            tag.putIntArray("FmjModifySpeed", this.fmjModifySpeed);
+            tag.putIntArray("HeModifyArmorIgnore", this.heModifyArmorIgnore);
+            tag.putIntArray("HeModifyDamage", this.heModifyDamage);
+            tag.putIntArray("HeModifySpeed", this.heModifySpeed);
+            tag.putIntArray("HeModifyBlastDamage", this.heModifyBlastDamage);
+            tag.putIntArray("HeModifyBlastRange", this.heModifyBlastRange);
+            tag.putIntArray("HpModifyArmorIgnore", this.hpModifyArmorIgnore);
+            tag.putIntArray("HpModifyDamage", this.hpModifyDamage);
+            tag.putIntArray("HpModifySpeed", this.hpModifySpeed);
+            tag.putIntArray("IModifyArmorIgnore", this.iModifyArmorIgnore);
+            tag.putIntArray("IModifyDamage", this.iModifyDamage);
+            tag.putIntArray("IModifySpeed", this.iModifySpeed);
+            tag.putIntArray("IgniteTick", this.igniteTick);
+            tag.putIntArray("IgniteDamage", this.igniteDamage);
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(CompoundNBT tag) {
+            if (tag.contains("FmjModifyArmorIgnore", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.fmjModifyArmorIgnore = tag.getIntArray("FmjModifyArmorIgnore");
+            }
+            if (tag.contains("FmjModifyDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.fmjModifyDamage = tag.getIntArray("FmjModifyDamage");
+            }
+            if (tag.contains("FmjModifySpeed", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.fmjModifySpeed = tag.getIntArray("FmjModifySpeed");
+            }
+            if (tag.contains("HeModifyArmorIgnore", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heModifyArmorIgnore = tag.getIntArray("HeModifyArmorIgnore");
+            }
+            if (tag.contains("HeModifyDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heModifyDamage = tag.getIntArray("HeModifyDamage");
+            }
+            if (tag.contains("HeModifySpeed", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heModifySpeed = tag.getIntArray("HeModifySpeed");
+            }
+            if (tag.contains("HeModifyBlastDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heModifyBlastDamage = tag.getIntArray("HeModifyBlastDamage");
+            }
+            if (tag.contains("HeModifyBlastRange", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heModifyBlastRange = tag.getIntArray("HeModifyBlastRange");
+            }
+            if (tag.contains("HpModifyArmorIgnore", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.hpModifyArmorIgnore = tag.getIntArray("HpModifyArmorIgnore");
+            }
+            if (tag.contains("HpModifyDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.hpModifyDamage = tag.getIntArray("HpModifyDamage");
+            }
+            if (tag.contains("HpModifySpeed", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.hpModifySpeed = tag.getIntArray("HpModifySpeed");
+            }
+            if (tag.contains("IModifyArmorIgnore", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.iModifyArmorIgnore = tag.getIntArray("IModifyArmorIgnore");
+            }
+            if (tag.contains("IModifyDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.iModifyDamage = tag.getIntArray("IModifyDamage");
+            }
+            if (tag.contains("IModifySpeed", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.iModifySpeed = tag.getIntArray("IModifySpeed");
+            }
+            if (tag.contains("IgniteTick", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.igniteTick = tag.getIntArray("IgniteTick");
+            }
+            if (tag.contains("IgniteDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.igniteDamage = tag.getIntArray("IgniteDamage");
+            }
+        }
+
+        /**
+         * @return A copy of the general get
+         */
+        public AmmoPlugEffect copy() {
+            AmmoPlugEffect ammoPlugEffect = new AmmoPlugEffect();
+            ammoPlugEffect.fmjModifyArmorIgnore = this.fmjModifyArmorIgnore;
+            ammoPlugEffect.fmjModifyDamage = this.fmjModifyDamage;
+            ammoPlugEffect.fmjModifySpeed = this.fmjModifySpeed;
+            ammoPlugEffect.heModifyArmorIgnore = this.heModifyArmorIgnore;
+            ammoPlugEffect.heModifyDamage = this.heModifyDamage;
+            ammoPlugEffect.heModifySpeed = this.heModifySpeed;
+            ammoPlugEffect.heModifyBlastDamage = this.heModifyBlastDamage;
+            ammoPlugEffect.heModifyBlastRange = this.heModifyBlastRange;
+            ammoPlugEffect.hpModifyArmorIgnore = this.hpModifyArmorIgnore;
+            ammoPlugEffect.hpModifyDamage = this.hpModifyDamage;
+            ammoPlugEffect.hpModifySpeed = this.hpModifySpeed;
+            ammoPlugEffect.iModifyArmorIgnore = this.iModifyArmorIgnore;
+            ammoPlugEffect.iModifyDamage = this.iModifyDamage;
+            ammoPlugEffect.iModifySpeed = this.iModifySpeed;
+            ammoPlugEffect.igniteTick = this.igniteTick;
+            ammoPlugEffect.igniteDamage = this.igniteDamage;
+            return ammoPlugEffect;
+        }
+
+        /**
+         * @return ammo plug effects
+         */
+        public int[] getFmjModifyArmorIgnore() {
+            return this.fmjModifyArmorIgnore;
+        }
+
+        public int[] getFmjModifyDamage() {
+            return this.fmjModifyDamage;
+        }
+
+        public int[] getFmjModifySpeed() {
+            return this.fmjModifySpeed;
+        }
+
+        public int[] getHeModifyArmorIgnore() {
+            return this.heModifyArmorIgnore;
+        }
+
+        public int[] getHeModifyDamage() {
+            return this.heModifyDamage;
+        }
+
+        public int[] getHeModifySpeed() {
+            return this.heModifySpeed;
+        }
+
+        public int[] getHeModifyBlastDamage() {
+            return this.heModifyBlastDamage;
+        }
+
+        public int[] getHeModifyBlastRange() {
+            return this.heModifyBlastRange;
+        }
+
+        public int[] getHpModifyArmorIgnore() {
+            return this.hpModifyArmorIgnore;
+        }
+
+        public int[] getHpModifyDamage() {
+            return this.hpModifyDamage;
+        }
+
+        public int[] getHpModifySpeed() {
+            return this.hpModifySpeed;
+        }
+
+        public int[] getIModifyArmorIgnore() {
+            return this.iModifyArmorIgnore;
+        }
+
+        public int[] getIModifyDamage() {
+            return this.iModifyDamage;
+        }
+
+        public int[] getIModifySpeed() {
+            return this.iModifySpeed;
+        }
+
+        public int[] getIgniteTick() {
+            return this.igniteTick;
+        }
+
+        public int[] getIgniteDamage() {
+            return this.igniteDamage;
         }
     }
 

@@ -1,6 +1,9 @@
 {
   "general": {
-    "modifyProjectileArmorIgnore": 0.8,
-    "igniteFire": true
-  }
+    "iAmmo": 0
+  },
+  "extraTooltip": [
+    "tooltip.extra.iAmmo",
+    "tooltip.extra.modifyArmorIgnoreDown"
+  ]
 }

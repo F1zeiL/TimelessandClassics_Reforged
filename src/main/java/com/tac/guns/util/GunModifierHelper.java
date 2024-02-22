@@ -79,6 +79,17 @@ public class GunModifierHelper
         return output;
     }
 
+    public static int applyAmmoAdditional(ItemStack weapon, int input, IntPerk p){
+        int output = input;
+        for(int i = 0; i < SlotType.values().length; i++) {
+            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
+            if (modifier != null) {
+                output = Math.max(output, p.getValue(modifier));
+            }
+        }
+        return output;
+    }
+
     @Nullable
     public static CustomModifierData getCustomModifier(ItemStack weapon, SlotType type){
         if(weapon.getItem() instanceof TimelessGunItem){
@@ -300,48 +311,6 @@ public class GunModifierHelper
         for(IGunModifier modifier : modifiers)
         {
             if(modifier.silencedFire())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isBlastFire(ItemStack weapon)
-    {
-        for(int i = 0; i < SlotType.values().length; i++) {
-            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
-            if (modifier != null) {
-                if(modifier.getGeneral().isBlastFire()){
-                    return true;
-                }
-            }
-        }
-        IGunModifier[] modifiers = getModifiers(weapon);
-        for(IGunModifier modifier : modifiers)
-        {
-            if(modifier.blastFire())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isIgniteFire(ItemStack weapon)
-    {
-        for(int i = 0; i < SlotType.values().length; i++) {
-            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
-            if (modifier != null) {
-                if(modifier.getGeneral().isIgniteFire()){
-                    return true;
-                }
-            }
-        }
-        IGunModifier[] modifiers = getModifiers(weapon);
-        for(IGunModifier modifier : modifiers)
-        {
-            if(modifier.igniteFire())
             {
                 return true;
             }
@@ -579,21 +548,119 @@ public class GunModifierHelper
         }
         return capacity;
     }
+
     public static int getAmmoCapacityWeight(ItemStack weapon)
     {
         int modifierWeight = -1;
-        for(int i = 0; i < SlotType.values().length; i++) {
-            CustomModifierData modifier = getCustomModifier(weapon,SlotType.values()[i]);
-            if (modifier != null) {
-                modifierWeight = Math.max(modifier.getGeneral().getAdditionalAmmunition(), modifierWeight);
-            }
-        }
+        modifierWeight = applyAmmoAdditional(weapon, modifierWeight, Perks.additionalAmmunition);
+
         IGunModifier[] modifiers = getModifiers(weapon);
         for(IGunModifier modifier : modifiers)
         {
             modifierWeight = Math.max(modifier.additionalAmmunition(), modifierWeight);
         }
         modifierWeight = Math.min(modifierWeight,2);
+        return modifierWeight;
+    }
+
+    public static float getAmmoModifyArmorIgnore(ItemStack weapon, Gun modifiedGun, float ignore)
+    {
+        float modifyIgnore = ignore;
+        if (getFmjWeight(weapon) > -1)
+            modifyIgnore *= (modifiedGun.getAmmoPlugEffect().getFmjModifyArmorIgnore()[getFmjWeight(weapon)] / 100F);
+        else if (getHeWeight(weapon) > -1)
+            modifyIgnore *= (modifiedGun.getAmmoPlugEffect().getHeModifyArmorIgnore()[getHeWeight(weapon)] / 100F);
+        else if (getHpWeight(weapon) > -1)
+            modifyIgnore *= (modifiedGun.getAmmoPlugEffect().getHpModifyArmorIgnore()[getHpWeight(weapon)] / 100F);
+        else if (getIWeight(weapon) > -1)
+            modifyIgnore *= (modifiedGun.getAmmoPlugEffect().getIModifyArmorIgnore()[getIWeight(weapon)] / 100F);
+
+        return modifyIgnore;
+    }
+
+    public static float getAmmoModifyDamage(ItemStack weapon, Gun modifiedGun, float damage)
+    {
+        float modifyDamage = damage;
+        if (getFmjWeight(weapon) > -1)
+            modifyDamage *= (modifiedGun.getAmmoPlugEffect().getFmjModifyDamage()[getFmjWeight(weapon)] / 100F);
+        else if (getHeWeight(weapon) > -1)
+            modifyDamage *= (modifiedGun.getAmmoPlugEffect().getHeModifyDamage()[getHeWeight(weapon)] / 100F);
+        else if (getHpWeight(weapon) > -1)
+            modifyDamage *= (modifiedGun.getAmmoPlugEffect().getHpModifyDamage()[getHpWeight(weapon)] / 100F);
+        else if (getIWeight(weapon) > -1)
+            modifyDamage *= (modifiedGun.getAmmoPlugEffect().getIModifyDamage()[getIWeight(weapon)] / 100F);
+
+        return modifyDamage;
+    }
+
+    public static double getAmmoModifySpeed(ItemStack weapon, Gun modifiedGun, double speed)
+    {
+        double modifySpeed = speed;
+        if (getFmjWeight(weapon) > -1)
+            modifySpeed *= (modifiedGun.getAmmoPlugEffect().getFmjModifySpeed()[getFmjWeight(weapon)] / 100F);
+        else if (getHeWeight(weapon) > -1)
+            modifySpeed *= (modifiedGun.getAmmoPlugEffect().getHeModifySpeed()[getHeWeight(weapon)] / 100F);
+        else if (getHpWeight(weapon) > -1)
+            modifySpeed *= (modifiedGun.getAmmoPlugEffect().getHpModifySpeed()[getHpWeight(weapon)] / 100F);
+        else if (getIWeight(weapon) > -1)
+            modifySpeed *= (modifiedGun.getAmmoPlugEffect().getIModifySpeed()[getIWeight(weapon)] / 100F);
+
+        return modifySpeed;
+    }
+
+    public static int getFmjWeight(ItemStack weapon)
+    {
+        int modifierWeight = -1;
+        modifierWeight = applyAmmoAdditional(weapon, modifierWeight, Perks.fmjAmmo);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            modifierWeight = Math.max(modifier.fmjAmmo(), modifierWeight);
+        }
+        modifierWeight = Math.min(modifierWeight, 2);
+        return modifierWeight;
+    }
+
+    public static int getHeWeight(ItemStack weapon)
+    {
+        int modifierWeight = -1;
+        modifierWeight = applyAmmoAdditional(weapon, modifierWeight, Perks.heAmmo);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            modifierWeight = Math.max(modifier.heAmmo(), modifierWeight);
+        }
+        modifierWeight = Math.min(modifierWeight, 2);
+        return modifierWeight;
+    }
+
+    public static int getHpWeight(ItemStack weapon)
+    {
+        int modifierWeight = -1;
+        modifierWeight = applyAmmoAdditional(weapon, modifierWeight, Perks.hpAmmo);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            modifierWeight = Math.max(modifier.hpAmmo(), modifierWeight);
+        }
+        modifierWeight = Math.min(modifierWeight, 2);
+        return modifierWeight;
+    }
+
+    public static int getIWeight(ItemStack weapon)
+    {
+        int modifierWeight = -1;
+        modifierWeight = applyAmmoAdditional(weapon, modifierWeight, Perks.iAmmo);
+
+        IGunModifier[] modifiers = getModifiers(weapon);
+        for(IGunModifier modifier : modifiers)
+        {
+            modifierWeight = Math.max(modifier.iAmmo(), modifierWeight);
+        }
+        modifierWeight = Math.min(modifierWeight, 2);
         return modifierWeight;
     }
 

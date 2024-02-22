@@ -1,7 +1,11 @@
 {
   "general": {
-    "modifyProjectileSpeed": 0.85,
-    "modifyProjectileArmorIgnore": 0.6,
-    "modifyProjectileDamage": 1.2
-  }
+    "hpAmmo": 0
+  },
+  "extraTooltip": [
+    "tooltip.extra.hpAmmo",
+    "tooltip.extra.modifyDamage",
+    "tooltip.extra.modifyArmorIgnoreDown",
+    "tooltip.extra.modifySpeedDown"
+  ]
 }
