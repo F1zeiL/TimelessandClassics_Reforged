@@ -6,6 +6,7 @@ import com.tac.guns.common.*;
 import com.tac.guns.common.Gun.Projectile;
 import com.tac.guns.event.GunProjectileHitEvent;
 import com.tac.guns.event.LevelUpEvent;
+import com.tac.guns.init.ModEffects;
 import com.tac.guns.init.ModEnchantments;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.init.ModTags;
@@ -26,6 +27,7 @@ import com.tac.guns.world.ProjectileExplosion;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -37,6 +39,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SExplosionPacket;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.*;
@@ -77,6 +81,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     protected int pierce;
     protected Vector3d startPos;
     protected boolean sgHE = false;
+    protected int igniteTick;
+    protected int igniteDamage;
 
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerVelocity = new HashMap<>();
@@ -97,6 +103,8 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         this.pierce = Math.max(modifiedGun.getProjectile().getPierce() + GunModifierHelper.getAdditionalPierce(weapon), 1);
         this.sgHE = modifiedGun.getDisplay().getWeaponType() == WeaponType.SG && (this.projectile.isHasBlastDamage() || GunModifierHelper.isBlastFire(weapon));
         this.life = this.sgHE ? GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife() * 2) : GunModifierHelper.getModifiedProjectileLife(weapon, this.projectile.getLife());
+        this.igniteTick = modifiedGun.getProjectile().getIgniteTick();
+        this.igniteDamage = modifiedGun.getProjectile().getIgniteDamage();
 
         /* Get speed and set motion */
         Vector3d dir = this.getDirection(shooter, weapon, item, modifiedGun);
@@ -485,14 +493,16 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         if (result instanceof ExtendedEntityRayTraceResult) {
             ExtendedEntityRayTraceResult entityRayTraceResult = (ExtendedEntityRayTraceResult) result;
-            Entity entity = entityRayTraceResult.getEntity();
+            LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
             if (entity.getEntityId() == this.shooterId && !Config.COMMON.development.bulletSelfHarm.get()) {
                 return;
             }
 
             int fireStarterLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
             if (fireStarterLevel > 0 || GunModifierHelper.isIgniteFire(this.weapon)) {
-                entity.setFire(2);
+                int fireDuration = this.igniteTick;
+                fireDuration = ProtectionEnchantment.getFireTimeForEntity(entity, fireDuration);
+                entity.addPotionEffect(new EffectInstance(ModEffects.IGNITE.get(), fireDuration, this.igniteDamage));
             }
             if (!entity.isAlive()) {
                 entity.hurtResistantTime = 0;

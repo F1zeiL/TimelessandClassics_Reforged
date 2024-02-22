@@ -1,6 +1,7 @@
 package com.tac.guns.init;
 
 import com.tac.guns.Reference;
+import com.tac.guns.effect.IgniteEffect;
 import com.tac.guns.effect.IncurableEffect;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
@@ -18,4 +19,5 @@ public class ModEffects
     public static final RegistryObject<IncurableEffect> BLINDED = REGISTER.register("blinded", () -> new IncurableEffect(EffectType.HARMFUL, 0));
     public static final RegistryObject<IncurableEffect> STUNNED = REGISTER.register("stunned", () -> new IncurableEffect(EffectType.HARMFUL, 0));
     public static final RegistryObject<IncurableEffect> DEAFENED = REGISTER.register("deafened", () -> new IncurableEffect(EffectType.HARMFUL, 0));
+    public static final RegistryObject<IgniteEffect> IGNITE = REGISTER.register("ignite",() -> new IgniteEffect(EffectType.HARMFUL,0));
 }

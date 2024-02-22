@@ -716,6 +716,10 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private int pierce = 1;
         @Optional
+        private int igniteTick = 20;
+        @Optional
+        private int igniteDamage = 1;
+        @Optional
         private boolean gravity = true;
         @Optional
         private boolean damageReduceOverLife = true;
@@ -756,7 +760,9 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             tag.putFloat("Size", this.size);
             tag.putDouble("Speed", this.speed);
             tag.putInt("Life", this.life);
-            tag.putDouble("Pierce", this.pierce);
+            tag.putInt("Pierce", this.pierce);
+            tag.putInt("IgniteTick", this.igniteTick);
+            tag.putInt("IgniteDamage", this.igniteDamage);
             tag.putBoolean("Gravity", this.gravity);
             tag.putBoolean("DamageReduceOverLife", this.damageReduceOverLife);
             tag.putInt("TrailColor", this.trailColor);
@@ -824,6 +830,12 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("Pierce", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.pierce = tag.getInt("Pierce");
             }
+            if (tag.contains("IgniteTick", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.igniteTick = tag.getInt("IgniteTick");
+            }
+            if (tag.contains("IgniteDamage", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.igniteDamage = tag.getInt("IgniteDamage");
+            }
             if (tag.contains("Gravity", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.gravity = tag.getBoolean("Gravity");
             }
@@ -870,6 +882,8 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             projectile.speed = this.speed;
             projectile.life = this.life;
             projectile.pierce = this.pierce;
+            projectile.igniteTick = this.igniteTick;
+            projectile.igniteDamage = this.igniteDamage;
             projectile.gravity = this.gravity;
             projectile.damageReduceOverLife = this.damageReduceOverLife;
             projectile.trailColor = this.trailColor;
@@ -1007,6 +1021,20 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          */
         public int getPierce() {
             return this.pierce;
+        }
+
+        /**
+         * @return The total ignite time a projectile cause
+         */
+        public int getIgniteTick() {
+            return this.igniteTick;
+        }
+
+        /**
+         * @return The ignite damage per time (10 ticks) a projectile cause
+         */
+        public int getIgniteDamage() {
+            return this.igniteDamage;
         }
 
         /**
