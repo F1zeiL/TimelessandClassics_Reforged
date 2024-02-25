@@ -87,8 +87,8 @@ public class aa_12_animation extends SkinAnimationModel {
         renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BOLT_HANDLE);
 
         Gun gun = ((GunItem) stack.getItem()).getGun();
-        int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
-        int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+        float gunRate = Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+        float rateBias = ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate;
         float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
         if (transformType.isFirstPerson()) {

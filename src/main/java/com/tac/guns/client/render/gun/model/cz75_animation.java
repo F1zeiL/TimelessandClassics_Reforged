@@ -61,8 +61,8 @@ public class cz75_animation extends SkinAnimationModel {
 
         if (transformType.isFirstPerson()) {
             Gun gun = ((GunItem) stack.getItem()).getGun();
-            int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
-            int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+            float gunRate = Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+            float rateBias = ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate;
             float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
             if (transformType.isFirstPerson()) {

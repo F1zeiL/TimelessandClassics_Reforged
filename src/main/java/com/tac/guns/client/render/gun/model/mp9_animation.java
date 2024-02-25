@@ -97,8 +97,8 @@ public class mp9_animation extends SkinAnimationModel {
         if (transformType.isFirstPerson()) {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MP9AnimationController.INDEX_BODY, transformType, matrices);
             Gun gun = ((GunItem) stack.getItem()).getGun();
-            int gunRate = (int) Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
-            int rateBias = (int) (ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate);
+            float gunRate = Math.min(ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()), 4);
+            float rateBias = ShootingHandler.calcShootTickGap(gun.getGeneral().getRate()) - gunRate;
             float cooldownOg = (ShootingHandler.get().getshootMsGap() - rateBias) / gunRate < 0 ? 1 : MathHelper.clamp((ShootingHandler.get().getshootMsGap() - rateBias) / gunRate, 0, 1);
 
             if (Gun.hasAmmo(stack)) {
