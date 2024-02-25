@@ -41,25 +41,29 @@ public class TaCSettingsScreen extends SettingsScreen {
 
             this.optionsList.addOption(GunOptions.Fire_Volume);
 
-            this.optionsList.addOption(GunOptions.SIZE_FIREMODE_POS);
+
+            this.optionsList.addOption(GunOptions.X_MAIN_POS);
+            this.optionsList.addOption(GunOptions.Y_MAIN_POS);
+
+            //this.optionsList.addOption(GunOptions.SIZE_FIREMODE_POS);
             this.optionsList.addOption(GunOptions.FIREMODE_EXIST);
-            this.optionsList.addOption(GunOptions.X_FIREMODE_POS);
-            this.optionsList.addOption(GunOptions.Y_FIREMODE_POS);
+            //this.optionsList.addOption(GunOptions.X_FIREMODE_POS);
+            //this.optionsList.addOption(GunOptions.Y_FIREMODE_POS);
 
             this.optionsList.addOption(GunOptions.AMMOCOUNTER_EXIST);
-            this.optionsList.addOption(GunOptions.SIZE_AMMOCOUNTER_POS);
-            this.optionsList.addOption(GunOptions.X_AMMOCOUNTER_POS);
-            this.optionsList.addOption(GunOptions.Y_AMMOCOUNTER_POS);
+            //this.optionsList.addOption(GunOptions.SIZE_AMMOCOUNTER_POS);
+            //this.optionsList.addOption(GunOptions.X_AMMOCOUNTER_POS);
+            //this.optionsList.addOption(GunOptions.Y_AMMOCOUNTER_POS);
 
             this.optionsList.addOption(GunOptions.WeaponIcon_EXIST);
             this.optionsList.addOption(GunOptions.SIZE_Icon_POS);
             this.optionsList.addOption(GunOptions.X_Icon_POS);
             this.optionsList.addOption(GunOptions.Y_Icon_POS);
 
-            this.optionsList.addOption(GunOptions.ReloadBar_EXIST);
-            this.optionsList.addOption(GunOptions.SIZE_ReloadBar_POS);
-            this.optionsList.addOption(GunOptions.X_ReloadBar_POS);
-            this.optionsList.addOption(GunOptions.Y_ReloadBar_POS);
+            //this.optionsList.addOption(GunOptions.ReloadBar_EXIST);
+            //this.optionsList.addOption(GunOptions.SIZE_ReloadBar_POS);
+            //this.optionsList.addOption(GunOptions.X_ReloadBar_POS);
+            //this.optionsList.addOption(GunOptions.Y_ReloadBar_POS);
         } else {
             this.optionsList.addOptions(OPTIONS);
         }

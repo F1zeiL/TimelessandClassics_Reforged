@@ -272,7 +272,9 @@ public class HUDRenderingHandler extends AbstractGui {
         if (!Config.CLIENT.weaponGUI.weaponGui.get()) {
             return;
         }
+
         //render icon
+        stack.translate(Config.CLIENT.weaponGUI.mainX.get(), -Config.CLIENT.weaponGUI.mainY.get(), 0);
         if (Config.CLIENT.weaponGUI.weaponTypeIcon.showWeaponIcon.get()) {
             GunSkin skin = SkinManager.getSkin(heldItem);
             if (skin != null) {
@@ -437,15 +439,16 @@ public class HUDRenderingHandler extends AbstractGui {
             // stack.translate(0, 0, );
             stack.scale(0.0095F, 20.028F, 0); // *21F
 
-            buffer.pos(matrix, 0, ReloadBarSize, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, ReloadBarSize, ReloadBarSize, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, ReloadBarSize, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
-            buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, 0, ReloadBarSize, 0).tex(0, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, ReloadBarSize, ReloadBarSize, 0).tex(1, 1).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, ReloadBarSize, 0, 0).tex(1, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
+//            buffer.pos(matrix, 0, 0, 0).tex(0, 0).color(1.0F, 1.0F, 1.0F, 0.99F).endVertex();
 
             buffer.finishDrawing();
             WorldVertexBufferUploader.draw(buffer);
             stack.pop();
         }
+        stack.translate(-Config.CLIENT.weaponGUI.mainX.get(), Config.CLIENT.weaponGUI.mainY.get(), 0);
     }
             /*if (Minecraft.getInstance().gameSettings.viewBobbing) {
                 if (Minecraft.getInstance().player.ticksExisted % 2 == 0) {

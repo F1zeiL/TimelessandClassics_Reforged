@@ -154,6 +154,37 @@ public class GunOptions
     });
     //Firemode positioning
 
+    public static final SliderPercentageOption X_MAIN_POS = new GunSliderPercentageOption("tac.options.xMainPos", -500, 500, 0.001F,
+            gameSettings ->
+            {
+                return Config.CLIENT.weaponGUI.mainX.get();
+                //return Config.CLIENT.controls.aimDownSightSensitivity.get();
+            },
+            (gameSettings, value) ->
+            {
+                Config.CLIENT.weaponGUI.mainX.set(MathHelper.clamp(value, -500, 500));
+                Config.saveClientConfig();
+            },
+            (gameSettings, option) -> {
+                double adsSensitivity = Config.CLIENT.weaponGUI.mainX.get();
+                return new TranslationTextComponent("tac.options.xMainPos.format", FORMAT.format(adsSensitivity));
+            });
+    public static final SliderPercentageOption Y_MAIN_POS = new GunSliderPercentageOption("tac.options.yMainPos", -500, 500, 0.001F,
+            gameSettings ->
+            {
+                return Config.CLIENT.weaponGUI.mainY.get();
+                //return Config.CLIENT.controls.aimDownSightSensitivity.get();
+            },
+            (gameSettings, value) ->
+            {
+                Config.CLIENT.weaponGUI.mainY.set(MathHelper.clamp(value, -500, 500));
+                Config.saveClientConfig();
+            },
+            (gameSettings, option) -> {
+                double adsSensitivity = Config.CLIENT.weaponGUI.mainY.get();
+                return new TranslationTextComponent("tac.options.yMainPos.format", FORMAT.format(adsSensitivity));
+            });
+
     public static final SliderPercentageOption X_FIREMODE_POS = new GunSliderPercentageOption("tac.options.xFiremodePos", -500, 500, 0.001F,
     gameSettings ->
     {
@@ -287,7 +318,7 @@ public class GunOptions
                 Config.saveClientConfig();
             },
             (gameSettings, option) -> {
-                double adsSensitivity = Config.CLIENT.weaponGUI.weaponAmmoCounter.y.get();
+                double adsSensitivity = Config.CLIENT.weaponGUI.weaponTypeIcon.y.get();
                 return new TranslationTextComponent("tac.options.yIconPos.format", FORMAT.format(adsSensitivity));
             });
     public static final SliderPercentageOption SIZE_Icon_POS = new GunSliderPercentageOption("tac.options.sizeIconPos", 0.1, 4, 0.001F,

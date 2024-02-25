@@ -140,6 +140,9 @@ public class Config {
         public final WeaponAmmoCounter weaponAmmoCounter;
         public final WeaponReloadTimer weaponReloadTimer;
 
+        public final ForgeConfigSpec.DoubleValue mainX;
+        public final ForgeConfigSpec.DoubleValue mainY;
+
 
         public WeaponGUI(ForgeConfigSpec.Builder builder) {
             builder.comment("Configuration for HUD additions").push("weaponGui");
@@ -150,6 +153,8 @@ public class Config {
                 this.weaponFireMode = new WeaponFireMode(builder);
                 this.weaponAmmoCounter = new WeaponAmmoCounter(builder);
                 this.weaponReloadTimer = new WeaponReloadTimer(builder);
+                this.mainX = builder.comment("mainX Position on your HUD.").defineInRange("mainXLocation", 0, -500d, 500d);
+                this.mainY = builder.comment("mainY Position on your HUD.").defineInRange("mainYLocation", 0, -500d, 500d);
             }
             builder.pop();
         }

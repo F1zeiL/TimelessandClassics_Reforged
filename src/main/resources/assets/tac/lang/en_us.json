@@ -449,6 +449,8 @@
   "enchantment.tac.buffered.desc": "Mild reduction to recoil",
   "perk.tac.vol": "% Gun Vol",
   "tac.options.gui_settings": "TAC GUI",
+  "tac.options.xMainPos.format": "TAC: UI x Pos: %s",
+  "tac.options.yMainPos.format": "TAC: UI y Pos: %s",
   "tac.options.xFiremodePos.format": "TAC: FireMode x Pos: %s",
   "tac.options.yFiremodePos.format": "TAC: FireMode y Pos: %s",
   "tac.options.sizeFiremodePos.format": "TAC: FireMode size: %s",
