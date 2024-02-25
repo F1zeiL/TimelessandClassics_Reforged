@@ -1,6 +1,6 @@
 Timeless and Classics Guns' code is licensed under the terms of the GNU GPL 3.0
 found here https://www.gnu.org/licenses/gpl-3.0.txt and copied below.
-And all the assets is licensed under the terms of the CC BY-NC-SA 4.0
+All the assets are licensed under the terms of the CC BY-NC-SA 4.0
 found here https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 A note on authorship:
