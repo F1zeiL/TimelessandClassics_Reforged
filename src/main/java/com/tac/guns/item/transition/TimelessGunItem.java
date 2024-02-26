@@ -111,8 +111,21 @@ public class TimelessGunItem extends GunItem {
                     tooltip.add((new TranslationTextComponent("info.tac.heavyWeightGun", new TranslationTextComponent(-((int) ((0.1 - speed) * 1000)) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_RED)));
 
                 float percentageToNextLevel = (tagCompound.getFloat("levelDmg") * 100) / (modifiedGun.getGeneral().getLevelReq() * (((tagCompound.getInt("level")) * 3.0f)));
-                tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))
-                        .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                if (stack.getTag().get("levelPlayer") == null) {
+                    tooltip.add((new TranslationTextComponent("info.tac.no_current_level_player"))
+                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                } else {
+                    tooltip.add((new TranslationTextComponent("info.tac.current_level_player").append(new TranslationTextComponent(" " + tagCompound.getString("levelPlayerID"))))
+                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                }
+
+                if (stack.getTag().getBoolean("levelLock")) {
+                    tooltip.add((new TranslationTextComponent("info.tac.wrong_current_level_player"))
+                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                } else {
+                    tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))
+                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                }
             }
 
             tooltip.add((new TranslationTextComponent("info.tac.attachment_help", Keys.ATTACHMENTS.func_238171_j_().getString().toUpperCase(Locale.ENGLISH))).mergeStyle(TextFormatting.YELLOW));

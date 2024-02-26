@@ -609,17 +609,26 @@ public class ServerPlayHandler {
                     player.getHeldItemMainhand().getTag().putUniqueId("ID", id);
                     NetworkGunManager.get().StackIds.put(id, player.getHeldItemMainhand());
                 }
-                initLevelTracking(player.getHeldItemMainhand());
+                initLevelTracking(player.getHeldItemMainhand(), player);
             }
         }
     }
 
-    private static void initLevelTracking(ItemStack gunStack) {
+    private static void initLevelTracking(ItemStack gunStack, ServerPlayerEntity player) {
         if (gunStack.getTag().get("level") == null) {
             gunStack.getTag().putInt("level", 1);
         }
         if (gunStack.getTag().get("levelDmg") == null) {
             gunStack.getTag().putFloat("levelDmg", 0f);
+        }
+        if (gunStack.getTag().get("levelPlayer") == null) {
+            gunStack.getTag().putUniqueId("levelPlayer", player.getUniqueID());
+        }
+        if (gunStack.getTag().get("levelLock") == null) {
+            gunStack.getTag().putBoolean("levelLock", false);
+        }
+        if (gunStack.getTag().get("levelPlayerID") == null) {
+            gunStack.getTag().putString("levelPlayerID", player.getDisplayName().getString());
         }
     }
 

@@ -22,7 +22,7 @@ public class ModEnchantments
     public static final RegistryObject<Enchantment> RECLAIMED = REGISTER.register("reclaimed", ReclaimedEnchantment::new); // LEGACY
     public static final RegistryObject<Enchantment> ACCELERATOR = REGISTER.register("accelerator", AcceleratorEnchantment::new); // TO-RENAME
     public static final RegistryObject<Enchantment> PUNCTURING = REGISTER.register("puncturing", PuncturingEnchantment::new); // TO-RENAME
-    public static final RegistryObject<Enchantment> FIRE_STARTER = REGISTER.register("fire_starter", FireStarterEnchantment::new); // LEGACY
+    //public static final RegistryObject<Enchantment> FIRE_STARTER = REGISTER.register("fire_starter", FireStarterEnchantment::new); // LEGACY
     public static final RegistryObject<Enchantment> RIFLING = REGISTER.register("rifling", AdvancedRiflingEnchantment::new);
     public static final RegistryObject<Enchantment> BUFFERED = REGISTER.register("buffered", BufferedEnchantment::new);
     //public static final RegistryObject<Enchantment> Reliability = REGISTER.register("reliability", AcceleratorEnchantment::new); // TO-RENAME

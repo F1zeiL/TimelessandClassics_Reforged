@@ -485,8 +485,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 bell.attemptRing(this.world, state, blockRayTraceResult, (PlayerEntity) this.shooter, true);
             }
 
-            int fireStarterLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
-            if ((fireStarterLevel > 0 || this.iLevel > -1) && Config.COMMON.gameplay.fireStarterCauseFire.get()) {
+            if ((this.iLevel > -1) && Config.COMMON.gameplay.fireStarterCauseFire.get()) {
                 BlockPos offsetPos = pos.offset(blockRayTraceResult.getFace());
                 if (AbstractFireBlock.canLightBlock(this.world, offsetPos, blockRayTraceResult.getFace())) {
                     BlockState fireState = AbstractFireBlock.getFireForPlacement(this.world, offsetPos);
@@ -501,16 +500,17 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         if (result instanceof ExtendedEntityRayTraceResult) {
             ExtendedEntityRayTraceResult entityRayTraceResult = (ExtendedEntityRayTraceResult) result;
-            LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
+            Entity entity = entityRayTraceResult.getEntity();
             if (entity.getEntityId() == this.shooterId && !Config.COMMON.development.bulletSelfHarm.get()) {
                 return;
             }
 
-            int fireStarterLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon);
-            if (fireStarterLevel > 0 || this.iLevel > -1) {
-                int fireDuration = this.ammoPlugEffect.getIgniteTick()[this.iLevel];
-                fireDuration = ProtectionEnchantment.getFireTimeForEntity(entity, fireDuration);
-                entity.addPotionEffect(new EffectInstance(ModEffects.IGNITE.get(), fireDuration, this.ammoPlugEffect.getIgniteDamage()[this.iLevel]));
+            if (entity instanceof LivingEntity) {
+                if (this.iLevel > -1) {
+                    int fireDuration = this.ammoPlugEffect.getIgniteTick()[this.iLevel];
+                    fireDuration = ProtectionEnchantment.getFireTimeForEntity((LivingEntity) entity, fireDuration);
+                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(ModEffects.IGNITE.get(), fireDuration, this.ammoPlugEffect.getIgniteDamage()[this.iLevel]));
+                }
             }
             if (!entity.isAlive()) {
                 entity.hurtResistantTime = 0;
@@ -554,9 +554,15 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
 //        AxisAlignedBB boundingBox = entity.getBoundingBox();
 //        Vector3d blastVec = new Vector3d((boundingBox.maxX + boundingBox.minX) / 2, (boundingBox.maxY + boundingBox.minY) / 2, (boundingBox.maxZ + boundingBox.minZ) / 2);
-        if (this.projectile.isHasBlastDamage() || this.heLevel > -1) {
+        if (this.projectile.isHasBlastDamage()) {
             createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon,
-                    this.projectile.getBlastDamage() * (this.ammoPlugEffect.getHeModifyBlastDamage()[this.heLevel] / 100F)) + this.projectile.getDamage(),
+                    this.projectile.getBlastDamage()) + this.projectile.getDamage(),
+                    this.projectile.getBlastRadius(),
+                    hitVec);
+            this.remove();
+        } else if (this.heLevel > -1) {
+            createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon,
+                            this.projectile.getBlastDamage() * (this.ammoPlugEffect.getHeModifyBlastDamage()[this.heLevel] / 100F)) + this.projectile.getDamage(),
                     this.projectile.getBlastRadius() * (this.ammoPlugEffect.getHeModifyBlastRange()[this.heLevel] / 100F),
                     hitVec);
             this.remove();
@@ -604,15 +610,28 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         ItemStack gunStack = this.shooter.getHeldItemMainhand();
         if (!(gunStack.getItem() instanceof GunItem) || gunStack.getTag() == null)
             return;
+
+        if (!gunStack.getTag().getUniqueId("levelPlayer").equals(this.shooter.getUniqueID())) {
+            gunStack.getTag().putBoolean("levelLock", true);
+            return;
+        }
+
+        gunStack.getTag().putBoolean("levelLock", false);
         if (gunStack.getTag().get("levelDmg") != null) {
             gunStack.getTag().putFloat("levelDmg", gunStack.getTag().getFloat("levelDmg") + damage);
         }
+
         if (gunStack.getTag().get("level") != null) {
+            if (gunStack.getTag().getInt("level") >= 10)
+                return;
+
             TimelessGunItem gunItem = (TimelessGunItem) gunStack.getItem();
             if (gunStack.getTag().getFloat("levelDmg") > (gunItem.getGun().getGeneral().getLevelReq() * ((gunStack.getTag().getInt("level") * 3.0d)))) {
-
                 gunStack.getTag().putFloat("levelDmg", 0f);
                 gunStack.getTag().putInt("level", gunStack.getTag().getInt("level") + 1);
+                if (gunStack.getTag().getInt("level") > 10)
+                    gunStack.getTag().putInt("level", 10);
+
                 MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post((PlayerEntity) this.shooter, gunStack));
             }
         }
@@ -663,10 +682,16 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         PacketHandler.getPlayChannel().send(PacketDistributor.TRACKING_CHUNK.with(() -> this.world.getChunkAt(pos)), new MessageProjectileHitBlock(hitVec.getX(), hitVec.getY(), hitVec.getZ(), pos, face, this.projectile.isHasBlastDamage()));
-        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FIRE_STARTER.get(), this.weapon) > 0 || GunModifierHelper.getIWeight(this.weapon) > -1)
+        if (this.iLevel > -1)
             ((ServerWorld) this.world).spawnParticle(ParticleTypes.LAVA, hitVec.getX(), hitVec.getY(), hitVec.getZ(), 1, 0, 0, 0, 0);
 
-        if (this.projectile.isHasBlastDamage() || this.heLevel > -1) {
+        if (this.projectile.isHasBlastDamage()) {
+            createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon,
+                            this.projectile.getBlastDamage()),
+                    this.projectile.getBlastRadius(),
+                    hitVec);
+            this.remove();
+        } else if (this.heLevel > -1) {
             createExplosion(this, GunModifierHelper.getModifiedProjectileBlastDamage(this.weapon,
                             this.projectile.getBlastDamage() * (this.ammoPlugEffect.getHeModifyBlastRange()[this.heLevel] / 100F)),
                     this.projectile.getBlastRadius() * (this.ammoPlugEffect.getHeModifyBlastRange()[this.heLevel] / 100F),
