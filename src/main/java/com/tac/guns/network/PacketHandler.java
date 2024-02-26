@@ -76,6 +76,8 @@ public class PacketHandler {
         registerPlayMessage(MessageUpdatePlayerMovement.class, MessageUpdatePlayerMovement::new, LogicalSide.SERVER);
         registerPlayMessage(MessageAnimationSound.class, MessageAnimationSound::new, LogicalSide.CLIENT);
         registerPlayMessage(MessageAnimationRun.class, MessageAnimationRun::new, LogicalSide.SERVER);
+
+        registerPlayMessage(SGunLevelUp.class,SGunLevelUp::new, LogicalSide.CLIENT);
     }
 
     /**

@@ -7,7 +7,12 @@ import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.item.transition.M1GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
+import com.tac.guns.network.PacketHandler;
+import com.tac.guns.network.message.SGunLevelUp;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.toasts.SystemToast;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.play.server.SAdvancementInfoPacket;
@@ -18,6 +23,8 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDispatcher;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.Level;
 
 
@@ -70,15 +77,11 @@ public class TacEventListeners {
         PlayerEntity player = event.getPlayer();
         ItemStack stack = player.getHeldItemMainhand();
         if (stack.getItem() instanceof TimelessGunItem) {
-            if (stack.getTag().getInt("level") == 5 || stack.getTag().getInt("level") == 8)
-                player.sendMessage(new TranslationTextComponent("info.tac.damageUp"), player.getUniqueID());
-            else if (stack.getTag().getInt("level") == 10)
-                player.sendMessage(new TranslationTextComponent("info.tac.finalLevel"), player.getUniqueID());
-            else
-                player.sendMessage(new TranslationTextComponent("info.tac.levelUp"), player.getUniqueID());
+            int level = stack.getTag().getInt("level");
+
+            PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SGunLevelUp(stack,level));
         }
 
-        event.getPlayer().getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.75F, 1.0F);
     }
 
     // TODO: remaster method to play empty fire sound on most-all guns
