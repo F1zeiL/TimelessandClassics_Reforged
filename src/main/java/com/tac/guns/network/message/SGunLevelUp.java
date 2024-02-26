@@ -39,20 +39,20 @@ public class SGunLevelUp implements IMessage{
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(()->{
             PlayerEntity player = Minecraft.getInstance().player;
-            if(player==null) return;
-            if (level == 5 || level == 8){
-                Minecraft.getInstance().getToastGui().add(new SystemToast(SystemToast.Type.TUTORIAL_HINT,
-                        new TranslationTextComponent("toast.tac.damage_up"),null));
-            } else if (level == 10){
-                Minecraft.getInstance().getToastGui().add(new SystemToast(SystemToast.Type.TUTORIAL_HINT,
-                        new TranslationTextComponent("toast.tac.final_level"),null));
+            if (player == null) return;
+            if (level == 5 || level == 8) {
+                Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
+                        new TranslationTextComponent("toast.tac.level_up"),
+                        new TranslationTextComponent("toast.tac.sub.damage_up")));
+            } else if (level == 10) {
+                Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
+                        new TranslationTextComponent("toast.tac.level_up"),
+                        new TranslationTextComponent("toast.tac.sub.final_level")));
             } else{
                 Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
                         new TranslationTextComponent("toast.tac.level_up"),
                         new TranslationTextComponent("toast.tac.sub.level_up")));
             }
-            player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.75F, 1.0F);
-
         });
         supplier.get().setPacketHandled(true);
     }

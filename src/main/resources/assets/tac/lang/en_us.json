@@ -477,6 +477,8 @@
   "info.tac.current_level_player": "Owner",
   "toast.tac.level_up": "Gun level has been upgraded!",
   "toast.tac.sub.level_up": " This weapon works better",
+  "toast.tac.sub.damage_up": " Weapons become more deadly",
+  "toast.tac.sub.final_level": " Man and gun become one",
   "info.tac.wrong_current_level_player": "ERROR",
   "info.tac.out_of_ammo": "RELOAD!",
   "info.tac.mag_error": "UNLOAD!",

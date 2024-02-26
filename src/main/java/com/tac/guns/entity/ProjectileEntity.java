@@ -622,15 +622,14 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         if (gunStack.getTag().get("level") != null) {
-            if (gunStack.getTag().getInt("level") >= 10)
-                return;
+            if (gunStack.getTag().getInt("level") >= 10) {
+                gunStack.getTag().putFloat("levelDmg", 0f);
+            }
 
             TimelessGunItem gunItem = (TimelessGunItem) gunStack.getItem();
-            if (gunStack.getTag().getFloat("levelDmg") > (gunItem.getGun().getGeneral().getLevelReq() * ((gunStack.getTag().getInt("level") * 3.0d)))) {
+            if (gunStack.getTag().getFloat("levelDmg") > 1/*(gunItem.getGun().getGeneral().getLevelReq() * ((gunStack.getTag().getInt("level") * 3.0d)))*/) {
                 gunStack.getTag().putFloat("levelDmg", 0f);
                 gunStack.getTag().putInt("level", gunStack.getTag().getInt("level") + 1);
-                if (gunStack.getTag().getInt("level") > 10)
-                    gunStack.getTag().putInt("level", 10);
 
                 MinecraftForge.EVENT_BUS.post(new LevelUpEvent.Post((PlayerEntity) this.shooter, gunStack));
             }

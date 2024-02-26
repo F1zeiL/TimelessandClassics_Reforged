@@ -78,8 +78,8 @@ public class TacEventListeners {
         ItemStack stack = player.getHeldItemMainhand();
         if (stack.getItem() instanceof TimelessGunItem) {
             int level = stack.getTag().getInt("level");
-
-            PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SGunLevelUp(stack,level));
+            player.getEntityWorld().playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 0.75F, 1.0F);
+            PacketHandler.getPlayChannel().send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SGunLevelUp(stack, level));
         }
 
     }

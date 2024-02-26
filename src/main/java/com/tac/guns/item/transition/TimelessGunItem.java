@@ -123,8 +123,12 @@ public class TimelessGunItem extends GunItem {
                     tooltip.add((new TranslationTextComponent("info.tac.wrong_current_level_player"))
                             .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
                 } else {
-                    tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))
-                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                    if (stack.getTag().getInt("level") < 10)
+                        tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))
+                                .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                    else
+                        tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + "MAX")))
+                                .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
                 }
             }
 
