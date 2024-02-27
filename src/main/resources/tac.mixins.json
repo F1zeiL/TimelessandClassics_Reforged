@@ -18,6 +18,7 @@
     "client.MinecraftStaticMixin",
     "client.ModelBakeryMixin",
     "client.MouseHelperMixin",
+    "client.OverlayRendererMixin",
     "client.ShadersFramebufferMixin",
     "client.WorldRendererMixin"
   ],

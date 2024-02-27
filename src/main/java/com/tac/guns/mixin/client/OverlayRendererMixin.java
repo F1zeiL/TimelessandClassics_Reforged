@@ -21,7 +21,7 @@ public abstract class OverlayRendererMixin {
     private static void renderOverlays(Minecraft mc, MatrixStack stack, CallbackInfo ci){
         if (mc.player != null) {
             if(mc.player.isBurning() || mc.player.isSpectator()) return;
-            if(mc.player.getActivePotionEffect(ModEffects.IGNITE.get()) == null){
+            if(mc.player.getActivePotionEffect(ModEffects.IGNITE.get()) != null){
                 RenderSystem.disableAlphaTest();
                 renderFire(mc,stack);
                 RenderSystem.enableAlphaTest();
