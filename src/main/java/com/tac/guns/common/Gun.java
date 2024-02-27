@@ -2879,7 +2879,7 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         if (!player.isAlive())
             return new ItemStack[]{};
         ArrayList<ItemStack> stacks = new ArrayList<>();
-        if (player.isCreative()) {
+        if (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedReserveAmmo.get()) {
             Item item = ForgeRegistries.ITEMS.getValue(id);
             stacks.add(item != null ? new ItemStack(item, Integer.MAX_VALUE) : ItemStack.EMPTY);
             return stacks.toArray(new ItemStack[]{});

@@ -520,6 +520,8 @@ public class Config {
             public final ForgeConfigSpec.BooleanValue lockGunLevel;
             public final ForgeConfigSpec.IntValue lockLevelOfGun;
             public final ForgeConfigSpec.DoubleValue duckSpreadPercent;
+            public final ForgeConfigSpec.BooleanValue creativeUnlimitedCurrentAmmo;
+            public final ForgeConfigSpec.BooleanValue creativeUnlimitedReserveAmmo;
 
             public Gameplay(ForgeConfigSpec.Builder builder) {
                 builder.comment("Properties relating to gameplay").push("gameplay");
@@ -554,6 +556,8 @@ public class Config {
                     this.lockGunLevel = builder.comment("True if you don't want to use level system.").define("lockGunLevel", false);
                     this.lockLevelOfGun = builder.comment("If lockGunLevel true, which level will it be locked.").defineInRange("lockLevelOfGun", 1, 1, 10);
                     this.duckSpreadPercent = builder.comment("Adjust the spread of the gun when the player is ducking.").defineInRange("duckSpreadPercent", 0.75D, 0.0D, 1.0D);
+                    this.creativeUnlimitedCurrentAmmo = builder.comment("True if you want to have unlimited current ammo in creative mode.").define("creativeUnlimitedCurrentAmmo", true);
+                    this.creativeUnlimitedReserveAmmo = builder.comment("True if you want to have unlimited reserve ammo in creative mode.").define("creativeUnlimitedReserveAmmo", true);
                 }
                 builder.pop();
             }

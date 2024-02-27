@@ -191,7 +191,9 @@ public class ShootingHandler {
             shootTickGapLeft -= shootTickGapLeft > 0F ? 1F : 0F;
 
             ItemStack heldItem = player.getHeldItemMainhand();
-            if ((heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) || player.isCreative())) && !magError(player, heldItem)) {
+            if ((heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
+                    (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) &&
+                    !magError(player, heldItem)) {
                 final float dist = Math.abs(player.moveForward) / 2.5F
                         + Math.abs(player.moveStrafing) / 1.25F
                         + (player.getMotion().y > 0D ? 0.5F : 0F);
@@ -342,6 +344,9 @@ public class ShootingHandler {
             return;
 
         if (!Gun.hasAmmo(heldItem) && !player.isCreative())
+            return;
+
+        if (!Gun.hasAmmo(heldItem) && player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())
             return;
 
         if (player.isSpectator())
