@@ -10,6 +10,7 @@ import com.tac.guns.client.handler.HUDRenderingHandler;
 import com.tac.guns.client.render.animation.module.AnimationMeta;
 import com.tac.guns.client.render.animation.module.AnimationSoundManager;
 import com.tac.guns.client.render.animation.module.AnimationSoundMeta;
+import com.tac.guns.client.toast.GunLevelUpToast;
 import com.tac.guns.common.NetworkGunManager;
 import com.tac.guns.common.attachments.NetworkModifierManager;
 import com.tac.guns.init.ModParticleTypes;
@@ -32,6 +33,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -230,5 +232,25 @@ public class ClientPlayHandler {
         NetworkGunManager.updateRegisteredGuns(message);
         CustomGunManager.updateCustomGuns(message);
         NetworkModifierManager.updateCustomAttachments(message);
+    }
+
+    public static void handleGunLevelUp(SGunLevelUp message) {
+        int level = message.getLevel();
+        ItemStack gun = message.getGun();
+        PlayerEntity player = Minecraft.getInstance().player;
+        if (player == null) return;
+        if (level == 5 || level == 8) {
+            Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
+                    new TranslationTextComponent("toast.tac.level_up"),
+                    new TranslationTextComponent("toast.tac.sub.damage_up")));
+        } else if (level == 10) {
+            Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
+                    new TranslationTextComponent("toast.tac.level_up"),
+                    new TranslationTextComponent("toast.tac.sub.final_level")));
+        } else {
+            Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
+                    new TranslationTextComponent("toast.tac.level_up"),
+                    new TranslationTextComponent("toast.tac.sub.level_up")));
+        }
     }
 }
