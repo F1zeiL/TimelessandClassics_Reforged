@@ -102,7 +102,8 @@ public class HUDRenderingHandler extends AbstractGui {
             GunItem gunItem = (GunItem) Minecraft.getInstance().player.getHeldItemMainhand().getItem();
             this.ammoReserveCount = ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, gunItem.getGun().getProjectile().getItem()));
             // Only send if current id doesn't equal previous id, otherwise other serverside actions can force this to change like reloading
-            if (player.isCreative())
+            if ((player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
+                    (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))
                 return;
             //if(gunItem.getGun().getProjectile().getItem().compareTo(heldAmmoID) != 0 || ammoReserveCount == 0) {
             heldAmmoID = gunItem.getGun().getProjectile().getItem();

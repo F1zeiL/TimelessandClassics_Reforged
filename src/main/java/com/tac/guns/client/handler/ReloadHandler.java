@@ -1,6 +1,7 @@
 package com.tac.guns.client.handler;
 
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
+import com.tac.guns.Config;
 import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.client.render.animation.module.PumpShotgunAnimationController;
@@ -292,7 +293,8 @@ public class ReloadHandler {
                         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
                         if (tag.getInt("AmmoCount") >= GunModifierHelper.getAmmoCapacity(stack, gun)) {
                             return;
-                        } else if (!player.isCreative() && Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {
+                        } else if ((!player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedReserveAmmo.get()) &&
+                                Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {
                             return;
                         }
                         if (MinecraftForge.EVENT_BUS.post(new GunReloadEvent.Pre(player, stack)))

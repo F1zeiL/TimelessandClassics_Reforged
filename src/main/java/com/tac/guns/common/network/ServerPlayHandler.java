@@ -89,7 +89,9 @@ public class ServerPlayHandler {
         if (!player.isSpectator()) {
             World world = player.world;
             ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) || (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
+            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
+                    (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
+                    (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) {
                 GunItem item = (GunItem) heldItem.getItem();
                 Gun modifiedGun = item.getModifiedGun(heldItem);
                 if (modifiedGun != null) {
@@ -182,7 +184,8 @@ public class ServerPlayHandler {
                         PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> targetPoint), messageSound);
                     }
 
-                    if (!player.isCreative() || (player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())) {
+                    if ((!player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                            (player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())) {
                         CompoundNBT tag = heldItem.getOrCreateTag();
                         if (!tag.getBoolean("IgnoreAmmo")) {
                             int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.RECLAIMED.get(), heldItem);

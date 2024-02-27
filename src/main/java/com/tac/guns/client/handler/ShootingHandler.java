@@ -192,7 +192,8 @@ public class ShootingHandler {
 
             ItemStack heldItem = player.getHeldItemMainhand();
             if ((heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
-                    (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) &&
+                    (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
+                    (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) &&
                     !magError(player, heldItem)) {
                 final float dist = Math.abs(player.moveForward) / 2.5F
                         + Math.abs(player.moveStrafing) / 1.25F
@@ -343,7 +344,7 @@ public class ShootingHandler {
         if (!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if (!Gun.hasAmmo(heldItem) && !player.isCreative())
+        if (!Gun.hasAmmo(heldItem) && !player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get())
             return;
 
         if (!Gun.hasAmmo(heldItem) && player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())

@@ -522,6 +522,8 @@ public class Config {
             public final ForgeConfigSpec.DoubleValue duckSpreadPercent;
             public final ForgeConfigSpec.BooleanValue creativeUnlimitedCurrentAmmo;
             public final ForgeConfigSpec.BooleanValue creativeUnlimitedReserveAmmo;
+            public final ForgeConfigSpec.BooleanValue commonUnlimitedCurrentAmmo;
+            public final ForgeConfigSpec.BooleanValue commonUnlimitedReserveAmmo;
 
             public Gameplay(ForgeConfigSpec.Builder builder) {
                 builder.comment("Properties relating to gameplay").push("gameplay");
@@ -558,6 +560,8 @@ public class Config {
                     this.duckSpreadPercent = builder.comment("Adjust the spread of the gun when the player is ducking.").defineInRange("duckSpreadPercent", 0.75D, 0.0D, 1.0D);
                     this.creativeUnlimitedCurrentAmmo = builder.comment("True if you want to have unlimited current ammo in creative mode.").define("creativeUnlimitedCurrentAmmo", true);
                     this.creativeUnlimitedReserveAmmo = builder.comment("True if you want to have unlimited reserve ammo in creative mode.").define("creativeUnlimitedReserveAmmo", true);
+                    this.commonUnlimitedCurrentAmmo = builder.comment("True if you want to have unlimited current ammo in survival or adventure mode.").define("commonUnlimitedCurrentAmmo", false);
+                    this.commonUnlimitedReserveAmmo = builder.comment("True if you want to have unlimited reserve ammo in survival or adventure mode.").define("commonUnlimitedReserveAmmo", false);
                 }
                 builder.pop();
             }
