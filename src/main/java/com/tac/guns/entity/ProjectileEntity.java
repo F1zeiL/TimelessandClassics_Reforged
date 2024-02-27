@@ -86,6 +86,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     protected int heLevel = -1;
     protected int hpLevel = -1;
     protected int iLevel = -1;
+    protected double speed = 1;
 
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerPosition = new HashMap<>();
 //    public static HashMap<PlayerEntity, Vector3d> cachePlayerVelocity = new HashMap<>();
@@ -117,8 +118,18 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         double speedModifier = GunEnchantmentHelper.getProjectileSpeedModifier(weapon);
         speedModifier = GunModifierHelper.getAmmoModifySpeed(weapon, modifiedGun, speedModifier);
 
-        double speed = GunModifierHelper.getModifiedProjectileSpeed(weapon, this.projectile.getSpeed() * speedModifier);
-        this.setMotion(dir.x * speed, dir.y * speed, dir.z * speed);
+        ItemStack gunStack = this.shooter.getHeldItemMainhand();
+        int[] levelSpeed = new int[]{0, 1, 2, 3, 5, 6, 7, 8, 9, 10};
+        float modifySpeed = 1f;
+        if (gunStack.getTag() != null) {
+            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                modifySpeed *= ((100.0 + levelSpeed[gunStack.getTag().getInt("level") - 1]) / 100.0);
+            }
+        }
+
+        speedModifier *= modifySpeed;
+        this.speed = GunModifierHelper.getModifiedProjectileSpeed(weapon, this.projectile.getSpeed() * speedModifier);
+        this.setMotion(dir.x * this.speed, dir.y * this.speed, dir.z * this.speed);
         this.updateHeading();
 
         /* Spawn the projectile half way between the previous and current position */
@@ -185,12 +196,21 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 if (gunSpread < 0.5)
                     gunSpread += 0.5f;
 
+                ItemStack gunStack = this.shooter.getHeldItemMainhand();
+                int[] levelHipFire = new int[]{0, 2, 4, 6, 9, 11, 12, 13, 14, 15};
+                float modifySpread = 1f;
+                if (gunStack.getTag() != null) {
+                    if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                        modifySpread *= ((100.0 - levelHipFire[gunStack.getTag().getInt("level") - 1]) / 100.0);
+                    }
+                }
+
                 if (this.sgHE)
                     gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracyHE();
                 else
                     gunSpread *= modifiedGun.getGeneral().getHipFireInaccuracy();
 
-                gunSpread = GunModifierHelper.getModifiedHipFireSpread(weapon, gunSpread);
+                gunSpread = GunModifierHelper.getModifiedHipFireSpread(weapon, gunSpread * modifySpread);
                 if (SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING) != 0) {
                     if (this.sgHE)
                         gunSpread *= Math.max(1, (2F * (1 + SyncedPlayerData.instance().get((PlayerEntity) shooter, ModSyncedDataKeys.MOVING))) * modifiedGun.getGeneral().getMovementInaccuracyHE());
@@ -611,12 +631,6 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (!(gunStack.getItem() instanceof GunItem) || gunStack.getTag() == null)
             return;
 
-        if (!gunStack.getTag().getUniqueId("levelPlayer").equals(this.shooter.getUniqueID())) {
-            gunStack.getTag().putBoolean("levelLock", true);
-            return;
-        }
-
-        gunStack.getTag().putBoolean("levelLock", false);
         if (gunStack.getTag().get("levelDmg") != null) {
             gunStack.getTag().putFloat("levelDmg", gunStack.getTag().getFloat("levelDmg") + damage);
         }
@@ -627,7 +641,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             }
 
             TimelessGunItem gunItem = (TimelessGunItem) gunStack.getItem();
-            if (gunStack.getTag().getFloat("levelDmg") > 1/*(gunItem.getGun().getGeneral().getLevelReq() * ((gunStack.getTag().getInt("level") * 3.0d)))*/) {
+            if (gunStack.getTag().getFloat("levelDmg") > (gunItem.getGun().getGeneral().getLevelReq() * ((gunStack.getTag().getInt("level") * 3.0d)))) {
                 gunStack.getTag().putFloat("levelDmg", 0f);
                 gunStack.getTag().putInt("level", gunStack.getTag().getInt("level") + 1);
 
@@ -783,11 +797,11 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     public float getDamage(Vector3d hitVec) {
         float initialDamage = (this.projectile.getDamage() + this.additionalDamage);
 
-        double maxDistance = this.projectile.getLife() * this.projectile.getSpeed();
+        double maxDistance = this.projectile.getLife() * this.speed;
         double projDistance = hitVec.distanceTo(this.startPos);
         if (this.projectile.isDamageReduceOverLife()) {
             float modifier;
-            if (projDistance <= Math.min(Math.min(this.projectile.getSpeed() / 5, maxDistance / 40), 4))
+            if (projDistance <= Math.min(Math.min(this.speed / 5, maxDistance / 40), 4))
                 modifier = this.projectile.getGunCloseDamage() > 1 ? this.projectile.getGunCloseDamage() : 1;
             else {
                 float decayStartDistance;
@@ -828,7 +842,22 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         damage = GunEnchantmentHelper.getAcceleratorDamage(this.weapon, damage);
         damage = GunModifierHelper.getAmmoModifyDamage(this.weapon, this.modifiedGun, damage);
 
-        return Math.max(0F, damage);
+        ItemStack gunStack = this.shooter.getHeldItemMainhand();
+        int[] levelModifyDamage = new int[]{0, 0, 0, 0, 10, 10, 10, 20, 20, 20};
+        int[] levelAdditionalDamage = new int[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 2};
+        float modifyDamage = 1f;
+        float additionalDamage = 1f;
+        if (gunStack.getTag() != null) {
+            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                modifyDamage *= ((100.0 + levelModifyDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
+                additionalDamage += levelAdditionalDamage[gunStack.getTag().getInt("level") - 1];
+            }
+        }
+
+        if ((damage * modifyDamage) <= (damage + additionalDamage))
+            return Math.max(0F, damage * modifyDamage);
+        else
+            return Math.max(0F, damage + additionalDamage);
     }
 
     //DamageReduceOverLife
@@ -849,8 +878,24 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         damage = GunEnchantmentHelper.getAcceleratorDamage(this.weapon, damage);
         damage = GunModifierHelper.getAmmoModifyDamage(this.weapon, this.modifiedGun, damage);
 
-        return Math.max(0F, damage);
+        ItemStack gunStack = this.shooter.getHeldItemMainhand();
+        int[] levelModifyDamage = new int[]{0, 0, 0, 0, 10, 10, 10, 20, 20, 20};
+        int[] levelAdditionalDamage = new int[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 2};
+        float modifyDamage = 1f;
+        float additionalDamage = 0f;
+        if (gunStack.getTag() != null) {
+            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                modifyDamage *= ((100.0 + levelModifyDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
+                additionalDamage += levelAdditionalDamage[gunStack.getTag().getInt("level") - 1];
+            }
+        }
+
+        if ((damage * modifyDamage) <= (damage + additionalDamage))
+            return Math.max(0F, damage * modifyDamage);
+        else
+            return Math.max(0F, damage + additionalDamage);
     }
+
     public float getRadius() {
         if (this.heLevel > -1)
             return Math.max(0F, this.projectile.getBlastRadius() * (this.ammoPlugEffect.getHeModifyBlastRange()[this.heLevel] / 100F));
@@ -860,9 +905,30 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
     private float getCriticalDamage(ItemStack weapon, Random rand, float damage) {
         float chance = GunModifierHelper.getCriticalChance(weapon) + this.projectile.getGunCritical();
+
+        ItemStack gunStack = this.shooter.getHeldItemMainhand();
+        int[] levelChance = new int[]{0, 0, 0, 0, 5, 5, 5, 5, 5, 10};
+        float modifyChance = 1f;
+        if (gunStack.getTag() != null) {
+            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                modifyChance *= ((100.0 + levelChance[gunStack.getTag().getInt("level") - 1]) / 100.0);
+            }
+        }
+
+        chance *= modifyChance;
         if (rand.nextFloat() < chance && Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() >= 0) {
             return (float) (damage * Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage());
         }
+
+        int[] levelDamage = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 5, 15};
+        float modifyDamage = 1f;
+        if (gunStack.getTag() != null) {
+            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                modifyDamage *= ((100.0 + levelDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
+            }
+        }
+
+        damage *= modifyDamage;
         return damage;
     }
 

@@ -86,6 +86,12 @@ public class AimingManager {
                 if (this.currentAim < MAX_AIM_PROGRESS) {
                     double speed = GunEnchantmentHelper.getAimDownSightSpeed(heldItem);
                     speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
+                    int[] levelSpeed = new int[]{0, 3, 6, 8, 10, 12, 14, 16, 18, 20};
+                    if (heldItem.getTag() != null) {
+                        if (heldItem.getTag().get("level") != null && !heldItem.getTag().getBoolean("levelLock")) {
+                            speed *= ((100.0 + levelSpeed[heldItem.getTag().getInt("level") - 1]) / 100.0);
+                        }
+                    }
                     this.currentAim += speed * amplifier;
                     if (this.currentAim > MAX_AIM_PROGRESS) {
                         amplifier = 0.5;
@@ -99,6 +105,12 @@ public class AimingManager {
                     }
                     double speed = GunEnchantmentHelper.getAimDownSightSpeed(heldItem);
                     speed = GunModifierHelper.getModifiedAimDownSightSpeed(heldItem, speed);
+                    int[] levelSpeed = new int[]{0, 3, 6, 8, 10, 12, 14, 16, 18, 20};
+                    if (heldItem.getTag() != null) {
+                        if (heldItem.getTag().get("level") != null && !heldItem.getTag().getBoolean("levelLock")) {
+                            speed *= ((100.0 + levelSpeed[heldItem.getTag().getInt("level") - 1]) / 100.0);
+                        }
+                    }
                     this.currentAim -= speed * amplifier;
                     if (this.currentAim < 0) {
                         amplifier = 0.5;

@@ -48,7 +48,7 @@ public class SGunLevelUp implements IMessage{
                 Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
                         new TranslationTextComponent("toast.tac.level_up"),
                         new TranslationTextComponent("toast.tac.sub.final_level")));
-            } else{
+            } else {
                 Minecraft.getInstance().getToastGui().add(new GunLevelUpToast(gun,
                         new TranslationTextComponent("toast.tac.level_up"),
                         new TranslationTextComponent("toast.tac.sub.level_up")));

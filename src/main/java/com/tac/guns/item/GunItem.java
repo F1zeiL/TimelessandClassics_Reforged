@@ -168,6 +168,11 @@ public class GunItem extends Item implements IColored {
                             }
                         }
                     }
+                    if (stack.getTag() != null) {
+                        if (stack.getTag().get("levelPlayer") != null && stack.getTag().get("levelLock") != null) {
+                            stack.getTag().putBoolean("levelLock", !stack.getTag().getUniqueId("levelPlayer").equals(playerEntity.getUniqueID()));
+                        }
+                    }
                 }
             }
         } else if (stack.getOrCreateTag().get("tac.isSelected") != null) {

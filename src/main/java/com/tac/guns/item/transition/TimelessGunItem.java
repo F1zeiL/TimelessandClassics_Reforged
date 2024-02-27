@@ -72,6 +72,18 @@ public class TimelessGunItem extends GunItem {
         additionalDamage = GunModifierHelper.getModifiedProjectileDamage(stack, additionalDamage);
         additionalDamage = GunEnchantmentHelper.getAcceleratorDamage(stack, additionalDamage);
         additionalDamage = GunModifierHelper.getAmmoModifyDamage(stack, modifiedGun, additionalDamage);
+
+        if (stack.getTag().get("level") != null && !stack.getTag().getBoolean("levelLock")) {
+            int[] levelModifyDamage = new int[]{0, 0, 0, 0, 10, 10, 10, 20, 20, 20};
+            int[] levelAdditionalDamage = new int[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 2};
+            float modifyDamageL = 1f;
+            float additionalDamageL = 0f;
+            modifyDamageL *= ((100.0 + levelModifyDamage[stack.getTag().getInt("level") - 1]) / 100.0);
+            additionalDamageL += levelAdditionalDamage[stack.getTag().getInt("level") - 1];
+
+            additionalDamage = Math.min((additionalDamage * modifyDamageL), (additionalDamage + additionalDamageL));
+        }
+
         tooltip.add((new TranslationTextComponent("info.tac.damage", TextFormatting.GOLD + ItemStack.DECIMALFORMAT.format(additionalDamage) + additionalDamageText)).mergeStyle(TextFormatting.DARK_GRAY));
 
         if (tagCompound != null) {
