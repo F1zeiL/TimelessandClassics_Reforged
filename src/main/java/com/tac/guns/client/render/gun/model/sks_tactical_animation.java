@@ -52,7 +52,7 @@ public class sks_tactical_animation extends SkinAnimationModel {
 
             renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
 
-            if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
+            if (transformType.isFirstPerson() || Config.SERVER.gameplay.canSeeLaserThirdSight.get())
                 renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
 

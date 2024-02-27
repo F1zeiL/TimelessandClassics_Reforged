@@ -68,7 +68,7 @@ public class ObjectRenderEditor
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
             return;
-        if (!Config.COMMON.development.enableTDev.get() && CommandsHandler.get().getCatCurrentIndex() == 4)
+        if (!Config.SERVER.development.enableTDev.get() && CommandsHandler.get().getCatCurrentIndex() == 4)
             return;
         if(event.getKey() == GLFW.GLFW_KEY_1)
         {
@@ -186,7 +186,7 @@ public class ObjectRenderEditor
     private void writeExport(String jsonString, String name) {
         try
         {
-            File dir = new File(Config.COMMON.development.TDevPath.get()+"\\tac_export\\");
+            File dir = new File(Config.SERVER.development.TDevPath.get()+"\\tac_export\\");
             dir.mkdir();
             FileWriter dataWriter = new FileWriter (dir.getAbsolutePath() +"\\"+ name + "_export.json");
             dataWriter.write(jsonString);

@@ -77,7 +77,7 @@ import static net.minecraft.entity.ai.attributes.Attributes.MOVEMENT_SPEED;
  */
 public class ServerPlayHandler {
     public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
-    private static final Predicate<LivingEntity> HOSTILE_ENTITIES = entity -> entity.getSoundCategory() == SoundCategory.HOSTILE && !Config.COMMON.aggroMobs.exemptEntities.get().contains(entity.getType().getRegistryName().toString());
+    private static final Predicate<LivingEntity> HOSTILE_ENTITIES = entity -> entity.getSoundCategory() == SoundCategory.HOSTILE && !Config.SERVER.aggroMobs.exemptEntities.get().contains(entity.getType().getRegistryName().toString());
 
     /**
      * Fires the weapon the player is currently holding.
@@ -146,8 +146,8 @@ public class ServerPlayHandler {
 
                     MinecraftForge.EVENT_BUS.post(new GunFireEvent.Post(player, heldItem));
 
-                    if (Config.COMMON.aggroMobs.enabled.get()) {
-                        double radius = GunModifierHelper.getModifiedFireSoundRadius(heldItem, Config.COMMON.aggroMobs.range.get());
+                    if (Config.SERVER.aggroMobs.enabled.get()) {
+                        double radius = GunModifierHelper.getModifiedFireSoundRadius(heldItem, Config.SERVER.aggroMobs.range.get());
                         double x = player.getPosX();
                         double y = player.getPosY() + 0.5;
                         double z = player.getPosZ();
@@ -159,7 +159,7 @@ public class ServerPlayHandler {
                             dy = y - entity.getPosY();
                             dz = z - entity.getPosZ();
                             if (dx * dx + dy * dy + dz * dz <= radius) {
-                                entity.setRevengeTarget(Config.COMMON.aggroMobs.angerHostileMobs.get() ? player : entity);
+                                entity.setRevengeTarget(Config.SERVER.aggroMobs.angerHostileMobs.get() ? player : entity);
                             }
                         }
                     }
@@ -616,8 +616,8 @@ public class ServerPlayHandler {
 
     private static void initLevelTracking(ItemStack gunStack, ServerPlayerEntity player) {
         if (gunStack.getTag().get("level") == null) {
-            if (Config.COMMON.gameplay.lockGunLevel.get())
-                gunStack.getTag().putInt("level", Config.COMMON.gameplay.lockLevelOfGun.get());
+            if (Config.SERVER.gameplay.lockGunLevel.get())
+                gunStack.getTag().putInt("level", Config.SERVER.gameplay.lockLevelOfGun.get());
             else
                 gunStack.getTag().putInt("level", 1);
         }

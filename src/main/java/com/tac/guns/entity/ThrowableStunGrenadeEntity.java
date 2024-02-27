@@ -52,7 +52,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
     @SubscribeEvent
     public static void stunMobs(LivingSetAttackTargetEvent event)
     {
-        if(Config.COMMON.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity &&
+        if(Config.SERVER.stunGrenades.blind.blindMobs.get() && event.getTarget() != null && event.getEntityLiving() instanceof MobEntity &&
                 (event.getEntityLiving().isPotionActive(ModEffects.BLINDED.get()) || event.getEntityLiving().isPotionActive(ModEffects.STUNNED.get())))
         {
             ((MobEntity) event.getEntityLiving()).setAttackTarget(null);
@@ -78,7 +78,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         PacketHandler.getPlayChannel().send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(this.getPosX(), y, this.getPosZ(), 64, this.world.getDimensionKey())), new MessageStunGrenade(this.getPosX(), y, this.getPosZ()));
 
         // Calculate bounds of area where potentially effected players may be
-        double diameter = Math.max(Config.COMMON.stunGrenades.deafen.criteria.radius.get(), Config.COMMON.stunGrenades.blind.criteria.radius.get()) * 2 + 1;
+        double diameter = Math.max(Config.SERVER.stunGrenades.deafen.criteria.radius.get(), Config.SERVER.stunGrenades.blind.criteria.radius.get()) * 2 + 1;
         int minX = MathHelper.floor(this.getPosX() - diameter);
         int maxX = MathHelper.floor(this.getPosX() + diameter);
         int minY = MathHelper.floor(y - diameter);
@@ -103,11 +103,11 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
             double angle = Math.toDegrees(Math.acos(entity.getLook(1.0F).dotProduct(directionGrenade.normalize())));
 
             // Apply effects as determined by their criteria
-            if(this.calculateAndApplyEffect(ModEffects.DEAFENED.get(), Config.COMMON.stunGrenades.deafen.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.deafen.panicMobs.get())
+            if(this.calculateAndApplyEffect(ModEffects.DEAFENED.get(), Config.SERVER.stunGrenades.deafen.criteria, entity, grenade, eyes, distance, angle) && Config.SERVER.stunGrenades.deafen.panicMobs.get())
             {
                 entity.setRevengeTarget(entity);
             }
-            if(this.calculateAndApplyEffect(this.getBlindType(), Config.COMMON.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.COMMON.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
+            if(this.calculateAndApplyEffect(this.getBlindType(), Config.SERVER.stunGrenades.blind.criteria, entity, grenade, eyes, distance, angle) && Config.SERVER.stunGrenades.blind.blindMobs.get() && entity instanceof MobEntity)
             {
                 ((MobEntity) entity).setAttackTarget(null);
             }
@@ -120,7 +120,7 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
         {
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
-            if(effect != this.getBlindType() || (!Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() && this.canSuppOpac())
+            if(effect != this.getBlindType() || (!Config.SERVER.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() && this.canSuppOpac())
                     || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
             {
                 // Duration attenuated by distance

@@ -107,7 +107,7 @@ public class BoundingBoxManager
     @SubscribeEvent(receiveCanceled = true)
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
-        if(!Config.COMMON.gameplay.improvedHitboxes.get())
+        if(!Config.SERVER.gameplay.improvedHitboxes.get())
             return;
 
         if(event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END)

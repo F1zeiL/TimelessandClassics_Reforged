@@ -51,7 +51,7 @@ public class GunEditor
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if(!Config.COMMON.development.enableTDev.get())
+        if(!Config.SERVER.development.enableTDev.get())
             return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
@@ -84,7 +84,7 @@ public class GunEditor
     }
     @SubscribeEvent
     public void onKeyPressed(InputEvent.KeyInputEvent event) {
-        if(!Config.COMMON.development.enableTDev.get())
+        if(!Config.SERVER.development.enableTDev.get())
             return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
@@ -1007,7 +1007,7 @@ public class GunEditor
     private void writeExport(String jsonString, String name) {
         try
         {
-            File dir = new File(Config.COMMON.development.TDevPath.get()+"\\tac_export\\");
+            File dir = new File(Config.SERVER.development.TDevPath.get()+"\\tac_export\\");
             dir.mkdir();
             FileWriter dataWriter = new FileWriter (dir.getAbsolutePath() +"\\"+ name + "_export.json");
             dataWriter.write(jsonString);

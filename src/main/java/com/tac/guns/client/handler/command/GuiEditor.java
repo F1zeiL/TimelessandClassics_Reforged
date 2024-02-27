@@ -67,7 +67,7 @@ public class GuiEditor
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
             return;
-        if (!Config.COMMON.development.enableTDev.get() && CommandsHandler.get().getCatCurrentIndex() == 3)
+        if (!Config.SERVER.development.enableTDev.get() && CommandsHandler.get().getCatCurrentIndex() == 3)
             return;
         if(event.getKeyCode() == GLFW.GLFW_KEY_1)
         {
@@ -179,7 +179,7 @@ public class GuiEditor
     private void writeExport(String jsonString, String name) {
         try
         {
-            File dir = new File(Config.COMMON.development.TDevPath.get()+"\\tac_export\\");
+            File dir = new File(Config.SERVER.development.TDevPath.get()+"\\tac_export\\");
             dir.mkdir();
             FileWriter dataWriter = new FileWriter (dir.getAbsolutePath() +"\\"+ name + "_export.json");
             dataWriter.write(jsonString);

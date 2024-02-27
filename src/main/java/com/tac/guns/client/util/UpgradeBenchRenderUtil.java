@@ -54,7 +54,7 @@ public class UpgradeBenchRenderUtil extends TileEntityRenderer<UpgradeBenchTileE
 
         matrixStack.push();
 
-        /*if(Config.COMMON.development.enableTDev.get() && (ObjectRenderEditor.get() != null && ObjectRenderEditor.get().currElement == 1 && ObjectRenderEditor.get().GetFromElements(1) != null)) {
+        /*if(Config.SERVER.development.enableTDev.get() && (ObjectRenderEditor.get() != null && ObjectRenderEditor.get().currElement == 1 && ObjectRenderEditor.get().GetFromElements(1) != null)) {
             matrixStack.translate(ObjectRenderEditor.get().GetFromElements(1).getxMod(), ObjectRenderEditor.get().GetFromElements(1).getyMod(), ObjectRenderEditor.get().GetFromElements(1).getzMod());
         }*/
         matrixStack.translate(-0.14, -0.4200001, 0);

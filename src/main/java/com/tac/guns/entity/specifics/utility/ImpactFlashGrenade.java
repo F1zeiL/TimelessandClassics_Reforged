@@ -35,7 +35,7 @@ public class ImpactFlashGrenade extends ThrowableStunGrenadeEntity {
         if(distance <= criteria.radius.get()/1.25f && angleMax > 0 && angle <= angleMax)
         {
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
-            if(effect != ModEffects.BLINDED.get() || !Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
+            if(effect != ModEffects.BLINDED.get() || !Config.SERVER.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() || rayTraceOpaqueBlocks(this.world, eyes, grenade, false, false, false) == null)
             {
                 // Duration attenuated by distance
                 int durationBlinded = (int) Math.round(criteria.durationMax.get() - (criteria.durationMax.get() - criteria.durationMin.get()) * (distance / criteria.radius.get()));

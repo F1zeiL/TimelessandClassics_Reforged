@@ -304,12 +304,6 @@ public class Config {
     public static class Common {
         public final Gameplay gameplay;
         public final Network network;
-        public final AggroMobs aggroMobs;
-        public final Missiles missiles;
-        public final Grenades grenades;
-        public final StunGrenades stunGrenades;
-        public final ProjectileSpread projectileSpread;
-        public final Development development;
 
 
         public Common(ForgeConfigSpec.Builder builder) {
@@ -317,101 +311,31 @@ public class Config {
             {
                 this.gameplay = new Gameplay(builder);
                 this.network = new Network(builder);
-                this.aggroMobs = new AggroMobs(builder);
-                this.missiles = new Missiles(builder);
-                this.grenades = new Grenades(builder);
-                this.stunGrenades = new StunGrenades(builder);
-                this.projectileSpread = new ProjectileSpread(builder);
-                this.development = new Development(builder);
             }
             builder.pop();
         }
-    }
 
-    /**
-     * Gameplay related config options
-     */
-    public static class Gameplay {
-        public final ForgeConfigSpec.BooleanValue enableGunGriefing;
-        public final ForgeConfigSpec.BooleanValue enableExplosionBreak;
-        public final ForgeConfigSpec.DoubleValue growBoundingBoxAmountV2;
-        public final ForgeConfigSpec.BooleanValue enableHeadShots;
-        public final ForgeConfigSpec.DoubleValue headShotDamageMultiplier;
-        public final ForgeConfigSpec.DoubleValue criticalDamageMultiplier;
-        public final ForgeConfigSpec.BooleanValue ignoreLeaves;
-        public final ForgeConfigSpec.BooleanValue enableKnockback;
-        public final ForgeConfigSpec.DoubleValue knockbackStrength;
-        public final ForgeConfigSpec.BooleanValue improvedHitboxes;
+        /**
+         * Gameplay related config options
+         */
+        public static class Gameplay {
+            public final ForgeConfigSpec.BooleanValue realisticLowPowerFovHandling;
+            public final ForgeConfigSpec.BooleanValue realisticIronSightFovHandling;
+            public final ForgeConfigSpec.BooleanValue realisticAimedBreathing;
+            public final ForgeConfigSpec.BooleanValue safetyExistence;
+            public final ForgeConfigSpec.BooleanValue bannedDrop;
 
-        public final ForgeConfigSpec.BooleanValue realisticLowPowerFovHandling;
-        public final ForgeConfigSpec.BooleanValue realisticIronSightFovHandling;
-        public final ForgeConfigSpec.BooleanValue realisticAimedBreathing;
-        public final ForgeConfigSpec.BooleanValue safetyExistence;
-
-        public final ForgeConfigSpec.BooleanValue bulletsIgnoreStandardArmor;
-
-        public final ForgeConfigSpec.DoubleValue percentDamageIgnoresStandardArmor;
-
-        public final ForgeConfigSpec.BooleanValue renderTaCArmor;
-        public final ForgeConfigSpec.BooleanValue armorBluntDamage;
-
-        public final ForgeConfigSpec.BooleanValue forceCameraShakeOnFire;
-
-        public final ForgeConfigSpec.BooleanValue explosionCauseFire;
-        public final ForgeConfigSpec.BooleanValue fireStarterCauseFire;
-        public final ForgeConfigSpec.BooleanValue bannedDrop;
-        public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
-        public final ForgeConfigSpec.BooleanValue gunOfKindness;
-        public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
-
-        public final ForgeConfigSpec.DoubleValue decelerationFromTacIgnite;
-        public final ForgeConfigSpec.BooleanValue lockGunLevel;
-
-        public final ForgeConfigSpec.IntValue lockLevelOfGun;
-
-        public Gameplay(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to gameplay").push("gameplay");
-            {
-                this.enableGunGriefing = builder.comment("If enable, allows guns to shoot out glass").define("enableGunGriefing", true);
-                this.enableExplosionBreak = builder.comment("If enable, allows guns to remove blocks on explosions").define("enableExplosionBreak", false);
-                this.growBoundingBoxAmountV2 = builder.comment("The extra amount to expand an entity's bounding box when checking for projectile collision. Setting this value higher will make it easier to hit entities").defineInRange(
-                        "growBoundingBoxAmountV2", 0.0, 0.0, 1.0);
-                this.enableHeadShots = builder.comment("Enables the check for head shots for players. Projectiles that hit the head of a player will have increased damage.").define("enableHeadShots", true);
-                this.headShotDamageMultiplier = builder.comment("The value to multiply the damage by if projectile hit the players head").defineInRange("headShotDamageMultiplier", 2.0, 1.0, Double.MAX_VALUE);
-                this.criticalDamageMultiplier = builder.comment("The value to multiply the damage by if projectile is a critical hit").defineInRange("criticalDamageMultiplier", 2.0, 1.0, Double.MAX_VALUE);
-                this.ignoreLeaves = builder.comment("If true, projectiles will ignore leaves when checking for collision").define("ignoreLeaves", true);
-                this.enableKnockback = builder.comment("If true, projectiles will cause knockback when an entity is hit. By default this is set to true to match the behaviour of Minecraft.").define("enableKnockback", true);
-                this.knockbackStrength = builder.comment("Sets the strength of knockback when shot by a bullet projectile. Knockback must be enabled for this to take effect. If value is equal to zero, knockback will use default minecraft value").defineInRange("knockbackStrength", 0.15, 0.0, 1.0);
-                this.improvedHitboxes = builder.comment("If true, improves the accuracy of weapons by considering the ping of the player. This has no affect on singleplayer. This will add a little overhead if enabled.").define("improvedHitboxes", true);
-
-                this.safetyExistence = builder.comment("Enables the safe mode on weapons, false completely nullifies the existence of the safety").define("safetyExistence", false);
-
-                this.realisticLowPowerFovHandling = builder.comment("Optics with 0 fov modification will not affect the players fov at all").define("realisticLowPowerFovHandling", false);
-                this.realisticIronSightFovHandling = builder.comment("Iron sights fov modification will not affect the players fov at all").define("realisticIronSightFovHandling", false);
-
-                this.realisticAimedBreathing = builder.comment("Aiming will present a breathing animation, moving the weapon over time, crouch to lower it's effects").define("realisticAimedBreathing", false);
-
-                this.bulletsIgnoreStandardArmor = builder.comment("Bullets completely ignore Minecraft armor, forcing you to use our armor system.").define("bulletsIgnoreStandardArmor", true);
-                this.percentDamageIgnoresStandardArmor =
-                        builder.comment("The percent of the damage ignore the armor, 0 = Minecraft armor effectiveness doesn't change, 1 = Minecraft armor never effects bullet damage.").defineInRange(
-                                "percentDamageIgnoresStandardArmor", 0.5, 0.0, 1.0);
-                this.renderTaCArmor = builder.comment("Enable rendering of TaC armor on the player, useful if other armors are taking priority, doesn't fit gameplay theme, or not performant enough.").define("renderTaCArmor",
-                        true);
-                this.armorBluntDamage = builder.comment("All weapons have a percentage of damage applied, no matter the class match up, false means blunt damage is never applied before armor calc.").define("armorBluntDamage", true);
-
-                this.forceCameraShakeOnFire = builder.comment("Force camera shake on for all players, since control over the weapon is reduced with this off, having a client only options could lead to balance issues.").define("forceCameraShakeOnFire",
-                        false);
-                this.explosionCauseFire = builder.comment("If enable, explosion will cause fire (ignite the block)").define("explosionCauseFire", false);
-                this.fireStarterCauseFire = builder.comment("If enable, Fire Starter will cause fire (ignite the block)").define("fireStarterCauseFire", false);
-                this.bannedDrop = builder.comment("True if you don't want pack up the item on your left hand, this option will keep the item but unable to use it and stop render it.").define("bannedDrop", true);
-                this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
-                this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
-                this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
-                this.decelerationFromTacIgnite = builder.comment("Adjust decelerate the player or mob when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
-                this.lockGunLevel = builder.comment("True if you don't want to use level system.").define("lockGunLevel", false);
-                this.lockLevelOfGun = builder.comment("If lockGunLevel true, which level will it be locked.").defineInRange("lockLevelOfGun", 1, 1, 10);
+            public Gameplay(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to gameplay").push("gameplay");
+                {
+                    this.safetyExistence = builder.comment("Enables the safe mode on weapons, false completely nullifies the existence of the safety").define("safetyExistence", false);
+                    this.realisticLowPowerFovHandling = builder.comment("Optics with 0 fov modification will not affect the players fov at all").define("realisticLowPowerFovHandling", false);
+                    this.realisticIronSightFovHandling = builder.comment("Iron sights fov modification will not affect the players fov at all").define("realisticIronSightFovHandling", false);
+                    this.realisticAimedBreathing = builder.comment("Aiming will present a breathing animation, moving the weapon over time, crouch to lower it's effects").define("realisticAimedBreathing", false);
+                    this.bannedDrop = builder.comment("True if you don't want pack up the item on your left hand, this option will keep the item but unable to use it and stop render it.").define("bannedDrop", true);
+                }
+                builder.pop();
             }
-            builder.pop();
         }
     }
 
@@ -437,24 +361,6 @@ public class Config {
                 this.allowCraftingTable = builder.comment("Whether allow crafting table use").define("allowCraftingTable", false);
                 this.allowFenceGates = builder.comment("Whether allow fence gates use").define("allowFenceGates", false);
                 this.allowRestUse = builder.comment("Whether allow to interact with rest stuffs.").define("allowRestUse", false);
-            }
-            builder.pop();
-        }
-    }
-
-    public static class Development {
-        public final ForgeConfigSpec.BooleanValue permanentCrosshair;
-        public final ForgeConfigSpec.BooleanValue enableTDev;
-        public final ForgeConfigSpec.ConfigValue<String> TDevPath;
-        public final ForgeConfigSpec.BooleanValue bulletSelfHarm;
-
-        public Development(ForgeConfigSpec.Builder builder) {
-            builder.comment("Development").push("development");
-            {
-                this.permanentCrosshair = builder.comment("If enabled any crosshair will continue to render on aim.").define("permanentCrosshair", false);
-                this.enableTDev = builder.comment("If enabled, /t dev will both be registered (Upon restart), and function! Used as well to speed up tag checks").define("enableTDev", false);
-                this.TDevPath = builder.comment("Directory to build all TaC sub-directories, these will contain export data from /t dev functions").define("tDevPath", "");
-                this.bulletSelfHarm = builder.comment("Whether the shooters bullets can harm the shooter, great for testing armor and on hit effects with the development gun").define("bulletSelfHarm", false);
             }
             builder.pop();
         }
@@ -510,108 +416,6 @@ public class Config {
     }
 
     /**
-     * Mob aggression related config options
-     */
-    public static class AggroMobs {
-        public final ForgeConfigSpec.BooleanValue enabled;
-        public final ForgeConfigSpec.BooleanValue angerHostileMobs;
-        public final ForgeConfigSpec.DoubleValue range;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> exemptEntities;
-
-        public AggroMobs(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to mob aggression").push("aggro_mobs");
-            {
-                this.enabled = builder.comment("If true, nearby mobs are angered and/or scared by the firing of guns.").define("enabled", true);
-                this.angerHostileMobs = builder.comment("If true, in addition to causing peaceful mobs to panic, firing a gun will also cause nearby hostile mobs to target the shooter.").define("angerHostileMobs", true);
-                this.range = builder.comment("Any mobs within a sphere of this radius will aggro on the shooter of an unsilenced gun.").defineInRange("unsilencedRange", 20.0, 0.0, Double.MAX_VALUE);
-                this.exemptEntities = builder.comment("Any mobs of defined will not aggro on shooters").defineList("exemptMobs", Collections.emptyList(), o -> true);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
-     * Missile related config options
-     */
-    public static class Missiles {
-        public final ForgeConfigSpec.DoubleValue explosionRadius;
-
-        public Missiles(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to missiles (no use now)").push("missiles");
-            {
-                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 1.0, 0.0, Double.MAX_VALUE);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
-     * Grenade related config options
-     */
-    public static class Grenades {
-        public final ForgeConfigSpec.DoubleValue explosionRadius;
-
-        public Grenades(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to grenades").push("grenades");
-            {
-                this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 2.0, 0.0, Double.MAX_VALUE);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
-     * Stun Grenade related config options
-     */
-    public static class StunGrenades {
-        public final Blind blind;
-        public final Deafen deafen;
-
-        public StunGrenades(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to stun grenades").push("stun_grenades");
-            {
-                this.blind = new Blind(builder);
-                this.deafen = new Deafen(builder);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
-     * Stun grenade blinding related config options
-     */
-    public static class Blind {
-        public final EffectCriteria criteria;
-        public final ForgeConfigSpec.BooleanValue blindMobs;
-
-        public Blind(ForgeConfigSpec.Builder builder) {
-            builder.comment("Blinding properties of stun grenades").push("blind");
-            {
-                this.criteria = new EffectCriteria(builder, 15, 220, 10, 170, 0.75, true);
-                this.blindMobs = builder.comment("If true, hostile mobs will be unable to target entities while they are blinded by a stun grenade.").define("blindMobs", true);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
-     * Stun grenade deafening related config options
-     */
-    public static class Deafen {
-        public final EffectCriteria criteria;
-        public final ForgeConfigSpec.BooleanValue panicMobs;
-
-        public Deafen(ForgeConfigSpec.Builder builder) {
-            builder.comment("Deafening properties of stun grenades").push("deafen");
-            {
-                this.criteria = new EffectCriteria(builder, 15, 280, 100, 360, 0.75, false);
-                this.panicMobs = builder.comment("If true, peaceful mobs will panic upon being deafened by a stun grenade.").define("panicMobs", true);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
      * Config options for effect criteria
      */
     public static class EffectCriteria {
@@ -637,24 +441,17 @@ public class Config {
     }
 
     /**
-     * Projectile spread config options
-     */
-    public static class ProjectileSpread {
-        public final ForgeConfigSpec.BooleanValue movementInaccuracy;
-
-        public ProjectileSpread(ForgeConfigSpec.Builder builder) {
-            builder.comment("Properties relating to projectile spread").push("projectile_spread");
-            {
-                this.movementInaccuracy = builder.comment("Weapon grows more inaccurate depending if the player is in motion (Forward, Strafing, Jumping)").define("movementInaccuracy", true);
-            }
-            builder.pop();
-        }
-    }
-
-    /**
      * Server related config options
      */
     public static class Server {
+        public final Gameplay gameplay;
+        public final Development development;
+        public final AggroMobs aggroMobs;
+        public final Missiles missiles;
+        public final Grenades grenades;
+        public final StunGrenades stunGrenades;
+        public final ProjectileSpread projectileSpread;
+
         public final ForgeConfigSpec.IntValue alphaOverlay;
         public final ForgeConfigSpec.IntValue alphaFadeThreshold;
         public final ForgeConfigSpec.DoubleValue soundPercentage;
@@ -662,7 +459,6 @@ public class Config {
         public final ForgeConfigSpec.DoubleValue ringVolume;
         public final ForgeConfigSpec.DoubleValue gunShotMaxDistance;
         public final ForgeConfigSpec.BooleanValue enableCameraRecoil;
-
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.push("server");
@@ -674,6 +470,14 @@ public class Config {
                     this.soundPercentage = builder.comment("Volume of most game sounds when deafened will play at this percent, before eventually fading back to %100.").defineInRange("soundPercentage", 0.05, 0.0, 1.0);
                     this.soundFadeThreshold = builder.comment("After the duration drops to this many ticks, the ringing volume will gradually fade to 0 and other sound volumes will fade back to %100.").defineInRange("soundFadeThreshold", 90, 0, Integer.MAX_VALUE);
                     this.ringVolume = builder.comment("Volume of the ringing sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("ringVolume", 1.0, 0.0, 1.0);
+
+                    this.gameplay = new Gameplay(builder);
+                    this.development = new Development(builder);
+                    this.aggroMobs = new AggroMobs(builder);
+                    this.missiles = new Missiles(builder);
+                    this.grenades = new Grenades(builder);
+                    this.stunGrenades = new StunGrenades(builder);
+                    this.projectileSpread = new ProjectileSpread(builder);
                 }
                 builder.pop();
 
@@ -686,6 +490,208 @@ public class Config {
                 this.enableCameraRecoil = builder.comment("If true, enables camera recoil when firing a weapon").define("enableCameraRecoil", true);
             }
             builder.pop();
+        }
+
+        /**
+         * Gameplay related config options
+         */
+        public static class Gameplay {
+            public final ForgeConfigSpec.BooleanValue enableGunGriefing;
+            public final ForgeConfigSpec.BooleanValue enableExplosionBreak;
+            public final ForgeConfigSpec.DoubleValue growBoundingBoxAmountV2;
+            public final ForgeConfigSpec.BooleanValue enableHeadShots;
+            public final ForgeConfigSpec.DoubleValue headShotDamageMultiplier;
+            public final ForgeConfigSpec.DoubleValue criticalDamageMultiplier;
+            public final ForgeConfigSpec.BooleanValue ignoreLeaves;
+            public final ForgeConfigSpec.BooleanValue enableKnockback;
+            public final ForgeConfigSpec.DoubleValue knockbackStrength;
+            public final ForgeConfigSpec.BooleanValue improvedHitboxes;
+            public final ForgeConfigSpec.BooleanValue bulletsIgnoreStandardArmor;
+            public final ForgeConfigSpec.DoubleValue percentDamageIgnoresStandardArmor;
+            public final ForgeConfigSpec.BooleanValue renderTaCArmor;
+            public final ForgeConfigSpec.BooleanValue armorBluntDamage;
+            public final ForgeConfigSpec.BooleanValue forceCameraShakeOnFire;
+            public final ForgeConfigSpec.BooleanValue explosionCauseFire;
+            public final ForgeConfigSpec.BooleanValue fireStarterCauseFire;
+            public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
+            public final ForgeConfigSpec.BooleanValue gunOfKindness;
+            public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
+
+            public final ForgeConfigSpec.DoubleValue decelerationFromTacIgnite;
+            public final ForgeConfigSpec.BooleanValue lockGunLevel;
+
+            public final ForgeConfigSpec.IntValue lockLevelOfGun;
+
+            public Gameplay(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to gameplay").push("gameplay");
+                {
+                    this.enableGunGriefing = builder.comment("If enable, allows guns to shoot out glass").define("enableGunGriefing", true);
+                    this.enableExplosionBreak = builder.comment("If enable, allows guns to remove blocks on explosions").define("enableExplosionBreak", false);
+                    this.growBoundingBoxAmountV2 = builder.comment("The extra amount to expand an entity's bounding box when checking for projectile collision. Setting this value higher will make it easier to hit entities").defineInRange(
+                            "growBoundingBoxAmountV2", 0.0, 0.0, 1.0);
+                    this.enableHeadShots = builder.comment("Enables the check for head shots for players. Projectiles that hit the head of a player will have increased damage.").define("enableHeadShots", true);
+                    this.headShotDamageMultiplier = builder.comment("The value to multiply the damage by if projectile hit the players head").defineInRange("headShotDamageMultiplier", 2.0, 1.0, Double.MAX_VALUE);
+                    this.criticalDamageMultiplier = builder.comment("The value to multiply the damage by if projectile is a critical hit").defineInRange("criticalDamageMultiplier", 2.0, 1.0, Double.MAX_VALUE);
+                    this.ignoreLeaves = builder.comment("If true, projectiles will ignore leaves when checking for collision").define("ignoreLeaves", true);
+                    this.enableKnockback = builder.comment("If true, projectiles will cause knockback when an entity is hit. By default this is set to true to match the behaviour of Minecraft.").define("enableKnockback", true);
+                    this.knockbackStrength = builder.comment("Sets the strength of knockback when shot by a bullet projectile. Knockback must be enabled for this to take effect. If value is equal to zero, knockback will use default minecraft value").defineInRange("knockbackStrength", 0.15, 0.0, 1.0);
+                    this.improvedHitboxes = builder.comment("If true, improves the accuracy of weapons by considering the ping of the player. This has no affect on singleplayer. This will add a little overhead if enabled.").define("improvedHitboxes", true);
+                    this.bulletsIgnoreStandardArmor = builder.comment("Bullets completely ignore Minecraft armor, forcing you to use our armor system.").define("bulletsIgnoreStandardArmor", true);
+                    this.percentDamageIgnoresStandardArmor =
+                            builder.comment("The percent of the damage ignore the armor, 0 = Minecraft armor effectiveness doesn't change, 1 = Minecraft armor never effects bullet damage.").defineInRange(
+                                    "percentDamageIgnoresStandardArmor", 0.5, 0.0, 1.0);
+                    this.renderTaCArmor = builder.comment("Enable rendering of TaC armor on the player, useful if other armors are taking priority, doesn't fit gameplay theme, or not performant enough.").define("renderTaCArmor",
+                            true);
+                    this.armorBluntDamage = builder.comment("All weapons have a percentage of damage applied, no matter the class match up, false means blunt damage is never applied before armor calc.").define("armorBluntDamage", true);
+
+                    this.forceCameraShakeOnFire = builder.comment("Force camera shake on for all players, since control over the weapon is reduced with this off, having a client only options could lead to balance issues.").define("forceCameraShakeOnFire",
+                            false);
+                    this.explosionCauseFire = builder.comment("If enable, explosion will cause fire (ignite the block)").define("explosionCauseFire", false);
+                    this.fireStarterCauseFire = builder.comment("If enable, Fire Starter will cause fire (ignite the block)").define("fireStarterCauseFire", false);
+                    this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
+                    this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
+                    this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
+                    this.decelerationFromTacIgnite = builder.comment("Adjust decelerate the player or mob when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
+                    this.lockGunLevel = builder.comment("True if you don't want to use level system.").define("lockGunLevel", false);
+                    this.lockLevelOfGun = builder.comment("If lockGunLevel true, which level will it be locked.").defineInRange("lockLevelOfGun", 1, 1, 10);
+                }
+                builder.pop();
+            }
+        }
+
+        public static class Development {
+            public final ForgeConfigSpec.BooleanValue permanentCrosshair;
+            public final ForgeConfigSpec.BooleanValue enableTDev;
+            public final ForgeConfigSpec.ConfigValue<String> TDevPath;
+            public final ForgeConfigSpec.BooleanValue bulletSelfHarm;
+
+            public Development(ForgeConfigSpec.Builder builder) {
+                builder.comment("Development").push("development");
+                {
+                    this.permanentCrosshair = builder.comment("If enabled any crosshair will continue to render on aim.").define("permanentCrosshair", false);
+                    this.enableTDev = builder.comment("If enabled, /t dev will both be registered (Upon restart), and function! Used as well to speed up tag checks").define("enableTDev", false);
+                    this.TDevPath = builder.comment("Directory to build all TaC sub-directories, these will contain export data from /t dev functions").define("tDevPath", "");
+                    this.bulletSelfHarm = builder.comment("Whether the shooters bullets can harm the shooter, great for testing armor and on hit effects with the development gun").define("bulletSelfHarm", false);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Mob aggression related config options
+         */
+        public static class AggroMobs {
+            public final ForgeConfigSpec.BooleanValue enabled;
+            public final ForgeConfigSpec.BooleanValue angerHostileMobs;
+            public final ForgeConfigSpec.DoubleValue range;
+            public final ForgeConfigSpec.ConfigValue<List<? extends String>> exemptEntities;
+
+            public AggroMobs(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to mob aggression").push("aggro_mobs");
+                {
+                    this.enabled = builder.comment("If true, nearby mobs are angered and/or scared by the firing of guns.").define("enabled", true);
+                    this.angerHostileMobs = builder.comment("If true, in addition to causing peaceful mobs to panic, firing a gun will also cause nearby hostile mobs to target the shooter.").define("angerHostileMobs", true);
+                    this.range = builder.comment("Any mobs within a sphere of this radius will aggro on the shooter of an unsilenced gun.").defineInRange("unsilencedRange", 20.0, 0.0, Double.MAX_VALUE);
+                    this.exemptEntities = builder.comment("Any mobs of defined will not aggro on shooters").defineList("exemptMobs", Collections.emptyList(), o -> true);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Missile related config options
+         */
+        public static class Missiles {
+            public final ForgeConfigSpec.DoubleValue explosionRadius;
+
+            public Missiles(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to missiles (no use now)").push("missiles");
+                {
+                    this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 1.0, 0.0, Double.MAX_VALUE);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Grenade related config options
+         */
+        public static class Grenades {
+            public final ForgeConfigSpec.DoubleValue explosionRadius;
+
+            public Grenades(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to grenades").push("grenades");
+                {
+                    this.explosionRadius = builder.comment("The max distance which the explosion is effective to").defineInRange("explosionRadius", 2.0, 0.0, Double.MAX_VALUE);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Stun Grenade related config options
+         */
+        public static class StunGrenades {
+            public final Blind blind;
+            public final Deafen deafen;
+
+            public StunGrenades(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to stun grenades").push("stun_grenades");
+                {
+                    this.blind = new Blind(builder);
+                    this.deafen = new Deafen(builder);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Stun grenade blinding related config options
+         */
+        public static class Blind {
+            public final EffectCriteria criteria;
+            public final ForgeConfigSpec.BooleanValue blindMobs;
+
+            public Blind(ForgeConfigSpec.Builder builder) {
+                builder.comment("Blinding properties of stun grenades").push("blind");
+                {
+                    this.criteria = new EffectCriteria(builder, 15, 220, 10, 170, 0.75, true);
+                    this.blindMobs = builder.comment("If true, hostile mobs will be unable to target entities while they are blinded by a stun grenade.").define("blindMobs", true);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Stun grenade deafening related config options
+         */
+        public static class Deafen {
+            public final EffectCriteria criteria;
+            public final ForgeConfigSpec.BooleanValue panicMobs;
+
+            public Deafen(ForgeConfigSpec.Builder builder) {
+                builder.comment("Deafening properties of stun grenades").push("deafen");
+                {
+                    this.criteria = new EffectCriteria(builder, 15, 280, 100, 360, 0.75, false);
+                    this.panicMobs = builder.comment("If true, peaceful mobs will panic upon being deafened by a stun grenade.").define("panicMobs", true);
+                }
+                builder.pop();
+            }
+        }
+
+        /**
+         * Projectile spread config options
+         */
+        public static class ProjectileSpread {
+            public final ForgeConfigSpec.BooleanValue movementInaccuracy;
+
+            public ProjectileSpread(ForgeConfigSpec.Builder builder) {
+                builder.comment("Properties relating to projectile spread").push("projectile_spread");
+                {
+                    this.movementInaccuracy = builder.comment("Weapon grows more inaccurate depending if the player is in motion (Forward, Strafing, Jumping)").define("movementInaccuracy", true);
+                }
+                builder.pop();
+            }
         }
     }
 

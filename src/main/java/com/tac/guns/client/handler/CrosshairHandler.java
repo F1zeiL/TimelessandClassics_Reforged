@@ -124,7 +124,7 @@ public class CrosshairHandler
         if(!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if(!Config.COMMON.development.permanentCrosshair.get())
+        if(!Config.SERVER.development.permanentCrosshair.get())
             event.setCanceled(true);
 
         if(!mc.gameSettings.getPointOfView().func_243192_a())

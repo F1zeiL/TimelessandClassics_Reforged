@@ -307,7 +307,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     if (((EntityRayTraceResult) result).getEntity() instanceof PlayerEntity) {
                         PlayerEntity player = (PlayerEntity) ((EntityRayTraceResult) result).getEntity();
 
-                        if (this.shooter instanceof PlayerEntity && !((PlayerEntity) this.shooter).canAttackPlayer(player) && !Config.COMMON.development.bulletSelfHarm.get()) {
+                        if (this.shooter instanceof PlayerEntity && !((PlayerEntity) this.shooter).canAttackPlayer(player) && !Config.SERVER.development.bulletSelfHarm.get()) {
                             result = null;
                         }
                     }
@@ -360,7 +360,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         List<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0), PROJECTILE_TARGETS);
         double closestDistance = Double.MAX_VALUE;
         for (Entity entity : entities) {
-            if (!entity.equals(this.shooter) || Config.COMMON.development.bulletSelfHarm.get()) {
+            if (!entity.equals(this.shooter) || Config.SERVER.development.bulletSelfHarm.get()) {
                 EntityResult result = this.getHitResult(entity, startVec, endVec);
                 if (result == null)
                     continue;
@@ -383,7 +383,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         List<EntityResult> hitEntities = new ArrayList<>();
         List<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(this.getMotion()).grow(1.0), PROJECTILE_TARGETS);
         for (Entity entity : entities) {
-            if (!entity.equals(this.shooter) || Config.COMMON.development.bulletSelfHarm.get()) {
+            if (!entity.equals(this.shooter) || Config.SERVER.development.bulletSelfHarm.get()) {
                 EntityResult result = this.getHitResult(entity, startVec, endVec);
                 if (result == null)
                     continue;
@@ -399,7 +399,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     private EntityResult getHitResult(Entity entity, Vector3d startVec, Vector3d endVec) {
         double expandHeight = entity instanceof PlayerEntity && !entity.isCrouching() ? 0.0625 : 0.0;
         AxisAlignedBB boundingBox = entity.getBoundingBox();
-        if (Config.COMMON.gameplay.improvedHitboxes.get() && entity instanceof ServerPlayerEntity && this.shooter != null) {
+        if (Config.SERVER.gameplay.improvedHitboxes.get() && entity instanceof ServerPlayerEntity && this.shooter != null) {
             int ping = (int) Math.floor((((ServerPlayerEntity) this.shooter).ping / 1000.0) * 20.0 + 0.5);
             boundingBox = BoundingBoxManager.getBoundingBox((PlayerEntity) entity, ping);
         }
@@ -416,7 +416,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         boundingBox = boundingBox.expand(velocity.mul(-1, -1, -1));
 
         Vector3d hitPos = boundingBox.rayTrace(startVec, endVec).orElse(null);
-        Vector3d grownHitPos = boundingBox.grow(Config.COMMON.gameplay.growBoundingBoxAmountV2.get(), 0, Config.COMMON.gameplay.growBoundingBoxAmountV2.get()).rayTrace(startVec, endVec).orElse(null);
+        Vector3d grownHitPos = boundingBox.grow(Config.SERVER.gameplay.growBoundingBoxAmountV2.get(), 0, Config.SERVER.gameplay.growBoundingBoxAmountV2.get()).rayTrace(startVec, endVec).orElse(null);
         if (hitPos == null && grownHitPos != null) {
             RayTraceResult raytraceresult = rayTraceBlocks(this.world, new RayTraceContext(startVec, grownHitPos, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, this));
             if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
@@ -427,7 +427,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         /* Check for headshot */
         boolean headshot = false;
-        if (Config.COMMON.gameplay.enableHeadShots.get() && entity instanceof LivingEntity) {
+        if (Config.SERVER.gameplay.enableHeadShots.get() && entity instanceof LivingEntity) {
             IHeadshotBox<LivingEntity> headshotBox = (IHeadshotBox<LivingEntity>) BoundingBoxManager.getHeadshotBoxes(entity.getType());
             if (headshotBox != null) {
                 AxisAlignedBB box = headshotBox.getHeadshotBox((LivingEntity) entity);
@@ -435,7 +435,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     box = box.offset(boundingBox.getCenter().x, boundingBox.minY, boundingBox.getCenter().z);
                     Optional<Vector3d> headshotHitPos = box.rayTrace(startVec, endVec);
                     if (!headshotHitPos.isPresent()) {
-                        box = box.grow(Config.COMMON.gameplay.growBoundingBoxAmountV2.get(), 0, Config.COMMON.gameplay.growBoundingBoxAmountV2.get());
+                        box = box.grow(Config.SERVER.gameplay.growBoundingBoxAmountV2.get(), 0, Config.SERVER.gameplay.growBoundingBoxAmountV2.get());
                         headshotHitPos = box.rayTrace(startVec, endVec);
                     }
                     if (headshotHitPos.isPresent() && (hitPos == null || headshotHitPos.get().distanceTo(hitPos) < 0.5)) {
@@ -482,7 +482,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
             if (Objects.requireNonNull(block.getRegistryName()).getPath().contains("_button"))
                 return;
 
-            if (Config.COMMON.gameplay.enableGunGriefing.get() && (block instanceof BreakableBlock ||
+            if (Config.SERVER.gameplay.enableGunGriefing.get() && (block instanceof BreakableBlock ||
                     block instanceof PaneBlock) && state.getMaterial() == Material.GLASS) {
                 this.world.destroyBlock(blockRayTraceResult.getPos(), false, this.shooter);
             }
@@ -505,7 +505,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 bell.attemptRing(this.world, state, blockRayTraceResult, (PlayerEntity) this.shooter, true);
             }
 
-            if ((this.iLevel > -1) && Config.COMMON.gameplay.fireStarterCauseFire.get()) {
+            if ((this.iLevel > -1) && Config.SERVER.gameplay.fireStarterCauseFire.get()) {
                 BlockPos offsetPos = pos.offset(blockRayTraceResult.getFace());
                 if (AbstractFireBlock.canLightBlock(this.world, offsetPos, blockRayTraceResult.getFace())) {
                     BlockState fireState = AbstractFireBlock.getFireForPlacement(this.world, offsetPos);
@@ -521,7 +521,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (result instanceof ExtendedEntityRayTraceResult) {
             ExtendedEntityRayTraceResult entityRayTraceResult = (ExtendedEntityRayTraceResult) result;
             Entity entity = entityRayTraceResult.getEntity();
-            if (entity.getEntityId() == this.shooterId && !Config.COMMON.development.bulletSelfHarm.get()) {
+            if (entity.getEntityId() == this.shooterId && !Config.SERVER.development.bulletSelfHarm.get()) {
                 return;
             }
 
@@ -554,16 +554,16 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         damage = newDamage;
 
         if (headshot) {
-            if (Config.COMMON.gameplay.headShotDamageMultiplier.get() * this.projectile.getGunHeadDamage() >= 0)
-                damage *= (float) (Config.COMMON.gameplay.headShotDamageMultiplier.get() * this.projectile.getGunHeadDamage());
+            if (Config.SERVER.gameplay.headShotDamageMultiplier.get() * this.projectile.getGunHeadDamage() >= 0)
+                damage *= (float) (Config.SERVER.gameplay.headShotDamageMultiplier.get() * this.projectile.getGunHeadDamage());
             damage += GunModifierHelper.getAdditionalHeadshotDamage(this.weapon) == 0F ? 1F : GunModifierHelper.getAdditionalHeadshotDamage(this.weapon);
         }
 
         DamageSource source = new DamageSourceProjectile("bullet", this, shooter, weapon, headshot).setProjectile();
 
-        if (entity instanceof PlayerEntity && !Config.COMMON.gameplay.gunOfKindnessToPlayer.get())
+        if (entity instanceof PlayerEntity && !Config.SERVER.gameplay.gunOfKindnessToPlayer.get())
             tac_attackEntity(source, entity, damage);
-        else if (!Config.COMMON.gameplay.gunOfKindness.get())
+        else if (!Config.SERVER.gameplay.gunOfKindness.get())
             tac_attackEntity(source, entity, damage);
 
         if (this.shooter instanceof PlayerEntity) {
@@ -602,13 +602,13 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
     // Is also "bulletClass" aware, makes this a bit more complex than config checks.
     private void tac_attackEntity(DamageSource source, Entity entity, float damage) {
         this.pierce--;
-        if (Config.COMMON.gameplay.bulletsIgnoreStandardArmor.get()) {
+        if (Config.SERVER.gameplay.bulletsIgnoreStandardArmor.get()) {
             float damageToMcArmor = 0;
 
             float modifyIgnore = this.projectile.getGunArmorIgnore();
             modifyIgnore = GunModifierHelper.getAmmoModifyArmorIgnore(this.weapon, this.modifiedGun, modifyIgnore);
 
-            float armorIgnore = GunModifierHelper.getModifiedProjectileArmorIgnore(this.weapon, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * modifyIgnore));
+            float armorIgnore = GunModifierHelper.getModifiedProjectileArmorIgnore(this.weapon, (float) (Config.SERVER.gameplay.percentDamageIgnoresStandardArmor.get() * modifyIgnore));
 
             if (armorIgnore <= 1.0)
                 damageToMcArmor = (damage * (1 - armorIgnore));
@@ -631,7 +631,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (!(gunStack.getItem() instanceof GunItem) || gunStack.getTag() == null)
             return;
 
-        if (Config.COMMON.gameplay.lockGunLevel.get())
+        if (Config.SERVER.gameplay.lockGunLevel.get())
             return;
 
         if (gunStack.getTag().get("levelLock") != null)
@@ -923,7 +923,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         }
 
         chance += additionalChance;
-        if (rand.nextFloat() < chance && Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() >= 0) {
+        if (rand.nextFloat() < chance && Config.SERVER.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() >= 0) {
             int[] levelDamage = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 5, 15};
             float modifyDamage = 1f;
             if (gunStack.getTag() != null) {
@@ -931,7 +931,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                     modifyDamage *= ((100.0 + levelDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
                 }
             }
-            return (float) (damage * Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() * modifyDamage);
+            return (float) (damage * Config.SERVER.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() * modifyDamage);
         }
 
         return damage;
@@ -1095,7 +1095,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (world.isRemote())
             return;
 
-        Explosion.Mode mode = Config.COMMON.gameplay.enableExplosionBreak.get() ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
+        Explosion.Mode mode = Config.SERVER.gameplay.enableExplosionBreak.get() ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
         DamageSource source = null;
         if(entity instanceof IExplosionProvider){
             source = ((IExplosionProvider) entity).createDamageSource();

@@ -105,12 +105,12 @@ public class TimelessGunItem extends GunItem {
         if (isShift) {
             GunItem gun = (GunItem) stack.getItem();
             if (tagCompound != null) {
-                float armorPen = GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()))) >= 0 ?
-                        Math.min(GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.COMMON.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()) * 100)), 100F) : 0F;
+                float armorPen = GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.SERVER.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()))) >= 0 ?
+                        Math.min(GunModifierHelper.getModifiedProjectileArmorIgnore(stack, (float) (Config.SERVER.gameplay.percentDamageIgnoresStandardArmor.get() * GunModifierHelper.getAmmoModifyArmorIgnore(stack, modifiedGun, gun.getGun().getProjectile().getGunArmorIgnore()) * 100)), 100F) : 0F;
                 tooltip.add((new TranslationTextComponent("info.tac.armorPen", new TranslationTextComponent(String.format("%.1f", armorPen) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_AQUA)));
 
-                float headDamgeModifier = GunModifierHelper.getModifiedProjectileHeadDamage(stack, (float) (Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())) >= 0 ?
-                        GunModifierHelper.getModifiedProjectileHeadDamage(stack, (float) (Config.COMMON.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())) * 100 : 0;
+                float headDamgeModifier = GunModifierHelper.getModifiedProjectileHeadDamage(stack, (float) (Config.SERVER.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())) >= 0 ?
+                        GunModifierHelper.getModifiedProjectileHeadDamage(stack, (float) (Config.SERVER.gameplay.headShotDamageMultiplier.get() * gun.getGun().getProjectile().getGunHeadDamage())) * 100 : 0;
                 tooltip.add((new TranslationTextComponent("info.tac.headDamageModifier", new TranslationTextComponent(String.format("%.1f", headDamgeModifier) + "%").mergeStyle(TextFormatting.RED)).mergeStyle(TextFormatting.DARK_AQUA)));
 
                 float speed = ServerPlayHandler.calceldGunWeightSpeed(gun.getGun(), stack);

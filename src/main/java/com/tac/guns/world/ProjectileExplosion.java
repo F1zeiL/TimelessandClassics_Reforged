@@ -54,7 +54,7 @@ public class ProjectileExplosion extends Explosion {
     private final ExplosionContext context;
 
     public ProjectileExplosion(World world, Entity exploder, @Nullable DamageSource source, @Nullable ExplosionContext context, double x, double y, double z, float power, float radius, Mode mode) {
-        super(world, exploder, source, context, x, y, z, radius, Config.COMMON.gameplay.explosionCauseFire.get(), mode);
+        super(world, exploder, source, context, x, y, z, radius, Config.SERVER.gameplay.explosionCauseFire.get(), mode);
         this.world = world;
         this.x = x;
         this.y = y;

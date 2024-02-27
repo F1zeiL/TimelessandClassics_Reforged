@@ -189,7 +189,7 @@ public class GunRenderingHandler {
             return;
         if (!(mc.player.getHeldItemMainhand().getItem() instanceof GunItem) || mc.player.getHeldItemMainhand().getTag() == null)
             return;
-        if ((Config.COMMON.gameplay.forceCameraShakeOnFire.get() || Config.CLIENT.display.cameraShakeOnFire.get()) && IDLNBTUtil.getInt(mc.player.getHeldItemMainhand(), "CurrentFireMode") != 0) {
+        if ((Config.SERVER.gameplay.forceCameraShakeOnFire.get() || Config.CLIENT.display.cameraShakeOnFire.get()) && IDLNBTUtil.getInt(mc.player.getHeldItemMainhand(), "CurrentFireMode") != 0) {
             float cameraShakeDuration = 0.06f; //TODO: Force to be adjusted per shot later in 0.3.4-0.3.5, customizable per gun
             long alphaTime = System.currentTimeMillis() - fireTime;
             float progress = (alphaTime < cameraShakeDuration * 1000 ? 1 - alphaTime / (cameraShakeDuration * 1000f) : 0);
@@ -220,7 +220,7 @@ public class GunRenderingHandler {
         if (!(mc.player.getHeldItemMainhand().getItem() instanceof GunItem) || mc.player.getHeldItemMainhand().getTag() == null)
             return;
 
-        if ((Config.COMMON.gameplay.forceCameraShakeOnFire.get() || Config.CLIENT.display.cameraShakeOnFire.get()) && mc.player.getHeldItemMainhand().getTag().getInt("CurrentFireMode") != 0) {
+        if ((Config.SERVER.gameplay.forceCameraShakeOnFire.get() || Config.CLIENT.display.cameraShakeOnFire.get()) && mc.player.getHeldItemMainhand().getTag().getInt("CurrentFireMode") != 0) {
             float cameraShakeDuration = 0.06f * (AimingHandler.get().isAiming() ? 1.5f : 1f);
             long alphaTime = System.currentTimeMillis() - fireTime;
             float progress = (alphaTime < cameraShakeDuration * 1000 ? 1 - alphaTime / (cameraShakeDuration * 1000f) : 0);

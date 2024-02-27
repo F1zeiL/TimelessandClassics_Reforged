@@ -48,7 +48,7 @@ public class vector45_animation extends SkinAnimationModel {
 
             renderLaserDevice(stack, matrices, renderBuffer, light, overlay, skin);
 
-            if (transformType.isFirstPerson() || Config.COMMON.gameplay.canSeeLaserThirdSight.get())
+            if (transformType.isFirstPerson() || Config.SERVER.gameplay.canSeeLaserThirdSight.get())
                 renderLaser(stack, matrices, renderBuffer, light, overlay, skin);
 
             RenderUtil.renderModel(getModelComponent(skin, BODY_LIGHT), stack, matrices, renderBuffer, 15728880, overlay);

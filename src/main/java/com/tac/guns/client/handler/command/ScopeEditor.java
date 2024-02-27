@@ -49,7 +49,7 @@ public class ScopeEditor
     @SubscribeEvent
     public void onKeyPressed(InputEvent.KeyInputEvent event)
     {
-        if(!Config.COMMON.development.enableTDev.get())
+        if(!Config.SERVER.development.enableTDev.get())
             return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null)
@@ -225,7 +225,7 @@ public class ScopeEditor
     {
         try
         {
-            File dir = new File(Config.COMMON.development.TDevPath.get()+"\\tac_export\\scope_export");
+            File dir = new File(Config.SERVER.development.TDevPath.get()+"\\tac_export\\scope_export");
             dir.mkdir();
             FileWriter dataWriter = new FileWriter (dir.getAbsolutePath() +"\\"+ name + "_export.json");
             dataWriter.write(jsonString);

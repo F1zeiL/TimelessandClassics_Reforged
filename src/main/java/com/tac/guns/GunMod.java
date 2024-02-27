@@ -236,7 +236,7 @@ public class GunMod {
         PacketHandler.init();
 
         // Updated hitboxes for better serverside feel
-        if (Config.COMMON.gameplay.improvedHitboxes.get()) {
+        if (Config.SERVER.gameplay.improvedHitboxes.get()) {
             MinecraftForge.EVENT_BUS.register(new BoundingBoxManager());
         }
 

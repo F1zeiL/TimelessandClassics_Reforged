@@ -104,7 +104,7 @@ public final class Keys
     
     static
     {
-        if ( Config.COMMON.development.enableTDev.get() )
+        if ( Config.SERVER.development.enableTDev.get() )
         {
             SHIFTY = new TacKeyBuilder( "key.tac.ss" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_SHIFT ).buildAndRegis();
             CONTROLLY = new TacKeyBuilder( "key.tac.cc" ).withKeyboardKey( GLFW.GLFW_KEY_LEFT_CONTROL ).buildAndRegis();
