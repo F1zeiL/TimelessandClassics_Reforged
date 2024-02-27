@@ -516,11 +516,10 @@ public class Config {
             public final ForgeConfigSpec.BooleanValue canSeeLaserThirdSight;
             public final ForgeConfigSpec.BooleanValue gunOfKindness;
             public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
-
             public final ForgeConfigSpec.DoubleValue decelerationFromTacIgnite;
             public final ForgeConfigSpec.BooleanValue lockGunLevel;
-
             public final ForgeConfigSpec.IntValue lockLevelOfGun;
+            public final ForgeConfigSpec.DoubleValue duckSpreadPercent;
 
             public Gameplay(ForgeConfigSpec.Builder builder) {
                 builder.comment("Properties relating to gameplay").push("gameplay");
@@ -554,6 +553,7 @@ public class Config {
                     this.decelerationFromTacIgnite = builder.comment("Adjust decelerate the player or mob when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
                     this.lockGunLevel = builder.comment("True if you don't want to use level system.").define("lockGunLevel", false);
                     this.lockLevelOfGun = builder.comment("If lockGunLevel true, which level will it be locked.").defineInRange("lockLevelOfGun", 1, 1, 10);
+                    this.duckSpreadPercent = builder.comment("Adjust the spread of the gun when the player is ducking.").defineInRange("duckSpreadPercent", 0.75D, 0.0D, 1.0D);
                 }
                 builder.pop();
             }

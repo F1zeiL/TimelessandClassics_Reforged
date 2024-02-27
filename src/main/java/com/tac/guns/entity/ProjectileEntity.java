@@ -219,7 +219,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
                 }
             }
             if (((PlayerEntity) shooter).isCrouching() && (modifiedGun.getGeneral().getProjectileAmount() == 1 || this.sgHE)) {
-                gunSpread *= 0.75F;
+                gunSpread *= Config.SERVER.gameplay.duckSpreadPercent.get();
             }
         }
 
