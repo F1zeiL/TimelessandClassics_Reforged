@@ -154,6 +154,19 @@ public class GunItem extends Item implements IColored {
             if (stack.getOrCreateTag().get("tac.isSelected") == null) {
                 stack.getOrCreateTag().putBoolean("tac.isSelected", true);
             }
+            if (stack.getTag() != null) {
+                if (entityIn instanceof PlayerEntity) {
+                    PlayerEntity playerEntity = (PlayerEntity) entityIn;
+                    if (stack.getTag().get("levelPlayer") != null && stack.getTag().get("levelLock") != null) {
+                        stack.getTag().putBoolean("levelLock", !stack.getTag().getUniqueId("levelPlayer").equals(playerEntity.getUniqueID()));
+                    }
+                    if (Config.COMMON.gameplay.lockGunLevel.get()) {
+                        if (stack.getTag().get("level") != null) {
+                            stack.getTag().putInt("level", Config.COMMON.gameplay.lockLevelOfGun.get());
+                        }
+                    }
+                }
+            }
             if (!worldIn.isRemote && !Config.COMMON.gameplay.bannedDrop.get()) {
                 if (entityIn instanceof PlayerEntity) {
                     PlayerEntity playerEntity = (PlayerEntity) entityIn;
@@ -165,16 +178,6 @@ public class GunItem extends Item implements IColored {
                             playerEntity.setHeldItem(Hand.OFF_HAND, ItemStack.EMPTY);
                             if (entity != null) {
                                 entity.setNoPickupDelay();
-                            }
-                        }
-                    }
-                    if (stack.getTag() != null) {
-                        if (stack.getTag().get("levelPlayer") != null && stack.getTag().get("levelLock") != null) {
-                            stack.getTag().putBoolean("levelLock", !stack.getTag().getUniqueId("levelPlayer").equals(playerEntity.getUniqueID()));
-                        }
-                        if (Config.COMMON.gameplay.lockGunLevel.get()) {
-                            if (stack.getTag().get("level") != null) {
-                                stack.getTag().putInt("level", Config.COMMON.gameplay.lockLevelOfGun.get());
                             }
                         }
                     }
