@@ -1,0 +1,25 @@
+{
+  "type": "tac:workbench",
+  "materials": [
+    {
+      "item": {
+        "tag": "tac:original/crying_obsidian"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "tag": "tac:original/fire_charge"
+      }
+    },
+    {
+      "item": {
+        "tag": "forge:rods/blaze"
+      },
+      "count": 4
+    }
+  ],
+  "result": {
+    "item": "tac:ammo_i"
+  }
+}

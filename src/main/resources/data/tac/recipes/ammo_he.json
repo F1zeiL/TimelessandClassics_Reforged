@@ -1,0 +1,19 @@
+{
+  "type": "tac:workbench",
+  "materials": [
+    {
+      "item": {
+        "tag": "tac:original/crying_obsidian"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "tac:original/end_crystal"
+      }
+    }
+  ],
+  "result": {
+    "item": "tac:ammo_he"
+  }
+}

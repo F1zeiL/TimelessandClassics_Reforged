@@ -210,6 +210,12 @@ public class RecipeGen extends RecipeProvider {
                 .addIngredient(Tags.Items.GUNPOWDER, 8)
                 .build(consumer);
 
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.BULLET_MAGNUM.get(), 20)
+                .addIngredient(Tags.Items.INGOTS_IRON, 1)
+                .addIngredient(Tags.Items.NUGGETS_IRON, 12)
+                .addIngredient(Tags.Items.GUNPOWDER, 2)
+                .build(consumer);
+
         WorkbenchRecipeBuilder.workbenchRecipe(ModItems.BULLET_10g.get(), 20)
                 .addIngredient(Tags.Items.INGOTS_IRON, 1)
                 .addIngredient(Tags.Items.NUGGETS_IRON, 12)
@@ -248,6 +254,11 @@ public class RecipeGen extends RecipeProvider {
                 .build(consumer);
 
         WorkbenchRecipeBuilder.workbenchRecipe(ModItems.BULLET_68.get(), 20)
+                .addIngredient(Tags.Items.INGOTS_IRON, 2)
+                .addIngredient(Tags.Items.GUNPOWDER, 1)
+                .build(consumer);
+
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.BULLET_57.get(), 20)
                 .addIngredient(Tags.Items.INGOTS_IRON, 2)
                 .addIngredient(Tags.Items.GUNPOWDER, 1)
                 .build(consumer);
@@ -440,6 +451,23 @@ public class RecipeGen extends RecipeProvider {
                 .build(consumer);
 
         WorkbenchRecipeBuilder.workbenchRecipe(ModItems.LARGE_EXTENDED_MAG.get())
+                .addIngredient(Tags.Items.INGOTS_IRON, 100)
+                .build(consumer);
+
+        //Ammo
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.AMMO_FMJ.get())
+                .addIngredient(Tags.Items.INGOTS_IRON, 100)
+                .build(consumer);
+
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.AMMO_HE.get())
+                .addIngredient(Tags.Items.INGOTS_IRON, 100)
+                .build(consumer);
+
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.AMMO_HP.get())
+                .addIngredient(Tags.Items.INGOTS_IRON, 100)
+                .build(consumer);
+
+        WorkbenchRecipeBuilder.workbenchRecipe(ModItems.AMMO_I.get())
                 .addIngredient(Tags.Items.INGOTS_IRON, 100)
                 .build(consumer);
     }

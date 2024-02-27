@@ -1,0 +1,20 @@
+{
+  "type": "tac:workbench",
+  "materials": [
+    {
+      "item": {
+        "tag": "tac:original/crying_obsidian"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "tag": "forge:gems/diamond"
+      },
+      "count": 5
+    }
+  ],
+  "result": {
+    "item": "tac:ammo_fmj"
+  }
+}
