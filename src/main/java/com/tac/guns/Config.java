@@ -365,6 +365,9 @@ public class Config {
         public final ForgeConfigSpec.BooleanValue gunOfKindnessToPlayer;
 
         public final ForgeConfigSpec.DoubleValue decelerationFromTacIgnite;
+        public final ForgeConfigSpec.BooleanValue lockGunLevel;
+
+        public final ForgeConfigSpec.IntValue lockLevelOfGun;
 
         public Gameplay(ForgeConfigSpec.Builder builder) {
             builder.comment("Properties relating to gameplay").push("gameplay");
@@ -404,7 +407,9 @@ public class Config {
                 this.canSeeLaserThirdSight = builder.comment("True if you want to see the laser beam from a third-person perspective.").define("canSeeLaserThirdSight", true);
                 this.gunOfKindness = builder.comment("True if you don't want to hurt any mobs.").define("gunOfKindness", false);
                 this.gunOfKindnessToPlayer = builder.comment("True if you don't want to hurt players.").define("gunOfKindnessToPlayer", false);
-                this.decelerationFromTacIgnite = builder.comment("True if you want to decelerate the player when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
+                this.decelerationFromTacIgnite = builder.comment("Adjust decelerate the player or mob when they are on fire caused by tac.").defineInRange("decelerationFromTacIgnite", 0.3D, 0.0D, 1.0D);
+                this.lockGunLevel = builder.comment("True if you don't want to use level system.").define("lockGunLevel", false);
+                this.lockLevelOfGun = builder.comment("If lockGunLevel true, which level will it be locked.").defineInRange("lockLevelOfGun", 1, 1, 10);
             }
             builder.pop();
         }

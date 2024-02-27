@@ -616,7 +616,10 @@ public class ServerPlayHandler {
 
     private static void initLevelTracking(ItemStack gunStack, ServerPlayerEntity player) {
         if (gunStack.getTag().get("level") == null) {
-            gunStack.getTag().putInt("level", 1);
+            if (Config.COMMON.gameplay.lockGunLevel.get())
+                gunStack.getTag().putInt("level", Config.COMMON.gameplay.lockLevelOfGun.get());
+            else
+                gunStack.getTag().putInt("level", 1);
         }
         if (gunStack.getTag().get("levelDmg") == null) {
             gunStack.getTag().putFloat("levelDmg", 0f);

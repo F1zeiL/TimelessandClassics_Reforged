@@ -631,6 +631,9 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (!(gunStack.getItem() instanceof GunItem) || gunStack.getTag() == null)
             return;
 
+        if (Config.COMMON.gameplay.lockGunLevel.get())
+            return;
+
         if (gunStack.getTag().get("levelDmg") != null) {
             gunStack.getTag().putFloat("levelDmg", gunStack.getTag().getFloat("levelDmg") + damage);
         }
@@ -846,7 +849,7 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         int[] levelModifyDamage = new int[]{0, 0, 0, 0, 10, 10, 10, 20, 20, 20};
         int[] levelAdditionalDamage = new int[]{0, 0, 0, 0, 1, 1, 1, 2, 2, 2};
         float modifyDamage = 1f;
-        float additionalDamage = 1f;
+        float additionalDamage = 0f;
         if (gunStack.getTag() != null) {
             if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
                 modifyDamage *= ((100.0 + levelModifyDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
@@ -908,27 +911,25 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
 
         ItemStack gunStack = this.shooter.getHeldItemMainhand();
         int[] levelChance = new int[]{0, 0, 0, 0, 5, 5, 5, 5, 5, 10};
-        float modifyChance = 1f;
+        float additionalChance = 0f;
         if (gunStack.getTag() != null) {
             if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
-                modifyChance *= ((100.0 + levelChance[gunStack.getTag().getInt("level") - 1]) / 100.0);
+                additionalChance += (levelChance[gunStack.getTag().getInt("level") - 1] / 100.0);
             }
         }
 
-        chance *= modifyChance;
+        chance += additionalChance;
         if (rand.nextFloat() < chance && Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() >= 0) {
-            return (float) (damage * Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage());
-        }
-
-        int[] levelDamage = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 5, 15};
-        float modifyDamage = 1f;
-        if (gunStack.getTag() != null) {
-            if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
-                modifyDamage *= ((100.0 + levelDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
+            int[] levelDamage = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 5, 15};
+            float modifyDamage = 1f;
+            if (gunStack.getTag() != null) {
+                if (gunStack.getTag().get("level") != null && !gunStack.getTag().getBoolean("levelLock")) {
+                    modifyDamage *= ((100.0 + levelDamage[gunStack.getTag().getInt("level") - 1]) / 100.0);
+                }
             }
+            return (float) (damage * Config.COMMON.gameplay.criticalDamageMultiplier.get() * this.projectile.getGunCriticalDamage() * modifyDamage);
         }
 
-        damage *= modifyDamage;
         return damage;
     }
 
