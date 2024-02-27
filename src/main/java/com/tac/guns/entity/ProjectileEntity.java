@@ -631,8 +631,12 @@ public class ProjectileEntity extends Entity implements IEntityAdditionalSpawnDa
         if (!(gunStack.getItem() instanceof GunItem) || gunStack.getTag() == null)
             return;
 
-        if (Config.COMMON.gameplay.lockGunLevel.get())
+        if (Config.COMMON.gameplay.lockGunLevel.get()) {
+            if (gunStack.getTag().get("level") != null) {
+                gunStack.getTag().putInt("level", Config.COMMON.gameplay.lockLevelOfGun.get());
+            }
             return;
+        }
 
         if (gunStack.getTag().get("levelDmg") != null) {
             gunStack.getTag().putFloat("levelDmg", gunStack.getTag().getFloat("levelDmg") + damage);
