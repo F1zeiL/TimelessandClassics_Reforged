@@ -90,7 +90,7 @@ public class ServerPlayHandler {
         if (!player.isSpectator()) {
             World world = player.world;
             ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
+            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(player, heldItem) ||
                     (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
                     (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) {
                 GunItem item = (GunItem) heldItem.getItem();
