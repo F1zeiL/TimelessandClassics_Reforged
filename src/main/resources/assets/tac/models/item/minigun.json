@@ -1,0 +1,33 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tac:items/hotbar_icons/minigun"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [75, 0, 0],
+      "translation": [3.75, 5.25, -1.5],
+      "scale": [0.55, 0.55, 0.55]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 0, 0],
+      "translation": [-5, 5.25, -1.5],
+      "scale": [0.55, 0.55, 0.55]
+    },
+    "firstperson_righthand": {
+      "translation": [5.5, -3.25, -8]
+    },
+    "firstperson_lefthand": {
+      "translation": [-11, -3.25, -8]
+    },
+    "ground": {
+      "translation": [0, 10, 0],
+      "scale": [0.55, 0.55, 0.55]
+    },
+    "fixed": {
+      "rotation": [0, 90, 0],
+      "translation": [-7, 7.5, -6.75],
+      "scale": [1.1, 1.1, 1.1]
+    }
+  }
+}

@@ -457,7 +457,9 @@ public class Config {
         public final ForgeConfigSpec.DoubleValue soundPercentage;
         public final ForgeConfigSpec.IntValue soundFadeThreshold;
         public final ForgeConfigSpec.DoubleValue ringVolume;
+        public final ForgeConfigSpec.DoubleValue barrelVolume;
         public final ForgeConfigSpec.DoubleValue gunShotMaxDistance;
+        public final ForgeConfigSpec.DoubleValue gunBarrelMaxDistance;
         public final ForgeConfigSpec.BooleanValue enableCameraRecoil;
 
         public Server(ForgeConfigSpec.Builder builder) {
@@ -470,6 +472,7 @@ public class Config {
                     this.soundPercentage = builder.comment("Volume of most game sounds when deafened will play at this percent, before eventually fading back to %100.").defineInRange("soundPercentage", 0.05, 0.0, 1.0);
                     this.soundFadeThreshold = builder.comment("After the duration drops to this many ticks, the ringing volume will gradually fade to 0 and other sound volumes will fade back to %100.").defineInRange("soundFadeThreshold", 90, 0, Integer.MAX_VALUE);
                     this.ringVolume = builder.comment("Volume of the ringing sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("ringVolume", 1.0, 0.0, 1.0);
+                    this.barrelVolume = builder.comment("Volume of the barrel sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("barrelVolume", 1.0, 0.0, 1.0);
 
                     this.gameplay = new Gameplay(builder);
                     this.development = new Development(builder);
@@ -484,6 +487,7 @@ public class Config {
                 builder.comment("Audio properties").push("audio");
                 {
                     this.gunShotMaxDistance = builder.comment("The maximum distance weapons can be heard by players.").defineInRange("gunShotMaxDistance", 100, 0, Double.MAX_VALUE);
+                    this.gunBarrelMaxDistance = builder.comment("The maximum distance barrel whine can be heard by players.").defineInRange("gunBarrelMaxDistance", 24, 0, Double.MAX_VALUE);
                 }
                 builder.pop();
 

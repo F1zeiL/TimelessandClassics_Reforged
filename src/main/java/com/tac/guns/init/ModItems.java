@@ -117,7 +117,6 @@ public class ModItems {
             () -> new TimelessPistolGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.PISTOL_MOD));
     public static final RegistryObject<Item> QBZ_191 = REGISTER.register("qbz_191",
             () -> new TimelessGunItem(properties -> properties.group(GunMod.RIFLE), GunModifiers.QBZ_191_MOD));
-    //public static final RegistryObject<Item> C96 = REGISTER.register("c96", () -> new TimelessPistolGunItem(properties -> properties.group(GunMod.PISTOL)));
     public static final RegistryObject<Item> M16A4 = REGISTER.register("m16a4",
             () -> new TimelessGunItem(properties -> properties.group(GunMod.RIFLE), GunModifiers.M16A4_MOD));
     public static final RegistryObject<Item> SCAR_H = REGISTER.register("scar_h",
@@ -148,6 +147,8 @@ public class ModItems {
             () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.C96_MOD));
     public static final RegistryObject<Item> B93R = REGISTER.register("b93r",
             () -> new TimelessGunItem(properties -> properties.group(GunMod.PISTOL), GunModifiers.B93R_MOD));
+    public static final RegistryObject<Item> MINIGUN = REGISTER.register("minigun",
+            () -> new TimelessGunItem(properties -> properties.group(GunMod.HEAVY_MATERIAL), GunModifiers.MINIGUN_MOD));
 
     /*** Ammunition ***/
     public static final RegistryObject<Item> BULLET_MAGNUM = REGISTER.register("b_magnum", TimelessAmmoItem::new);

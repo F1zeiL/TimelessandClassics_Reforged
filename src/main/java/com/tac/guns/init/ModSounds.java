@@ -15,6 +15,7 @@ public class ModSounds
 	public static final RegistryObject<SoundEvent> ENTITY_STUN_GRENADE_EXPLOSION = register("stun.explosion");
 	public static final RegistryObject<SoundEvent> ENTITY_STUN_GRENADE_RING = register("stun.ring");
 	public static final RegistryObject<SoundEvent> UI_WEAPON_ATTACH = register("ui.weapon.attach");
+	public static final RegistryObject<SoundEvent> BARREL_WHINE = register("item.barrel_whine");
 
 	public static final RegistryObject<SoundEvent> M1_PING = register("item.m1ping");
 

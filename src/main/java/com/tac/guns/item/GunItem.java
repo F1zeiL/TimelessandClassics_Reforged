@@ -2,14 +2,17 @@ package com.tac.guns.item;
 
 import com.tac.guns.Config;
 import com.tac.guns.client.Keys;
+import com.tac.guns.client.audio.BarrelWhineSound;
 import com.tac.guns.client.handler.AimingHandler;
 import com.tac.guns.client.handler.ReloadHandler;
 import com.tac.guns.common.DiscardOffhand;
 import com.tac.guns.common.Gun;
 import com.tac.guns.common.NetworkGunManager;
 import com.tac.guns.init.ModItems;
+import com.tac.guns.init.ModSounds;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -191,8 +195,10 @@ public class GunItem extends Item implements IColored {
                 ReloadHandler.get().setReloading(false);
             }
             stack.getOrCreateTag().remove("tac.isSelected");
+            if (entityIn instanceof PlayerEntity)
+                if (Minecraft.getInstance().getSoundHandler().isPlaying(new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entityIn)))
+                    Minecraft.getInstance().getSoundHandler().stop(new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entityIn));
         }
-
     }
 
     public static boolean isSingleHanded(ItemStack stack) {
