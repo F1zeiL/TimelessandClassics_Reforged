@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
 import com.tac.guns.client.audio.BarrelWhineSound;
-import com.tac.guns.client.audio.StunRingingSound;
 import com.tac.guns.client.gunskin.GunSkin;
 import com.tac.guns.client.gunskin.SkinManager;
 import com.tac.guns.client.render.animation.MINIGUNAnimationController;
@@ -27,7 +26,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.WeakHashMap;
 
-import static com.tac.guns.client.gunskin.ModelComponent.*;
+import static com.tac.guns.client.gunskin.ModelComponent.BARREL;
+import static com.tac.guns.client.gunskin.ModelComponent.BODY;
 
 /*
  * Because the revolver has a rotating chamber, we need to render it in a

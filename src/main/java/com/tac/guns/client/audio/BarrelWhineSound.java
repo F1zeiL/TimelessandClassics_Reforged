@@ -20,22 +20,29 @@ public class BarrelWhineSound extends EntityTickableSound
     public BarrelWhineSound(SoundEvent sound, SoundCategory category, Entity entity)
     {
         super(sound, category, entity);
+        this.repeat = true;
+        this.repeatDelay = 0;
     }
 
     @Override
     public void tick()
     {
+        super.tick();
         PlayerEntity player = Minecraft.getInstance().player;
-        if (player != null && player.isAlive()) {
-            ItemStack stack = player.getHeldItemMainhand();
-            if (stack.getItem() instanceof TimelessGunItem) {
-                Gun gun = ((TimelessGunItem) stack.getItem()).getModifiedGun(stack);
-                if (gun.getReloads().isBarrel()) {
-                    float distance = Config.SERVER.gunShotMaxDistance.get().floatValue();
-                    this.volume = Config.SERVER.barrelVolume.get().floatValue() * (1.0F - Math.min(1.0F, (float) Math.sqrt(player.getDistanceSq(x, y, z)) / distance));
-                    this.volume *= this.volume; //Ease the volume instead of linear
-                }
-            }
+        if (player == null || !player.isAlive() || !(player.getHeldItemMainhand().getItem() instanceof TimelessGunItem)) {
+            this.finishPlaying();
+            return;
         }
+
+        ItemStack stack = player.getHeldItemMainhand();
+        Gun gun = ((TimelessGunItem) stack.getItem()).getModifiedGun(stack);
+        if (!gun.getReloads().isBarrel()) {
+            this.finishPlaying();
+            return;
+        }
+
+        float distance = Config.SERVER.gunShotMaxDistance.get().floatValue();
+        this.volume = Config.SERVER.barrelVolume.get().floatValue() * (1.0F - Math.min(1.0F, (float) Math.sqrt(player.getDistanceSq(x, y, z)) / distance));
+        this.volume *= this.volume;
     }
 }
