@@ -88,6 +88,8 @@ public class GunItem extends Item implements IColored {
         if (tagCompound != null) {
             if (tagCompound.getBoolean("IgnoreAmmo")) {
                 tooltip.add(new TranslationTextComponent("info.tac.ignore_ammo").mergeStyle(TextFormatting.AQUA));
+            } else if (modifiedGun.getReloads().isNoMag()) {
+                tooltip.add(new TranslationTextComponent("info.tac.no_mag").mergeStyle(TextFormatting.AQUA));
             } else {
                 int ammoCount = tagCompound.getInt("AmmoCount");
                 tooltip.add(new TranslationTextComponent("info.tac.ammo", TextFormatting.WHITE.toString() + ammoCount + "/" + GunModifierHelper.getAmmoCapacity(stack, modifiedGun)).mergeStyle(TextFormatting.GRAY));
@@ -106,7 +108,10 @@ public class GunItem extends Item implements IColored {
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> stacks) {
         if (this.isInGroup(group)) {
             ItemStack stack = new ItemStack(this);
-            stack.getOrCreateTag().putInt("AmmoCount", this.gun.getReloads().getMaxAmmo());
+            if (this.gun.getReloads().isNoMag())
+                stack.getOrCreateTag().putInt("AmmoCount", 0);
+            else
+                stack.getOrCreateTag().putInt("AmmoCount", this.gun.getReloads().getMaxAmmo());
             stacks.add(stack);
         }
     }
@@ -195,9 +200,6 @@ public class GunItem extends Item implements IColored {
                 ReloadHandler.get().setReloading(false);
             }
             stack.getOrCreateTag().remove("tac.isSelected");
-            if (entityIn instanceof PlayerEntity)
-                if (Minecraft.getInstance().getSoundHandler().isPlaying(new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entityIn)))
-                    Minecraft.getInstance().getSoundHandler().stop(new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entityIn));
         }
     }
 

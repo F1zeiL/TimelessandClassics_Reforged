@@ -4,6 +4,7 @@ import com.tac.guns.Config;
 import com.tac.guns.client.Keys;
 import com.tac.guns.client.render.animation.module.GunAnimationController;
 import com.tac.guns.common.Gun;
+import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
@@ -269,7 +270,9 @@ public class ShootingHandler {
                 }
 
                 if (emptyCheckCountDown > emptyCheckCoolDown) {
-                    if (!(heldItem.getTag().getInt("AmmoCount") > 0)) {
+                    if ((!(heldItem.getTag().getInt("AmmoCount") > 0) && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isNoMag()) ||
+                            (!(ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, ((TimelessGunItem) heldItem.getItem()).getGun().getProjectile().getItem())) > 0) &&
+                                    ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isNoMag())) {
                         emptyCheckCountDown = 0;
                         player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
                         PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
@@ -344,10 +347,13 @@ public class ShootingHandler {
         if (!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if (!Gun.hasAmmo(heldItem) && !player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get())
+        if (!Gun.hasAmmo(heldItem) && !player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get() && !((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag())
             return;
 
-        if (!Gun.hasAmmo(heldItem) && player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())
+        if (!Gun.hasAmmo(heldItem) && player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get() && !((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag())
+            return;
+
+        if (((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag() && !(ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(player, ((GunItem) heldItem.getItem()).getGun().getProjectile().getItem())) > 0))
             return;
 
         if (player.isSpectator())
@@ -387,17 +393,15 @@ public class ShootingHandler {
     }
 
     private boolean magError(PlayerEntity player, ItemStack heldItem) {
+        if (heldItem.getItem() instanceof TimelessGunItem && ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isNoMag())
+            return false;
+
         int[] extraAmmo = ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAdditionalAmmoPerOC();
         int magMode = GunModifierHelper.getAmmoCapacityWeight(heldItem);
         if (magMode < 0) {
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount") - 1 > ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAmmo()) {
-                return true;
-            }
+            return heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount") - 1 > ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAmmo();
         } else {
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount") - 1 > ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAmmo() + extraAmmo[magMode]) {
-                return true;
-            }
+            return heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount") - 1 > ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAmmo() + extraAmmo[magMode];
         }
-        return false;
     }
 }

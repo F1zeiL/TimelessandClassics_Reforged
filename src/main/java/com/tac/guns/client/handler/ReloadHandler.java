@@ -291,7 +291,7 @@ public class ReloadHandler {
                     CompoundNBT tag = stack.getTag();
                     if (tag != null && !tag.contains("IgnoreAmmo", Constants.NBT.TAG_BYTE)) {
                         Gun gun = ((GunItem) stack.getItem()).getModifiedGun(stack);
-                        if (tag.getInt("AmmoCount") >= GunModifierHelper.getAmmoCapacity(stack, gun)) {
+                        if (tag.getInt("AmmoCount") >= GunModifierHelper.getAmmoCapacity(stack, gun) || gun.getReloads().isNoMag()) {
                             return;
                         } else if ((!player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedReserveAmmo.get()) &&
                                 Gun.findAmmo(player, gun.getProjectile().getItem()).length < 1) {

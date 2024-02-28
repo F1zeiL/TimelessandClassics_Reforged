@@ -27,6 +27,7 @@ import com.tac.guns.tileentity.WorkbenchTileEntity;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.util.InventoryUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -190,7 +191,10 @@ public class ServerPlayHandler {
                         if (!tag.getBoolean("IgnoreAmmo")) {
                             int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.RECLAIMED.get(), heldItem);
                             if (level == 0 || player.world.rand.nextInt(9 - MathHelper.clamp(level * 3, 3, 6)) != 0) {
-                                tag.putInt("AmmoCount", Math.max(0, tag.getInt("AmmoCount") - 1));
+                                if (modifiedGun.getReloads().isNoMag())
+                                    ReloadTracker.decreaseReserveAmmo(Gun.findAmmo(player, modifiedGun.getProjectile().getItem()), player, 1);
+                                else
+                                    tag.putInt("AmmoCount", Math.max(0, tag.getInt("AmmoCount") - 1));
                             }
                         }
                     }
@@ -276,6 +280,9 @@ public class ServerPlayHandler {
     public static void handleUnload(ServerPlayerEntity player) {
         ItemStack stack = player.getHeldItemMainhand();
         if (stack.getItem() instanceof GunItem) {
+            if (((GunItem) stack.getItem()).getModifiedGun(stack).getReloads().isNoMag())
+                return;
+
             CompoundNBT tag = stack.getTag();
             GunItem gunItem = (GunItem) stack.getItem();
             Gun gun = gunItem.getModifiedGun(stack);

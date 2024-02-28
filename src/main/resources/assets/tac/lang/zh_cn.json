@@ -267,6 +267,7 @@
   "death.attack.tac.bullet.decimated": "%1$s 被 %2$s 物理消灭",
   "info.tac.damage": "伤害: %s",
   "info.tac.ignore_ammo": "无限弹药",
+  "info.tac.no_mag": "使用备弹",
   "info.tac.ammo": "弹药: %s",
   "info.tac.ammo_type": "弹药类型: %s",
   "info.tac.attachment_help": "按下 %s 以使用配件管理",

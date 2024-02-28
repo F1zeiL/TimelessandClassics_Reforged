@@ -380,20 +380,44 @@ public class HUDRenderingHandler extends AbstractGui {
                     IFormattableTextComponent reserveAmmo;
 
                     int ammo = player.getHeldItemMainhand().getTag().getInt("AmmoCount");
-                    if (player.getHeldItemMainhand().getTag().getInt("AmmoCount") <= gun.getReloads().getMaxAmmo() / 4 && this.ammoReserveCount <= gun.getReloads().getMaxAmmo()) {
+                    int ammoReserve = this.ammoReserveCount;
+                    boolean isNoMag = false;
+                    if (player.getHeldItemMainhand().getItem() instanceof TimelessGunItem)
+                        if (((TimelessGunItem) player.getHeldItemMainhand().getItem()).getModifiedGun(player.getHeldItemMainhand()).getReloads().isNoMag()) {
+                            ammo = ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, gunItem.getGun().getProjectile().getItem()));
+                            ammoReserve = 0;
+                            isNoMag = true;
+                        }
+
+                    if (ammo <= Math.min(10, gun.getReloads().getMaxAmmo() / 4))
                         currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
-                        reserveAmmo =
-                                byPaddingZeros(this.ammoReserveCount > 10000 ? 10000 : this.ammoReserveCount).append(new TranslationTextComponent("" + (this.ammoReserveCount > 10000 ? 9999 : this.ammoReserveCount))).mergeStyle(TextFormatting.RED);
-                    } else if (this.ammoReserveCount <= gun.getReloads().getMaxAmmo()) {
-                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo).mergeStyle(TextFormatting.WHITE));
-                        reserveAmmo = byPaddingZeros(this.ammoReserveCount > 10000 ? 10000 : this.ammoReserveCount).append(new TranslationTextComponent("" + (this.ammoReserveCount > 10000 ? 9999 : this.ammoReserveCount))).mergeStyle(TextFormatting.RED);
-                    } else if (player.getHeldItemMainhand().getTag().getInt("AmmoCount") <= gun.getReloads().getMaxAmmo() / 4) {
-                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
-                        reserveAmmo = byPaddingZeros(this.ammoReserveCount > 10000 ? 10000 : this.ammoReserveCount).append(new TranslationTextComponent("" + (this.ammoReserveCount > 10000 ? 9999 : this.ammoReserveCount))).mergeStyle(TextFormatting.GRAY);
-                    } else {
-                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo).mergeStyle(TextFormatting.WHITE));
-                        reserveAmmo = byPaddingZeros(this.ammoReserveCount > 10000 ? 10000 : this.ammoReserveCount).append(new TranslationTextComponent("" + (this.ammoReserveCount > 10000 ? 9999 : this.ammoReserveCount))).mergeStyle(TextFormatting.GRAY);
-                    }
+                    else
+                        currentAmmo = byPaddingZeros(Math.min(ammo, 999)).append(new TranslationTextComponent("" + (ammo >= 1000 ? 999 : ammo)).mergeStyle(TextFormatting.WHITE));
+
+                    if (ammoReserve <= gun.getReloads().getMaxAmmo() && !isNoMag)
+                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+                                (ammoReserve >= 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.RED);
+                    else
+                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+                                (ammoReserve >= 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.GRAY);
+
+//                    if (ammo <= gun.getReloads().getMaxAmmo() / 4 && this.ammoReserveCount <= gun.getReloads().getMaxAmmo()) {
+//                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
+//                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+//                                (ammoReserve > 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.RED);
+//                    } else if (ammoReserve <= gun.getReloads().getMaxAmmo()) {
+//                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo).mergeStyle(TextFormatting.WHITE));
+//                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+//                                (ammoReserve > 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.RED);
+//                    } else if (ammo <= gun.getReloads().getMaxAmmo() / 4) {
+//                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
+//                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+//                                (ammoReserve > 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.GRAY);
+//                    } else {
+//                        currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo).mergeStyle(TextFormatting.WHITE));
+//                        reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
+//                                (ammoReserve > 10000 ? 9999 : ammoReserve))).mergeStyle(TextFormatting.GRAY);
+//                    }
                     stack.scale(counterSize, counterSize, counterSize);
                     stack.push();
                     {

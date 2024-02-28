@@ -267,6 +267,7 @@
   "death.attack.tac.bullet.decimated": "%1$s was decimated by %2$s",
   "info.tac.damage": "Damage: %s",
   "info.tac.ignore_ammo": "Infinite Ammo",
+  "info.tac.no_mag": "Using Reserve Ammo",
   "info.tac.ammo": "Ammo: %s",
   "info.tac.ammo_type": "Ammo Type: %s",
   "info.tac.attachment_help": "Press %s in-game for Attachments",

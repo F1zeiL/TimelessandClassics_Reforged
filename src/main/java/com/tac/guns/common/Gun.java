@@ -12,7 +12,9 @@ import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.util.GunModifierHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -3002,6 +3004,11 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
 
     public static boolean hasAmmo(ItemStack gunStack) {
         CompoundNBT tag = gunStack.getOrCreateTag();
+        if (gunStack.getItem() instanceof TimelessGunItem)
+            if (((TimelessGunItem) gunStack.getItem()).getGun().getReloads().isNoMag())
+                if (Minecraft.getInstance().player != null) {
+                    return ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, ((TimelessGunItem) gunStack.getItem()).getGun().getProjectile().getItem())) > 0;
+                }
         return tag.getBoolean("IgnoreAmmo") || tag.getInt("AmmoCount") > 0;
     }
 
