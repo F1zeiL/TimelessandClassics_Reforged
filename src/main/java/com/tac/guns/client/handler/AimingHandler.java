@@ -275,6 +275,10 @@ public class AimingHandler {
             return false;
         }
 
+        if (gun.getReloads().isBarrel()) {
+            return false;
+        }
+
         CooldownTracker tracker = Minecraft.getInstance().player.getCooldownTracker();
         float cooldown = tracker.getCooldown(heldItem.getItem(), Minecraft.getInstance().getRenderPartialTicks());
 
