@@ -64,28 +64,8 @@ public class minigun_animation extends SkinAnimationModel {
 
         if (shooting) {
             rotations.rotation += 60;
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-                Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
-                if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
-                    heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
-                }
-                if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat() && heldItem.getTag().get("overHeatLock") != null) {
-                    heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
-                    heldItem.getTag().putBoolean("overHeatLock", true);
-                }
-            }
         } else {
             rotations.rotation += 30;
-            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-                Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
-                if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
-                    heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
-                }
-                if (heldItem.getTag().get("overHeatLock") != null) {
-                    if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
-                        heldItem.getTag().putBoolean("overHeatLock", false);
-                }
-            }
         }
 
         if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
