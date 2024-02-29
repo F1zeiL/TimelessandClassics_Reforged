@@ -195,7 +195,7 @@ public class ShootingHandler {
             if ((heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
                     (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
                     (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) &&
-                    !magError(player, heldItem)) {
+                    !magError(player, heldItem) && !overHeat(player, heldItem)) {
                 final float dist = Math.abs(player.moveForward) / 2.5F
                         + Math.abs(player.moveStrafing) / 1.25F
                         + (player.getMotion().y > 0D ? 0.5F : 0F);
@@ -250,6 +250,16 @@ public class ShootingHandler {
                     event.setSwingHand(false);
                 }
 
+                Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+                if (gun.getReloads().isHeat()) {
+                    if (overHeat(player, heldItem)) {
+                        emptyCheckCountDown = 0;
+                        player.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                        PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
+                        return;
+                    }
+                }
+
                 if (emptyCheckCountDown > emptyCheckCoolDown) {
                     if (magError(player, heldItem)) {
                         emptyCheckCountDown = 0;
@@ -259,20 +269,20 @@ public class ShootingHandler {
                     }
                 }
 
-                if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0 && !this.isPressed) {
+                if (heldItem.getTag().getInt("CurrentFireMode") == 3 && this.burstCooldown == 0 && !this.isPressed) {
                     this.isPressed = true;
-                    this.burstTracker = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstCount();
+                    this.burstTracker = gun.getGeneral().getBurstCount();
                     fire(player, heldItem);
-                    this.burstCooldown = ((TimelessGunItem) heldItem.getItem()).getGun().getGeneral().getBurstRate();
+                    this.burstCooldown = gun.getGeneral().getBurstRate();
                 } else if (this.burstCooldown == 0 && !this.isPressed) {
                     this.isPressed = true;
                     fire(player, heldItem);
                 }
 
                 if (emptyCheckCountDown > emptyCheckCoolDown) {
-                    if ((!(heldItem.getTag().getInt("AmmoCount") > 0) && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isNoMag()) ||
-                            (!(ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, ((TimelessGunItem) heldItem.getItem()).getGun().getProjectile().getItem())) > 0) &&
-                                    ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isNoMag())) {
+                    if ((!(heldItem.getTag().getInt("AmmoCount") > 0) && !gun.getReloads().isNoMag()) ||
+                            (!(ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(Minecraft.getInstance().player, gun.getProjectile().getItem())) > 0) &&
+                                    gun.getReloads().isNoMag())) {
                         emptyCheckCountDown = 0;
                         player.sendStatusMessage(new TranslationTextComponent("info.tac.out_of_ammo").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
                         PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
@@ -344,6 +354,8 @@ public class ShootingHandler {
     public void fire(PlayerEntity player, ItemStack heldItem) {
         if (magError(player, heldItem)) return;
 
+        if (overHeat(player, heldItem)) return;
+
         if (!(heldItem.getItem() instanceof GunItem))
             return;
 
@@ -403,5 +415,13 @@ public class ShootingHandler {
         } else {
             return heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag().getInt("AmmoCount") - 1 > ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getMaxAmmo() + extraAmmo[magMode];
         }
+    }
+
+    private boolean overHeat(PlayerEntity player, ItemStack heldItem) {
+        if (heldItem.getItem() instanceof TimelessGunItem && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isHeat())
+            return false;
+
+        return heldItem.getTag().getInt("heatValue") >= ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getTickToHeat() ||
+                heldItem.getTag().getBoolean("overHeatLock");
     }
 }

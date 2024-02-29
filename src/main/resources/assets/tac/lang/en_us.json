@@ -483,6 +483,7 @@
   "info.tac.wrong_current_level_player": "ERROR",
   "info.tac.out_of_ammo": "RELOAD!",
   "info.tac.mag_error": "UNLOAD!",
+  "info.tac.over_heat": "OVERHEAT!",
   "tac.options.screenFormat": "TAC GUI SETTINGS",
   "gui.tac.assemble": "Assemble",
   "gui.tac.show_remaining": "Show Remaining",

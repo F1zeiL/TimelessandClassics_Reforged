@@ -13,6 +13,7 @@ import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
+import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -54,23 +55,24 @@ public class minigun_animation extends SkinAnimationModel {
 
         boolean shooting = SyncedPlayerData.instance().get(entity, ModSyncedDataKeys.SHOOTING);
         ItemStack heldItem = entity.getHeldItemMainhand();
-        if(!Gun.hasAmmo(heldItem) && ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
-                entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))
-        {
+        if (!Gun.hasAmmo(heldItem) && ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())) {
             shooting = false;
         }
 
-        if(shooting)
-        {
+        if (shooting) {
             rotations.rotation += 60;
-        }
-        else
-        {
+            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
+                Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+                if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                    heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
+                }
+            }
+        } else {
             rotations.rotation += 30;
         }
 
-        if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel)))
-        {
+        if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
             this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entity);
             Minecraft.getInstance().getSoundHandler().play(this.barrel);
         }

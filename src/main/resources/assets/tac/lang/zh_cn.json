@@ -484,6 +484,7 @@
   "info.tac.wrong_current_level_player": "非法使用者",
   "info.tac.out_of_ammo": "装填弹药!",
   "info.tac.mag_error": "卸载弹药!",
+  "info.tac.over_heat": "过热!",
   "tac.options.screenFormat": "TAC GUI设置",
   "gui.tac.assemble": "组装",
   "gui.tac.show_remaining": "仅显示所需",

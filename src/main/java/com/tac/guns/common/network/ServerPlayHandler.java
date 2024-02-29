@@ -620,6 +620,8 @@ public class ServerPlayHandler {
                     NetworkGunManager.get().StackIds.put(id, player.getHeldItemMainhand());
                 }
                 initLevelTracking(player.getHeldItemMainhand(), player);
+                if (((TimelessGunItem) player.getHeldItemMainhand().getItem()).getGun().getReloads().isHeat())
+                    initHeatTracking(player.getHeldItemMainhand(), player);
             }
         }
     }
@@ -642,6 +644,15 @@ public class ServerPlayHandler {
         }
         if (gunStack.getTag().get("levelPlayerID") == null) {
             gunStack.getTag().putString("levelPlayerID", player.getDisplayName().getString());
+        }
+    }
+
+    private static void initHeatTracking(ItemStack gunStack, ServerPlayerEntity player) {
+        if (gunStack.getTag().get("heatValue") == null) {
+            gunStack.getTag().putInt("heatValue", 0);
+        }
+        if (gunStack.getTag().get("overHeatLock") == null) {
+            gunStack.getTag().putBoolean("overHeatLock", false);
         }
     }
 
