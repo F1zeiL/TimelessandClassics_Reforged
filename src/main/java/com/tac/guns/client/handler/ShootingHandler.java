@@ -254,7 +254,7 @@ public class ShootingHandler {
                 if (gun.getReloads().isHeat()) {
                     if (overHeat(player, heldItem)) {
                         emptyCheckCountDown = 0;
-                        player.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
+                        //player.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.BOLD).mergeStyle(TextFormatting.RED), true);
                         PacketHandler.getPlayChannel().sendToServer(new MessageEmptyMag());
                         return;
                     }

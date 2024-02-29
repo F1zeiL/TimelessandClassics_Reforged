@@ -200,6 +200,9 @@ public class GunItem extends Item implements IColored {
                 ReloadHandler.get().setReloading(false);
             }
             stack.getOrCreateTag().remove("tac.isSelected");
+            if (entityIn instanceof PlayerEntity) {
+                ((PlayerEntity) entityIn).sendStatusMessage(new TranslationTextComponent(""), true);
+            }
         }
     }
 

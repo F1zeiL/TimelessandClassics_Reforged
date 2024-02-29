@@ -22,6 +22,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -67,9 +69,34 @@ public class minigun_animation extends SkinAnimationModel {
                 if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
                     heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
                 }
+                if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat() && heldItem.getTag().get("overHeatLock") != null) {
+                    heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
+                    heldItem.getTag().putBoolean("overHeatLock", true);
+                }
             }
         } else {
             rotations.rotation += 30;
+            if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
+                Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+                if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                    heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
+                }
+                if (heldItem.getTag().get("overHeatLock") != null) {
+                    if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
+                        heldItem.getTag().putBoolean("overHeatLock", false);
+                }
+            }
+        }
+
+        if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
+            Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+            if (overHeat(entity, heldItem))
+                if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
+                    entity.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
+                else
+                    entity.sendStatusMessage(new TranslationTextComponent(heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat() + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
+            else
+                entity.sendStatusMessage(new TranslationTextComponent("" + (heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat()) + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.WHITE), true);
         }
 
         if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
@@ -102,15 +129,21 @@ public class minigun_animation extends SkinAnimationModel {
         PlayerHandAnimation.render(controller, transformType, matrices, renderBuffer, light);
     }
 
-    private static class Rotations
-    {
+    private static class Rotations {
         private int rotation;
         private int prevRotation;
     }
 
     @SubscribeEvent
-    public void onClientDisconnect(ClientPlayerNetworkEvent.LoggedOutEvent event)
-    {
+    public void onClientDisconnect(ClientPlayerNetworkEvent.LoggedOutEvent event) {
         this.rotationMap.clear();
+    }
+
+    private boolean overHeat(PlayerEntity player, ItemStack heldItem) {
+        if (heldItem.getItem() instanceof TimelessGunItem && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isHeat())
+            return false;
+
+        return heldItem.getTag().getInt("heatValue") >= ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getTickToHeat() ||
+                heldItem.getTag().getBoolean("overHeatLock");
     }
 }
