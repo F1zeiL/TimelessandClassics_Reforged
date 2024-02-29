@@ -63,7 +63,6 @@ public class minigun_animation extends SkinAnimationModel {
         if (!(heldItem.getItem() instanceof GunItem))
             return;
 
-        Gun gun = ((GunItem) heldItem.getItem()).getGun();
         if (!Gun.hasAmmo(entity, heldItem) &&
                 ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
                         (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
@@ -73,7 +72,7 @@ public class minigun_animation extends SkinAnimationModel {
         if (shooting) {
             rotations.rotation += 60;
             if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
-                this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entity);
+                this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.PLAYERS, entity);
                 Minecraft.getInstance().getSoundHandler().play(this.barrel);
                 if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))
                     Minecraft.getInstance().getSoundHandler().stop(this.barrelLow);
@@ -81,7 +80,7 @@ public class minigun_animation extends SkinAnimationModel {
         } else {
             rotations.rotation += 30;
             if ((this.barrelLow == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
-                this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.MASTER, entity);
+                this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.PLAYERS, entity);
                 Minecraft.getInstance().getSoundHandler().play(this.barrelLow);
                 if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))
                     Minecraft.getInstance().getSoundHandler().stop(this.barrel);
@@ -94,8 +93,10 @@ public class minigun_animation extends SkinAnimationModel {
         MINIGUNAnimationController controller = MINIGUNAnimationController.getInstance();
         GunSkin skin = SkinManager.getSkin(stack);
         Rotations rotations = this.rotationMap.computeIfAbsent(entity, uuid -> new Rotations());
-        matrices.rotate(Vector3f.XN.rotationDegrees(-10F));
-        matrices.rotate(Vector3f.YN.rotationDegrees(-5F));
+        if (transformType.isFirstPerson()) {
+            matrices.rotate(Vector3f.XN.rotationDegrees(-10F));
+            matrices.rotate(Vector3f.YN.rotationDegrees(-5F));
+        }
 
         matrices.push();
         {
@@ -107,7 +108,8 @@ public class minigun_animation extends SkinAnimationModel {
         matrices.push();
         {
             controller.applySpecialModelTransform(getModelComponent(skin, BODY), MINIGUNAnimationController.INDEX_BODY, transformType, matrices);
-            RenderUtil.rotateZ(matrices, -0.5F, -0.345F, rotations.prevRotation + (rotations.rotation - rotations.prevRotation) * v);
+            if (transformType.isFirstPerson())
+                RenderUtil.rotateZ(matrices, -0.5F, -0.345F, rotations.prevRotation + (rotations.rotation - rotations.prevRotation) * v);
             renderComponent(stack, matrices, renderBuffer, light, overlay, skin, BARREL);
         }
         matrices.pop();

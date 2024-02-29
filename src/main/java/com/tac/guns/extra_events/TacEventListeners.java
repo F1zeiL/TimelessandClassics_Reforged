@@ -4,10 +4,7 @@ import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
 import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
-import com.tac.guns.client.audio.BarrelWhineSound;
-import com.tac.guns.client.audio.OverheatSound;
 import com.tac.guns.common.Gun;
-import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
@@ -17,7 +14,6 @@ import com.tac.guns.item.transition.M1GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.SGunLevelUp;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -150,8 +146,7 @@ public class TacEventListeners {
                             if (!heldItem.getTag().getBoolean("overHeatLock")) {
                                 heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
                                 heldItem.getTag().putBoolean("overHeatLock", true);
-                                OverheatSound barrel = new OverheatSound(ModSounds.OVERHEAT.get(), SoundCategory.MASTER, entity);
-                                Minecraft.getInstance().getSoundHandler().play(barrel);
+                                entity.getEntityWorld().playSound(entity, entity.getPosition(), ModSounds.OVERHEAT.get(), SoundCategory.PLAYERS, (float) (Config.SERVER.barrelVolume.get() * 1F), 1.0F);
                             }
                         }
                     }
