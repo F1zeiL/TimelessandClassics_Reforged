@@ -11,7 +11,6 @@ import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
-import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
 import com.tac.guns.item.GunItem;
@@ -49,6 +48,7 @@ public class minigun_animation extends SkinAnimationModel {
     }
     private WeakHashMap<LivingEntity, Rotations> rotationMap = new WeakHashMap<>();
     private BarrelWhineSound barrel;
+    private BarrelWhineSound barrelLow;
 
     @Override
     public void tick(PlayerEntity entity)
@@ -71,8 +71,20 @@ public class minigun_animation extends SkinAnimationModel {
 
         if (shooting) {
             rotations.rotation += 60;
+            if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
+                this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entity);
+                Minecraft.getInstance().getSoundHandler().play(this.barrel);
+                if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))
+                    Minecraft.getInstance().getSoundHandler().stop(this.barrelLow);
+            }
         } else {
             rotations.rotation += 30;
+            if ((this.barrelLow == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
+                this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.MASTER, entity);
+                Minecraft.getInstance().getSoundHandler().play(this.barrelLow);
+                if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))
+                    Minecraft.getInstance().getSoundHandler().stop(this.barrel);
+            }
         }
 
         if (heldItem.getTag() != null) {
@@ -83,11 +95,6 @@ public class minigun_animation extends SkinAnimationModel {
                     entity.sendStatusMessage(new TranslationTextComponent(heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat() + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
             else
                 entity.sendStatusMessage(new TranslationTextComponent("" + (heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat()) + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.WHITE), true);
-        }
-
-        if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
-            this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.MASTER, entity);
-            Minecraft.getInstance().getSoundHandler().play(this.barrel);
         }
     }
 

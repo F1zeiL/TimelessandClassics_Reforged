@@ -852,6 +852,12 @@
          { "name": "tac:item/barrel_whine"}
       ]
    },
+   "item.barrel_whine_low": {
+      "subtitle": "subtitle.tac.barrel_whine_low",
+      "sounds": [
+         { "name": "tac:item/barrel_whine_low"}
+      ]
+   },
 
 
 
