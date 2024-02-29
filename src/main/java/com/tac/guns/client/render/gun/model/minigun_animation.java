@@ -87,16 +87,6 @@ public class minigun_animation extends SkinAnimationModel {
                     Minecraft.getInstance().getSoundHandler().stop(this.barrel);
             }
         }
-
-        if (heldItem.getTag() != null) {
-            if (overHeat(entity, heldItem))
-                if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
-                    entity.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
-                else
-                    entity.sendStatusMessage(new TranslationTextComponent(heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat() + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
-            else
-                entity.sendStatusMessage(new TranslationTextComponent("" + (heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat()) + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.WHITE), true);
-        }
     }
 
     @Override
@@ -133,13 +123,5 @@ public class minigun_animation extends SkinAnimationModel {
     @SubscribeEvent
     public void onClientDisconnect(ClientPlayerNetworkEvent.LoggedOutEvent event) {
         this.rotationMap.clear();
-    }
-
-    private boolean overHeat(PlayerEntity player, ItemStack heldItem) {
-        if (heldItem.getItem() instanceof TimelessGunItem && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isHeat())
-            return false;
-
-        return heldItem.getTag().getInt("heatValue") >= ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getTickToHeat() ||
-                heldItem.getTag().getBoolean("overHeatLock");
     }
 }
