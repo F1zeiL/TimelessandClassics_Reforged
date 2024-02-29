@@ -134,39 +134,39 @@ public class TacEventListeners {
                 return;
 
             Gun gun = ((GunItem) heldItem.getItem()).getGun();
-            if (!Gun.hasAmmo(entity, heldItem) &&
-                    ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
-                    (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
-                shooting = false;
-            }
+            if (gun.getReloads().isHeat()) {
+                if (!Gun.hasAmmo(entity, heldItem) &&
+                        ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                                (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
+                    shooting = false;
+                }
 
-            if (shooting) {
-                if (heldItem.getTag() != null) {
-                    if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
-                        heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
+                if (shooting) {
+                    if (heldItem.getTag() != null) {
+                        if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                            heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
+                        }
+                        if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat() && heldItem.getTag().get("overHeatLock") != null) {
+                            if (!heldItem.getTag().getBoolean("overHeatLock")) {
+                                heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
+                                heldItem.getTag().putBoolean("overHeatLock", true);
+                                OverheatSound barrel = new OverheatSound(ModSounds.OVERHEAT.get(), SoundCategory.MASTER, entity);
+                                Minecraft.getInstance().getSoundHandler().play(barrel);
+                            }
+                        }
                     }
-                    if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat() && heldItem.getTag().get("overHeatLock") != null) {
-                        if (!heldItem.getTag().getBoolean("overHeatLock")) {
-                            heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
-                            heldItem.getTag().putBoolean("overHeatLock", true);
-                            OverheatSound barrel = new OverheatSound(ModSounds.OVERHEAT.get(), SoundCategory.MASTER, entity);
-                            Minecraft.getInstance().getSoundHandler().play(barrel);
+                } else {
+                    if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
+                        if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                            heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
+                        }
+                        if (heldItem.getTag().get("overHeatLock") != null) {
+                            if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
+                                heldItem.getTag().putBoolean("overHeatLock", false);
                         }
                     }
                 }
-            } else {
-                if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-                    if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
-                        heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
-                    }
-                    if (heldItem.getTag().get("overHeatLock") != null) {
-                        if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
-                            heldItem.getTag().putBoolean("overHeatLock", false);
-                    }
-                }
-            }
 
-            if (gun.getReloads().isHeat()) {
                 if (heldItem.getTag() != null) {
                     if (overHeat(entity, heldItem))
                         if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
