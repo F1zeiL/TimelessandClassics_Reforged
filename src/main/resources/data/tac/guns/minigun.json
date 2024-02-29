@@ -23,7 +23,10 @@
   "reloads": {
     "noMag": true,
     "isHeat": true,
-    "isBarrel": true
+    "isBarrel": true,
+    "tickToHeat": 200,
+    "tickOverHeat": 40,
+    "heatRecover": 2
   },
   "projectile": {
     "item": "tac:nato_556_bullet",
