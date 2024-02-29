@@ -12,6 +12,7 @@ import com.tac.guns.interfaces.TGExclude;
 import com.tac.guns.item.attachment.IAttachment;
 import com.tac.guns.item.attachment.IScope;
 import com.tac.guns.item.attachment.impl.Scope;
+import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.util.GunModifierHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -520,6 +521,20 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         @Optional
         private boolean magFed = false;
         @Optional
+        private boolean noMag = false;
+        @Optional
+        private boolean isHeat = false;
+        @Optional
+        private boolean isBarrel = false;
+        @Optional
+        private int tickToHeat = 200;
+        @Optional
+        private int tickOverHeat = 40;
+        @Optional
+        private int heatRecover = 1;
+        @Optional
+        private int delay = 0;
+        @Optional
         private int reloadMagTimer = 20;
         @Optional
         private int additionalReloadEmptyMagTimer = 0;
@@ -552,7 +567,14 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             CompoundNBT tag = new CompoundNBT();
             tag.putInt("MaxAmmo", this.maxAmmo);
             tag.putBoolean("MagFed", this.magFed);
+            tag.putBoolean("NoMag", this.noMag);
+            tag.putBoolean("IsHeat", this.isHeat);
+            tag.putBoolean("IsBarrel", this.isBarrel);
             tag.putInt("ReloadSpeed", this.reloadAmount);
+            tag.putInt("TickToHeat", this.tickToHeat);
+            tag.putInt("TickOverHeat", this.tickOverHeat);
+            tag.putInt("HeatRecover", this.heatRecover);
+            tag.putInt("Delay", this.delay);
             tag.putInt("ReloadMagTimer", this.reloadMagTimer);
             tag.putInt("AdditionalReloadEmptyMagTimer", this.additionalReloadEmptyMagTimer);
             tag.putIntArray("MaxAmmunitionPerOverCap", this.maxAdditionalAmmoPerOC);
@@ -572,8 +594,29 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
             if (tag.contains("MagFed", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.magFed = tag.getBoolean("MagFed");
             }
+            if (tag.contains("NoMag", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.noMag = tag.getBoolean("NoMag");
+            }
+            if (tag.contains("IsHeat", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.isHeat = tag.getBoolean("IsHeat");
+            }
+            if (tag.contains("IsBarrel", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.isBarrel = tag.getBoolean("IsBarrel");
+            }
             if (tag.contains("ReloadSpeed", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.reloadAmount = tag.getInt("ReloadSpeed");
+            }
+            if (tag.contains("TickToHeat", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.tickToHeat = tag.getInt("TickToHeat");
+            }
+            if (tag.contains("TickOverHeat", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.tickOverHeat = tag.getInt("TickOverHeat");
+            }
+            if (tag.contains("HeatRecover", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.heatRecover = tag.getInt("HeatRecover");
+            }
+            if (tag.contains("Delay", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.delay = tag.getInt("Delay");
             }
             if (tag.contains("ReloadMagTimer", Constants.NBT.TAG_ANY_NUMERIC)) {
                 this.reloadMagTimer = tag.getInt("ReloadMagTimer");
@@ -607,8 +650,15 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         public Reloads copy() {
             Reloads reloads = new Reloads();
             reloads.magFed = this.magFed;
+            reloads.noMag = this.noMag;
+            reloads.isHeat = this.isHeat;
+            reloads.isBarrel = this.isBarrel;
             reloads.maxAmmo = this.maxAmmo;
             reloads.reloadAmount = this.reloadAmount;
+            reloads.tickToHeat = this.tickToHeat;
+            reloads.tickOverHeat = this.tickOverHeat;
+            reloads.heatRecover = this.heatRecover;
+            reloads.delay = this.delay;
             reloads.reloadMagTimer = this.reloadMagTimer;
             reloads.additionalReloadEmptyMagTimer = this.additionalReloadEmptyMagTimer;
             reloads.maxAdditionalAmmoPerOC = this.maxAdditionalAmmoPerOC;
@@ -628,6 +678,27 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
         }
 
         /**
+         * @return Does this gun don't need to reload
+         */
+        public boolean isNoMag() {
+            return this.noMag;
+        }
+
+        /**
+         * @return Does this gun use heat system
+         */
+        public boolean isHeat() {
+            return this.isHeat;
+        }
+
+        /**
+         * @return Does this gun don't need to reload
+         */
+        public boolean isBarrel() {
+            return this.isBarrel;
+        }
+
+        /**
          * @return The maximum amount of ammo this weapon can hold
          */
         public int getMaxAmmo() {
@@ -639,6 +710,34 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
          */
         public int getReloadAmount() {
             return (Thread.currentThread().getThreadGroup() != SidedThreadGroups.SERVER && Config.SERVER.development.enableTDev.get() && GunEditor.get().getMode() == GunEditor.TaCWeaponDevModes.reloads) ? (int) (this.reloadAmount + GunEditor.get().getReloadAmountMod()) : this.reloadAmount;
+        }
+
+        /**
+         * @return The tick to overheat of the weapon
+         */
+        public int getTickToHeat() {
+            return this.tickToHeat;
+        }
+
+        /**
+         * @return The extra tick punishment while overheat of the weapon
+         */
+        public int getTickOverHeat() {
+            return this.tickOverHeat;
+        }
+
+        /**
+         * @return The heat recover speed of the weapon
+         */
+        public int getHeatRecover() {
+            return this.heatRecover;
+        }
+
+        /**
+         * @return The delay of the weapon
+         */
+        public int getDelay() {
+            return this.delay;
         }
 
         /**
@@ -2900,6 +2999,14 @@ public final class Gun implements INBTSerializable<CompoundNBT> {
 
     public static boolean isAmmo(ItemStack stack, ResourceLocation id) {
         return stack != null && stack.getItem().getRegistryName().equals(id);
+    }
+
+    public static boolean hasAmmo(PlayerEntity player, ItemStack gunStack) {
+        CompoundNBT tag = gunStack.getOrCreateTag();
+        if (gunStack.getItem() instanceof TimelessGunItem)
+            if (((TimelessGunItem) gunStack.getItem()).getGun().getReloads().isNoMag())
+                return ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(player, ((TimelessGunItem) gunStack.getItem()).getGun().getProjectile().getItem())) > 0;
+        return tag.getBoolean("IgnoreAmmo") || tag.getInt("AmmoCount") > 0;
     }
 
     public static boolean hasAmmo(ItemStack gunStack) {

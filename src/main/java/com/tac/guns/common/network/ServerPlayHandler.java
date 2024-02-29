@@ -27,6 +27,7 @@ import com.tac.guns.tileentity.WorkbenchTileEntity;
 import com.tac.guns.util.GunEnchantmentHelper;
 import com.tac.guns.util.GunModifierHelper;
 import com.tac.guns.util.InventoryUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -89,7 +90,7 @@ public class ServerPlayHandler {
         if (!player.isSpectator()) {
             World world = player.world;
             ItemStack heldItem = player.getHeldItem(Hand.MAIN_HAND);
-            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
+            if (heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(player, heldItem) ||
                     (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
                     (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) {
                 GunItem item = (GunItem) heldItem.getItem();
@@ -190,7 +191,10 @@ public class ServerPlayHandler {
                         if (!tag.getBoolean("IgnoreAmmo")) {
                             int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.RECLAIMED.get(), heldItem);
                             if (level == 0 || player.world.rand.nextInt(9 - MathHelper.clamp(level * 3, 3, 6)) != 0) {
-                                tag.putInt("AmmoCount", Math.max(0, tag.getInt("AmmoCount") - 1));
+                                if (modifiedGun.getReloads().isNoMag())
+                                    ReloadTracker.decreaseReserveAmmo(Gun.findAmmo(player, modifiedGun.getProjectile().getItem()), player, 1);
+                                else
+                                    tag.putInt("AmmoCount", Math.max(0, tag.getInt("AmmoCount") - 1));
                             }
                         }
                     }
@@ -276,6 +280,9 @@ public class ServerPlayHandler {
     public static void handleUnload(ServerPlayerEntity player) {
         ItemStack stack = player.getHeldItemMainhand();
         if (stack.getItem() instanceof GunItem) {
+            if (((GunItem) stack.getItem()).getModifiedGun(stack).getReloads().isNoMag())
+                return;
+
             CompoundNBT tag = stack.getTag();
             GunItem gunItem = (GunItem) stack.getItem();
             Gun gun = gunItem.getModifiedGun(stack);
@@ -613,6 +620,8 @@ public class ServerPlayHandler {
                     NetworkGunManager.get().StackIds.put(id, player.getHeldItemMainhand());
                 }
                 initLevelTracking(player.getHeldItemMainhand(), player);
+                if (((TimelessGunItem) player.getHeldItemMainhand().getItem()).getGun().getReloads().isHeat())
+                    initHeatTracking(player.getHeldItemMainhand(), player);
             }
         }
     }
@@ -635,6 +644,15 @@ public class ServerPlayHandler {
         }
         if (gunStack.getTag().get("levelPlayerID") == null) {
             gunStack.getTag().putString("levelPlayerID", player.getDisplayName().getString());
+        }
+    }
+
+    private static void initHeatTracking(ItemStack gunStack, ServerPlayerEntity player) {
+        if (gunStack.getTag().get("heatValue") == null) {
+            gunStack.getTag().putInt("heatValue", 0);
+        }
+        if (gunStack.getTag().get("overHeatLock") == null) {
+            gunStack.getTag().putBoolean("overHeatLock", false);
         }
     }
 

@@ -88,10 +88,12 @@ public class TimelessGunItem extends GunItem {
 
         if (tagCompound != null) {
             if (tagCompound.getBoolean("IgnoreAmmo")) {
-                tooltip.add((new TranslationTextComponent("info.tac.ignore_ammo")).mergeStyle(TextFormatting.AQUA));
+                tooltip.add(new TranslationTextComponent("info.tac.ignore_ammo").mergeStyle(TextFormatting.AQUA));
+            } else if (modifiedGun.getReloads().isNoMag()) {
+                tooltip.add(new TranslationTextComponent("info.tac.no_mag").mergeStyle(TextFormatting.AQUA));
             } else {
                 int ammoCount = tagCompound.getInt("AmmoCount");
-                tooltip.add((new TranslationTextComponent("info.tac.ammo", TextFormatting.GOLD.toString() + ammoCount + "/" + GunModifierHelper.getAmmoCapacity(stack, modifiedGun))).mergeStyle(TextFormatting.DARK_GRAY));
+                tooltip.add(new TranslationTextComponent("info.tac.ammo", TextFormatting.WHITE.toString() + ammoCount + "/" + GunModifierHelper.getAmmoCapacity(stack, modifiedGun)).mergeStyle(TextFormatting.GRAY));
             }
         }
 

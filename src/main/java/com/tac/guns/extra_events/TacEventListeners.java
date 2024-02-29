@@ -1,29 +1,33 @@
 package com.tac.guns.extra_events;
 
+import com.mrcrayfish.obfuscate.common.data.SyncedPlayerData;
+import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
+import com.tac.guns.common.Gun;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
+import com.tac.guns.init.ModSyncedDataKeys;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.M1GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
 import com.tac.guns.network.message.SGunLevelUp;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.toasts.SystemToast;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.play.server.SAdvancementInfoPacket;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.VersionChecker;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDispatcher;
 import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.Level;
 
@@ -115,20 +119,67 @@ public class TacEventListeners {
         // TODO: Continue for dropping armor on a bot's death
     }*/
 
-//    @SubscribeEvent(priority = EventPriority.HIGHEST)
-//    public static void onTick(TickEvent.PlayerTickEvent event) {
-//        if (event.phase == TickEvent.Phase.START) {
-//            Vector3d p0 = ProjectileEntity.cachePlayerPosition.getOrDefault(event.player, event.player.getPositionVec());
-//            Vector3d p1 = event.player.getPositionVec();
-//            ProjectileEntity.cachePlayerPosition.put(event.player, p1);
-//            Vector3d v = p1.subtract(p0);
-//            if (v.x * v.x + v.y * v.y + v.z * v.z >= 0.0625) {
-//                v = v.mul(5, 5, 5);
-//            } else {
-//                v = new Vector3d(0, 0, 0);
-//            }
-//            ProjectileEntity.cachePlayerVelocity.put(event.player, v);
-//        }
-//    }
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            PlayerEntity entity = event.player;
+            boolean shooting = SyncedPlayerData.instance().get(entity, ModSyncedDataKeys.SHOOTING);
+            ItemStack heldItem = entity.getHeldItemMainhand();
 
+            if (!(heldItem.getItem() instanceof GunItem))
+                return;
+
+            Gun gun = ((GunItem) heldItem.getItem()).getGun();
+            if (gun.getReloads().isHeat()) {
+                if (!Gun.hasAmmo(entity, heldItem) &&
+                        ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                                (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
+                    shooting = false;
+                }
+
+                if (shooting) {
+                    if (heldItem.getTag() != null) {
+                        if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                            heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
+                        }
+                        if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat() && heldItem.getTag().get("overHeatLock") != null) {
+                            if (!heldItem.getTag().getBoolean("overHeatLock")) {
+                                heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
+                                heldItem.getTag().putBoolean("overHeatLock", true);
+                                entity.getEntityWorld().playSound(entity, entity.getPosition(), ModSounds.OVERHEAT.get(), SoundCategory.PLAYERS, (float) (Config.SERVER.barrelVolume.get() * 1F), 1.0F);
+                            }
+                        }
+                    }
+                } else {
+                    if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
+                        if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
+                            heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
+                        }
+                        if (heldItem.getTag().get("overHeatLock") != null) {
+                            if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
+                                heldItem.getTag().putBoolean("overHeatLock", false);
+                        }
+                    }
+                }
+
+                if (heldItem.getTag() != null) {
+                    if (overHeat(entity, heldItem))
+                        if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
+                            entity.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
+                        else
+                            entity.sendStatusMessage(new TranslationTextComponent(heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat() + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
+                    else
+                        entity.sendStatusMessage(new TranslationTextComponent("" + (heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat()) + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.WHITE), true);
+                }
+            }
+        }
+    }
+
+    private static boolean overHeat(PlayerEntity player, ItemStack heldItem) {
+        if (heldItem.getItem() instanceof TimelessGunItem && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isHeat())
+            return false;
+
+        return heldItem.getTag().getInt("heatValue") >= ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getTickToHeat() ||
+                heldItem.getTag().getBoolean("overHeatLock");
+    }
 }

@@ -77,6 +77,9 @@ public class ReloadTracker {
     private boolean canReload(PlayerEntity player) {
         boolean reload;
         Gun gun = ((GunItem) this.stack.getItem()).getGun();
+        if (gun.getReloads().isNoMag())
+            return false;
+
         if (gun.getReloads().isMagFed()) {
             if (this.isWeaponEmpty()) {
                 int deltaTicks = player.ticksExisted - this.startTick;
@@ -118,7 +121,7 @@ public class ReloadTracker {
                 tag.putInt("AmmoCount", tag.getInt("AmmoCount") + amount);
             }
             //ammo.shrink(amount);
-            this.shrinkFromAmmoPool(new ItemStack[]{ammo}, player, amount);
+            shrinkFromAmmoPool(new ItemStack[]{ammo}, player, amount);
         }
 
         setReloadSound(player);
@@ -131,7 +134,11 @@ public class ReloadTracker {
         return result;
     }
 
-    private void shrinkFromAmmoPool(ItemStack[] ammoStacks, PlayerEntity player, int shrinkAmount) {
+    public static void decreaseReserveAmmo(ItemStack[] ammoStacks, PlayerEntity player, int shrinkAmount) {
+        shrinkFromAmmoPool(ammoStacks, player, shrinkAmount);
+    }
+
+    private static void shrinkFromAmmoPool(ItemStack[] ammoStacks, PlayerEntity player, int shrinkAmount) {
         int shrinkAmt = shrinkAmount;
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
@@ -159,7 +166,7 @@ public class ReloadTracker {
                 if (currentAmmo == 0) {
                     if (ammoAmount <= amount) {
                         tag.putInt("AmmoCount", currentAmmo + ammoAmount);
-                        this.shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
+                        shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
                     }
                 }
             }
@@ -188,18 +195,18 @@ public class ReloadTracker {
                 if (currentAmmo == 0 && !this.gun.getReloads().isOpenBolt()) {
                     if (ammoAmount < amount) {
                         tag.putInt("AmmoCount", currentAmmo + ammoAmount);
-                        this.shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
+                        shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
                     } else {
                         tag.putInt("AmmoCount", maxAmmo - 1);
-                        this.shrinkFromAmmoPool(ammoStacks, player, amount - 1);
+                        shrinkFromAmmoPool(ammoStacks, player, amount - 1);
                     }
                 } else {
                     if (ammoAmount < amount) {
                         tag.putInt("AmmoCount", currentAmmo + ammoAmount);
-                        this.shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
+                        shrinkFromAmmoPool(ammoStacks, player, ammoAmount);
                     } else {
                         tag.putInt("AmmoCount", maxAmmo);
-                        this.shrinkFromAmmoPool(ammoStacks, player, amount);//ammoStacks.shrink(amount);
+                        shrinkFromAmmoPool(ammoStacks, player, amount);//ammoStacks.shrink(amount);
                     }
                 }
             }
@@ -250,7 +257,7 @@ public class ReloadTracker {
                         SyncedPlayerData.instance().set(player, ModSyncedDataKeys.STOP_ANIMA, false);
                     } else {
                         tracker.increaseAmmo(player);
-                        if (tracker.isWeaponFull() || tracker.hasNoAmmo(player)) {
+                        if (tracker.isWeaponFull() || tracker.hasNoAmmo(player) || gun.getReloads().isNoMag()) {
                             RELOAD_TRACKER_MAP.remove(player);
                             SyncedPlayerData.instance().set(player, ModSyncedDataKeys.RELOADING, false);
                             SyncedPlayerData.instance().set(player, ModSyncedDataKeys.STOP_ANIMA, false);

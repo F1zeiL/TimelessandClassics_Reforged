@@ -805,6 +805,12 @@
          { "name": "tac:item/b93r_fire" }
       ]
    },
+   "item.minigun_fire": {
+      "subtitle": "subtitle.tac.minigun_fire",
+      "sounds": [
+         { "name": "tac:item/minigun_fire" }
+      ]
+   },
 
 
 
@@ -838,6 +844,24 @@
       "subtitle": "subtitle.tac.noammo",
       "sounds": [
          { "name": "tac:item/noammo" }
+      ]
+   },
+   "item.barrel_whine": {
+      "subtitle": "subtitle.tac.barrel_whine",
+      "sounds": [
+         { "name": "tac:item/barrel_whine"}
+      ]
+   },
+   "item.barrel_whine_low": {
+      "subtitle": "subtitle.tac.barrel_whine_low",
+      "sounds": [
+         { "name": "tac:item/barrel_whine_low"}
+      ]
+   },
+   "item.overheat": {
+      "subtitle": "subtitle.tac.overheat",
+      "sounds": [
+         { "name": "tac:item/overheat"}
       ]
    },
 
@@ -2468,6 +2492,19 @@
       "subtitle": "animation.b93r_reload_empty",
       "sounds": [
          { "name": "tac:animation/b93r_reload_empty"}
+      ]
+   },
+
+   "animation.minigun_draw": {
+      "subtitle": "animation.minigun_draw",
+      "sounds": [
+         { "name": "tac:animation/minigun_draw"}
+      ]
+   },
+   "animation.minigun_inspect": {
+      "subtitle": "animation.minigun_inspect",
+      "sounds": [
+         { "name": "tac:animation/minigun_inspect"}
       ]
    },
 

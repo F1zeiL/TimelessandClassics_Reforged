@@ -92,7 +92,8 @@ public enum AnimationHandler {
                 "COLTPYTHONAnimationController",
                 "P90AnimationController",
                 "C96AnimationController",
-                "B93RAnimationController"
+                "B93RAnimationController",
+                "MINIGUNAnimationController"
         };
 
         for (String controllerName : animationControllers) {
