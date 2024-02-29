@@ -192,10 +192,10 @@ public class ShootingHandler {
             shootTickGapLeft -= shootTickGapLeft > 0F ? 1F : 0F;
 
             ItemStack heldItem = player.getHeldItemMainhand();
-            if ((heldItem.getItem() instanceof GunItem && (Gun.hasAmmo(heldItem) ||
+            if (heldItem.getItem() instanceof GunItem && ((Gun.hasAmmo(player, heldItem) ||
                     (player.isCreative() && Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()) ||
-                    (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()))) &&
-                    !magError(player, heldItem) && !overHeat(player, heldItem)) {
+                    (!player.isCreative() && Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get())) &&
+                    !magError(player, heldItem) && !overHeat(player, heldItem))) {
                 final float dist = Math.abs(player.moveForward) / 2.5F
                         + Math.abs(player.moveStrafing) / 1.25F
                         + (player.getMotion().y > 0D ? 0.5F : 0F);
@@ -359,14 +359,12 @@ public class ShootingHandler {
         if (!(heldItem.getItem() instanceof GunItem))
             return;
 
-        if (!Gun.hasAmmo(heldItem) && !player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get() && !((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag())
-            return;
-
-        if (!Gun.hasAmmo(heldItem) && player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get() && !((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag())
-            return;
-
-        if (((GunItem) heldItem.getItem()).getGun().getReloads().isNoMag() && !(ReloadTracker.calcMaxReserveAmmo(Gun.findAmmo(player, ((GunItem) heldItem.getItem()).getGun().getProjectile().getItem())) > 0))
-            return;
+        if (!Gun.hasAmmo(player, heldItem)) {
+            if (!player.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get())
+                return;
+            if (player.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())
+                return;
+        }
 
         if (player.isSpectator())
             return;

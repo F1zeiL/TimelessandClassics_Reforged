@@ -11,8 +11,10 @@ import com.tac.guns.client.render.animation.module.PlayerHandAnimation;
 import com.tac.guns.client.render.gun.SkinAnimationModel;
 import com.tac.guns.client.util.RenderUtil;
 import com.tac.guns.common.Gun;
+import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -57,8 +59,13 @@ public class minigun_animation extends SkinAnimationModel {
 
         boolean shooting = SyncedPlayerData.instance().get(entity, ModSyncedDataKeys.SHOOTING);
         ItemStack heldItem = entity.getHeldItemMainhand();
-        if (!Gun.hasAmmo(heldItem) && ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
-                entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())) {
+        if (!(heldItem.getItem() instanceof GunItem))
+            return;
+
+        Gun gun = ((GunItem) heldItem.getItem()).getGun();
+        if (!Gun.hasAmmo(entity, heldItem) &&
+                ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                        (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
             shooting = false;
         }
 
@@ -68,8 +75,7 @@ public class minigun_animation extends SkinAnimationModel {
             rotations.rotation += 30;
         }
 
-        if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-            Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+        if (heldItem.getTag() != null) {
             if (overHeat(entity, heldItem))
                 if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
                     entity.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);

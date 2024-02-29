@@ -5,10 +5,12 @@ import com.tac.guns.Config;
 import com.tac.guns.GunMod;
 import com.tac.guns.Reference;
 import com.tac.guns.common.Gun;
+import com.tac.guns.common.ReloadTracker;
 import com.tac.guns.event.GunFireEvent;
 import com.tac.guns.event.LevelUpEvent;
 import com.tac.guns.init.ModSounds;
 import com.tac.guns.init.ModSyncedDataKeys;
+import com.tac.guns.item.GunItem;
 import com.tac.guns.item.transition.M1GunItem;
 import com.tac.guns.item.transition.TimelessGunItem;
 import com.tac.guns.network.PacketHandler;
@@ -123,14 +125,19 @@ public class TacEventListeners {
             PlayerEntity entity = event.player;
             boolean shooting = SyncedPlayerData.instance().get(entity, ModSyncedDataKeys.SHOOTING);
             ItemStack heldItem = entity.getHeldItemMainhand();
-            if (!Gun.hasAmmo(heldItem) && ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
-                    entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get())) {
+
+            if (!(heldItem.getItem() instanceof GunItem))
+                return;
+
+            Gun gun = ((GunItem) heldItem.getItem()).getGun();
+            if (!Gun.hasAmmo(entity, heldItem) &&
+                    ((!entity.isCreative() && !Config.SERVER.gameplay.commonUnlimitedCurrentAmmo.get()) ||
+                    (entity.isCreative() && !Config.SERVER.gameplay.creativeUnlimitedCurrentAmmo.get()))) {
                 shooting = false;
             }
 
             if (shooting) {
-                if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-                    Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
+                if (heldItem.getTag() != null) {
                     if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
                         heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + 1);
                     }
@@ -141,7 +148,6 @@ public class TacEventListeners {
                 }
             } else {
                 if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
-                    Gun gun = ((TimelessGunItem) heldItem.getItem()).getGun();
                     if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
                         heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
                     }
