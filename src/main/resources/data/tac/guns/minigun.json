@@ -39,7 +39,7 @@
     "decayEnd": 1.0,
     "size": 0.125,
     "speed": 32.5,
-    "trailLengthMultiplier": 2.75,
+    "trailLengthMultiplier": 1.75,
     "life": 12
   },
   "sounds": {
@@ -50,9 +50,10 @@
   },
   "display": {
     "flash": {
-      "yOffset": 8.645,
-      "zOffset": -23.42,
-      "size": 0.94,
+      "yOffset": 4.245,
+      "zOffset": -30.42,
+      "xOffset": -8,
+      "size": 1.25,
       "trailAdjust": 1.5
     },
     "hipfireScale": 3,

@@ -23,6 +23,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -103,6 +104,8 @@ public class minigun_animation extends SkinAnimationModel {
         MINIGUNAnimationController controller = MINIGUNAnimationController.getInstance();
         GunSkin skin = SkinManager.getSkin(stack);
         Rotations rotations = this.rotationMap.computeIfAbsent(entity, uuid -> new Rotations());
+        matrices.rotate(Vector3f.XN.rotationDegrees(-10F));
+        matrices.rotate(Vector3f.YN.rotationDegrees(-5F));
 
         matrices.push();
         {

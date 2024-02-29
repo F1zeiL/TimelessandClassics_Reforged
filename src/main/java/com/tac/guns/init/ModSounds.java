@@ -17,6 +17,7 @@ public class ModSounds
 	public static final RegistryObject<SoundEvent> UI_WEAPON_ATTACH = register("ui.weapon.attach");
 	public static final RegistryObject<SoundEvent> BARREL_WHINE = register("item.barrel_whine");
 	public static final RegistryObject<SoundEvent> BARREL_WHINE_LOW = register("item.barrel_whine_low");
+	public static final RegistryObject<SoundEvent> OVERHEAT = register("item.overheat");
 
 	public static final RegistryObject<SoundEvent> M1_PING = register("item.m1ping");
 

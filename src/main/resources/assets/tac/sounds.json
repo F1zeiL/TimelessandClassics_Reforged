@@ -858,6 +858,12 @@
          { "name": "tac:item/barrel_whine_low"}
       ]
    },
+   "item.overheat": {
+      "subtitle": "subtitle.tac.overheat",
+      "sounds": [
+         { "name": "tac:item/overheat"}
+      ]
+   },
 
 
 
