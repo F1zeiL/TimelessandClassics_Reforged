@@ -139,6 +139,7 @@ public class Config {
         public final WeaponFireMode weaponFireMode;
         public final WeaponAmmoCounter weaponAmmoCounter;
         public final WeaponReloadTimer weaponReloadTimer;
+        public final WeaponOverheatBar weaponOverheatBar;
 
         public final ForgeConfigSpec.DoubleValue mainX;
         public final ForgeConfigSpec.DoubleValue mainY;
@@ -153,6 +154,7 @@ public class Config {
                 this.weaponFireMode = new WeaponFireMode(builder);
                 this.weaponAmmoCounter = new WeaponAmmoCounter(builder);
                 this.weaponReloadTimer = new WeaponReloadTimer(builder);
+                this.weaponOverheatBar = new WeaponOverheatBar(builder);
                 this.mainX = builder.comment("mainX Position on your HUD.").defineInRange("mainXLocation", 0, -500d, 500d);
                 this.mainY = builder.comment("mainY Position on your HUD.").defineInRange("mainYLocation", 0, -500d, 500d);
             }
@@ -235,6 +237,20 @@ public class Config {
 
                 this.x = builder.comment("X Position on your HUD.").defineInRange("XLocation", 0, -500d, 500d);
                 this.y = builder.comment("Y Position on your HUD.").defineInRange("YLocation", 0, -500d, 500d);
+            }
+            builder.pop();
+        }
+    }
+
+    public static class WeaponOverheatBar {
+        public final ForgeConfigSpec.BooleanValue showWeaponOverheatBar;
+        public final ForgeConfigSpec.DoubleValue weaponOverheatBarAlpha;
+
+        public WeaponOverheatBar(ForgeConfigSpec.Builder builder) {
+            builder.comment("Configuration for HUD overheat bar").push("weaponOverheatBar");
+            {
+                this.showWeaponOverheatBar = builder.comment("Display the overheat bar of the weapon holds on your HUD.").define("showWeaponOverheatBar", true);
+                this.weaponOverheatBarAlpha = builder.comment("Alpha of the overheat bar on your HUD").defineInRange("weaponOverheatBarAlpha", 0.75, 0.0, 1.0);
             }
             builder.pop();
         }

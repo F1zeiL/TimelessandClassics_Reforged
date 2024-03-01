@@ -25,7 +25,7 @@
     "isHeat": true,
     "isBarrel": true,
     "tickToHeat": 200,
-    "tickOverHeat": 40,
+    "tickOverHeat": 80,
     "heatRecover": 2
   },
   "projectile": {

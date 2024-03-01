@@ -153,7 +153,7 @@ public class TacEventListeners {
                 } else {
                     if (heldItem.getItem() instanceof TimelessGunItem && heldItem.getTag() != null) {
                         if (gun.getReloads().isHeat() && heldItem.getTag().get("heatValue") != null) {
-                            heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - 1, 0));
+                            heldItem.getTag().putInt("heatValue", Math.max(heldItem.getTag().getInt("heatValue") - Math.max(1, gun.getReloads().getHeatRecover()), 0));
                         }
                         if (heldItem.getTag().get("overHeatLock") != null) {
                             if (heldItem.getTag().getInt("heatValue") <= 0 && heldItem.getTag().getBoolean("overHeatLock"))
@@ -161,25 +161,7 @@ public class TacEventListeners {
                         }
                     }
                 }
-
-                if (heldItem.getTag() != null) {
-                    if (overHeat(entity, heldItem))
-                        if (heldItem.getTag().getInt("heatValue") >= gun.getReloads().getTickToHeat())
-                            entity.sendStatusMessage(new TranslationTextComponent("info.tac.over_heat").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
-                        else
-                            entity.sendStatusMessage(new TranslationTextComponent(heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat() + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.RED), true);
-                    else
-                        entity.sendStatusMessage(new TranslationTextComponent("" + (heldItem.getTag().getInt("heatValue") * 100 / gun.getReloads().getTickToHeat()) + "% / 100%").mergeStyle(TextFormatting.UNDERLINE).mergeStyle(TextFormatting.WHITE), true);
-                }
             }
         }
-    }
-
-    private static boolean overHeat(PlayerEntity player, ItemStack heldItem) {
-        if (heldItem.getItem() instanceof TimelessGunItem && !((TimelessGunItem) heldItem.getItem()).getGun().getReloads().isHeat())
-            return false;
-
-        return heldItem.getTag().getInt("heatValue") >= ((TimelessGunItem) heldItem.getItem()).getGun().getReloads().getTickToHeat() ||
-                heldItem.getTag().getBoolean("overHeatLock");
     }
 }

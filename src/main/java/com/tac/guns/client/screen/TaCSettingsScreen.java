@@ -34,31 +34,33 @@ public class TaCSettingsScreen extends SettingsScreen {
             {
                 return new AbstractOption[p_223702_0_];
             }));
-            this.optionsList.addOption(GunOptions.DOUBLE_RENDER_EXIST/*, GunOptions.REDDOT_SQUISH_EXIST*/);
-            this.optionsList.addOption(GunOptions.BANNED_DROP);
+            this.optionsList.addOption(GunOptions.DOUBLE_RENDER_EXIST, GunOptions.BANNED_DROP/*, GunOptions.REDDOT_SQUISH_EXIST*/);
+//            this.optionsList.addOption(GunOptions.BANNED_DROP);
 
-            this.optionsList.addOption(GunOptions.SHOW_FPS_TRAILS_EXIST);
+            this.optionsList.addOption(GunOptions.SHOW_FPS_TRAILS_EXIST, GunOptions.Fire_Volume);
 
-            this.optionsList.addOption(GunOptions.Fire_Volume);
+//            this.optionsList.addOption(GunOptions.Fire_Volume);
 
-
-            this.optionsList.addOption(GunOptions.X_MAIN_POS);
-            this.optionsList.addOption(GunOptions.Y_MAIN_POS);
+            this.optionsList.addOption(GunOptions.X_MAIN_POS, GunOptions.Y_MAIN_POS);
+//            this.optionsList.addOption(GunOptions.Y_MAIN_POS);
 
             //this.optionsList.addOption(GunOptions.SIZE_FIREMODE_POS);
-            this.optionsList.addOption(GunOptions.FIREMODE_EXIST);
+            this.optionsList.addOption(GunOptions.FIREMODE_EXIST, GunOptions.AMMOCOUNTER_EXIST);
             //this.optionsList.addOption(GunOptions.X_FIREMODE_POS);
             //this.optionsList.addOption(GunOptions.Y_FIREMODE_POS);
 
-            this.optionsList.addOption(GunOptions.AMMOCOUNTER_EXIST);
+//            this.optionsList.addOption(GunOptions.AMMOCOUNTER_EXIST);
             //this.optionsList.addOption(GunOptions.SIZE_AMMOCOUNTER_POS);
             //this.optionsList.addOption(GunOptions.X_AMMOCOUNTER_POS);
             //this.optionsList.addOption(GunOptions.Y_AMMOCOUNTER_POS);
 
-            this.optionsList.addOption(GunOptions.WeaponIcon_EXIST);
-            this.optionsList.addOption(GunOptions.SIZE_Icon_POS);
-            this.optionsList.addOption(GunOptions.X_Icon_POS);
-            this.optionsList.addOption(GunOptions.Y_Icon_POS);
+            this.optionsList.addOption(GunOptions.WeaponIcon_EXIST, GunOptions.SIZE_Icon_POS);
+//            this.optionsList.addOption(GunOptions.SIZE_Icon_POS);
+            this.optionsList.addOption(GunOptions.X_Icon_POS, GunOptions.Y_Icon_POS);
+//            this.optionsList.addOption(GunOptions.Y_Icon_POS);
+
+            this.optionsList.addOption(GunOptions.OVERHEAT_EXIST, GunOptions.OVERHEAT_ALPHA);
+//            this.optionsList.addOption(GunOptions.OVERHEAT_ALPHA);
 
             //this.optionsList.addOption(GunOptions.ReloadBar_EXIST);
             //this.optionsList.addOption(GunOptions.SIZE_ReloadBar_POS);

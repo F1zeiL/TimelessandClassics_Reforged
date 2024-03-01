@@ -360,6 +360,29 @@ public class GunOptions
                 return new TranslationTextComponent("tac.options.xReloadBarPos.format", FORMAT.format(adsSensitivity));
             });
 
+    public static final BooleanOption OVERHEAT_EXIST = new BooleanOption("tac.options.overheatExist", (settings) -> {
+        return Config.CLIENT.weaponGUI.weaponOverheatBar.showWeaponOverheatBar.get();
+    }, (settings, value) -> {
+        Config.CLIENT.weaponGUI.weaponOverheatBar.showWeaponOverheatBar.set(value);
+        Config.saveClientConfig();
+    });
+
+    public static final SliderPercentageOption OVERHEAT_ALPHA = new GunSliderPercentageOption("tac.options.overheatAlpha", 0f, 1f, 0.01F,
+            gameSettings ->
+            {
+                return Config.CLIENT.weaponGUI.weaponOverheatBar.weaponOverheatBarAlpha.get();
+                //return Config.CLIENT.controls.aimDownSightSensitivity.get();
+            },
+            (gameSettings, value) ->
+            {
+                Config.CLIENT.weaponGUI.weaponOverheatBar.weaponOverheatBarAlpha.set(MathHelper.clamp(value, 0f, 1f));
+                Config.saveClientConfig();
+            },
+            (gameSettings, option) -> {
+                double alpha = Config.CLIENT.weaponGUI.weaponOverheatBar.weaponOverheatBarAlpha.get();
+                return new TranslationTextComponent("tac.options.overheatAlpha.format", FORMAT.format(alpha));
+            });
+
     public static final SliderPercentageOption Fire_Volume = new GunSliderPercentageOption("tac.options.weaponsVolume", 0f, 1f, 0.01F,
             gameSettings ->
             {
