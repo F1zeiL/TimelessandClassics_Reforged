@@ -127,15 +127,15 @@ public class TimelessGunItem extends GunItem {
                 float percentageToNextLevel = (tagCompound.getFloat("levelDmg") * 100) / (modifiedGun.getGeneral().getLevelReq() * (((tagCompound.getInt("level")) * 3.0f)));
                 if (stack.getTag().get("levelPlayer") == null) {
                     tooltip.add((new TranslationTextComponent("info.tac.no_current_level_player"))
-                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                            .mergeStyle(TextFormatting.DARK_GRAY).mergeStyle(TextFormatting.BOLD));
                 } else {
                     tooltip.add((new TranslationTextComponent("info.tac.current_level_player").append(new TranslationTextComponent(" " + tagCompound.getString("levelPlayerID"))))
-                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                            .mergeStyle(TextFormatting.GREEN).mergeStyle(TextFormatting.BOLD));
                 }
 
                 if (stack.getTag().getBoolean("levelLock")) {
                     tooltip.add((new TranslationTextComponent("info.tac.wrong_current_level_player"))
-                            .mergeStyle(TextFormatting.GRAY).mergeStyle(TextFormatting.BOLD));
+                            .mergeStyle(TextFormatting.RED).mergeStyle(TextFormatting.BOLD));
                 } else {
                     if (stack.getTag().getInt("level") < 10)
                         tooltip.add((new TranslationTextComponent("info.tac.current_level").append(new TranslationTextComponent(" " + tagCompound.getInt("level") + " : " + String.format("%.2f", percentageToNextLevel) + "%")))

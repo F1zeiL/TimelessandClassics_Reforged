@@ -396,6 +396,8 @@
   "tac.options.holdToAim": "按住以瞄准（而非切换）",
   "tac.options.crosshair.format": "准心: %s",
   "tac.options.weaponsVolume.format": "枪声音量: %s",
+  "tac.options.barrelVolume.format": "转管怠速音量: %s",
+  "tac.options.barrelLowVolume.format": "转管音量: %s",
   "tac.options.toggleAim": "切换开镜",
   "tac.options.showFirstPersonBulletTrails": "在第一人称下显示弹道",
   "tac.crosshair.arrow": "三角",

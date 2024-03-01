@@ -146,7 +146,7 @@ public class TacEventListeners {
                             if (!heldItem.getTag().getBoolean("overHeatLock")) {
                                 heldItem.getTag().putInt("heatValue", heldItem.getTag().getInt("heatValue") + gun.getReloads().getTickOverHeat());
                                 heldItem.getTag().putBoolean("overHeatLock", true);
-                                entity.getEntityWorld().playSound(entity, entity.getPosition(), ModSounds.OVERHEAT.get(), SoundCategory.PLAYERS, (float) (Config.SERVER.barrelVolume.get() * 1F), 1.0F);
+                                entity.getEntityWorld().playSound(entity, entity.getPosition(), ModSounds.OVERHEAT.get(), SoundCategory.PLAYERS, (float) (Config.CLIENT.sounds.barrelVolume.get() * 1F), 1.0F);
                             }
                         }
                     }

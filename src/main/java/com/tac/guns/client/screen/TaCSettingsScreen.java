@@ -38,6 +38,7 @@ public class TaCSettingsScreen extends SettingsScreen {
 //            this.optionsList.addOption(GunOptions.BANNED_DROP);
 
             this.optionsList.addOption(GunOptions.SHOW_FPS_TRAILS_EXIST, GunOptions.Fire_Volume);
+            this.optionsList.addOption(GunOptions.BARREL_VOLUME, GunOptions.BARREL_LOW_VOLUME);
 
 //            this.optionsList.addOption(GunOptions.Fire_Volume);
 

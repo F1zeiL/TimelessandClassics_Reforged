@@ -13,11 +13,13 @@ import net.minecraft.util.SoundEvent;
 
 public class BarrelWhineSound extends EntityTickableSound
 {
-    public BarrelWhineSound(SoundEvent sound, SoundCategory category, Entity entity)
+    private float configVolume;
+    public BarrelWhineSound(SoundEvent sound, SoundCategory category, Entity entity, float volume)
     {
         super(sound, category, entity);
         this.repeat = true;
         this.repeatDelay = 0;
+        this.configVolume = volume;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class BarrelWhineSound extends EntityTickableSound
         }
 
         float distance = Config.SERVER.gunShotMaxDistance.get().floatValue();
-        this.volume = Config.SERVER.barrelVolume.get().floatValue() * (1.0F - Math.min(1.0F, (float) Math.sqrt(player.getDistanceSq(x, y, z)) / distance));
+        this.volume = this.configVolume * (1.0F - Math.min(1.0F, (float) Math.sqrt(player.getDistanceSq(x, y, z)) / distance));
         this.volume *= this.volume;
     }
 }

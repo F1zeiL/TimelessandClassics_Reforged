@@ -395,6 +395,8 @@
   "tac.options.holdToAim": "Hold to aim (instead of toggle)",
   "tac.options.crosshair.format": "Crosshair: %s",
   "tac.options.weaponsVolume.format": "Gun fire Volume: %s",
+  "tac.options.barrelVolume.format": "Barrel Low Volume: %s",
+  "tac.options.barrelLowVolume.format": "Barrel Volume: %s",
   "tac.options.toggleAim": "Toggle ADS",
   "tac.options.showFirstPersonBulletTrails": "Show FPS trails",
   "tac.crosshair.arrow": "Arrow",

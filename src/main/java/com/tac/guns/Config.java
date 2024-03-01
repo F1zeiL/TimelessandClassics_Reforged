@@ -51,6 +51,8 @@ public class Config {
         public final ForgeConfigSpec.ConfigValue<String> mobSound;
 
         public final ForgeConfigSpec.DoubleValue weaponsVolume;
+        public final ForgeConfigSpec.DoubleValue barrelVolume;
+        public final ForgeConfigSpec.DoubleValue barrelLowVolume;
 
         public Sounds(ForgeConfigSpec.Builder builder) {
             builder.comment("Control sounds triggered by guns").push("sounds");
@@ -66,7 +68,8 @@ public class Config {
                 this.playerSound = builder.comment("The sound to play when hitting a player").define("playerSound", "minecraft:entity.player.hurt");
                 this.playSoundWhenMob = builder.comment("If true, a sound will play when you successfully hit an entity with a gun").define("playSoundWhenMob", true);
                 this.mobSound = builder.comment("The sound to play when an entity is shot").define("mobSound", "minecraft:entity.player.attack.weak");
-
+                this.barrelVolume = builder.comment("Volume of the barrel sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("barrelVolume", 1.0, 0.0, 1.0);
+                this.barrelLowVolume = builder.comment("Volume of the barrel low speed sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("barrelVolume", 1.0, 0.0, 1.0);
             }
             builder.pop();
         }
@@ -473,7 +476,6 @@ public class Config {
         public final ForgeConfigSpec.DoubleValue soundPercentage;
         public final ForgeConfigSpec.IntValue soundFadeThreshold;
         public final ForgeConfigSpec.DoubleValue ringVolume;
-        public final ForgeConfigSpec.DoubleValue barrelVolume;
         public final ForgeConfigSpec.DoubleValue gunShotMaxDistance;
         public final ForgeConfigSpec.DoubleValue gunBarrelMaxDistance;
         public final ForgeConfigSpec.BooleanValue enableCameraRecoil;
@@ -488,7 +490,6 @@ public class Config {
                     this.soundPercentage = builder.comment("Volume of most game sounds when deafened will play at this percent, before eventually fading back to %100.").defineInRange("soundPercentage", 0.05, 0.0, 1.0);
                     this.soundFadeThreshold = builder.comment("After the duration drops to this many ticks, the ringing volume will gradually fade to 0 and other sound volumes will fade back to %100.").defineInRange("soundFadeThreshold", 90, 0, Integer.MAX_VALUE);
                     this.ringVolume = builder.comment("Volume of the ringing sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("ringVolume", 1.0, 0.0, 1.0);
-                    this.barrelVolume = builder.comment("Volume of the barrel sound when deafened will play at this volume, before eventually fading to 0.").defineInRange("barrelVolume", 1.0, 0.0, 1.0);
 
                     this.gameplay = new Gameplay(builder);
                     this.development = new Development(builder);

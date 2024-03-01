@@ -398,6 +398,38 @@ public class GunOptions
                 double adsSensitivity = Config.CLIENT.sounds.weaponsVolume.get();
                 return new TranslationTextComponent("tac.options.weaponsVolume.format", FORMAT.format(adsSensitivity));
             });
+
+    public static final SliderPercentageOption BARREL_VOLUME = new GunSliderPercentageOption("tac.options.barrelVolume", 0f, 1f, 0.01F,
+            gameSettings ->
+            {
+                return Config.CLIENT.sounds.barrelVolume.get();
+                //return Config.CLIENT.controls.aimDownSightSensitivity.get();
+            },
+            (gameSettings, value) ->
+            {
+                Config.CLIENT.sounds.barrelVolume.set(MathHelper.clamp(value, 0f, 1f));
+                Config.saveClientConfig();
+            },
+            (gameSettings, option) -> {
+                double adsSensitivity = Config.CLIENT.sounds.barrelVolume.get();
+                return new TranslationTextComponent("tac.options.barrelVolume.format", FORMAT.format(adsSensitivity));
+            });
+
+    public static final SliderPercentageOption BARREL_LOW_VOLUME = new GunSliderPercentageOption("tac.options.barrelLowVolume", 0f, 1f, 0.01F,
+            gameSettings ->
+            {
+                return Config.CLIENT.sounds.barrelLowVolume.get();
+                //return Config.CLIENT.controls.aimDownSightSensitivity.get();
+            },
+            (gameSettings, value) ->
+            {
+                Config.CLIENT.sounds.barrelLowVolume.set(MathHelper.clamp(value, 0f, 1f));
+                Config.saveClientConfig();
+            },
+            (gameSettings, option) -> {
+                double adsSensitivity = Config.CLIENT.sounds.barrelLowVolume.get();
+                return new TranslationTextComponent("tac.options.barrelLowVolume.format", FORMAT.format(adsSensitivity));
+            });
     public static final SliderPercentageOption Y_ReloadBar_POS = new GunSliderPercentageOption("tac.options.yReloadBarPos", -500, 500, 0.001F,
             gameSettings ->
             {
