@@ -90,10 +90,8 @@ public class OverheatBarHandler extends AbstractGui {
         float heatProgress = Math.min(1F, 1F * heldItem.getTag().getInt("heatValue") / gun.getReloads().getTickToHeat());
         float totalTranslateX = 0;
         float totalTranslateY = 16;
-        int heatProgressRound = Math.round(100 * heatProgress);
+        int heatProgressRound = Math.min(99, Math.round(100 * heatProgress));
         String heatText = heatProgressRound + "%";
-        if (heatProgressRound < 100)
-            heatText = "0" + heatText;
 
         if (heatProgressRound < 10)
             heatText = "0" + heatText;
@@ -140,11 +138,11 @@ public class OverheatBarHandler extends AbstractGui {
 
         stack.push();
         stack.translate(totalTranslateX, totalTranslateY, 0);
-        stack.translate(-11, 14, 0);
+        stack.translate(-8.5, 14, 0);
         if (overHeat(player, heldItem)) {
-            stack.translate(-13, 0, 0);
+            stack.translate(-15.5, 0, 0);
             drawString(stack, Minecraft.getInstance().fontRenderer, "OVERHEAT!", 0, 0, 0xff3333);
-            stack.translate(13, 0, 0);
+            stack.translate(15.5, 0, 0);
         } else
             drawString(stack, Minecraft.getInstance().fontRenderer, heatText, 0, 0, 0xffffff);
         stack.pop();
