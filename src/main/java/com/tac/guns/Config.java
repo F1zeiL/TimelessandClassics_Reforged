@@ -250,7 +250,7 @@ public class Config {
             builder.comment("Configuration for HUD overheat bar").push("weaponOverheatBar");
             {
                 this.showWeaponOverheatBar = builder.comment("Display the overheat bar of the weapon holds on your HUD.").define("showWeaponOverheatBar", true);
-                this.weaponOverheatBarAlpha = builder.comment("Alpha of the overheat bar on your HUD").defineInRange("weaponOverheatBarAlpha", 0.75, 0.0, 1.0);
+                this.weaponOverheatBarAlpha = builder.comment("Alpha of the overheat bar on your HUD").defineInRange("weaponOverheatBarAlpha", 0.7, 0.0, 1.0);
             }
             builder.pop();
         }

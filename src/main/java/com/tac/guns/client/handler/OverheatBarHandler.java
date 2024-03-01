@@ -18,6 +18,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.awt.*;
+
 public class OverheatBarHandler extends AbstractGui {
     private static OverheatBarHandler instance;
     private static final ResourceLocation[] HEAT_BASE = new ResourceLocation[] {
@@ -96,58 +98,73 @@ public class OverheatBarHandler extends AbstractGui {
         if (heatProgressRound < 10)
             heatText = "0" + heatText;
 
-        stack.translate(anchorPointX, anchorPointY, 0);
-        RenderSystem.enableAlphaTest();
-        double totalAlpha = MathHelper.clamp(Config.CLIENT.weaponGUI.weaponOverheatBar.weaponOverheatBarAlpha.get(), 0.0, 1.0);
-
         stack.push();
-        stack.translate(totalTranslateX, totalTranslateY, 0);
-        if (heldItem.getTag().getBoolean("overHeatLock")) {
-            RenderSystem.color4f(1.0f, 0.1f, 0.1f, (float) (1.0f * totalAlpha));
-        } else {
-            RenderSystem.color4f(1.0f, 1.0f, 1.0f, (float) (1.0f * totalAlpha));
-        }
-        Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BASE[0]);
-        blit(stack, -48, -48, 0, 0, 96, 96, 96, 96);
-        stack.pop();
+        {
+            stack.translate(anchorPointX, anchorPointY, 0);
+            RenderSystem.enableAlphaTest();
+            RenderSystem.enableBlend();
+            double totalAlpha = MathHelper.clamp(Config.CLIENT.weaponGUI.weaponOverheatBar.weaponOverheatBarAlpha.get(), 0.0, 1.0);
 
-        stack.push();
-        stack.translate(totalTranslateX, totalTranslateY, 0);
-        RenderSystem.color4f(0.4f, 0.4f, 0.4f, (float) (0.4f * totalAlpha));
-        Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BAR[0]);
-        blit(stack, -48, -48, 0, 0, 96, 96, 96, 96);
-        stack.pop();
-
-        stack.push();
-        stack.scale(heatProgress, 1F, 1F);
-        stack.translate(totalTranslateX, totalTranslateY, 0);
-        if (heldItem.getTag().getBoolean("overHeatLock")) {
-            RenderSystem.color4f(1.0f, 0.2f, 0.2f, (float) (1.0f * totalAlpha));
-        } else {
-            if (heatProgress >= 0.8F) {
-                RenderSystem.color4f(1.0f, 0.5f, 0.0f, (float) (1.0f * totalAlpha));
-            } else if (heatProgress >= 0.5F) {
-                RenderSystem.color4f(1.0f, 0.8f, 0.2f, (float) (1.0f * totalAlpha));
-            } else {
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, (float) (1.0f * totalAlpha));
+            stack.push();
+            {
+                stack.translate(totalTranslateX, totalTranslateY, 0);
+                if (heldItem.getTag().getBoolean("overHeatLock")) {
+                    RenderSystem.color4f(1.0f, 0.1f, 0.1f, (float) (1.0f * totalAlpha));
+                } else {
+                    RenderSystem.color4f(1.0f, 1.0f, 1.0f, (float) (1.0f * totalAlpha));
+                }
+                Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BASE[0]);
+                blit(stack, -48, -48, 0, 0, 96, 96, 96, 96);
             }
+            stack.pop();
+
+            stack.push();
+            {
+                stack.translate(totalTranslateX, totalTranslateY, 0);
+                RenderSystem.color4f(0.4f, 0.4f, 0.4f, (float) (0.4f * totalAlpha));
+                Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BAR[0]);
+                blit(stack, -48, -48, 0, 0, 96, 96, 96, 96);
+            }
+            stack.pop();
+
+            stack.push();
+            {
+                stack.scale(heatProgress, 1F, 1F);
+                stack.translate(totalTranslateX, totalTranslateY, 0);
+                if (heldItem.getTag().getBoolean("overHeatLock")) {
+                    RenderSystem.color4f(1.0f, 0.2f, 0.2f, (float) (1.0f * totalAlpha));
+                } else {
+                    if (heatProgress >= 0.8F) {
+                        RenderSystem.color4f(1.0f, 0.5f, 0.0f, (float) (1.0f * totalAlpha));
+                    } else if (heatProgress >= 0.5F) {
+                        RenderSystem.color4f(1.0f, 0.8f, 0.2f, (float) (1.0f * totalAlpha));
+                    } else {
+                        RenderSystem.color4f(1.0f, 1.0f, 1.0f, (float) (1.0f * totalAlpha));
+                    }
+                }
+                Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BAR[0]);
+                blit(stack, -48, -48, 0, 0, 96, 96, 96, 96);
+            }
+            stack.pop();
+
+            stack.push();
+            {
+                stack.translate(totalTranslateX, totalTranslateY, 0);
+                stack.translate(-8.5, 14, 0);
+                RenderSystem.color4f(1.0f, 1.0f, 1.0f, (float) (1.0f * totalAlpha));
+                if (overHeat(player, heldItem)) {
+                    stack.translate(-15.5, 0, 0);
+                    Color color = new Color(255, 51, 51, (int) (255 * totalAlpha));
+                    drawString(stack, Minecraft.getInstance().fontRenderer, "OVERHEAT!", 0, 0, color.getRGB());
+                    stack.translate(15.5, 0, 0);
+                } else {
+                    Color color = new Color(255, 255, 255, (int) (255 * totalAlpha));
+                    drawString(stack, Minecraft.getInstance().fontRenderer, heatText, 0, 0, color.getRGB());
+                }
+            }
+            stack.pop();
         }
-        Minecraft.getInstance().getTextureManager().bindTexture(HEAT_BAR[0]);
-        blit(stack,  -48,  -48, 0, 0, 96, 96, 96, 96);
         stack.pop();
-
-        stack.push();
-        stack.translate(totalTranslateX, totalTranslateY, 0);
-        stack.translate(-8.5, 14, 0);
-        if (overHeat(player, heldItem)) {
-            stack.translate(-15.5, 0, 0);
-            drawString(stack, Minecraft.getInstance().fontRenderer, "OVERHEAT!", 0, 0, 0xff3333);
-            stack.translate(15.5, 0, 0);
-        } else
-            drawString(stack, Minecraft.getInstance().fontRenderer, heatText, 0, 0, 0xffffff);
-        stack.pop();
-
-        stack.translate(-anchorPointX, -anchorPointY, 0);
     }
 
     private static boolean overHeat(PlayerEntity player, ItemStack heldItem) {
