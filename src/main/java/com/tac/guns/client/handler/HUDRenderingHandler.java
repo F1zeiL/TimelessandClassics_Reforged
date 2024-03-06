@@ -378,6 +378,7 @@ public class HUDRenderingHandler extends AbstractGui {
                 if (player.getHeldItemMainhand().getTag() != null) {
                     IFormattableTextComponent currentAmmo;
                     IFormattableTextComponent reserveAmmo;
+                    IFormattableTextComponent currentNoMagAmmo;
 
                     int ammo = player.getHeldItemMainhand().getTag().getInt("AmmoCount");
                     int ammoReserve = this.ammoReserveCount;
@@ -389,10 +390,13 @@ public class HUDRenderingHandler extends AbstractGui {
                             isNoMag = true;
                         }
 
-                    if (ammo <= Math.min(10, gun.getReloads().getMaxAmmo() / 4))
+                    if (ammo <= Math.min(10, gun.getReloads().getMaxAmmo() / 4)) {
                         currentAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
-                    else
+                        currentNoMagAmmo = byPaddingZeros(ammo).append(new TranslationTextComponent("" + ammo)).mergeStyle(TextFormatting.RED);
+                    } else {
                         currentAmmo = byPaddingZeros(Math.min(ammo, 999)).append(new TranslationTextComponent("" + (ammo >= 1000 ? 999 : ammo)).mergeStyle(TextFormatting.WHITE));
+                        currentNoMagAmmo = byPaddingZeros(Math.min(ammo, 9999)).append(new TranslationTextComponent("" + (ammo >= 10000 ? 9999 : ammo)).mergeStyle(TextFormatting.WHITE));
+                    }
 
                     if (ammoReserve <= gun.getReloads().getMaxAmmo() && !isNoMag)
                         reserveAmmo = byPaddingZeros(Math.min(ammoReserve, 10000)).append(new TranslationTextComponent("" +
@@ -422,7 +426,11 @@ public class HUDRenderingHandler extends AbstractGui {
                     stack.push();
                     {
                         stack.translate(-21.15, 0, 0);
-                        drawString(stack, Minecraft.getInstance().fontRenderer, currentAmmo, 0, 0, 0xffffff); // Gun ammo
+                        if (gun.getReloads().isNoMag()) {
+                            stack.translate(-6, 0, 0);
+                            drawString(stack, Minecraft.getInstance().fontRenderer, currentNoMagAmmo, 0, 0, 0xffffff); // No mag gun ammo
+                        } else
+                            drawString(stack, Minecraft.getInstance().fontRenderer, currentAmmo, 0, 0, 0xffffff); // Gun ammo
                     }
                     stack.pop();
 
