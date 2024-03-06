@@ -48,7 +48,6 @@ public class minigun_animation extends SkinAnimationModel {
         extraOffset.put(BARREL, new Vector3d(0, 0, -0.525));
     }
     private WeakHashMap<LivingEntity, Rotations> rotationMap = new WeakHashMap<>();
-    private BarrelWhineSound barrel;
     private BarrelWhineSound barrelLow;
 
     @Override
@@ -71,24 +70,13 @@ public class minigun_animation extends SkinAnimationModel {
 
         if (shooting) {
             rotations.rotation += 60;
-            if ((this.barrel == null ||
-                    !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel) ||
-                    Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
-                this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.PLAYERS, entity, Config.CLIENT.sounds.barrelVolume.get().floatValue());
-                Minecraft.getInstance().getSoundHandler().play(this.barrel);
-                if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))
-                    Minecraft.getInstance().getSoundHandler().stop(this.barrelLow);
-            }
         } else {
             rotations.rotation += 30;
-            if ((this.barrelLow == null ||
-                    !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow) ||
-                    Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
-                this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.PLAYERS, entity, Config.CLIENT.sounds.barrelLowVolume.get().floatValue());
-                Minecraft.getInstance().getSoundHandler().play(this.barrelLow);
-                if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))
-                    Minecraft.getInstance().getSoundHandler().stop(this.barrel);
-            }
+        }
+
+        if ((this.barrelLow == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
+            this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.PLAYERS, entity, Config.CLIENT.sounds.barrelLowVolume.get().floatValue());
+            Minecraft.getInstance().getSoundHandler().play(this.barrelLow);
         }
     }
 
