@@ -71,7 +71,9 @@ public class minigun_animation extends SkinAnimationModel {
 
         if (shooting) {
             rotations.rotation += 60;
-            if ((this.barrel == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
+            if ((this.barrel == null ||
+                    !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel) ||
+                    Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
                 this.barrel = new BarrelWhineSound(ModSounds.BARREL_WHINE.get(), SoundCategory.PLAYERS, entity, Config.CLIENT.sounds.barrelVolume.get().floatValue());
                 Minecraft.getInstance().getSoundHandler().play(this.barrel);
                 if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))
@@ -79,7 +81,9 @@ public class minigun_animation extends SkinAnimationModel {
             }
         } else {
             rotations.rotation += 30;
-            if ((this.barrelLow == null || !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow))) {
+            if ((this.barrelLow == null ||
+                    !Minecraft.getInstance().getSoundHandler().isPlaying(this.barrelLow) ||
+                    Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))) {
                 this.barrelLow = new BarrelWhineSound(ModSounds.BARREL_WHINE_LOW.get(), SoundCategory.PLAYERS, entity, Config.CLIENT.sounds.barrelLowVolume.get().floatValue());
                 Minecraft.getInstance().getSoundHandler().play(this.barrelLow);
                 if (Minecraft.getInstance().getSoundHandler().isPlaying(this.barrel))
