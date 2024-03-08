@@ -11,28 +11,10 @@
          { "name": "tac:item/aa12_fire" }
       ]
    },
-   "item.dbl_fire": {
-      "subtitle": "subtitle.tac.db_fire",
-      "sounds": [
-         { "name": "tac:item/dbl_fire" }
-      ]
-   },
    "item.dbs_fire": {
       "subtitle": "subtitle.tac.dbs_fire",
       "sounds": [
          { "name": "tac:item/dbs_fire" }
-      ]
-   },
-   "item.m590_fire": {
-      "subtitle": "subtitle.tac.m590_fire",
-      "sounds": [
-         { "name": "tac:item/m590_fire" }
-      ]
-   },
-   "item.m590_fire_s": {
-      "subtitle": "subtitle.tac.m590_fire_s",
-      "sounds": [
-         { "name": "tac:item/m590_fire_s" }
       ]
    },
    "item.m870_fire": {
@@ -53,46 +35,10 @@
             { "name": "tac:item/m1014_fire_s" }
          ]
       },
-   "item.spas12_fire": {
-      "subtitle": "subtitle.tac.spas12_fire",
-      "sounds": [
-         { "name": "tac:item/spas12_fire" }
-      ]
-   },
    "item.ak47_fire_s": {
       "subtitle": "subtitle.tac.ak47_fire_s",
       "sounds": [
          { "name": "tac:item/ak47_fire_s" }
-      ]
-   },
-   "item.ar10_fire_s": {
-      "subtitle": "subtitle.tac.ar10_fire_s",
-      "sounds": [
-         { "name": "tac:item/ar10_fire_s" }
-      ]
-   },
-   "item.ar15_fire": {
-      "subtitle": "subtitle.tac.ar15_fire_s",
-      "sounds": [
-         { "name": "tac:item/ar15_fire" }
-      ]
-   },
-   "item.ar15_fire_s": {
-      "subtitle": "subtitle.tac.ar15_fire_s",
-      "sounds": [
-         { "name": "tac:item/ar15_fire_s" }
-      ]
-   },
-   "item.fnfal_fire_s": {
-      "subtitle": "subtitle.tac.fnfal_fire_s",
-      "sounds": [
-         { "name": "tac:item/fnfal_fire_s" }
-      ]
-   },
-   "item.m1_fire_s": {
-      "subtitle": "subtitle.tac.m1garand_fire_s",
-      "sounds": [
-         { "name": "tac:item/m1_fire_s" }
       ]
    },
    "item.m4a1_fire_s": {
@@ -117,12 +63,6 @@
       "subtitle": "subtitle.tac.mk14ebr_fire",
       "sounds": [
          { "name": "tac:item/mk14ebr_fire" }
-      ]
-   },
-   "item.mk14ebr_fire_s": {
-      "subtitle": "subtitle.tac.mk14ebr_fire_s",
-      "sounds": [
-         { "name": "tac:item/mk14ebr_fire_s" }
       ]
    },
    "item.mk47_fire": {
@@ -197,18 +137,6 @@
             { "name": "tac:item/hk416_fire_s" }
          ]
       },
-   "item.hkmk23_fire": {
-      "subtitle": "subtitle.tac.hkmk23_fire",
-      "sounds": [
-         { "name": "tac:item/hkmk23_fire" }
-      ]
-   },
-   "item.hkmk23_fire_s": {
-      "subtitle": "subtitle.tac.hkmk23_fire",
-      "sounds": [
-         { "name": "tac:item/hkmk23_fire_s" }
-      ]
-   },
    "item.sigmcx_fire": {
       "subtitle": "subtitle.tac.sigmcx_fire",
       "sounds": [
@@ -221,18 +149,6 @@
          { "name": "tac:item/sigmcx_fire_s" }
       ]
    },
-   "item.sks_fire": {
-      "subtitle": "subtitle.tac.sks_fire",
-      "sounds": [
-         { "name": "tac:item/sks_fire" }
-      ]
-   },
-   "item.sks_fire_s": {
-      "subtitle": "subtitle.tac.sks_fire_s",
-      "sounds": [
-         { "name": "tac:item/sks_fire_s" }
-      ]
-   },
    "item.skstti_fire": {
          "subtitle": "subtitle.tac.skstti_fire",
          "sounds": [
@@ -243,24 +159,6 @@
          "subtitle": "subtitle.tac.type81_fire",
          "sounds": [
             { "name": "tac:item/type81_fire" }
-         ]
-      },
-   "item.type81_fire_s": {
-         "subtitle": "subtitle.tac.type81_fire_s",
-         "sounds": [
-            { "name": "tac:item/type81_fire_s" }
-         ]
-      },
-   "item.x95r_fire_s": {
-         "subtitle": "subtitle.tac.x95r_fire_s",
-         "sounds": [
-            { "name": "tac:item/x95r_fire_s" }
-         ]
-      },
-   "item.x95r_fire": {
-         "subtitle": "subtitle.tac.x95r_fire",
-         "sounds": [
-            { "name": "tac:item/x95r_fire" }
          ]
       },
    "item.aiawp_fire_s": {
@@ -281,40 +179,10 @@
             { "name": "tac:item/ak47_fire" }
          ]
       },
-   "item.ar10_fire": {
-      "subtitle": "subtitle.tac.ar10_fire",
-      "sounds": [
-         { "name": "tac:item/ar10_fire" }
-      ]
-   },
-   "item.delisle_fire_s": {
-      "subtitle": "subtitle.tac.delisle_fire_s",
-      "sounds": [
-         { "name": "tac:item/delisle_fire_s" }
-      ]
-   },
-   "item.espadon_fire": {
-      "subtitle": "subtitle.tac.espadon_fire",
-      "sounds": [
-         { "name": "tac:item/espadon_fire" }
-      ]
-   },
-   "item.espadon_fire_s": {
-      "subtitle": "subtitle.tac.espadon_fire_s",
-      "sounds": [
-         { "name": "tac:item/espadon_fire_s" }
-      ]
-   },
    "item.fnfal_fire": {
       "subtitle": "subtitle.tac.fnfal_fire",
       "sounds": [
          { "name": "tac:item/fnfal_fire" }
-      ]
-   },
-   "item.frf2_fire_s": {
-      "subtitle": "subtitle.tac.frf2_fire_s",
-      "sounds": [
-         { "name": "tac:item/frf2_fire_s" }
       ]
    },
    "item.kar98_fire": {
@@ -329,22 +197,10 @@
          { "name": "tac:item/kar98_fire_s" }
       ]
    },
-   "item.smle_fire": {
-      "subtitle": "subtitle.tac.leeenfield3_fire",
-      "sounds": [
-         { "name": "tac:item/smle_fire" }
-      ]
-   },
    "item.m4a1_fire": {
       "subtitle": "subtitle.tac.m4a1_fire",
       "sounds": [
          { "name": "tac:item/m4a1_fire" }
-      ]
-   },
-   "item.m16a1_fire": {
-      "subtitle": "subtitle.tac.m16a1_fire",
-      "sounds": [
-         { "name": "tac:item/m16a1_fire" }
       ]
    },
    "item.m16a4_fire": {
@@ -353,58 +209,16 @@
          { "name": "tac:item/m16a4_fire" }
       ]
    },
-   "item.m16a1_fire_s": {
-      "subtitle": "subtitle.tac.m16a1_fire_s",
-      "sounds": [
-         { "name": "tac:item/m16a1_fire_s" }
-      ]
-   },
    "item.m24_fire": {
       "subtitle": "subtitle.tac.m24_fire",
       "sounds": [
          { "name": "tac:item/m24_fire" }
       ]
    },
-   "item.m24_fire_s": {
-      "subtitle": "subtitle.tac.m24_fire_s",
-      "sounds": [
-         { "name": "tac:item/m24_fire_s" }
-      ]
-   },
    "item.m82a2_fire": {
       "subtitle": "subtitle.tac.m82a2_fire",
       "sounds": [
          { "name": "tac:item/m82a2_fire" }
-      ]
-   },
-   "item.m82a3_fire": {
-      "subtitle": "subtitle.tac.m82a3_fire",
-      "sounds": [
-         { "name": "tac:item/m82a3_fire" }
-      ]
-   },
-   "item.m82a2_fire_s": {
-      "subtitle": "subtitle.tac.m82a2_fire_s",
-      "sounds": [
-         { "name": "tac:item/m82a2_fire_s" }
-      ]
-   },
-   "item.m1903_fire": {
-      "subtitle": "subtitle.tac.m1903",
-      "sounds": [
-         { "name": "tac:item/m1903" }
-      ]
-   },
-   "item.mosin_fire": {
-      "subtitle": "subtitle.tac.mosinnagant_fire",
-      "sounds": [
-         { "name": "tac:item/mosin_fire" }
-      ]
-   },
-   "item.mosin_fire_s": {
-      "subtitle": "subtitle.tac.mosinnagant_fire_s",
-      "sounds": [
-         { "name": "tac:item/mosin_fire_s" }
       ]
    },
    "item.ttisti2011_fire_s": {
@@ -417,12 +231,6 @@
       "subtitle": "subtitle.tac.m92fs_fire",
       "sounds": [
          { "name": "tac:item/m92fs_fire" }
-      ]
-   },
-   "item.c96_fire_s": {
-      "subtitle": "subtitle.tac.c96_fire_s",
-      "sounds": [
-         { "name": "tac:item/c96_fire_s" }
       ]
    },
    "item.c96_fire": {
@@ -509,52 +317,10 @@
          { "name": "tac:item/m1911_fire" }
       ]
    },
-   "item.m1911_fire_s": {
-      "subtitle": "subtitle.tac.m1911_fire_s",
-      "sounds": [
-         { "name": "tac:item/m1911_fire_s" }
-      ]
-   },
-   "item.ppk_fire": {
-      "subtitle": "subtitle.tac.ppk_fire",
-      "sounds": [
-         { "name": "tac:item/ppk_fire" }
-      ]
-   },
-   "item.ppk_fire_s": {
-      "subtitle": "subtitle.tac.ppk_fire_s",
-      "sounds": [
-         { "name": "tac:item/ppk_fire_s" }
-      ]
-   },
-   "item.qsz92_fire_s": {
-      "subtitle": "subtitle.tac.qsz92_fire_s",
-      "sounds": [
-         { "name": "tac:item/qsz92_fire_s" }
-      ]
-   },
-   "item.qsz92_fire": {
-      "subtitle": "subtitle.tac.qsz92_fire",
-      "sounds": [
-         { "name": "tac:item/qsz92_fire" }
-      ]
-   },
-   "item.scorpion_fire": {
-      "subtitle": "subtitle.tac.scorpion_fire",
-      "sounds": [
-         { "name": "tac:item/scorpion_fire" }
-      ]
-   },
    "item.ttisti2011_fire": {
       "subtitle": "subtitle.tac.ttisti2011_fire",
       "sounds": [
          { "name": "tac:item/ttisti2011_fire" }
-      ]
-   },
-   "item.m1917_s": {
-      "subtitle": "subtitle.tac.m1917_s",
-      "sounds": [
-         { "name": "tac:item/m1917_s" }
       ]
    },
    "item.mac10_fire": {
@@ -585,18 +351,6 @@
       "subtitle": "subtitle.tac.mp9_fire",
       "sounds": [
          { "name": "tac:item/mp9_fire" }
-      ]
-   },
-   "item.mp9_fire_s": {
-      "subtitle": "subtitle.tac.mp9_fire_s",
-      "sounds": [
-         { "name": "tac:item/mp9_fire_s" }
-      ]
-   },
-   "item.stenmk2_fire": {
-      "subtitle": "subtitle.tac.stenmk2_fire",
-      "sounds": [
-         { "name": "tac:item/stenmk2_fire" }
       ]
    },
    "item.vector_fire": {
@@ -641,12 +395,6 @@
       "subtitle": "subtitle.tac.rpg7_fire",
       "sounds": [
          { "name": "tac:item/rpg7_fire" }
-      ]
-   },
-   "item.m1928_fire": {
-      "subtitle": "subtitle.tac.m1928",
-      "sounds": [
-         { "name": "tac:item/m1928_fire" }
       ]
    },
    "item.dp28_fire": {
@@ -697,22 +445,10 @@
          { "name": "tac:item/m249_fire" }
       ]
    },
-   "item.m249_fire_s": {
-      "subtitle": "subtitle.tac.m249_fire_s",
-      "sounds": [
-         { "name": "tac:item/m249_fire_s" }
-      ]
-   },
    "item.rpk_fire": {
       "subtitle": "subtitle.tac.rpk_fire",
       "sounds": [
          { "name": "tac:item/rpk_fire" }
-      ]
-   },
-   "item.m79_fire": {
-      "subtitle": "subtitle.tac.m203",
-      "sounds": [
-         { "name": "tac:item/m79_fire" }
       ]
    },
    "item.udp_9_fire_s": {
@@ -737,12 +473,6 @@
       "subtitle": "subtitle.tac.uzi_fire",
       "sounds": [
          { "name": "tac:item/uzi_fire" }
-      ]
-   },
-   "item.mrad_fire_s": {
-      "subtitle": "subtitle.tac.mrad_fire_s",
-      "sounds": [
-         { "name": "tac:item/mrad_fire_s" }
       ]
    },
    "item.mrad_fire": {

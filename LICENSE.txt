@@ -4,7 +4,7 @@ All the assets are licensed under the terms of the CC BY-NC-SA 4.0
 found here https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 A note on authorship:
-The original author of the code is Timeless Squad, GNU GPL v3 requires you
+The original author of the code is Serene Wave Studio, GNU GPL v3 requires you
 should include the original license statement and copyright notice in
 all copies of the software and its derivatives.
 And to the community, all of your assets should be licensed under

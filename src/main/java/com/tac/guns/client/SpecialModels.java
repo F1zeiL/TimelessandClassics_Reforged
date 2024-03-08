@@ -20,6 +20,12 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public enum SpecialModels {
     BULLET_SHELL("bullet_shell"), // Simply for testing fall back, FOR REMOVAL
+    BULLET_SHELL_HIGH_CAL("shell_huge"),
+    BULLET_SHELL_RIFLE("shell_large"),
+    BULLET_SHELL_SHOTGUN("shell_shotgun"),
+    BULLET_SHELL_PISTOL("shell_small"),
+    BULLET_SHELL_PISTOL_SILVER("shell_silver"),
+    BULLET_SHELL_RIFLE_SURPLUS("shell_steel"),
     FLAME("flame"),
 
     //Everything from this point on is all scope additions
